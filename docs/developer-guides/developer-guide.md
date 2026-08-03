@@ -6,15 +6,19 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 ビルダー、Webサイト、ドキュメントを変更・検証・公開するソフトウェア開発者向けの
 作業資料です。次を本書の責務とします。
 
+本書では、`kubohiroya/tmpose-kamishibai`を「本体リポジトリ」、
+`kubohiroya/tmpose-kamishibai-docs`を「文書リポジトリ」と呼びます。コマンドは、
+対象ファイルを管理する側のリポジトリで実行します。
+
 - 成果物プロファイルとSB3・台本変換ビルダーの外部契約
 - リポジトリの開発環境、構成、共通フロー、変更対象別手順
 - テスト、成果物検証、GitHub Pagesとnpmの公開手順
 - 開発時のトラブルシューティング、ライセンス、秘密情報の扱い
 
 汎用アプリSB3のtarget、変数、event、custom block、呼出し関係、状態遷移は
-[紙芝居アプリ内部仕様書](07-internal-specification.md)を正本とします。台本の書式と
-コマンド仕様は[台本DSLマニュアル](../dsl-author-guides/04-dsl-manual.md)と
-[コマンドリファレンス](../dsl-author-guides/05-command-reference.md)を参照してください。本書には、
+[紙芝居アプリ内部仕様書](internal-specification.md)を正本とします。台本の書式と
+コマンド仕様は[台本DSLマニュアル](../dsl-author-guides/dsl-manual.md)と
+[コマンドリファレンス](../dsl-author-guides/command-reference.md)を参照してください。本書には、
 これらの内部構造やDSL項目を重複して列挙しません。
 
 対象アプリ／DSL: `kamishibai=3.1`
@@ -38,19 +42,23 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 ## 管理範囲と責務を理解する
 
-このリポジトリが管理するものは次のとおりです。
+本体リポジトリが管理するものは次のとおりです。
 
 - 物語固有の台本やアセットを含まない、汎用の紙芝居アプリ
 - アプリSB3の展開ソースと、配布用SB3を生成する設定
 - 台本と画像・音声をSB3へ組み込むnpmパッケージ
-- GitHub Pagesへ公開するWebサイトと一般向けドキュメント
+- アプリ・文書・サンプルへの公開入口と配布用SB3
 - 上記を検証する自動テスト
+
+文書リポジトリは、一般向け、DSL作成者向け、開発者向け、体験会向けの文書source、
+共有画像、Vivliostyle build、PDF、文書Pagesを管理します。
 
 関連プロジェクトとの境界は次のとおりです。
 
 | 対象                                  | 管理場所                                                                                          | このリポジトリとの関係                                                                |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | SB3の展開・検証・決定的再構築         | [`kubohiroya/sb3-toolchain`](https://github.com/kubohiroya/sb3-toolchain)                         | 固定依存として利用する。[「sb3-toolchain」](#sb3-toolchain){data-ref="section"}を参照 |
+| 文書source、図版、HTML／PDF           | [`kubohiroya/tmpose-kamishibai-docs`](https://github.com/kubohiroya/tmpose-kamishibai-docs)       | 本体のversion・固定snapshotを参照し、独立してbuild・公開する                          |
 | 浦島太郎などの公開用物語              | [`kubohiroya/tmpose-kamishibai-samples`](https://github.com/kubohiroya/tmpose-kamishibai-samples) | `stories/urashima/`で台本、固有アセット、生成物を管理する                             |
 | 埋め込み機能拡張                      | 各機能拡張のGitHubリポジトリ                                                                      | `app/`には検証済み成果物と由来情報だけを同期する                                      |
 | TurboWarp Extension Galleryの機能拡張 | Galleryの公開URL                                                                                  | SB3から外部URLを参照する                                                              |
@@ -73,7 +81,7 @@ git diff -- package.json pnpm-lock.yaml
 
 - Node.js 22.12.0以上
 - pnpm 11
-- PDF生成に利用できるChromeまたはChromium
+- 文書をbuildする場合は、PDF生成に利用できるChromeまたはChromium
 - Gitと、GitHub操作に利用するGitHub CLI
 
 ```bash
@@ -87,41 +95,45 @@ CIではlockfile以外の依存解決を許可しません。
 pnpm install --frozen-lockfile
 ```
 
-初回セットアップ後は、展開SB3ソースとテスト用SB3を確認します。
+本体リポジトリの初回セットアップ後は、展開SB3ソースとテスト用SB3を確認します。
 
 ```bash
 pnpm sb3:check
 pnpm test
 ```
 
-macOSでは通常のGoogle ChromeをPDF生成に自動利用します。別のブラウザを使う環境では、
+文書リポジトリでは、macOSの通常のGoogle ChromeをPDF生成に自動利用します。
+別のブラウザを使う環境では、
 `VIVLIOSTYLE_CHROME_PATH`へ実行ファイルの絶対パスを設定します。
 
 ## リポジトリ構成を把握する
 
-| パス                           | 役割                                              |
-| ------------------------------ | ------------------------------------------------- |
-| `app/`                         | 紙芝居アプリSB3のGit管理上の正本                  |
-| `app/project.source.json`      | 整形済みScratchプロジェクト                       |
-| `app/assets/`                  | 汎用アプリ自身が使用する画像・音声                |
-| `app/extensions/`              | 埋め込み機能拡張の同期済みJavaScript              |
-| `app/embedded-extensions.json` | 埋め込み機能拡張の管理情報                        |
-| `app/sb3-source.json`          | SB3展開ソースのマニフェスト                       |
-| `src/builder/`                 | npmで公開するSB3・台本変換API                     |
-| `bin/`                         | npm CLIのエントリーポイント                       |
-| `scripts/`                     | サイト、ドキュメント、配布物のビルドと検証        |
-| `docs/general/`                | 一般向け・開発者向けの文書原稿                    |
-| `docs/workshops/`              | 日付付き体験会資料                                |
-| `site/`                        | GitHub Pagesの静的入力                            |
-| `test/`                        | ビルダー、SB3、VM、ドキュメント、公開契約のテスト |
+| パス                           | 役割                                 |
+| ------------------------------ | ------------------------------------ |
+| `app/`                         | 紙芝居アプリSB3のGit管理上の正本     |
+| `app/project.source.json`      | 整形済みScratchプロジェクト          |
+| `app/assets/`                  | 汎用アプリ自身が使用する画像・音声   |
+| `app/extensions/`              | 埋め込み機能拡張の同期済みJavaScript |
+| `app/embedded-extensions.json` | 埋め込み機能拡張の管理情報           |
+| `app/sb3-source.json`          | SB3展開ソースのマニフェスト          |
+| `src/builder/`                 | npmで公開するSB3・台本変換API        |
+| `bin/`                         | npm CLIのエントリーポイント          |
+| `scripts/`                     | 公開入口、配布物のビルドと検証       |
+| `site/`                        | 本体GitHub Pagesの静的入力           |
+| `test/`                        | ビルダー、SB3、VM、公開契約のテスト  |
+
+文書リポジトリでは、読者別の`docs/user-guides/`、`docs/dsl-author-guides/`、
+`docs/developer-guides/`、開催日別の`docs/workshops/`をsourceとし、`scripts/`で
+HTML／PDFを生成します。
 
 次の場所は生成物であり、Git管理上の正本ではありません。
 
-| パス                 | 内容                                              |
-| -------------------- | ------------------------------------------------- |
-| `tmp/kamishibai.sb3` | TurboWarp編集と自動テストに使うSB3                |
-| `dist/`              | GitHub Pagesへ公開するサイト、HTML/PDF、配布用SB3 |
-| `output/pdf/`        | 印刷用PDFのローカル確認先                         |
+| パス                 | 内容                                      |
+| -------------------- | ----------------------------------------- |
+| `tmp/kamishibai.sb3` | TurboWarp編集と自動テストに使うSB3        |
+| `dist/`              | 本体GitHub Pagesへ公開する入口、配布用SB3 |
+
+文書リポジトリの`dist/`は文書Pages、`output/pdf/`は印刷用PDFのローカル確認先です。
 
 ## 共通の開発フローに従う
 
@@ -344,8 +356,8 @@ pnpm run build
 検証項目を本ガイドへ重複して列挙しません。
 
 DSL、Loading表示、入力、分岐、テキスト、画面遷移などの振る舞いを変更するときは、
-同じPRで[DSL資料](../dsl-author-guides/04-dsl-manual.md)、[コマンド資料](../dsl-author-guides/05-command-reference.md)、
-[内部仕様書](07-internal-specification.md)、VMまたはブロック構造のテストを更新します。
+同じPRで[DSL資料](../dsl-author-guides/dsl-manual.md)、[コマンド資料](../dsl-author-guides/command-reference.md)、
+[内部仕様書](internal-specification.md)、VMまたはブロック構造のテストを更新します。
 
 ## 埋め込み機能拡張を更新する
 
@@ -401,11 +413,11 @@ pnpm pack:check
 
 ## ドキュメントとサイトを変更する
 
-一般文書は`docs/general/`、体験会資料は`docs/workshops/<日付>/`、公開入口は`site/`を
-正本とします。
+一般文書と体験会資料は文書リポジトリ、アプリの公開入口は本体リポジトリの`site/`を
+正本とします。文書リポジトリでは次を利用します。
 
 ```bash
-pnpm run preview:docs
+DOCUMENT_SOURCE=user-guide.md pnpm run preview:document
 pnpm run preview:workshop
 pnpm run preview:staff
 ```
@@ -417,10 +429,14 @@ pnpm run preview:staff
 RUBYGANA_GRADE=4 pnpm run build
 ```
 
-`pnpm run build`は一般文書ごとにWeb Publicationを構築し、Vivliostyle CLIの`toc`設定で
+文書リポジトリの`pnpm run build`は一般文書ごとにWeb Publicationを構築し、
+Vivliostyle CLIの`toc`設定で
 `h2`・`h3`までを含む目次を生成します。目次をMarkdownへ重複して記述しません。HTML、
-Vivliostyle Viewer、PDF、文書横断目次、画像参照、しおり、favicon、ライセンス、配布SB3を
-まとめて検証します。Markdownだけを確認して完了にせず、生成されたHTML/PDFも確認します。
+Vivliostyle Viewer、PDF、文書横断目次、画像参照、しおり、ライセンスをまとめて検証します。
+Markdownだけを確認して完了にせず、生成されたHTML/PDFも確認します。
+
+文書の変更が本体の実装変更を伴う場合は、2つのIssueとPRに依存関係を記録します。
+文書buildが本体をcheckoutしたり、本体buildが文書を生成したりする循環依存は作りません。
 
 Markdownの見出しには章・節番号を書きません。`h1`は番号なしの文書名、`h2`と`h3`は
 本文と目次で自動採番します。用語集などの前付けを採番しない場合は、見出しへ
@@ -432,15 +448,14 @@ IDを付けてリンクし、組版結果にも現在の章・節番号を表示
 
 ### 変更対象ごとのテスト
 
-| 変更対象               | 主なテスト                                                                                      |
-| ---------------------- | ----------------------------------------------------------------------------------------------- |
-| builder API／CLI       | `test/builder.test.mjs`                                                                         |
-| 展開SB3の構造          | `test/sb3-project.test.mjs`、`test/skip-mode.test.mjs`                                          |
-| 内部仕様書の構造一覧   | `test/internal-specification.test.mjs`                                                          |
-| TurboWarp実行結果      | `test/turbowarp-vm.test.mjs`                                                                    |
-| 入力、分岐、wait       | `test/async-input.test.mjs`、`test/register-branch.test.mjs`、`test/wait-action.test.mjs`       |
-| 文書、画像、ライセンス | `test/docs-config.test.mjs`、`test/docs-images.test.mjs`、`test/documentation-license.test.mjs` |
-| 公開物と汎用性         | `test/sb3-publication.test.mjs`、`test/build-freshness.test.mjs`                                |
+| 変更対象               | 主なテスト                                                                                |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| builder API／CLI       | `test/builder.test.mjs`                                                                   |
+| 展開SB3の構造          | `test/sb3-project.test.mjs`、`test/skip-mode.test.mjs`                                    |
+| TurboWarp実行結果      | `test/turbowarp-vm.test.mjs`                                                              |
+| 入力、分岐、wait       | `test/async-input.test.mjs`、`test/register-branch.test.mjs`、`test/wait-action.test.mjs` |
+| 文書、画像、ライセンス | 文書リポジトリの`test/`と`scripts/verify-build.mjs`                                       |
+| 公開物と汎用性         | 本体の`test/sb3-publication.test.mjs`と`scripts/verify-build.mjs`                         |
 
 ### 標準チェック
 
@@ -456,12 +471,14 @@ GitHub ActionsはcleanなLinux環境で`pnpm install --frozen-lockfile`、`pnpm 
 `pnpm build`を実行します。ローカルで成功しても、未追跡ファイルや既存生成物へ依存して
 いないことをCIで確認します。
 
-`pnpm run build`は少なくとも次を生成・検証します。
+本体リポジトリの`pnpm run build`は少なくとも次を生成・検証します。
 
 - `dist/downloads/kamishibai.sb3`
-- 一般文書ごとのWeb Publication、HTML/PDF、Vivliostyle CLIが`h2`・`h3`までから生成する目次
-- 参加者向け・スタッフ向け体験会資料
-- 公開サイトのリンク、画像、目次、PDF bookmark、favicon
+- 公開入口、ダウンロードページ、移転案内
+- 公開サイトのリンク、画像、AppBar、favicon
+
+文書リポジトリの`pnpm run build`は、一般文書ごとのWeb PublicationとHTML/PDF、
+参加者向け・スタッフ向け体験会資料、文書サイトのリンク、画像、固定ページ数を検証します。
 
 SB3またはruntimeを変更した場合は、生成SB3をTurboWarpで開いて次を手動確認します。
 
@@ -483,9 +500,10 @@ hat、custom block一覧を同時に更新します。
 pnpm run deploy
 ```
 
-`predeploy`がフルbuildを行い、成功した`dist/`だけを`gh-pages`へ公開します。公開後は
-top page、文書一覧、各カードのHTML／Vivliostyle Viewer／PDF、SB3 downloadを実際の
-URLから確認します。
+本体リポジトリでは`predeploy`がbuildを行い、成功した`dist/`だけを`gh-pages`へ公開します。
+文書リポジトリはGitHub ActionsのPages workflowで`pnpm check`後の`dist/`を公開します。
+公開後はtop page、文書一覧、各カードのHTML／Vivliostyle Viewer／PDF、SB3 downloadを
+それぞれの実URLから確認します。
 
 問題がある場合は、直前の検証済みcommitをcheckoutしたcleanな環境から再度build・
 deployします。生成済み`dist/`だけを手作業で修正しません。
@@ -530,7 +548,7 @@ versionとして公開します。公開済みtarballやtagを差し替えませ
 | `sb3:import`が置換を拒否する                      | `git status`と`git diff -- app`を確認し、[toolchainの手順](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md#既存ソースへの再import)に従う |
 | `.app.rollback-*`や`.＜出力名＞.rollback-*`が残る | 削除前に元出力と比較し、[toolchainの失敗時の扱い](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md#失敗時の扱い)に従う                    |
 | 埋め込み拡張が追跡refと異なる                     | `pnpm sb3:extensions:status`で確認し、固定commitへ戻すなら`sync`、更新するなら`update`を使う                                                                     |
-| PDF生成browserが見つからない                      | Chrome/Chromiumを導入し、必要なら`VIVLIOSTYLE_CHROME_PATH`を設定する                                                                                             |
+| PDF生成browserが見つからない                      | 文書リポジトリでChrome/Chromiumを導入し、必要なら`VIVLIOSTYLE_CHROME_PATH`を設定する                                                                             |
 | ローカルだけtestが通る                            | 生成物と未追跡ファイルを確認し、clean cloneと`pnpm install --frozen-lockfile`で再現する                                                                          |
 | builderが既存出力を更新しない                     | エラーの`stage`、asset名、URIを確認する。rollback領域が残っていないか確認する                                                                                    |
 | 公開直後にnpm registryが404になる                 | 同じversionを再publishせず、npm公開pageとregistryの反映を待って確認する                                                                                          |
@@ -606,11 +624,11 @@ TMPose紙芝居の開発から分離し、他のTurboWarp作品や開発環境�
 
 ## 関連ドキュメントを確認する
 
-- [`03-user-guide.md`](../user-guides/03-user-guide.md): アプリの利用方法と成果物の使い分け
-- [`04-dsl-manual.md`](../dsl-author-guides/04-dsl-manual.md): 台本の構造と書き方
-- [`05-command-reference.md`](../dsl-author-guides/05-command-reference.md): コマンドとアクションの仕様
-- [`07-internal-specification.md`](07-internal-specification.md): 汎用アプリSB3の内部構造、呼出し関係、状態遷移
-- [`08-extension-guide.md`](08-extension-guide.md): 依存機能拡張15個の一覧、図解、役割、利用箇所
-- [`09-application-materials-guide.md`](../user-guides/09-application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.1、sb3-toolchainの8ページ概要
+- [`user-guide.md`](../user-guides/user-guide.md): アプリの利用方法と成果物の使い分け
+- [`dsl-manual.md`](../dsl-author-guides/dsl-manual.md): 台本の構造と書き方
+- [`command-reference.md`](../dsl-author-guides/command-reference.md): コマンドとアクションの仕様
+- [`internal-specification.md`](internal-specification.md): 汎用アプリSB3の内部構造、呼出し関係、状態遷移
+- [`extension-guide.md`](extension-guide.md): 依存機能拡張15個の一覧、図解、役割、利用箇所
+- [`application-materials-guide.md`](../user-guides/application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.1、sb3-toolchainの8ページ概要
 - [`history.md`](../dsl-author-guides/history.md): DSLとアプリの変更履歴
 - [アプリrepository README](https://github.com/kubohiroya/tmpose-kamishibai): プロジェクト全体の入口と主要コマンド

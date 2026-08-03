@@ -6,7 +6,9 @@
 
 文書sourceは`tmpose-kamishibai` PR #238のmerge commit
 `8166edb3a8b7ed360685bdcd6534c000054105bd`から履歴付きで移設しています。
-移設検証とPages切替が完了するまで、移設元の文書は削除しません。
+同commitで`docs/design/`、`docs/development/`に残っていた開発者向け3文書も、
+読者別ディレクトリへ追加移設しています。文書の表示順は`docs/config.mjs`で管理し、
+ファイル名には旧来の番号接頭辞を付けません。
 
 ## 公開サイトの役割
 
@@ -44,12 +46,14 @@ pnpm check
 [`sources/tmpose-kamishibai.json`](sources/tmpose-kamishibai.json)で管理します。
 
 準備は[Issue #1](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/1)、
-本文移設は[Issue #3](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/3)で管理します。
+本文移設は[Issue #3](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/3)、
+残存文書と生成機構の移設は[Issue #5](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/5)で管理します。
 
 ## ライセンス
 
-- 一般・DSL作成者・開発者向け文書と共有画像: CC BY-SA 4.0
-- 体験会資料: Copyright © 2026 Hiroya Kubo. All rights reserved.
-- build scriptなど、個別表示のないsoftware: MPL-2.0
+- 一般・DSL作成者・開発者向け文書、共有画像とその生成物: CC BY-SA 4.0
+- 体験会資料とその生成物: Copyright © 2026 Hiroya Kubo. All rights reserved.
+- 明示的に列挙したbuild script、site shell、設定、テスト: MPL-2.0
 
-詳細は[LICENSES.md](LICENSES.md)を参照してください。
+このリポジトリ全体に適用される単一のライセンスはありません。ファイルごとの正確な
+適用範囲は[LICENSES.md](LICENSES.md)を参照してください。

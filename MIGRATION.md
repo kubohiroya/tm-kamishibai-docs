@@ -14,30 +14,38 @@ build・公開できる状態にします。
 
 ### 一般向けドキュメント
 
-| 現在のパス                                       | 移設先候補                                           |
-| ------------------------------------------------ | ---------------------------------------------------- |
-| `docs/general/01-executive-summary-adult.md`     | `docs/user-guides/01-executive-summary-adult.md`     |
-| `docs/general/02-executive-summary-kids.md`      | `docs/user-guides/02-executive-summary-kids.md`      |
-| `docs/general/03-user-guide.md`                  | `docs/user-guides/03-user-guide.md`                  |
-| `docs/general/09-application-materials-guide.md` | `docs/user-guides/09-application-materials-guide.md` |
+| 現在のパス                                       | 移設先候補                                        |
+| ------------------------------------------------ | ------------------------------------------------- |
+| `docs/general/01-executive-summary-adult.md`     | `docs/user-guides/executive-summary-adult.md`     |
+| `docs/general/02-executive-summary-kids.md`      | `docs/user-guides/executive-summary-kids.md`      |
+| `docs/general/03-user-guide.md`                  | `docs/user-guides/user-guide.md`                  |
+| `docs/general/09-application-materials-guide.md` | `docs/user-guides/application-materials-guide.md` |
 
 ### 紙芝居DSL作成者向けドキュメント
 
-| 現在のパス                             | 移設先候補                                       |
-| -------------------------------------- | ------------------------------------------------ |
-| `docs/general/04-dsl-manual.md`        | `docs/dsl-author-guides/04-dsl-manual.md`        |
-| `docs/general/05-command-reference.md` | `docs/dsl-author-guides/05-command-reference.md` |
-| `docs/general/history.md`              | `docs/dsl-author-guides/history.md`              |
+| 現在のパス                             | 移設先候補                                    |
+| -------------------------------------- | --------------------------------------------- |
+| `docs/general/04-dsl-manual.md`        | `docs/dsl-author-guides/dsl-manual.md`        |
+| `docs/general/05-command-reference.md` | `docs/dsl-author-guides/command-reference.md` |
+| `docs/general/history.md`              | `docs/dsl-author-guides/history.md`           |
 
 ### 開発者向けドキュメント
 
-| 現在のパス                                  | 移設先候補                                           |
-| ------------------------------------------- | ---------------------------------------------------- |
-| `docs/general/06-developer-guide.md`        | `docs/developer-guides/06-developer-guide.md`        |
-| `docs/general/07-internal-specification.md` | `docs/developer-guides/07-internal-specification.md` |
-| `docs/general/08-extension-guide.md`        | `docs/developer-guides/08-extension-guide.md`        |
+| 現在のパス                                  | 移設先候補                                            |
+| ------------------------------------------- | ----------------------------------------------------- |
+| `docs/general/06-developer-guide.md`        | `docs/developer-guides/developer-guide.md`            |
+| `docs/general/07-internal-specification.md` | `docs/developer-guides/internal-specification.md`     |
+| `docs/general/08-extension-guide.md`        | `docs/developer-guides/extension-guide.md`            |
+| `docs/design/dsl-3.1-diagnostics.md`        | `docs/developer-guides/dsl-3.1-diagnostics-design.md` |
+| `docs/development/dependency-audit.md`      | `docs/developer-guides/dependency-audit.md`           |
+| `docs/development/release-smoke.md`         | `docs/developer-guides/release-smoke.md`              |
 
-`08-extension-guide.md`と関連する8ページ概要文書は、PR #238で完成した内容を取り込んでいます。
+移設先では読者別ディレクトリを順序の正本とし、旧`01-`から`09-`の番号接頭辞は
+ファイル名と公開URLから外します。表示順は`docs/config.mjs`で管理します。
+
+`extension-guide.md`と関連する8ページ概要文書は、PR #238で完成した内容を取り込んでいます。
+設計レビュー、依存監査、release smokeは一般文書とは別pathに残っていたため、
+本体の文書生成機構を撤去する前に開発者向け文書として追加移設します。
 
 ### 体験会資料
 
@@ -52,6 +60,7 @@ build・公開できる状態にします。
 - 文書licenseと画像の出典・帰属情報
 - Vivliostyle設定、theme、ふりがな設定
 - HTML、PDF、publication manifestの生成処理
+- 生成HTMLへ共通AppBarを注入する処理と、`site-shell`、favicon
 - 文書構成、内部リンク、画像、PDFページ数、licenseを検証するtest
 - 文書サイトのindexとGitHub Pages deployment workflow
 

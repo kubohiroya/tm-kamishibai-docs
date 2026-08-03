@@ -12,6 +12,7 @@ import {
   workshopDocumentConfig,
 } from '../docs/config.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
+import {installSiteAppBars} from './site-appbar.mjs';
 
 const require = createRequire(import.meta.url);
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
@@ -342,10 +343,20 @@ export async function buildDocs() {
   ]);
   await mkdir(distRoot, {recursive: true});
   await writeFile(path.join(distRoot, '.nojekyll'), '');
-  await copyFile(path.join(projectRoot, 'site/index.html'), path.join(distRoot, 'index.html'));
+  await Promise.all([
+    copyFile(path.join(projectRoot, 'site/index.html'), path.join(distRoot, 'index.html')),
+    copyFile(path.join(projectRoot, 'site/favicon.png'), path.join(distRoot, 'favicon.png')),
+    copyFile(path.join(projectRoot, 'site/site-shell.css'), path.join(distRoot, 'site-shell.css')),
+    copyFile(path.join(projectRoot, 'site/site-shell.js'), path.join(distRoot, 'site-shell.js')),
+  ]);
   await buildDocuments(grade);
   await buildWorkshop(grade);
   await buildStaff();
+  const appBarResult = await installSiteAppBars(distRoot, distRoot);
+  console.log(
+    `Installed the shared AppBar in ${appBarResult.installedCount} of ` +
+      `${appBarResult.htmlCount} documentation HTML file(s).`,
+  );
   await writeBuildInfo(
     distRoot,
     buildInfo({

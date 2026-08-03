@@ -27,9 +27,9 @@ test('publishes each document in its reader-oriented directory', () => {
   }
 });
 
-test('offers HTML, Viewer, and PDF for twelve publications', () => {
+test('offers HTML, Viewer, and PDF for fifteen publications', () => {
   const actionGroups = [...index.matchAll(/<div class="actions">([\s\S]*?)<\/div>/gu)];
-  assert.equal(actionGroups.length, 12);
+  assert.equal(actionGroups.length, 15);
   for (const [, actions] of actionGroups) {
     assert.deepEqual(
       [...actions.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a\s*>/gu)].map(([, label]) =>

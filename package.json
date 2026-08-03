@@ -4,7 +4,7 @@
   "private": true,
   "description": "Documentation source and GitHub Pages build for TMPose Kamishibai",
   "type": "module",
-  "license": "MPL-2.0",
+  "license": "SEE LICENSE IN LICENSES.md",
   "packageManager": "pnpm@11.18.0",
   "engines": {
     "node": ">=22.12.0"
@@ -12,7 +12,7 @@
   "scripts": {
     "build": "node scripts/build-docs.mjs && node scripts/verify-build.mjs",
     "lint": "eslint .",
-    "format": "prettier --check \"**/*.{js,mjs,cjs,json,yaml,yml}\" \".github/**/*.{yaml,yml}\" \"*.md\" \"docs/{developer-guides/{06-developer-guide,07-internal-specification,08-extension-guide},user-guides/09-application-materials-guide,LICENSE}.md\" \"site/index.html\"",
+    "format": "prettier --check \"**/*.{js,mjs,cjs,json,yaml,yml}\" \".github/**/*.{yaml,yml}\" \"*.md\" \"docs/{developer-guides/{developer-guide,internal-specification,extension-guide,dsl-3.1-diagnostics-design,dependency-audit,release-smoke},user-guides/application-materials-guide,LICENSE}.md\" \"site/index.html\"",
     "typecheck": "tsc --project tsconfig.json",
     "test": "node --test test/*.test.mjs",
     "check": "pnpm lint && pnpm format && pnpm typecheck && pnpm test && pnpm build",
