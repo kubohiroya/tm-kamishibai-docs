@@ -4,8 +4,9 @@
 一般文書、紙芝居DSL作成者向け文書、開発者向け文書、体験会資料を管理し、
 独立したGitHub Pagesとして公開するためのリポジトリです。
 
-現在は移設準備中です。文書本文、画像、Vivliostyle設定、生成物はまだ移設していません。
-移設元で進行中の文書作成が完了し、採用するcommitが確定するまで、Pagesの公開も開始しません。
+文書sourceは`tmpose-kamishibai` PR #238のmerge commit
+`8166edb3a8b7ed360685bdcd6534c000054105bd`から履歴付きで移設しています。
+移設検証とPages切替が完了するまで、移設元の文書は削除しません。
 
 ## 公開サイトの役割
 
@@ -27,13 +28,28 @@
 | `docs/developer-guides/`  | アプリ、SB3、機能拡張を保守・開発する人 |
 | `docs/workshops/`         | 体験会の参加者、スタッフ、運営者        |
 
-具体的なファイル対応、依存境界、実施条件は[MIGRATION.md](MIGRATION.md)を参照してください。
+具体的なファイル対応、依存境界、実施記録は[MIGRATION.md](MIGRATION.md)を参照してください。
 
-## 現在の制約
+## 開発
 
-- 文書本文をこのリポジトリへcopyまたは移動しない
-- 移設元の文書や公開Pagesを変更しない
-- 移設元として採用するcommitが決まるまでbuild設定を確定しない
-- Pagesを有効化しない
+Node.js 22.12.0以降とpnpm 11を使用します。
 
-準備作業は[tmpose-kamishibai-docs Issue #1](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/1)で管理します。
+```bash
+pnpm install
+pnpm check
+```
+
+`pnpm build`は、各文書のWeb PublicationとPDFを`dist/`へ、確認用PDFを
+`output/pdf/`へ生成します。移設元の固定情報と機能拡張一覧は
+[`sources/tmpose-kamishibai.json`](sources/tmpose-kamishibai.json)で管理します。
+
+準備は[Issue #1](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/1)、
+本文移設は[Issue #3](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/3)で管理します。
+
+## ライセンス
+
+- 一般・DSL作成者・開発者向け文書と共有画像: CC BY-SA 4.0
+- 体験会資料: Copyright © 2026 Hiroya Kubo. All rights reserved.
+- build scriptなど、個別表示のないsoftware: MPL-2.0
+
+詳細は[LICENSES.md](LICENSES.md)を参照してください。

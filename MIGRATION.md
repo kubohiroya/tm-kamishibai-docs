@@ -6,20 +6,20 @@
 アプリの公開トップは移設元リポジトリに残し、このリポジトリは文書だけを独立して
 build・公開できる状態にします。
 
-この文書は準備計画です。現時点では文書本文を移設しません。
+移設元は`tmpose-kamishibai` PR #238のmerge commit
+`8166edb3a8b7ed360685bdcd6534c000054105bd`です。文書関連pathの履歴を
+`git filter-repo`で抽出し、このリポジトリへmergeしています。
 
 ## 移設後の分類と対応表
 
 ### 一般向けドキュメント
 
-| 現在のパス                                   | 移設先候補                                           |
-| -------------------------------------------- | ---------------------------------------------------- |
-| `docs/general/01-executive-summary-adult.md` | `docs/user-guides/01-executive-summary-adult.md`     |
-| `docs/general/02-executive-summary-kids.md`  | `docs/user-guides/02-executive-summary-kids.md`      |
-| `docs/general/03-user-guide.md`              | `docs/user-guides/03-user-guide.md`                  |
-| 完成後のアプリ・教材概要文書                 | `docs/user-guides/09-application-materials-guide.md` |
-
-アプリ・教材概要文書の名称と分類は、移設元での作成完了後に確定します。
+| 現在のパス                                       | 移設先候補                                           |
+| ------------------------------------------------ | ---------------------------------------------------- |
+| `docs/general/01-executive-summary-adult.md`     | `docs/user-guides/01-executive-summary-adult.md`     |
+| `docs/general/02-executive-summary-kids.md`      | `docs/user-guides/02-executive-summary-kids.md`      |
+| `docs/general/03-user-guide.md`                  | `docs/user-guides/03-user-guide.md`                  |
+| `docs/general/09-application-materials-guide.md` | `docs/user-guides/09-application-materials-guide.md` |
 
 ### 紙芝居DSL作成者向けドキュメント
 
@@ -37,7 +37,7 @@ build・公開できる状態にします。
 | `docs/general/07-internal-specification.md` | `docs/developer-guides/07-internal-specification.md` |
 | `docs/general/08-extension-guide.md`        | `docs/developer-guides/08-extension-guide.md`        |
 
-`08-extension-guide.md`を含む進行中の文書作成が移設元で完了するまで、本文を取り込みません。
+`08-extension-guide.md`と関連する8ページ概要文書は、PR #238で完成した内容を取り込んでいます。
 
 ### 体験会資料
 
@@ -73,7 +73,7 @@ build・公開できる状態にします。
 
 ## 移設の実施条件
 
-次をすべて満たした後に本文移設を開始します。
+次をすべて満たしたため、本文移設を開始しました。
 
 1. `tmpose-kamishibai`の機能拡張ガイド作成が完了している
 2. 同時に進行している関連文書とnavigation変更が完了している
@@ -94,9 +94,9 @@ build・公開できる状態にします。
 9. 旧`/tmpose-kamishibai/docs/`へ移転案内と必要なredirectを残す
 10. 新旧サイトを確認してから、移設元の文書source削除を別PRで行う
 
-履歴の取り込み方法は、移設元の文書作成が完了した時点で`git filter-repo`、
-`git subtree split`、通常の履歴付きmergeを比較して決定します。本文を単純copyして
-履歴を失う方法を既定にはしません。
+履歴は、移設元repositoryから文書source、画像、theme、Vivliostyle設定、文書indexに
+関係するpathだけを`git filter-repo`で抽出して取り込みました。本文の単純copyではなく、
+PR #238以前の文書変更を新repositoryから追跡できます。
 
 ## 検証項目
 
