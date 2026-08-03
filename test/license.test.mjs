@@ -49,3 +49,20 @@ test('preserves the workshop license boundary', async () => {
   }
   assert.doesNotMatch(await readFile(participantPath, 'utf8'), copyrightNotice);
 });
+
+test('declares the repository as multi-licensed without a residual MPL category', async () => {
+  const [rootNotice, licenseMap, mplText, packageMetadata] = await Promise.all([
+    readFile(path.join(projectRoot, 'LICENSE'), 'utf8'),
+    readFile(path.join(projectRoot, 'LICENSES.md'), 'utf8'),
+    readFile(path.join(projectRoot, 'LICENSES/MPL-2.0.txt'), 'utf8'),
+    readFile(path.join(projectRoot, 'package.json'), 'utf8').then(JSON.parse),
+  ]);
+
+  assert.match(rootNotice, /単一のライセンスは適用されません/u);
+  assert.match(licenseMap, /`scripts\/\*\*`/u);
+  assert.match(licenseMap, /`docs\/developer-guides\/\*\*`/u);
+  assert.match(licenseMap, /生成元の\s*ライセンスや利用条件は変わりません/u);
+  assert.doesNotMatch(licenseMap, /上記以外/u);
+  assert.match(mplText, /^Mozilla Public License Version 2\.0/u);
+  assert.equal(packageMetadata.license, 'SEE LICENSE IN LICENSES.md');
+});

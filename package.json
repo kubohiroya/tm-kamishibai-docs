@@ -4,7 +4,7 @@
   "private": true,
   "description": "Documentation source and GitHub Pages build for TMPose Kamishibai",
   "type": "module",
-  "license": "MPL-2.0",
+  "license": "SEE LICENSE IN LICENSES.md",
   "packageManager": "pnpm@11.18.0",
   "engines": {
     "node": ">=22.12.0"

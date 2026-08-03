@@ -51,8 +51,9 @@ pnpm check
 
 ## ライセンス
 
-- 一般・DSL作成者・開発者向け文書と共有画像: CC BY-SA 4.0
-- 体験会資料: Copyright © 2026 Hiroya Kubo. All rights reserved.
-- build scriptなど、個別表示のないsoftware: MPL-2.0
+- 一般・DSL作成者・開発者向け文書、共有画像とその生成物: CC BY-SA 4.0
+- 体験会資料とその生成物: Copyright © 2026 Hiroya Kubo. All rights reserved.
+- 明示的に列挙したbuild script、site shell、設定、テスト: MPL-2.0
 
-詳細は[LICENSES.md](LICENSES.md)を参照してください。
+このリポジトリ全体に適用される単一のライセンスはありません。ファイルごとの正確な
+適用範囲は[LICENSES.md](LICENSES.md)を参照してください。
