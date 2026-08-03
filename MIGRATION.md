@@ -1,0 +1,116 @@
+# TMPose紙芝居ドキュメント移設計画
+
+## 目的
+
+`tmpose-kamishibai`から文書のsource、画像、Vivliostyle build、文書検証を分離します。
+アプリの公開トップは移設元リポジトリに残し、このリポジトリは文書だけを独立して
+build・公開できる状態にします。
+
+この文書は準備計画です。現時点では文書本文を移設しません。
+
+## 移設後の分類と対応表
+
+### 一般向けドキュメント
+
+| 現在のパス                                   | 移設先候補                                           |
+| -------------------------------------------- | ---------------------------------------------------- |
+| `docs/general/01-executive-summary-adult.md` | `docs/user-guides/01-executive-summary-adult.md`     |
+| `docs/general/02-executive-summary-kids.md`  | `docs/user-guides/02-executive-summary-kids.md`      |
+| `docs/general/03-user-guide.md`              | `docs/user-guides/03-user-guide.md`                  |
+| 完成後のアプリ・教材概要文書                 | `docs/user-guides/09-application-materials-guide.md` |
+
+アプリ・教材概要文書の名称と分類は、移設元での作成完了後に確定します。
+
+### 紙芝居DSL作成者向けドキュメント
+
+| 現在のパス                             | 移設先候補                                       |
+| -------------------------------------- | ------------------------------------------------ |
+| `docs/general/04-dsl-manual.md`        | `docs/dsl-author-guides/04-dsl-manual.md`        |
+| `docs/general/05-command-reference.md` | `docs/dsl-author-guides/05-command-reference.md` |
+| `docs/general/history.md`              | `docs/dsl-author-guides/history.md`              |
+
+### 開発者向けドキュメント
+
+| 現在のパス                                  | 移設先候補                                           |
+| ------------------------------------------- | ---------------------------------------------------- |
+| `docs/general/06-developer-guide.md`        | `docs/developer-guides/06-developer-guide.md`        |
+| `docs/general/07-internal-specification.md` | `docs/developer-guides/07-internal-specification.md` |
+| `docs/general/08-extension-guide.md`        | `docs/developer-guides/08-extension-guide.md`        |
+
+`08-extension-guide.md`を含む進行中の文書作成が移設元で完了するまで、本文を取り込みません。
+
+### 体験会資料
+
+`docs/workshops/`以下は、年度・開催日単位の構造を保って`docs/workshops/`へ移します。
+参加者用、表紙、スタッフ用の関係と共有画像への参照を維持します。
+
+## 本文以外に移設または再構成する対象
+
+本文移設時に、次の範囲を文書リポジトリの責務として再構成します。
+
+- `docs/images/`のうち一般文書・体験会資料が利用する画像
+- 文書licenseと画像の出典・帰属情報
+- Vivliostyle設定、theme、ふりがな設定
+- HTML、PDF、publication manifestの生成処理
+- 文書構成、内部リンク、画像、PDFページ数、licenseを検証するtest
+- 文書サイトのindexとGitHub Pages deployment workflow
+
+アプリ、SB3、TurboWarp Packagerによるアプリ生成、サンプル作品生成は移設しません。
+
+## リポジトリ間の依存境界
+
+双方向のhyperlinkは許容し、buildとreleaseの循環依存は作りません。
+
+- `tmpose-kamishibai`は、この文書Pagesとsamples Pagesへリンクする
+- この文書は、アプリの公開URL、repository、固定commitまたはreleaseを参照できる
+- この文書は、具体例としてsamplesの公開URLと台本を参照できる
+- samplesは、利用するアプリのversionまたはcommitを固定する
+- アプリのreleaseは、docs Pagesまたはsamples Pagesのdeployment完了を必須条件にしない
+
+文書buildがアプリのmetadataを必要とする場合は、移設元の`main`を暗黙に取得せず、
+採用commitをlock fileへ記録して取得します。文書中のリンク切れや互換性はCIで検査しますが、
+他リポジトリのreleaseを相互に待つworkflowにはしません。
+
+## 移設の実施条件
+
+次をすべて満たした後に本文移設を開始します。
+
+1. `tmpose-kamishibai`の機能拡張ガイド作成が完了している
+2. 同時に進行している関連文書とnavigation変更が完了している
+3. 移設元として採用する`tmpose-kamishibai`のcommit SHAが確定している
+4. 移設前の全ドキュメントbuildとtestが成功している
+5. 既存Pages URL、移設後URL、redirect対象の一覧が確定している
+
+## 移設手順
+
+1. 採用する移設元commitをIssueへ記録する
+2. 文書sourceと必要な履歴を一時branchへ取り込む
+3. 対応表に従って4分類へ配置し、内部リンクと画像パスを機械的に更新する
+4. 文書build依存、設定、theme、検証testを移す
+5. 旧repository固有のapp build依存を明示的な入力または固定snapshotへ置き換える
+6. HTML、PDF、Viewer、全内部リンク、全画像、ページ数を検証する
+7. このリポジトリのPagesを有効化する
+8. `tmpose-kamishibai`の公開トップから新しい文書Pagesへリンクする
+9. 旧`/tmpose-kamishibai/docs/`へ移転案内と必要なredirectを残す
+10. 新旧サイトを確認してから、移設元の文書source削除を別PRで行う
+
+履歴の取り込み方法は、移設元の文書作成が完了した時点で`git filter-repo`、
+`git subtree split`、通常の履歴付きmergeを比較して決定します。本文を単純copyして
+履歴を失う方法を既定にはしません。
+
+## 検証項目
+
+- すべての文書が意図した読者分類に一度だけ所属する
+- Markdownの相対リンクと画像参照が解決できる
+- Vivliostyle HTMLとPDFが既存版と同等に生成される
+- 固定ページ数を持つ文書は期待ページ数と一致する
+- workshopのふりがな、表紙、目次、スタッフ資料が維持される
+- app、docs、samplesの公開リンクが相互に到達できる
+- 旧URLに必要な移転案内またはredirectがある
+- Pages deploymentが文書リポジトリ内で完結する
+
+## ロールバック
+
+新しいPagesを無効化し、`tmpose-kamishibai`の既存文書公開を継続します。
+移設元の文書sourceは、新サイトの検証が完了するまで削除しません。移設後の削除を
+実施した後も、削除PRをrevertすれば旧buildへ戻せる状態を保ちます。
