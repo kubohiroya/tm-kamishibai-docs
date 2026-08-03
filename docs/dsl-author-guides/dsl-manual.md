@@ -757,10 +757,10 @@ abc
 
 ## 関連ドキュメント
 
-- `03-user-guide.md`: 紙芝居アプリの操作方法
-- `05-command-reference.md`: コマンドとアクションの詳細仕様
-- `01-executive-summary-adult.md`: 大人向け概要説明
-- `02-executive-summary-kids.md`: 子供向け概要説明
-- `06-developer-guide.md`: 成果物とビルダーの利用、開発、検証、公開の手順
-- `07-internal-specification.md`: 汎用アプリSB3の内部構造、呼出し関係、状態遷移
+- `user-guide.md`: 紙芝居アプリの操作方法
+- `command-reference.md`: コマンドとアクションの詳細仕様
+- `executive-summary-adult.md`: 大人向け概要説明
+- `executive-summary-kids.md`: 子供向け概要説明
+- `developer-guide.md`: 成果物とビルダーの利用、開発、検証、公開の手順
+- `internal-specification.md`: 汎用アプリSB3の内部構造、呼出し関係、状態遷移
 - `history.md`: 紙芝居DSL 2.0から3.1への変更履歴

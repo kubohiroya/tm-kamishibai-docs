@@ -4,26 +4,26 @@ export const documentCollections = [
     title: '一般向けドキュメント',
     documents: [
       {
-        sourceFilename: '01-executive-summary-adult.md',
+        sourceFilename: 'executive-summary-adult.md',
         title: '紙芝居アプリ 概要説明書 大人向け',
         audience: '保護者・教員・運営者',
         description: 'アプリの価値、仕組み、利用場面、教育的な意義を簡潔にまとめています。',
       },
       {
-        sourceFilename: '02-executive-summary-kids.md',
+        sourceFilename: 'executive-summary-kids.md',
         title: '紙芝居アプリ 概要説明書 子供向け',
         audience: '子供・初めての方',
         description: '紙芝居でできることや安全な使い方を、やさしい言葉で紹介します。',
         addFurigana: true,
       },
       {
-        sourceFilename: '03-user-guide.md',
+        sourceFilename: 'user-guide.md',
         title: '紙芝居アプリ 操作説明書',
         audience: 'アプリを使う方',
         description: '台本の読み込み、再生、ポーズ認識、本番前の確認方法を説明します。',
       },
       {
-        sourceFilename: '09-application-materials-guide.md',
+        sourceFilename: 'application-materials-guide.md',
         title: 'TMPose紙芝居 アプリ・教材・ツールチェインガイド',
         audience: 'アプリと教材の全体像を把握する方',
         description:
@@ -38,14 +38,14 @@ export const documentCollections = [
     title: '紙芝居DSL作成者向けドキュメント',
     documents: [
       {
-        sourceFilename: '04-dsl-manual.md',
+        sourceFilename: 'dsl-manual.md',
         title: '紙芝居DSLファイル作成マニュアル',
         audience: '作品を作る方',
         description:
           '3.1の台本を設計し、シーンラベル、分岐、入力、アニメーションを含めて作成・テストする手順を説明します。',
       },
       {
-        sourceFilename: '05-command-reference.md',
+        sourceFilename: 'command-reference.md',
         title: '紙芝居DSL コマンドリファレンス',
         audience: '台本文法を調べる方',
         description:
@@ -65,26 +65,47 @@ export const documentCollections = [
     title: '開発者向けドキュメント',
     documents: [
       {
-        sourceFilename: '06-developer-guide.md',
+        sourceFilename: 'developer-guide.md',
         title: '紙芝居アプリ ソフトウェアメンテナンスガイド',
         audience: 'ソフトウェア開発者',
         description:
           '成果物とビルダーの利用、アプリ本体、SB3、ドキュメントの変更、検証、公開手順を案内します。',
       },
       {
-        sourceFilename: '07-internal-specification.md',
+        sourceFilename: 'internal-specification.md',
         title: '紙芝居アプリ内部仕様書',
         audience: 'アプリの実装を調査・変更する方',
         description:
           '現行の汎用アプリSB3におけるtarget、変数、block、message、呼出し関係、状態遷移を記録します。',
       },
       {
-        sourceFilename: '08-extension-guide.md',
+        sourceFilename: 'extension-guide.md',
         title: 'TMPose紙芝居 機能拡張ガイド',
         audience: 'アプリの依存機能を調査・変更する方',
         description: '15個の依存機能拡張を一覧と図解付き・1拡張1ページの全16ページで紹介します。',
         pdfIncludesGeneratedToc: false,
         expectedPdfPageCount: 16,
+      },
+      {
+        sourceFilename: 'dsl-3.1-diagnostics-design.md',
+        title: 'DSL 3.1 台本診断・安全停止 設計レビュー',
+        audience: '台本診断と安全停止を保守する方',
+        description:
+          'DSL 3.1の限定preflight、診断データモデル、機能拡張との境界、安全停止の設計判断を記録します。',
+      },
+      {
+        sourceFilename: 'dependency-audit.md',
+        title: '依存関係監査記録',
+        audience: '依存更新とsecurity overrideを保守する方',
+        description:
+          '2026年8月に実施したアプリ本体の依存更新、脆弱性監査、overrideの理由と解除条件を記録します。',
+      },
+      {
+        sourceFilename: 'release-smoke.md',
+        title: 'DSL 3.1 release smoke',
+        audience: 'リリース候補をブラウザで検証する方',
+        description:
+          'Scratch VMテストでは確認できないEditor、カメラ、TMPose、Packagerのrelease smoke手順をまとめます。',
       },
     ],
   },

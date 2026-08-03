@@ -297,11 +297,11 @@ action=stage:Home
 
 | 文書 | 主な修正内容 |
 |---|---|
-| `03-user-guide.md` | 3.1の分岐、入力、フェード、アニメーション、テキスト、Loading表示、用途別成果物、アプリUIの言語選択を追加 |
-| `04-dsl-manual.md` | 3.1のファイル構造、全追加コマンド、Loading設定、scene 0のポーズ案内、時系列テキスト、移行・テスト手順を追加 |
-| `05-command-reference.md` | アセット識別子、トップレベルコマンド、Loadingの優先読込と進捗、グローバル／アクターアクション、予約ポーズ案内、エラー例を更新 |
-| `01-executive-summary-adult.md` | 3.1の機能、状態管理、分岐、Loading表示、用途別成果物を利用者向けの説明へ反映 |
-| `02-executive-summary-kids.md` | アニメーション、文字表示、分かれ道、Loadingの数字、Web版とSB3の使い分けをやさしい説明で追加 |
-| `06-developer-guide.md` | Asset Manager、Loadingの実行順、Temporary Variables、Runtime Expression、Async Input、用途別成果物と公開構成を整理 |
+| `user-guide.md` | 3.1の分岐、入力、フェード、アニメーション、テキスト、Loading表示、用途別成果物、アプリUIの言語選択を追加 |
+| `dsl-manual.md` | 3.1のファイル構造、全追加コマンド、Loading設定、scene 0のポーズ案内、時系列テキスト、移行・テスト手順を追加 |
+| `command-reference.md` | アセット識別子、トップレベルコマンド、Loadingの優先読込と進捗、グローバル／アクターアクション、予約ポーズ案内、エラー例を更新 |
+| `executive-summary-adult.md` | 3.1の機能、状態管理、分岐、Loading表示、用途別成果物を利用者向けの説明へ反映 |
+| `executive-summary-kids.md` | アニメーション、文字表示、分かれ道、Loadingの数字、Web版とSB3の使い分けをやさしい説明で追加 |
+| `developer-guide.md` | Asset Manager、Loadingの実行順、Temporary Variables、Runtime Expression、Async Input、用途別成果物と公開構成を整理 |
 
-詳細な書式は`04-dsl-manual.md`と`05-command-reference.md`を参照してください。
+詳細な書式は`dsl-manual.md`と`command-reference.md`を参照してください。

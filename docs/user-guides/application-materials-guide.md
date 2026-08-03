@@ -31,7 +31,7 @@ TMPose紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居に
 
 <p class="application-callout"><strong>設計上の利点:</strong> 物語を替えてもruntimeを作り直す必要がありません。作品と実行基盤を分離するため、体験会では素材と台本の編集に集中できます。</p>
 
-<p class="application-source">出典: <a href="03-user-guide.md">操作説明書</a>、<a href="07-internal-specification.md">内部仕様書</a>。過去版との差分は<a href="history.md"><code>history.md</code></a>を参照してください。</p>
+<p class="application-source">出典: <a href="user-guide.md">操作説明書</a>、<a href="internal-specification.md">内部仕様書</a>。過去版との差分は<a href="history.md"><code>history.md</code></a>を参照してください。</p>
 
 ## 浦島太郎を「参加する物語」にする {#urashima-experience .application-sheet .unnumbered}
 
@@ -61,7 +61,7 @@ TMPose紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居に
 
 <p class="application-callout"><strong>演出の要点:</strong> 一つのposeを長く待つ場面では、promptや効果音で「今何をすればよいか」を伝えます。key・touch入力も併設できるため、会場条件に合わせた代替操作を用意できます。</p>
 
-<p class="application-source">出典: <a href="https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.txt">浦島太郎 台本</a>、<a href="04-dsl-manual.md">紙芝居DSLファイル作成マニュアル</a></p>
+<p class="application-source">出典: <a href="https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.txt">浦島太郎 台本</a>、<a href="dsl-manual.md">紙芝居DSLファイル作成マニュアル</a></p>
 
 ## 体験会教材が結ぶ三つの技術 {#workshop-concepts .application-sheet .unnumbered}
 
@@ -105,7 +105,7 @@ AIではないprogramを一つの作品へ組み合わせます。何を人が�
 
 <p class="application-callout"><strong>安全な失敗:</strong> 不明command、存在しないasset、壊れた条件式は、cameraや音声を開始する前に検出します。問題のcode、行・列、source抜粋をSVG文字で示し、台本を実行しません。</p>
 
-<p class="application-source">出典: <a href="04-dsl-manual.md">DSL作成マニュアル</a>、<a href="05-command-reference.md">コマンドリファレンス</a>。2.0からの変更は<a href="history.md"><code>history.md</code></a>を参照してください。</p>
+<p class="application-source">出典: <a href="dsl-manual.md">DSL作成マニュアル</a>、<a href="command-reference.md">コマンドリファレンス</a>。2.0からの変更は<a href="history.md"><code>history.md</code></a>を参照してください。</p>
 
 ## sb3-toolchainがSB3を検証可能なsourceへ変える {#sb3-toolchain .application-sheet .unnumbered}
 

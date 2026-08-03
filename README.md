@@ -6,7 +6,9 @@
 
 文書sourceは`tmpose-kamishibai` PR #238のmerge commit
 `8166edb3a8b7ed360685bdcd6534c000054105bd`から履歴付きで移設しています。
-移設検証とPages切替が完了するまで、移設元の文書は削除しません。
+同commitで`docs/design/`、`docs/development/`に残っていた開発者向け3文書も、
+読者別ディレクトリへ追加移設しています。文書の表示順は`docs/config.mjs`で管理し、
+ファイル名には旧来の番号接頭辞を付けません。
 
 ## 公開サイトの役割
 
@@ -44,7 +46,8 @@ pnpm check
 [`sources/tmpose-kamishibai.json`](sources/tmpose-kamishibai.json)で管理します。
 
 準備は[Issue #1](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/1)、
-本文移設は[Issue #3](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/3)で管理します。
+本文移設は[Issue #3](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/3)、
+残存文書と生成機構の移設は[Issue #5](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/5)で管理します。
 
 ## ライセンス
 

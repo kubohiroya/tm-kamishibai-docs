@@ -11,16 +11,19 @@ const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 
 const expectedCollections = {
   'user-guides': [
-    '01-executive-summary-adult.md',
-    '02-executive-summary-kids.md',
-    '03-user-guide.md',
-    '09-application-materials-guide.md',
+    'executive-summary-adult.md',
+    'executive-summary-kids.md',
+    'user-guide.md',
+    'application-materials-guide.md',
   ],
-  'dsl-author-guides': ['04-dsl-manual.md', '05-command-reference.md', 'history.md'],
+  'dsl-author-guides': ['dsl-manual.md', 'command-reference.md', 'history.md'],
   'developer-guides': [
-    '06-developer-guide.md',
-    '07-internal-specification.md',
-    '08-extension-guide.md',
+    'developer-guide.md',
+    'internal-specification.md',
+    'extension-guide.md',
+    'dsl-3.1-diagnostics-design.md',
+    'dependency-audit.md',
+    'release-smoke.md',
   ],
 };
 
@@ -34,7 +37,7 @@ test('organizes every migrated document into one reader-oriented collection', ()
     ),
     expectedCollections,
   );
-  assert.equal(documentationConfig.documents.length, 10);
+  assert.equal(documentationConfig.documents.length, 13);
   assert(!existsSync(path.join(projectRoot, 'docs/general')));
 
   for (const document of documentationConfig.documents) {

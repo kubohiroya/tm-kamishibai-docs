@@ -27,7 +27,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="extension-overview-note">各ページは、役割、主要機能、このアプリでの利用、注意点、出典を同じ順で掲載します。Gallery拡張、SB3埋め込み拡張、project内拡張を含み、版と固定commitは2026年8月4日時点です。</p>
 
-<p class="extension-source extension-overview-source">呼出し関係とLoadingを含むアセット読込は<a href="07-internal-specification.md">内部仕様書</a>、更新手順は<a href="06-developer-guide.md">メンテナンスガイド</a>、版ごとの差分は<a href="../dsl-author-guides/history.md"><code>history.md</code></a>を参照してください。</p>
+<p class="extension-source extension-overview-source">呼出し関係とLoadingを含むアセット読込は<a href="internal-specification.md">内部仕様書</a>、更新手順は<a href="developer-guide.md">メンテナンスガイド</a>、版ごとの差分は<a href="../dsl-author-guides/history.md"><code>history.md</code></a>を参照してください。</p>
 
 DSLとアプリの版ごとの差分は[`history.md`](../dsl-author-guides/history.md)で確認できます。
 
@@ -164,7 +164,7 @@ Temporary Variablesのruntime変数を、JavaScriptに似た制限付き条件�
 
 <p class="extension-note"><strong>注意:</strong> DSL parser／実行器の置換ではありません。preflightを通過した後のsceneとactionはSB3内のStageが実行します。</p>
 
-<p class="extension-source">出典: <a href="https://kubohiroya.github.io/tmpose-kamishibai/docs/general/07-internal-specification/">紙芝居アプリ内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/96b1fe66e052f10da2938389f98fd15c95fcfdee/app/extensions/kubohiroyakamishibairuntime.js">Kamishibai Runtimeソース</a></p>
+<p class="extension-source">出典: <a href="internal-specification.md">紙芝居アプリ内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/96b1fe66e052f10da2938389f98fd15c95fcfdee/app/extensions/kubohiroyakamishibairuntime.js">Kamishibai Runtimeソース</a></p>
 
 ## Async Input {#extension-async-input .extension-sheet}
 
@@ -254,4 +254,4 @@ Scratch／TurboWarpのTranslate拡張です。文章を指定言語へ翻訳す�
 
 <p class="extension-note"><strong>注意:</strong> HTTP、file、javascriptなどHTTPS以外のURLはerrorにします。browserのpopup policyにより、利用者clickから実行します。</p>
 
-<p class="extension-source">出典: <a href="https://kubohiroya.github.io/tmpose-kamishibai/docs/general/07-internal-specification/">紙芝居アプリ内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/96b1fe66e052f10da2938389f98fd15c95fcfdee/app/extensions/kubohiroyaweblink.js">Web Linkソース</a></p>
+<p class="extension-source">出典: <a href="internal-specification.md">紙芝居アプリ内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/96b1fe66e052f10da2938389f98fd15c95fcfdee/app/extensions/kubohiroyaweblink.js">Web Linkソース</a></p>
