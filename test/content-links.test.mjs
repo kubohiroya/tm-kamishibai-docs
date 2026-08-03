@@ -1,0 +1,46 @@
+import assert from 'node:assert/strict';
+import {existsSync, readFileSync} from 'node:fs';
+import path from 'node:path';
+import test from 'node:test';
+import {fileURLToPath} from 'node:url';
+
+import {documentationConfig, staffDocumentConfig, workshopDocumentConfig} from '../docs/config.mjs';
+
+const projectRoot = fileURLToPath(new URL('../', import.meta.url));
+
+function localReferences(source) {
+  const references = [];
+  for (const match of source.matchAll(/(?:\]\(|\bsrc=")([^)<>"]+)(?:\)|")/gu)) {
+    const reference = match[1].split('#')[0];
+    if (reference && !/^(?:data:|https?:|mailto:|#)/iu.test(reference)) references.push(reference);
+  }
+  return references;
+}
+
+test('resolves local links and images in every Markdown source', () => {
+  const sources = [
+    ...documentationConfig.documents.map((document) =>
+      path.join(projectRoot, 'docs', document.sourceDirectory, document.sourceFilename),
+    ),
+    ...[workshopDocumentConfig.coverFilename, workshopDocumentConfig.sourceFilename].map(
+      (filename) =>
+        path.join(projectRoot, 'docs', workshopDocumentConfig.sourceDirectory, filename),
+    ),
+    path.join(
+      projectRoot,
+      'docs',
+      staffDocumentConfig.sourceDirectory,
+      staffDocumentConfig.sourceFilename,
+    ),
+  ];
+
+  for (const sourcePath of sources) {
+    const source = readFileSync(sourcePath, 'utf8');
+    for (const reference of localReferences(source)) {
+      assert(
+        existsSync(path.resolve(path.dirname(sourcePath), reference)),
+        `${sourcePath}: ${reference}`,
+      );
+    }
+  }
+});

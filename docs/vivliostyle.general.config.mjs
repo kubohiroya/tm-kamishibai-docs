@@ -1,49 +1,50 @@
 import {defineConfig} from '@vivliostyle/cli';
 
-import {generalDocumentConfig} from './config.mjs';
+import {documentationConfig, findDocument} from './config.mjs';
 
-export function createGeneralVivliostyleConfig(sourceFilename) {
-  const selectedDocument =
-    sourceFilename === undefined
-      ? undefined
-      : generalDocumentConfig.documents.find(
-          (document) => document.sourceFilename === sourceFilename,
-        );
-  if (sourceFilename !== undefined && selectedDocument === undefined) {
-    throw new Error(`Unknown general document: ${sourceFilename}`);
+export function createDocumentVivliostyleConfig(sourceFilename) {
+  const selectedDocument = findDocument(sourceFilename);
+  if (selectedDocument === undefined) {
+    throw new Error(`Unknown document: ${sourceFilename}`);
   }
 
-  const documents =
-    selectedDocument === undefined ? generalDocumentConfig.documents : [selectedDocument];
-  const standalone = selectedDocument !== undefined;
-
   return defineConfig({
-    title: selectedDocument?.title ?? generalDocumentConfig.title,
-    author: generalDocumentConfig.author,
+    title: selectedDocument.title,
+    author: documentationConfig.author,
     language: 'ja',
     size: 'A4',
     viewerParam: 'bookMode=true',
-    entry: documents.map(({sourceFilename: documentSourceFilename}) => ({
-      path: `${generalDocumentConfig.sourceDirectory}/${documentSourceFilename}`,
-      output: standalone
-        ? generalDocumentConfig.standaloneArticleHtmlFilename
-        : documentSourceFilename.replace(/\.md$/u, '.html'),
-    })),
+    entry: [
+      {
+        path: `${selectedDocument.sourceDirectory}/${selectedDocument.sourceFilename}`,
+        output: documentationConfig.standaloneArticleHtmlFilename,
+      },
+    ],
     theme: ['theme.css', 'general-theme.css'],
-    workspaceDir: standalone
-      ? `../tmp/docs-general-vivliostyle/${sourceFilename.replace(/\.md$/u, '')}`
-      : '../tmp/docs-general-vivliostyle/all',
+    workspaceDir:
+      `../tmp/vivliostyle/${selectedDocument.collectionId}/` +
+      selectedDocument.sourceFilename.replace(/\.md$/u, ''),
     copyAsset: {
-      excludes: ['dist/**', 'tmp/**', 'general/**', 'workshops/**'],
+      excludes: [
+        'dist/**',
+        'tmp/**',
+        'user-guides/**',
+        'dsl-author-guides/**',
+        'developer-guides/**',
+        'workshops/**',
+      ],
     },
     toc: {
-      title: standalone ? '目次' : '一般ドキュメント目次',
-      htmlPath: standalone
-        ? generalDocumentConfig.standaloneTocHtmlFilename
-        : generalDocumentConfig.tocHtmlFilename,
-      sectionDepth: generalDocumentConfig.tocSectionDepth,
+      title: '目次',
+      htmlPath: documentationConfig.standaloneTocHtmlFilename,
+      sectionDepth: documentationConfig.tocSectionDepth,
     },
   });
 }
 
-export default createGeneralVivliostyleConfig(process.env.GENERAL_DOCUMENT_SOURCE);
+const sourceFilename = process.env.DOCUMENT_SOURCE;
+if (sourceFilename === undefined) {
+  throw new Error('DOCUMENT_SOURCE is required.');
+}
+
+export default createDocumentVivliostyleConfig(sourceFilename);

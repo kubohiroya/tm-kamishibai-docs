@@ -123,4 +123,4 @@ AIではないprogramを一つの作品へ組み合わせます。何を人が�
 
 <p class="application-source">出典: <a href="https://github.com/kubohiroya/sb3-toolchain/tree/2c82aaf02f605564f79efe8ff3bbd8f1a78d6fe9">sb3-toolchain 固定commit 2c82aaf</a>、<a href="https://github.com/kubohiroya/sb3-toolchain/blob/2c82aaf02f605564f79efe8ff3bbd8f1a78d6fe9/docs/workflows.md">推奨workflow</a>、<a href="https://github.com/kubohiroya/sb3-toolchain/blob/2c82aaf02f605564f79efe8ff3bbd8f1a78d6fe9/docs/source-format-v1.md">展開source形式</a></p>
 
-DSLとアプリの版ごとの差分は[`history.md`](history.md)を参照してください。
+DSLとアプリの版ごとの差分は[`history.md`](../dsl-author-guides/history.md)を参照してください。

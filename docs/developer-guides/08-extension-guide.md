@@ -27,9 +27,9 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="extension-overview-note">各ページは、役割、主要機能、このアプリでの利用、注意点、出典を同じ順で掲載します。Gallery拡張、SB3埋め込み拡張、project内拡張を含み、版と固定commitは2026年8月4日時点です。</p>
 
-<p class="extension-source extension-overview-source">呼出し関係とLoadingを含むアセット読込は<a href="https://kubohiroya.github.io/tmpose-kamishibai/docs/general/07-internal-specification/">内部仕様書</a>、更新手順は<a href="https://kubohiroya.github.io/tmpose-kamishibai/docs/general/06-developer-guide/">メンテナンスガイド</a>、版ごとの差分は<a href="https://kubohiroya.github.io/tmpose-kamishibai/docs/general/history/"><code>history.md</code></a>を参照してください。</p>
+<p class="extension-source extension-overview-source">呼出し関係とLoadingを含むアセット読込は<a href="07-internal-specification.md">内部仕様書</a>、更新手順は<a href="06-developer-guide.md">メンテナンスガイド</a>、版ごとの差分は<a href="../dsl-author-guides/history.md"><code>history.md</code></a>を参照してください。</p>
 
-DSLとアプリの版ごとの差分は[`history.md`](history.md)で確認できます。
+DSLとアプリの版ごとの差分は[`history.md`](../dsl-author-guides/history.md)で確認できます。
 
 ## Consoles {#extension-consoles .extension-sheet}
 

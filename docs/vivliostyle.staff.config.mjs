@@ -16,6 +16,13 @@ export default defineConfig({
   theme: ['theme.css', 'staff-theme.css'],
   workspaceDir: '../tmp/docs-staff-vivliostyle',
   copyAsset: {
-    excludes: ['dist/**', 'general/**', 'workshops/**', 'tmp/**'],
+    excludes: [
+      'dist/**',
+      'tmp/**',
+      'user-guides/**',
+      'dsl-author-guides/**',
+      'developer-guides/**',
+      'workshops/**',
+    ],
   },
 });

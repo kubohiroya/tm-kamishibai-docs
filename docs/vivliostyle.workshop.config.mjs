@@ -1,6 +1,6 @@
 import {defineConfig} from '@vivliostyle/cli';
 
-import {documentConfig} from './config.mjs';
+import {workshopDocumentConfig} from './config.mjs';
 
 function flattenDocumentTableOfContents() {
   return (documentProps) => ({
@@ -18,16 +18,16 @@ function flattenDocumentTableOfContents() {
 }
 
 export default defineConfig({
-  title: documentConfig.title,
-  author: documentConfig.author,
+  title: workshopDocumentConfig.title,
+  author: workshopDocumentConfig.author,
   language: 'ja',
   size: 'A4',
   viewerParam: 'bookMode=true',
   entry: [
     {
       rel: 'cover',
-      path: `${documentConfig.sourceDirectory}/${documentConfig.coverFilename}`,
-      output: documentConfig.coverHtmlFilename,
+      path: `${workshopDocumentConfig.sourceDirectory}/${workshopDocumentConfig.coverFilename}`,
+      output: workshopDocumentConfig.coverHtmlFilename,
       imageSrc: 'images/image01.png',
       theme: ['theme.css', 'document-theme.css'],
     },
@@ -35,19 +35,26 @@ export default defineConfig({
       rel: 'contents',
     },
     {
-      path: `${documentConfig.sourceDirectory}/${documentConfig.sourceFilename}`,
-      output: documentConfig.sourceFilename.replace(/\.md$/u, '.html'),
+      path: `${workshopDocumentConfig.sourceDirectory}/${workshopDocumentConfig.sourceFilename}`,
+      output: workshopDocumentConfig.sourceFilename.replace(/\.md$/u, '.html'),
     },
   ],
   theme: ['theme.css', 'document-theme.css'],
   workspaceDir: '../tmp/docs-workshop-vivliostyle',
   copyAsset: {
-    excludes: ['dist/**', 'general/**', 'tmp/**'],
+    excludes: [
+      'dist/**',
+      'tmp/**',
+      'user-guides/**',
+      'dsl-author-guides/**',
+      'developer-guides/**',
+    ],
   },
   toc: {
     title: '目次',
-    htmlPath: documentConfig.tocHtmlFilename,
-    sectionDepth: documentConfig.tocSectionDepth,
+    htmlPath: workshopDocumentConfig.tocHtmlFilename,
+    sectionDepth: workshopDocumentConfig.tocSectionDepth,
+    // @ts-expect-error Vivliostyle's HAST callback type is narrower than its accepted runtime shape.
     transformDocumentList: flattenDocumentTableOfContents,
   },
 });

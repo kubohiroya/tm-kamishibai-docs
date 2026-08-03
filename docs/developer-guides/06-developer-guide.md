@@ -13,13 +13,13 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 汎用アプリSB3のtarget、変数、event、custom block、呼出し関係、状態遷移は
 [紙芝居アプリ内部仕様書](07-internal-specification.md)を正本とします。台本の書式と
-コマンド仕様は[台本DSLマニュアル](04-dsl-manual.md)と
-[コマンドリファレンス](05-command-reference.md)を参照してください。本書には、
+コマンド仕様は[台本DSLマニュアル](../dsl-author-guides/04-dsl-manual.md)と
+[コマンドリファレンス](../dsl-author-guides/05-command-reference.md)を参照してください。本書には、
 これらの内部構造やDSL項目を重複して列挙しません。
 
 対象アプリ／DSL: `kamishibai=3.1`
 
-過去のバージョンからの変更は[`history.md`](history.md)を参照してください。
+過去のバージョンからの変更は[`history.md`](../dsl-author-guides/history.md)を参照してください。
 
 このガイドの章は、次の5つの区分で並んでいます。
 
@@ -344,7 +344,7 @@ pnpm run build
 検証項目を本ガイドへ重複して列挙しません。
 
 DSL、Loading表示、入力、分岐、テキスト、画面遷移などの振る舞いを変更するときは、
-同じPRで[DSL資料](04-dsl-manual.md)、[コマンド資料](05-command-reference.md)、
+同じPRで[DSL資料](../dsl-author-guides/04-dsl-manual.md)、[コマンド資料](../dsl-author-guides/05-command-reference.md)、
 [内部仕様書](07-internal-specification.md)、VMまたはブロック構造のテストを更新します。
 
 ## 埋め込み機能拡張を更新する
@@ -540,13 +540,13 @@ versionとして公開します。公開済みtarballやtagを差し替えませ
 
 ## ライセンスと秘密情報を扱う
 
-| 対象                                                                     | ライセンス                                         |
-| ------------------------------------------------------------------------ | -------------------------------------------------- |
-| `docs/general/**`                                                        | CC BY-SA 4.0                                       |
-| `docs/workshops/**`                                                      | Copyright © 2026 Hiroya Kubo. All rights reserved. |
-| 上記以外で個別表示のない、本プロジェクトが著作権を持つソフトウェアと素材 | MPL-2.0                                            |
+| 対象                                                                           | ライセンス                                         |
+| ------------------------------------------------------------------------------ | -------------------------------------------------- |
+| `docs/user-guides/**`、`docs/dsl-author-guides/**`、`docs/developer-guides/**` | CC BY-SA 4.0                                       |
+| `docs/workshops/**`                                                            | Copyright © 2026 Hiroya Kubo. All rights reserved. |
+| 上記以外で個別表示のない、本プロジェクトが著作権を持つソフトウェアと素材       | MPL-2.0                                            |
 
-詳細は[`LICENSES.md`](../../LICENSES.md)、[`docs/general/LICENSE.md`](LICENSE.md)、
+詳細は[`LICENSES.md`](../../LICENSES.md)、[`docs/LICENSE.md`](../LICENSE.md)、
 [`docs/workshops/LICENSE.md`](../workshops/LICENSE.md)を参照してください。
 
 第三者の画像、音声、font、model、機能拡張には個別のlicenseまたは利用条件が適用されます。
@@ -606,11 +606,11 @@ TMPose紙芝居の開発から分離し、他のTurboWarp作品や開発環境�
 
 ## 関連ドキュメントを確認する
 
-- [`03-user-guide.md`](03-user-guide.md): アプリの利用方法と成果物の使い分け
-- [`04-dsl-manual.md`](04-dsl-manual.md): 台本の構造と書き方
-- [`05-command-reference.md`](05-command-reference.md): コマンドとアクションの仕様
+- [`03-user-guide.md`](../user-guides/03-user-guide.md): アプリの利用方法と成果物の使い分け
+- [`04-dsl-manual.md`](../dsl-author-guides/04-dsl-manual.md): 台本の構造と書き方
+- [`05-command-reference.md`](../dsl-author-guides/05-command-reference.md): コマンドとアクションの仕様
 - [`07-internal-specification.md`](07-internal-specification.md): 汎用アプリSB3の内部構造、呼出し関係、状態遷移
 - [`08-extension-guide.md`](08-extension-guide.md): 依存機能拡張15個の一覧、図解、役割、利用箇所
-- [`09-application-materials-guide.md`](09-application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.1、sb3-toolchainの8ページ概要
-- [`history.md`](history.md): DSLとアプリの変更履歴
-- [`README.md`](../../README.md): プロジェクト全体の入口と主要コマンド
+- [`09-application-materials-guide.md`](../user-guides/09-application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.1、sb3-toolchainの8ページ概要
+- [`history.md`](../dsl-author-guides/history.md): DSLとアプリの変更履歴
+- [アプリrepository README](https://github.com/kubohiroya/tmpose-kamishibai): プロジェクト全体の入口と主要コマンド
