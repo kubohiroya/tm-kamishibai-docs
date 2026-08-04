@@ -10,7 +10,7 @@ TMPose紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居に
 参加者のポーズやkey・touch入力で物語を進める「参加型」AI紙芝居アプリです。
 作品はテキストの`kamishibai=3.1`台本として記述し、絵・音・動き・分岐を組み合わせます。
 
-<figure class="application-hero"><img src="../images/image60.png" alt="参加型AI紙芝居 Version 3.1と表示されたTMPose紙芝居のタイトル画面"><figcaption>同じアプリに台本と素材を読み込むことで、異なる物語を上演できます。</figcaption></figure>
+<figure class="application-hero"><img src="../images/image60.png" alt="参加型AI紙芝居 Version 3.1.9と表示されたTMPose紙芝居のタイトル画面"><figcaption>同じアプリに台本と素材を読み込むことで、異なる物語を上演できます。</figcaption></figure>
 
 <div class="application-value-grid"><section><strong>見る</strong><span>絵・台詞・音・animationで物語を伝える</span></section><section><strong>動く</strong><span>cameraの前でポーズを取り、登場人物へ働きかける</span></section><section><strong>作る</strong><span>台本と素材を差し替え、自分たちの作品へ育てる</span></section></div>
 
@@ -57,7 +57,11 @@ TMPose紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居に
 
 <figure class="application-flow"><figcaption>参加者の動きが物語へ届くまで</figcaption><div><span>身体のポーズ</span><b>→</b><span>TMPoseで分類</span><b>→</b><span>Async Inputで待機</span><b>→</b><span>scene actionを再開</span></div></figure>
 
-<div class="application-columns"><section><p class="application-subhead">台本側の指定</p><pre><code>kamishibai=3.1\nsceneLabel=ride-turtle\nTMPoseURL=https://…/model.json\naction=pose:ride,0.8\naction=scene:dragon-palace</code></pre><p>scene、pose名、信頼度、遷移先を作品の言葉で記述します。</p></section><section><p class="application-subhead">runtime側の処理</p><ol><li>sceneの背景とActorを表示</li><li>指定modelを読み込んで認識開始</li><li>poseが閾値を超えるまで待機</li><li>認識を止め、次のactionへ進む</li><li>skip時も同じ終了処理で片付ける</li></ol></section></div>
+<div class="application-columns"><section><p class="application-subhead">台本側の指定</p><pre><code>kamishibai=3.1
+sceneLabel=ride-turtle
+TMPoseURL=https://…/model.json
+action=pose:ride,0.8
+action=scene:dragon-palace</code></pre><p>scene、pose名、信頼度、遷移先を作品の言葉で記述します。</p></section><section><p class="application-subhead">runtime側の処理</p><ol><li>sceneの背景とActorを表示</li><li>指定modelを読み込んで認識開始</li><li>poseが閾値を超えるまで待機</li><li>認識を止め、次のactionへ進む</li><li>skip時も同じ終了処理で片付ける</li></ol></section></div>
 
 <p class="application-callout"><strong>演出の要点:</strong> 一つのposeを長く待つ場面では、promptや効果音で「今何をすればよいか」を伝えます。key・touch入力も併設できるため、会場条件に合わせた代替操作を用意できます。</p>
 
@@ -101,7 +105,14 @@ AIではないprogramを一つの作品へ組み合わせます。何を人が�
 
 <div class="application-columns"><section><p class="application-subhead">宣言するもの</p><ul><li><code>asset</code>: URLやSB3内costume・sound</li><li><code>sceneLabel</code>: 分岐先を表すscene名</li><li><code>actor</code>: 表示位置、costume、animation</li><li><code>action</code>: text、pose、入力待ち、遷移</li><li><code>registerBranch</code>: runtime変数による条件分岐</li></ul></section><section><p class="application-subhead">3.1の実行pipeline</p><ol><li>versionとcommand構造をpreflight</li><li>参照先・address・条件式を検査</li><li>Loading用assetを先に登録</li><li>通常assetを登録して進捗表示</li><li>sceneとactionを順に実行</li></ol></section></div>
 
-<pre class="application-code"><code>kamishibai=3.1\nasset=Hero,costume:Actor:hero1\nsetLoadingBackdrop=loadingBackground\nsceneLabel=start\nactor=Hero,0,-80,100\ntext=ui.prompt:Pose!\naction=pose:rescue,0.8\ntransition=fadeToWhite</code></pre>
+<pre class="application-code"><code>kamishibai=3.1
+asset=Hero,costume:Actor:hero1
+setLoadingBackdrop=loadingBackground
+sceneLabel=start
+actor=Hero,0,-80,100
+text=ui.prompt:Pose!
+action=pose:rescue,0.8
+transition=fadeToWhite</code></pre>
 
 <p class="application-callout"><strong>安全な失敗:</strong> 不明command、存在しないasset、壊れた条件式は、cameraや音声を開始する前に検出します。問題のcode、行・列、source抜粋をSVG文字で示し、台本を実行しません。</p>
 
