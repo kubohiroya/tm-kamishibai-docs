@@ -50,9 +50,9 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   assert.equal((extensionGuide.match(/class="extension-kamishibai-why"/gu) ?? []).length, 15);
   assert.equal((extensionGuide.match(/機能拡張そのもの 1 \/ 2/gu) ?? []).length, 15);
   assert.equal((extensionGuide.match(/TMPose 紙芝居での利用例 2 \/ 2/gu) ?? []).length, 15);
-  assert.match(extensionGuide, /^## TMPose — カメラ映像からポーズを認識する /mu);
+  assert.match(extensionGuide, /^## TMPose — 学習済みモデルでカメラ映像のポーズを認識する /mu);
   assert.doesNotMatch(extensionGuide, /cameraをpose名へ変える/u);
-  assert.match(extensionGuide, /^## Web Link — HTTPS URLを新しいタブで開く /mu);
+  assert.match(extensionGuide, /^## Web Link — HTTPS URLを検証し、新しいタブで開く /mu);
   assert.match(
     extensionGuide,
     /^## Web Linkで利用者がボタンやメニューを操作したとき、設定済みのHTTPSページを開く /mu,

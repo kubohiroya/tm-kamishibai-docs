@@ -52,7 +52,7 @@ sb3-toolchainでbundle版SB3を生成すると、外部埋め込み5個とアプ
 
 <p class="extension-source">出典: <a href="https://github.com/kubohiroya/sb3-toolchain/blob/2c82aaf02f605564f79efe8ff3bbd8f1a78d6fe9/docs/extension-bundles.md">sb3-toolchain: Extension bundles</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/embedded-extensions.json">Version 3.1.9 埋め込みmanifest</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/tree/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/extensions">依存APIの実装</a></p>
 
-## Consoles — 実行の足跡を残す {#extension-consoles .extension-sheet .extension-sheet-left}
+## Consoles — ログ・警告・エラー・計測結果をブラウザーコンソールへ出力する {#extension-consoles .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">Gallery 1 / 7　機能拡張そのもの 1 / 2</p>
 
@@ -83,7 +83,7 @@ group、経過時間の計測、consoleの消去もblockから操作でき、実
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>exec scene # %s with %s</code>）</p>
 
-## Temporary Variables — その場の状態を持つ {#extension-temporary-variables .extension-sheet .extension-sheet-left}
+## Temporary Variables — 実行範囲の異なる一時変数を作成・共有する {#extension-temporary-variables .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">Gallery 2 / 7　機能拡張そのもの 1 / 2</p>
 
@@ -114,7 +114,7 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>create asset</code>）</p>
 
-## Text — `key=value`を読み解く {#extension-text-operators .extension-sheet .extension-sheet-left}
+## Text — 文字列を検索・分割・置換する {#extension-text-operators .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">Gallery 3 / 7　機能拡張そのもの 1 / 2</p>
 
@@ -145,7 +145,7 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>selectValue # %s separated by %s from %s</code>）</p>
 
-## Local Storage — 次回起動まで覚える {#extension-local-storage .extension-sheet .extension-sheet-left}
+## Local Storage — 文字列をブラウザーへ保存・取得・削除する {#extension-local-storage .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">Gallery 4 / 7　機能拡張そのもの 1 / 2</p>
 
@@ -176,7 +176,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: green flag）</p>
 
-## More Timers — 同時に時間を測る {#extension-more-timers .extension-sheet .extension-sheet-left}
+## More Timers — 複数の名前付きタイマーを個別に管理する {#extension-more-timers .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">Gallery 5 / 7　機能拡張そのもの 1 / 2</p>
 
@@ -207,7 +207,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>wait %s seconds</code>）</p>
 
-## Files — local台本を開く {#extension-files .extension-sheet .extension-sheet-left}
+## Files — ローカルファイルの読込みとダウンロードを行う {#extension-files .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">Gallery 6 / 7　機能拡張そのもの 1 / 2</p>
 
@@ -238,7 +238,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（UiItem: <code>runUiItemAction</code>）</p>
 
-## Animated Text — 文字をStageの素材にする {#extension-animated-text .extension-sheet .extension-sheet-left}
+## Animated Text — 文字列をスプライトの見た目として描画・アニメーションする {#extension-animated-text .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">Gallery 7 / 7　機能拡張そのもの 1 / 2</p>
 
@@ -269,7 +269,7 @@ spriteへ文字専用のrenderer skinを作り、font、色、幅、配置、out
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（text asset登録・style設定）、内部実装: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/extensions/kubohiroyaassetmanager.js#L1491-L1503">Asset ManagerからAnimated Text opcodeを取得する処理</a></p>
 
-## Translate — viewerの言語を知る {#extension-translate .extension-sheet .extension-sheet-left}
+## Translate — 文章を翻訳し、閲覧環境の言語を取得する {#extension-translate .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">TurboWarp標準 1 / 1　機能拡張そのもの 1 / 2</p>
 
@@ -300,7 +300,7 @@ Scratch／TurboWarp標準の翻訳拡張です。文章と翻訳先の言語を�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: green flag）</p>
 
-## Asset Manager — 素材を名前で扱う {#extension-asset-manager .extension-sheet .extension-sheet-left}
+## Asset Manager — 異なる場所・種類の素材を名前付きで管理・操作する {#extension-asset-manager .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">外部埋め込み 1 / 5　機能拡張そのもの 1 / 2</p>
 
@@ -331,7 +331,7 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>create asset</code>）</p>
 
-## TMPose — カメラ映像からポーズを認識する {#extension-tmpose .extension-sheet .extension-sheet-left}
+## TMPose — 学習済みモデルでカメラ映像のポーズを認識する {#extension-tmpose .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">外部埋め込み 2 / 5　機能拡張そのもの 1 / 2</p>
 
@@ -362,7 +362,7 @@ model、camera、preview、predictionを別々に開始・停止できます。
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>setTMPoseURL</code> / <code>exec pose</code>）</p>
 
-## Text Lines — 台本を行へ分ける {#extension-text-lines .extension-sheet .extension-sheet-left}
+## Text Lines — 複数行の文字列を行単位で取得・リスト化する {#extension-text-lines .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">外部埋め込み 3 / 5　機能拡張そのもの 1 / 2</p>
 
@@ -393,7 +393,7 @@ LF、CRLF、CRを同じ改行として正規化するため、台本を作った
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>create sceneList</code>）</p>
 
-## Runtime Expression — 条件式を安全に評価 {#extension-runtime-expression .extension-sheet .extension-sheet-left}
+## Runtime Expression — 一時変数を参照する制限付き条件式を安全に評価する {#extension-runtime-expression .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">外部埋め込み 4 / 5　機能拡張そのもの 1 / 2</p>
 
@@ -424,7 +424,7 @@ Temporary Variablesのruntime値を、JavaScriptに似た制限付き条件式�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>exec branch action</code>）</p>
 
-## Async Input — 入力を待たずに束ねる {#extension-async-input .extension-sheet .extension-sheet-left}
+## Async Input — キー・タッチ・カスタム入力を値更新と通知へ接続する {#extension-async-input .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">外部埋め込み 5 / 5　機能拡張そのもの 1 / 2</p>
 
@@ -455,7 +455,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>keyInputToChangeScene</code>）</p>
 
-## Kamishibai Runtime — 実行前に台本を守る {#extension-kamishibai-runtime .extension-sheet .extension-sheet-left}
+## Kamishibai Runtime — 紙芝居DSLを事前検査し、構造化診断とSVGを生成する {#extension-kamishibai-runtime .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">アプリ内蔵 1 / 2　機能拡張そのもの 1 / 2</p>
 
@@ -486,7 +486,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>startStory</code>）</p>
 
-## Web Link — HTTPS URLを新しいタブで開く {#extension-web-link .extension-sheet .extension-sheet-left}
+## Web Link — HTTPS URLを検証し、新しいタブで開く {#extension-web-link .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">アプリ内蔵 2 / 2　機能拡張そのもの 1 / 2</p>
 
