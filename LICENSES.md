@@ -17,7 +17,7 @@ Copyright © 2026 Hiroya Kubo.
 - `docs/user-guides/**`
 - `docs/dsl-author-guides/**`
 - `docs/developer-guides/**`
-- `docs/images/**`
+- `docs/images/**`（`docs/LICENSE.md`に列挙した第三者図版を除く）
 - `sources/**`
 
 これらから生成される次の公開用HTML、PDF、画像および付随データにも、生成元と同じ

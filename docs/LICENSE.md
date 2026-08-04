@@ -14,3 +14,21 @@ Copyright © 2026 Hiroya Kubo.
 
 文書内で参照するソフトウェアのソースコード、第三者の著作物、個別にライセンスを
 表示した素材には、それぞれのライセンスまたは利用条件が適用されます。
+
+## TurboWarp Extension Galleryのバナー
+
+次の図版は
+[TurboWarp/extensionsの固定commit `9c0ae4f`](https://github.com/TurboWarp/extensions/tree/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a)
+から内容を変更せず、ファイル名だけを変更して収録した第三者素材です。
+
+- `images/extension-gallery-consoles.svg`
+- `images/extension-gallery-temporary-variables.svg`
+- `images/extension-gallery-text.svg`
+- `images/extension-gallery-local-storage.svg`
+- `images/extension-gallery-more-timers.svg`
+- `images/extension-gallery-files.svg`
+- `images/extension-gallery-animated-text.svg`
+
+これら7図版にはCC BY-SA 4.0ではなく、引用元の
+[Mozilla Public License 2.0](../LICENSES/MPL-2.0.txt)（MPL-2.0）が適用されます。
+図版を含む生成PDFやHTMLでも、該当図版部分のライセンスは変わりません。
