@@ -4,7 +4,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="extension-overview-kicker">全32ページ。15個の機能拡張を、1拡張につき2ページの見開きで図解する</p>
 
-<div class="extension-reading-key"><section><strong>左ページ・青</strong><span>機能拡張そのもの</span><small>公式ドキュメントに基づく動作・入力・出力・制約</small></section><section><strong>右ページ・橙</strong><span>TMPose紙芝居での利用</span><small>なぜ必要か、実プロジェクトのどこでどう使うか</small></section></div>
+<div class="extension-reading-key"><section><strong>左ページ・青</strong><span>機能拡張そのもの</span><small>公式ドキュメントに基づく動作・入力・出力・制約</small></section><section><strong>右ページ・橙</strong><span>TMPose 紙芝居での利用例</span><small>なぜ必要か、実プロジェクトのどこでどう使うか</small></section></div>
 
 `kamishibai=3.1`台本を動かす現行アプリは、次の15機能拡張を利用します。
 読む順番は実行時の読込順ではなく、**Gallery由来 → TurboWarp標準 → 外部埋め込み → アプリ内蔵**です。
@@ -71,7 +71,7 @@ group、経過時間の計測、consoleの消去もblockから操作でき、実
 
 ## Consoles — scene実行を追跡する {#extension-consoles-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 1 / 7　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">Gallery 1 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>紙芝居はasset読込、scene進行、入力待ちが非同期に重なります。画面だけでは「どの台本行まで進み、どこで止まったか」が分かりにくいため、観客向け表示を汚さずに制作者が舞台裏を追える記録経路が必要です。</p></aside>
 
@@ -102,7 +102,7 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 ## Temporary Variables — asset解析をつなぐ {#extension-temporary-variables-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 2 / 7　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">Gallery 2 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>同じsceneの中でも複数のActorや入力処理が並行します。途中値を通常のScratch変数へ集めると別の実行が上書きし、変数一覧も膨らみます。呼出しごとの値はthreadへ、sceneや拡張をまたぐ合図だけはruntimeへ置くことで、状態の混線を防げます。</p></aside>
 
@@ -133,7 +133,7 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 ## Text — 引数を安全に切り出す {#extension-text-operators-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 3 / 7　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">Gallery 3 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>紙芝居DSLは、人が直接編集できる一続きのtextです。専用parserをJavaScript側へ隠すのではなく、どの区切りを探し、どの引数を取り出したかをTurboWarpのblockとして読める形にすると、台本仕様と実装を制作者が照合しやすくなります。</p></aside>
 
@@ -164,7 +164,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 ## Local Storage — UI言語を復元する {#extension-local-storage-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 4 / 7　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">Gallery 4 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>体験会で選んだ台本や表示言語がreloadのたびに消えると、参加者は上演より再設定に時間を取られます。小さな設定と台本文字列だけを保存し、次回は前回の続きから始められるようにします。camera映像や認識途中の値は保存しません。</p></aside>
 
@@ -195,7 +195,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 ## More Timers — skipできる待機を作る {#extension-more-timers-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 5 / 7　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">Gallery 5 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>標準の「待つ」だけでは、待機中に観客がskipしても、その時間が終わるまでsceneを進められません。名前付きtimerの値とskipの両方を短いloopで確認すれば、予定時間を守りながら操作にもすぐ反応できます。</p></aside>
 
@@ -226,9 +226,9 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 ## Files — 選択結果を通常経路へ渡す {#extension-files-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 6 / 7　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">Gallery 6 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
-<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>体験会では、参加者が書いたTXT台本をその場で試したい一方、台本ごとにWebへ公開したりアプリを作り直したりはできません。端末上のfileを利用者のclickで選び、埋め込み台本と同じ検査・実行経路へ渡す入口になります。</p></aside>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>このアプリの体験会を実施する場合を想定すると、参加者が書いたTXT台本をその場ですぐ試してもらいたい一方、どのような技量・経験を持った参加者が集まるかがわからず時間的制約もある状況では、台本ごとにWebへ公開したりアプリを作り直したりはできません。端末上のfileを利用者のclickで選び、埋め込み台本と同じ検査・実行経路へ渡す入口になります。</p></aside>
 
 <figure class="extension-editor-example"><img src="../images/extension-editor-files.png" alt="TurboWarp Editorの初期化処理から、Filesのモード設定と直後のshowTitle broadcastだけを切り出した画面"><figcaption>ファイル選択を「すぐにセレクターを開く」に設定してから、title画面を表示する2ブロックです。</figcaption></figure>
 
@@ -257,7 +257,7 @@ spriteへ文字専用のrenderer skinを作り、font、色、幅、配置、out
 
 ## Animated Text — Asset Managerから間接利用する {#extension-animated-text-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 7 / 7　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">Gallery 7 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>台詞、menu、prompt、診断文は台本や言語によって変わるため、すべてを事前にcostumeへ描いておくことはできません。実行時の文字列をStage上の見た目に変換すれば、同じUI部品を内容だけ差し替えて再利用できます。</p></aside>
 
@@ -288,7 +288,7 @@ Scratch／TurboWarp標準の翻訳拡張です。文章と翻訳先の言語を�
 
 ## Translate — 保存値がない時だけ使う {#extension-translate-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">TurboWarp標準 1 / 1　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">TurboWarp標準 1 / 1　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>初めて開いた利用者には日本語か英語のどちらかを提示する必要がありますが、選択前には保存値がありません。そこでviewerの言語を一度だけ「最初の推測」に使い、その後は利用者自身の選択を優先します。台本文を自動翻訳するための利用ではありません。</p></aside>
 
@@ -319,7 +319,7 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 ## Asset Manager — Loadingからsceneへ渡す {#extension-asset-manager-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 1 / 5　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 1 / 5　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>紙芝居の作者には、素材がURLかSB3内のcostumeかを意識せず「Hero」「海」「鐘」のような名前で台本を書いてほしいからです。登録と読込を一か所へ集めることで、local素材は通信なしで速く使い、Web素材はcacheし、Loading進捗も同じ単位で数えられます。</p></aside>
 
@@ -350,7 +350,7 @@ model、camera、preview、predictionを別々に開始・停止できます。
 
 ## TMPose — modelを読みposeを待つ {#extension-tmpose-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 2 / 5　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 2 / 5　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>このアプリでは、観客がkeyやbuttonを押すだけでなく、物語に合わせて体を動かすこと自体が入力になります。学習済みmodel、camera、preview、認識loopを別々に管理できるため、必要なsceneだけでcameraを使い、poseが十分確かになった時に物語を進められます。</p></aside>
 
@@ -381,7 +381,7 @@ LF、CRLF、CRを同じ改行として正規化するため、台本を作った
 
 ## Text Lines — source行番号を守る {#extension-text-lines-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 3 / 5　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 3 / 5　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>台本のerrorを直す人にとって最も役立つ手掛かりは、元のTXTと一致する行番号です。OSごとの改行差を吸収しつつ、検査と実行が同じ物理行のlistを使えば、「表示された行」と「直すべき行」がずれません。</p></aside>
 
@@ -412,7 +412,7 @@ Temporary Variablesのruntime値を、JavaScriptに似た制限付き条件式�
 
 ## Runtime Expression — 最初のtrueへ分岐 {#extension-runtime-expression-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 4 / 5　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 4 / 5　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>台本作者は「scoreが3以上なら次のsceneへ」のような分岐を書きたい一方、外部台本から任意のJavaScriptを動かしてはいけません。読める条件式の形を保ちつつ、許可した演算だけを現在のruntime値へ適用する安全な境界になります。</p></aside>
 
@@ -443,7 +443,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 ## Async Input — keyをscene移動へ結ぶ {#extension-async-input-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 5 / 5　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 5 / 5　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>key、画面のActor、poseごとに「入力を待つ」scriptを増やすと、同時発火やsceneをまたいだ古い待機が競合します。入力源は違ってもruntime値とbroadcastへ合流させ、最初に成立した操作の後で残りを解除できる構造が必要です。</p></aside>
 
@@ -474,7 +474,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 ## Kamishibai Runtime — startStoryの最初で止める {#extension-kamishibai-runtime-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">アプリ内蔵 1 / 2　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">アプリ内蔵 1 / 2　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>外部から読み込む台本には、綴り間違いだけでなく、存在しないsceneや素材、危険なaddressが含まれ得ます。asset取得やcamera開始の後で失敗すると、利用者には半端な画面しか残りません。上演前に止め、直す行と理由を読める形で示します。</p></aside>
 
@@ -505,7 +505,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 ## Web Link — title buttonからだけ開く {#extension-web-link-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">アプリ内蔵 2 / 2　TMPose紙芝居での利用 2 / 2</p>
+<p class="extension-spread-label">アプリ内蔵 2 / 2　TMPose 紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>title画面から公式サイトへ案内する必要はありますが、台本中の任意URLが勝手にtabを開ける設計にはできません。利用者が押した専用buttonから、packageに固定されたHTTPS URLだけを開くことで、案内機能と安全な上演を両立します。</p></aside>
 

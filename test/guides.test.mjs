@@ -44,7 +44,13 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   assert.doesNotMatch(extensionGuide, /class="tw-/u);
   assert.equal((extensionGuide.match(/class="extension-kamishibai-why"/gu) ?? []).length, 15);
   assert.equal((extensionGuide.match(/機能拡張そのもの 1 \/ 2/gu) ?? []).length, 15);
-  assert.equal((extensionGuide.match(/TMPose紙芝居での利用 2 \/ 2/gu) ?? []).length, 15);
+  assert.equal((extensionGuide.match(/TMPose 紙芝居での利用例 2 \/ 2/gu) ?? []).length, 15);
+  assert.match(theme, /content: "TMPose 紙芝居での利用例";/u);
+  assert.doesNotMatch(`${extensionGuide}\n${theme}`, /TMPose紙芝居での利用/u);
+  assert.match(
+    extensionGuide,
+    /このアプリの体験会を実施する場合を想定すると、参加者が書いたTXT台本をその場ですぐ試してもらいたい一方、どのような技量・経験を持った参加者が集まるかがわからず時間的制約もある状況では、台本ごとにWebへ公開したりアプリを作り直したりはできません。/u,
+  );
   const galleryFigures = [
     ...extensionGuide.matchAll(/<figure class="extension-gallery-banner">([\s\S]*?)<\/figure>/gu),
   ];
