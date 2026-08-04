@@ -1,11 +1,49 @@
-# 紙芝居DSL 2.0から3.1への変更履歴
+# 紙芝居DSL 2.0から3.2への変更履歴
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象DSL: `kamishibai=2.0` → `kamishibai=3.1`\
-文書化日: 2026年7月27日
+対象DSL: `kamishibai=2.0` → `kamishibai=3.2`\
+更新日: 2026年8月4日
 
-この文書は、2.0向けの旧ドキュメントと3.1の現行仕様を比較し、台本作者・教材作成者・開発者が把握すべき差分をまとめたものです。中間バージョンごとの導入時期は区別せず、2.0から3.1までの累積差分として記載します。
+この文書は、2.0向けの旧ドキュメント、3.1で追加された機能、3.2の互換・移行方針をまとめたものです。3.1までの項目は累積差分として残し、3.2で変わる点を先に記載します。
+
+## 3.2.0リリース
+
+新規台本のDSL宣言を`kamishibai=3.2`へ更新します。tmpose-kamishibai 3.2.xは互換性のため`kamishibai=3.1`も正式に受理するので、既存の3.1台本は冒頭を書き換えずに実行できます。3.2の主な変更は、旧Text Assetをすぐに削除せず、deprecatedな互換機能として維持しながら新しいSVG Textへ段階移行する方針を明文化したことです。
+
+対応宣言は3.1と3.2を明示的に列挙しており、`kamishibai=3.0`や`kamishibai=3.3`を前方一致で受理するものではありません。3.1宣言の台本で旧Text Assetを使用した場合も`LEGACY_TEXT_ASSET_DEPRECATED`警告は出ます。
+
+### 旧Text Assetの互換期間
+
+次の3.1構文は3.2でもno-opにならず、表示・更新を含めて動作します。
+
+| 旧構文 | 3.2で維持する動作 |
+|---|---|
+| `asset=NAME,text` / `asset=NAME,text:SOURCE` | Asset Managerへの登録 |
+| `text=NAME:VALUE` | シーンのアクション列より前の値更新 |
+| `textStyle=NAME:PROPERTY:VALUE` | フォント、色、幅、配置などのスタイル更新 |
+| `action=text:NAME:VALUE` | アクション列の位置での値更新 |
+| Text Assetを参照する`show` / `setSkin` | アクター自身によるテキスト表示 |
+
+旧構文を含む台本は実行を継続し、開発者コンソールへプロジェクトごとに一度`LEGACY_TEXT_ASSET_DEPRECATED`警告を出します。旧Text Assetは少なくとも3.2系列で維持し、削除する場合は将来のメジャーバージョンで事前に告知します。
+
+通常の画像・音声アセットと、アクターに従属する吹き出しの`say`／`think`はこのdeprecated警告の対象外です。
+
+### SVG Textへの段階移行
+
+移行先は[`kubohiroya/turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text)です。SVG Textを組み込んだ3.2プロジェクトでは、既存台本の旧Text Assetを動かしたまま、新規部分からSVG Textへ置き換えられます。
+
+SVG TextのDSL構文は、機能拡張側で確定・公開された仕様を使用します。この文書では未公開の構文を現行仕様として定義しません。
+
+### 3.1から3.2への移行チェックリスト
+
+- [ ] 先頭が`kamishibai=3.1`または`kamishibai=3.2`であることを確認した
+- [ ] 新規台本または3.2機能を前提に更新する台本では`kamishibai=3.2`を使用した
+- [ ] 旧Text Assetが3.2でも表示・更新されることを確認した
+- [ ] `LEGACY_TEXT_ASSET_DEPRECATED`をエラーではなく移行通知として扱う運用にした
+- [ ] 新規テキスト表示は`turbowarp-svg-text`の公開仕様を確認して設計した
+- [ ] 旧Text AssetとSVG Textを併用する期間と置換順を決めた
+- [ ] `say`／`think`、画像、音声が従来どおり動作することを確認した
 
 ## 3.1.9リリース
 

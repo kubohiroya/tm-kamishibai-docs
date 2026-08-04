@@ -21,7 +21,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 [コマンドリファレンス](../dsl-author-guides/command-reference.md)を参照してください。本書には、
 これらの内部構造やDSL項目を重複して列挙しません。
 
-対象アプリ／DSL: `kamishibai=3.1`
+対象アプリ: tmpose-kamishibai 3.2.x\
+受理するDSL宣言: `kamishibai=3.1`、`kamishibai=3.2`
 
 過去のバージョンからの変更は[`history.md`](../dsl-author-guides/history.md)を参照してください。
 

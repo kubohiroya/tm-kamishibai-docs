@@ -3,7 +3,8 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 対象: 台本作者、教材作成者、授業設計者、開発者\
-対象DSL: `kamishibai=3.1`
+対象アプリ: tmpose-kamishibai 3.2.x\
+受理するDSL宣言: `kamishibai=3.1`、`kamishibai=3.2`
 
 ## 紙芝居DSLとは
 
@@ -13,12 +14,26 @@ DSLは「Domain Specific Language」の略です。ここでは「紙芝居を�
 
 このDSLの大きな特徴は、紙芝居の演出だけでなく、TMPoseモデルを使ったポーズ認識を物語進行に組み込めることです。
 
+### DSL宣言の互換性
+
+tmpose-kamishibai 3.2.xは、台本冒頭の`kamishibai=3.1`と`kamishibai=3.2`をどちらも正式に受理します。既存の3.1台本は、冒頭を書き換えずに読み込めます。新規に作る台本と、3.2の機能を前提に更新する台本には`kamishibai=3.2`を使用してください。`3.0`、`3.3`など、列挙されていない宣言は受理しません。
+
+3.1宣言は互換入力として扱われるため、旧Text Assetを使用している場合のdeprecated警告を抑止しません。
+
+### DSL 3.2のテキスト互換方針
+
+DSL 3.2では、3.1までのText Asset構文をdeprecatedな互換機能として維持します。既存台本の`asset=名前,text`、`text=`、`textStyle=`、`action=text`、Text Assetを参照する`show`／`setSkin`は、表示・更新を含めて引き続き動作します。
+
+旧Text Assetを使用すると、開発者コンソールへプロジェクトごとに一度`LEGACY_TEXT_ASSET_DEPRECATED`警告が出ますが、台本の実行は継続します。旧構文は少なくとも3.2系列で利用でき、削除する場合は将来のメジャーバージョンで事前に告知します。
+
+新しいテキスト表現の移行先は[`kubohiroya/turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text)です。SVG Textを組み込んだ3.2プロジェクトでは旧Text Assetと併用できます。SVG TextのDSL構文は機能拡張側で確定・公開された仕様に従い、未公開の構文を推測して台本へ書かないでください。`say`と`think`の吹き出しは旧Text Assetとは別の機能で、3.2でも引き続き利用できます。
+
 ## ファイルの基本構造
 
 紙芝居DSLファイルは、次のような構造です。
 
 ```text
-kamishibai=3.1
+kamishibai=3.2
 setRuntimeVariable=startSceneIndex:1
 setLoadingBackdrop=読み込み背景
 setLoadingCostume=読み込み画像1,読み込み画像2
@@ -44,7 +59,7 @@ action=演出
 
 | 部分 | 役割 |
 |---|---|
-| バージョン行 | `kamishibai=3.1` を書きます。必須です。 |
+| バージョン行 | `kamishibai=3.1`または`kamishibai=3.2`を書きます。新規台本は3.2を推奨します。必須です。 |
 | ヘッダ部 | 画像、音声、テキスト、登場人物、表紙、初期変数、分岐を定義します。 |
 | シーン部 | シーンラベル、背景、テキスト、移動、音、ポーズ認識、分岐などを書きます。 |
 | `---` | シーンの区切りです。 |
@@ -55,7 +70,7 @@ action=演出
 まずは、背景を出し、登場人物にセリフを言わせるだけの最小例です。
 
 ```text
-kamishibai=3.1
+kamishibai=3.2
 asset=Beach,backdrop
 asset=Hero,costume
 asset=OpeningSound,sound
@@ -82,10 +97,10 @@ action=wait:1
 ### バージョン行
 
 ```text
-kamishibai=3.1
+kamishibai=3.2
 ```
 
-台本の先頭に書きます。このアプリは `kamishibai=3.1` の台本として読み込みます。2.0の台本を流用する場合も、追加仕様とアセット識別子を確認してから3.1へ更新してください。
+台本の先頭に書きます。tmpose-kamishibai 3.2.xは`kamishibai=3.1`と`kamishibai=3.2`を読み込みます。既存の3.1台本は宣言を維持したまま実行でき、新規台本には3.2を使用します。2.0の台本はそのままでは読めないため、変更履歴とアセット識別子を確認して3.1または3.2へ移行してください。
 
 ### アセット定義
 
@@ -116,7 +131,7 @@ asset=Narration,text
 - `costume` は、アセット名と同名のスプライト／コスチュームを使います。
 - `costume:スプライト名` は、そのスプライト内でアセット名と同名のコスチュームを使います。
 - `backdrop` と `sound` は、アセット名と同名のステージ背景／ステージ音を使います。
-- `text` は、画面に表示できるテキストアセットを作ります。
+- `text` は、画面に表示できる旧Text Assetを作ります。3.2ではdeprecatedですが、移行期間の互換機能として動作します。
 
 名前を明示したい場合は、`costume:スプライト名:コスチューム名`、`backdrop:背景名`、`sound:スプライト名:音名`、`text:テキスト名` も使えます。ステージ音のスプライト名は `@stage` です。
 
@@ -199,7 +214,7 @@ cover=Beach1,
 setRuntimeVariable=変数名:値
 ```
 
-紙芝居の実行中に参照する変数へ初期値を設定します。3.1では、開始シーンや条件分岐の状態を台本から用意できます。
+紙芝居の実行中に参照する変数へ初期値を設定します。3.2では、開始シーンや条件分岐の状態を台本から用意できます。
 
 ```text
 setRuntimeVariable=startSceneIndex:1
@@ -465,9 +480,9 @@ action=Hero:sequence:Hero1,StepSound,Hero2:0,0.5
 
 `loop` はアセット数と待ち時間の数を同じにします。最後の待ち時間の後は先頭へ戻ります。`sequence` は一回だけバックグラウンド再生し、待ち時間はアセット数より1つ少なくします。待ち時間 `0` を使うと、画像と音などを同時に開始できます。
 
-### テキストアセットを表示・更新する
+### 旧Text Assetを表示・更新する（互換機能）
 
-ヘッダでテキストアセットとアクターを登録し、通常の `show` で表示します。
+ヘッダで旧Text Assetとアクターを登録し、通常の`show`で表示します。この書式は3.2でも動作しますが、新規台本ではSVG Textへの移行を検討してください。
 
 ```text
 asset=Narration,text
@@ -485,7 +500,9 @@ action=text:Narration:むかし　むかし、あるところに...
 action=text:Narration:
 ```
 
-シーン直下の `text=...` も互換性のため読み込めますが、アクション列より先に処理されます。新しい台本や順次更新には `action=text:...` を使用してください。ただし、予約済みの `ui.*` 文言は時系列の演出ではなく初期設定なので、scene 0 の `text=...` で定義します。
+シーン直下の`text=...`も互換性のため読み込めますが、アクション列より先に処理されます。旧Text Assetを維持する台本で順次更新する場合は`action=text:...`を使用してください。ただし、予約済みの`ui.*`文言は時系列の演出ではなく初期設定なので、scene 0の`text=...`で定義します。
+
+`textStyle=テキストアセット名:プロパティ:値`も互換機能として処理され、Asset Managerの旧Text Assetへ適用されます。旧Text AssetとSVG Textのスタイル定義は別の仕組みです。移行時は、同じ見た目になるようSVG Text側の名前付きスタイルを別途定義してください。
 
 ### シーンを分岐させる
 
@@ -563,7 +580,7 @@ action=Urashima:pose:Urashima-ride-2,Urashima-ride-1,Urashima-ride-2,Urashima-ri
 | scene 8 | 竜宮城の別れ | 複数アクター表示、セリフ |
 | scene 9 | エンディング | 背景、完了音 |
 
-この例は、3.1のアセット形式、シーンラベル、scene 0のポーズ案内、時系列の`action=text:`、フェード、ループアニメーション、ポーズ認識を組み合わせた教材として使いやすいです。
+この例は、3.2のアセット形式、シーンラベル、scene 0のポーズ案内、互換機能の`action=text:`、フェード、ループアニメーション、ポーズ認識を組み合わせた教材として使いやすいです。
 
 ## 紙芝居DSLの作成手順
 
@@ -610,7 +627,7 @@ action=Urashima:pose:Urashima-ride-2,Urashima-ride-1,Urashima-ride-2,Urashima-ri
 すべてのアセットを `asset` で登録し、登場人物を `actor` で登録します。
 
 ```text
-kamishibai=3.1
+kamishibai=3.2
 setRuntimeVariable=startSceneIndex:1
 asset=Beach,backdrop
 asset=Hero,costume
@@ -658,7 +675,7 @@ action=Hero:pose:Hero-left,Hero-right:left,right:StepSound,StepSound
 
 | 注意点 | 理由 |
 |---|---|
-| 先頭に `kamishibai=3.1` を書く | アプリが対応台本か確認するためです。 |
+| 先頭に `kamishibai=3.1`または`kamishibai=3.2`を書く | 3.2.xアプリが対応台本か確認するためです。新規台本は3.2を推奨します。 |
 | `---` でシーンを区切る | アプリがシーン単位で実行するためです。 |
 | 1行に1つの命令を書く | パーサが行単位で処理するためです。 |
 | 最初の `=` はコマンドの区切り | 2個目以降の `=` は値として保持されます。 |
@@ -674,7 +691,7 @@ action=Hero:pose:Hero-left,Hero-right:left,right:StepSound,StepSound
 
 ### まず文法を確認する
 
-- `kamishibai=3.1` がある
+- `kamishibai=3.1`または`kamishibai=3.2`がある
 - `asset`, `actor`, `cover` が正しく書かれている
 - `---` がある
 - すべての `action` が `action=...` で始まっている
@@ -744,7 +761,8 @@ abc
 - [ ] 登場人物画像を用意した
 - [ ] 音声アセットを用意した
 - [ ] ポーズ認識モデルのURLを確認した
-- [ ] `kamishibai=3.1` を書いた
+- [ ] `kamishibai=3.1`または`kamishibai=3.2`を書いた（新規台本は3.2）
+- [ ] 旧Text Assetを残す場合、`LEGACY_TEXT_ASSET_DEPRECATED`警告と将来の移行対象であることを確認した
 - [ ] `asset` をすべて書いた
 - [ ] `actor` をすべて書いた
 - [ ] `cover` を書いた
@@ -763,4 +781,4 @@ abc
 - `executive-summary-kids.md`: 子供向け概要説明
 - `developer-guide.md`: 成果物とビルダーの利用、開発、検証、公開の手順
 - `internal-specification.md`: 汎用アプリSB3の内部構造、呼出し関係、状態遷移
-- `history.md`: 紙芝居DSL 2.0から3.1への変更履歴
+- `history.md`: 紙芝居DSL 2.0から3.2への変更履歴

@@ -2,8 +2,27 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象DSL: `kamishibai=3.1`\
+対象アプリ: tmpose-kamishibai 3.2.x\
+受理するDSL宣言: `kamishibai=3.1`、`kamishibai=3.2`\
 対象読者: 台本作者、教材作成者、開発者
+
+tmpose-kamishibai 3.2.xは3.1宣言と3.2宣言をどちらも受理します。既存の3.1台本は宣言を変更せずに実行でき、新規台本には3.2を推奨します。3.1宣言で旧Text Assetを使った場合もdeprecated警告は出ます。
+
+## DSL 3.2のText Asset互換性
+
+DSL 3.2では、旧Text Asset構文をdeprecatedな互換機能として維持します。次の構文は警告の対象ですが、no-opではなく、登録・表示・スタイル設定・更新を実行します。
+
+| 構文 | DSL 3.2での動作 |
+|---|---|
+| `asset=NAME,text` / `asset=NAME,text:SOURCE` | Asset Managerへ旧Text Assetを登録する |
+| `text=NAME:VALUE` | シーンのアクション列より先に値を更新する |
+| `textStyle=NAME:PROPERTY:VALUE` | 旧Text Assetのスタイルを更新する |
+| `action=text:NAME:VALUE` | アクション列の位置で値を更新する |
+| 旧Text Assetを参照する`show` / `setSkin` | アクターへText Assetを表示する |
+
+対象構文があると、開発者コンソールへプロジェクトごとに一度`LEGACY_TEXT_ASSET_DEPRECATED`警告を出します。旧構文は少なくとも3.2系列で維持し、削除する場合は将来のメジャーバージョンで事前に告知します。
+
+移行先は[`kubohiroya/turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text)です。SVG Textを組み込んだ3.2プロジェクトでは旧Text Assetと併用できます。SVG TextのDSL構文は機能拡張側で公開された仕様を参照してください。`say`と`think`の吹き出し、画像・音声アセットはこのdeprecated警告の対象外です。
 
 ## 記法の基本
 
@@ -68,7 +87,7 @@ action=stage:Beach1
 ### `kamishibai`
 
 ```text
-kamishibai=3.1
+kamishibai=3.2
 ```
 
 | 項目 | 内容 |
@@ -76,9 +95,9 @@ kamishibai=3.1
 | 役割 | 台本バージョンを示す |
 | 必須 | 必須 |
 | 推奨位置 | ファイルの先頭 |
-| 値 | `3.1` |
+| 値 | `3.1`または`3.2`（新規台本は`3.2`を推奨） |
 
-### `asset`：画像・音声・テキストアセットの登録
+### `asset`：画像・音声・旧Text Assetの登録
 
 #### 書式
 
@@ -86,7 +105,7 @@ kamishibai=3.1
 asset=<アセット名>,<リソース識別子>
 ```
 
-`asset`コマンドは、画像、音声、またはテキストを紙芝居内で使用するためのアセットとして登録します。
+`asset`コマンドは、画像、音声、または旧Text Assetを紙芝居内で使用するためのアセットとして登録します。Text Asset指定は3.2の移行期間に維持する互換機能です。
 
 * **アセット名**
   紙芝居の台本内で画像や音声を参照するときに使用する名前です。
@@ -181,7 +200,7 @@ asset=main-caption,text:Narration
 * 指定したスプライト、コスチューム、背景、音が存在しない場合は、アセット登録エラーになります。
 * コスチュームと背景は画像アセットとして扱われます。
 * スプライトまたはステージの音は音声アセットとして扱われます。
-* テキストはAsset Managerのランタイムテキストアセットとして扱われます。
+* `text`指定はdeprecatedですが、Asset ManagerのランタイムText Assetとして引き続き扱われます。
 * 画像アセットを音声再生に使用した場合や、音声アセットを画像表示に使用した場合はエラーになります。
 * 同じアセット名を再度登録した場合は、新しい登録内容で置き換えられます。
 * プロジェクト内のコスチューム、背景、音を使用する場合、それらのデータは`.sb3`ファイル内に保存されるため、外部の画像・音声サーバは必要ありません。
@@ -373,7 +392,7 @@ TMPoseURL=ポーズモデルURL
 TMPoseURL=https://example.com/kamishibai/pose-model/
 ```
 
-### `text`：scene 0 のポーズ案内
+### `text`：旧Text Assetとscene 0のポーズ案内（互換機能）
 
 ```text
 text=予約済みUIテキストアセット名:文字列
@@ -392,6 +411,22 @@ text=ui.prompt:ポーズをとろう！
 有効な台本を開始するたびに、既定値へ戻した後でscene 0の定義を適用します。
 
 ファイル読込、再読込、タイトル表示、言語選択、台本エラーの文言は台本コマンドではありません。アプリの言語定義と標準の`（言語）`ブロック、または利用者が保存した言語選択から決まります。旧台本の`text=ui.open:`、`text=ui.reload:`、`text=ui.about:`、`text=ui.invalidScript:`はアプリUIへ適用されません。
+
+### `textStyle`：旧Text Assetのスタイル（互換機能）
+
+```text
+textStyle=テキストアセット名:プロパティ:値
+```
+
+旧Text AssetのスタイルをAsset Managerへ設定します。`asset=名前,text`と同様にdeprecatedですが、DSL 3.2では処理されます。
+
+```text
+textStyle=Narration:font:Sans Serif
+textStyle=Narration:color:#ffffff
+textStyle=Narration:align:center
+```
+
+このスタイルは旧Text Asset専用です。SVG Textへ移行する場合は、機能拡張側の仕様に従って名前付きスタイルを定義し直してください。
 
 ## グローバルアクション
 
@@ -457,7 +492,7 @@ action=sound:Gong
 
 効果音の演出を確実に聞かせたい場面や、音が終わってから次の場面へ進めたい場合に使います。
 
-### `text`
+### `text`（旧Text Asset互換アクション）
 
 ```text
 action=text:テキストアセット名:文字列
@@ -473,7 +508,7 @@ action=wait:2
 action=text:Narration:
 ```
 
-シーン直下の `text=...` も互換性のため読み込めますが、アクション列より先に処理されます。新しい台本や順次更新には `action=text:...` を使用してください。予約済みの `ui.*` 文言だけは初期設定としてscene 0の `text=...` を使用します。
+シーン直下の`text=...`も互換性のため読み込めますが、アクション列より先に処理されます。旧Text Assetを維持する台本で順次更新する場合は`action=text:...`を使用してください。予約済みの`ui.*`文言だけは初期設定としてscene 0の`text=...`を使用します。
 
 ### `transition`
 
@@ -574,6 +609,8 @@ action=Urashima:show:Urashima-walk-1:172,-77,25
 
 スキン名を省略した書式では、`actor` で指定した初期スキンまたは現在のスキンを使います。
 
+3.2の互換期間中は、スキン名に旧Text Assetを指定した`show`も従来どおり表示します。
+
 ### `hide`
 
 ```text
@@ -632,6 +669,8 @@ action=アクター名:setSkin:スキン名:サイズ
 ```
 
 アクターのスキンを、登録済みアセットに切り替えます。
+
+3.2の互換期間中は、旧Text Assetを指定した`setSkin`も従来どおり表示します。
 
 例:
 
@@ -912,7 +951,7 @@ registerBranch=route:routeA,routeB:sceneA
 ### ヘッダ
 
 ```text
-kamishibai=3.1
+kamishibai=3.2
 setRuntimeVariable=startSceneIndex:1
 asset=Backdrop,backdrop
 asset=ActorSkin,costume:Actor
@@ -986,7 +1025,7 @@ action=keyInputToChangeScene:ArrowLeft,ArrowRight:left,right
 
 ## 互換性メモ
 
-このリファレンスは、提供されたTurboWarpプロジェクトの `kamishibai=3.1` 実装を前提にしています。3.1より前の台本では、アセット識別子、シーンラベル、分岐、入力、トランジション、アニメーション、テキストが異なる、または利用できない場合があります。台本を配布する場合は、台本ファイルと対応するアプリのバージョンを一緒に管理してください。
+このリファレンスは、tmpose-kamishibai 3.2.xの実装を前提にしています。3.2.xは`kamishibai=3.1`と`kamishibai=3.2`を受理するため、既存の3.1台本は先頭を変更せずに実行できます。新規台本には3.2を使用してください。旧Text Assetは3.2系列で動作を維持しますが、宣言が3.1でも3.2でもdeprecated警告が出るため、SVG Textへの段階移行を計画してください。台本を配布する場合は、台本ファイルと対応するアプリのバージョンを一緒に管理してください。
 
 ## 関連ドキュメント
 
@@ -996,4 +1035,4 @@ action=keyInputToChangeScene:ArrowLeft,ArrowRight:left,right
 - `executive-summary-kids.md`: 子供向け概要説明
 - `developer-guide.md`: 成果物とビルダーの利用、開発、検証、公開の手順
 - `internal-specification.md`: 汎用アプリSB3の内部構造、呼出し関係、状態遷移
-- `history.md`: 紙芝居DSL 2.0から3.1への変更履歴
+- `history.md`: 紙芝居DSL 2.0から3.2への変更履歴

@@ -6,7 +6,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <div class="extension-reading-key"><section><strong>左ページ・青</strong><span>機能拡張そのもの</span><small>公式ドキュメントに基づく動作・入力・出力・制約</small></section><section><strong>右ページ・橙</strong><span>TMPose 紙芝居での利用例</span><small>なぜ必要か、実プロジェクトのどこでどう使うか</small></section></div>
 
-`kamishibai=3.1`台本を動かす現行アプリは、次の15機能拡張を利用します。
+`kamishibai=3.1`と`kamishibai=3.2`の台本を動かす3.2.xアプリは、次の15機能拡張を利用します。
 読む順番は実行時の読込順ではなく、**Gallery由来 → TurboWarp標準 → 外部埋め込み → アプリ内蔵**です。
 
 <nav class="extension-index-grid" aria-label="機能拡張一覧">
@@ -267,6 +267,8 @@ spriteへ文字専用のrenderer skinを作り、font、色、幅、配置、out
 
 <p class="extension-note"><strong>重要:</strong> 接続済みscriptにAnimated Text blockはありません。Asset Managerが表示時に<code>text_setFont</code>、<code>text_setColor</code>、<code>text_setWidth</code>、<code>text_setText</code>／<code>text_animateText</code>をprogrammaticに呼ぶ依存関係です。</p>
 
+<p class="extension-note"><strong>DSL 3.2:</strong> この経路は旧Text Assetのdeprecated互換機能として少なくとも3.2系列で維持します。新しいSVG Textの移行先は<a href="https://github.com/kubohiroya/turbowarp-svg-text">turbowarp-svg-text</a>で、組み込み後は新旧を併用できます。</p>
+
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（text asset登録・style設定）、内部実装: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/extensions/kubohiroyaassetmanager.js#L1491-L1503">Asset ManagerからAnimated Text opcodeを取得する処理</a></p>
 
 ## Translate — 文章を翻訳し、閲覧環境の言語を取得する {#extension-translate .extension-sheet .extension-sheet-left}
@@ -461,7 +463,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-meta"><span>アプリ内蔵</span><code>kubohiroyakamishibairuntime</code><span>DSL診断</span></p>
 
-紙芝居DSL 3.1を実行前に検査し、失敗時に分類済み診断とSVG error画面を作るproject専用拡張です。
+紙芝居DSL 3.1／3.2を実行前に検査し、旧Text Assetのdeprecated警告と、失敗時の分類済み診断・SVG error画面を作るproject専用拡張です。
 正常な台本の実行は置き換えず、副作用を始めてよいかだけを判定します。
 
 <div class="extension-concept-hero"><div class="extension-icon">✓<br><small>Preflight</small></div><div><strong>安全に失敗する入口</strong><p>cameraや音声を始める前に、version、command、参照、条件式をまとめて検査します。</p></div></div>
