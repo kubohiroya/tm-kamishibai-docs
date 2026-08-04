@@ -331,7 +331,7 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>create asset</code>）</p>
 
-## TMPose — cameraをpose名へ変える {#extension-tmpose .extension-sheet .extension-sheet-left}
+## TMPose — カメラ映像からポーズを認識する {#extension-tmpose .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">外部埋め込み 2 / 5　機能拡張そのもの 1 / 2</p>
 
@@ -486,14 +486,14 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（Stage: <code>startStory</code>）</p>
 
-## Web Link — 公式URLだけを開く {#extension-web-link .extension-sheet .extension-sheet-left}
+## Web Link — HTTPS URLを新しいタブで開く {#extension-web-link .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">アプリ内蔵 2 / 2　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>アプリ内蔵</span><code>kubohiroyaweblink</code><span>外部navigation</span></p>
 
 受け取ったURLを検証し、新しいbrowser tabで開くproject専用の小さな拡張です。
-任意schemeを許可せず、公式Webサイトへの明示的なnavigationだけをblockへします。
+任意schemeを許可せず、HTTPS URLへの明示的なnavigationだけをblock化します。
 
 <div class="extension-concept-hero"><div class="extension-icon">↗<br><small>HTTPS</small></div><div><strong>アプリの外へ出る一つの安全な扉</strong><p>絶対URL、HTTPS、noopener／noreferrerを確認してから新しいtabを開きます。</p></div></div>
 
@@ -503,15 +503,15 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-source">出典: <a href="internal-specification.md">紙芝居アプリ内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/extensions/kubohiroyaweblink.js">内蔵拡張ソース</a></p>
 
-## Web Link — title buttonからだけ開く {#extension-web-link-example .extension-sheet .extension-sheet-right}
+## Web Link — UI操作からWebページを開く {#extension-web-link-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">アプリ内蔵 2 / 2　TMPose 紙芝居での利用例 2 / 2</p>
 
-<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>title画面から公式サイトへ案内する必要はありますが、台本中の任意URLが勝手にtabを開ける設計にはできません。利用者が押した専用buttonから、packageに固定されたHTTPS URLだけを開くことで、案内機能と安全な上演を両立します。</p></aside>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>このアプリでは、公式サイトbuttonやmenu項目からWebページへ案内します。一方、台本中の任意URLが勝手にtabを開く設計にはできません。利用者の操作をきっかけに、アプリ側で設定されたHTTPS URLだけを開くことで、案内機能と安全な上演を両立します。</p></aside>
 
 <figure class="extension-editor-example"><img src="../images/extension-editor-web-link.png" alt="TurboWarp EditorのofficialWebsiteButtonから、クリックeventとWeb Link blockだけを切り出した画面"><figcaption>buttonクリック直後に、Web Linkが公式HTTPS URLを新しいtabで開く2ブロックのstackです。</figcaption></figure>
 
-<div class="extension-usage-grid"><section><strong>入口</strong><span>title画面の「公式Webサイト」button。</span></section><section><strong>値</strong><span>package metadata由来のhomepageをruntime経由で渡す。</span></section><section><strong>制約</strong><span>通常のscene actionからは呼び出さない。</span></section></div>
+<div class="extension-usage-grid"><section><strong>入口</strong><span>公式サイトbutton、<code>open-url</code>を指定したUI項目。</span></section><section><strong>値</strong><span>公式サイトURLまたはUI項目へ設定したHTTPS URL。</span></section><section><strong>制約</strong><span>通常のscene actionからは呼び出さない。</span></section></div>
 
 <p class="extension-note"><strong>browser policy:</strong> popup blockを避けるため、利用者clickに続けて実行します。新しいtabには<code>noopener,noreferrer</code>を付けます。</p>
 
