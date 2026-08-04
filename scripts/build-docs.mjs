@@ -12,6 +12,7 @@ import {
   workshopDocumentConfig,
 } from '../docs/config.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
+import {collectSourceInputs, isBuildCurrent} from './build-freshness.mjs';
 import {installSiteAppBars} from './site-appbar.mjs';
 
 const require = createRequire(import.meta.url);
@@ -29,6 +30,17 @@ const rubyganaBin = path.join(
 );
 const rubyganaPackage = require('rubygana/package.json');
 const rubyganaGradeData = require('rubygana/lib/学年別漢字.js').metadata;
+const commonPublicationInputs = [
+  fileURLToPath(import.meta.url),
+  path.join(projectRoot, 'scripts/build-freshness.mjs'),
+  path.join(projectRoot, 'scripts/site-appbar.mjs'),
+  path.join(projectRoot, 'docs/config.mjs'),
+  path.join(projectRoot, 'docs/theme.css'),
+  path.join(projectRoot, 'docs/fonts'),
+  path.join(projectRoot, 'sources/tmpose-kamishibai.json'),
+  path.join(projectRoot, 'package.json'),
+  path.join(projectRoot, 'pnpm-lock.yaml'),
+];
 
 /** @returns {Promise<void>} */
 function runNode(script, args, options = {}) {
@@ -242,33 +254,71 @@ async function writeBuildInfo(directory, details) {
   await writeFile(path.join(directory, 'build-info.json'), `${JSON.stringify(details, null, 2)}\n`);
 }
 
-async function buildDocuments(grade) {
+async function shouldBuildPublication({
+  force,
+  inputs,
+  markerPath,
+  outputs,
+  expectedBuildInfo = {},
+  label,
+}) {
+  if (!force && (await isBuildCurrent({inputs, markerPath, outputs, expectedBuildInfo}))) {
+    console.log(`Skipped ${label}; outputs are newer than its inputs.`);
+    return false;
+  }
+
+  console.log(`Building ${label}${force ? ' (--force)' : ''}.`);
+  return true;
+}
+
+async function buildDocuments(grade, force) {
   const configPath = path.join(projectRoot, 'docs/vivliostyle.general.config.mjs');
+  let builtCount = 0;
 
   for (const document of documentationConfig.documents) {
     const basename = document.sourceFilename.replace(/\.md$/u, '');
     const pdfFilename = document.sourceFilename.replace(/\.md$/u, '.pdf');
     const publicationDirectory = path.join(distRoot, document.outputDirectory, basename);
+    const articlePath = path.join(
+      publicationDirectory,
+      documentationConfig.standaloneArticleHtmlFilename,
+    );
+    const manifestPath = path.join(publicationDirectory, 'publication.json');
+    const pdfPath = path.join(pdfRoot, document.outputDirectory, pdfFilename);
+    const publishedPdfPath = path.join(distRoot, document.outputDirectory, pdfFilename);
+    const sourcePath = path.join(docsRoot, document.sourceDirectory, document.sourceFilename);
+    const inputs = [
+      ...commonPublicationInputs,
+      configPath,
+      path.join(docsRoot, 'general-theme.css'),
+      ...(await collectSourceInputs([sourcePath])),
+    ];
+    const expectedBuildInfo = document.addFurigana === true ? {learnedThroughGrade: grade} : {};
+    if (
+      !(await shouldBuildPublication({
+        force,
+        inputs,
+        markerPath: path.join(publicationDirectory, 'build-info.json'),
+        outputs: [articlePath, manifestPath, pdfPath, publishedPdfPath],
+        expectedBuildInfo,
+        label: document.sourceFilename,
+      }))
+    ) {
+      continue;
+    }
+
     await buildWebPublication(configPath, publicationDirectory, {
       ...process.env,
       DOCUMENT_SOURCE: document.sourceFilename,
     });
 
-    const articlePath = path.join(
-      publicationDirectory,
-      documentationConfig.standaloneArticleHtmlFilename,
-    );
     await prepareDocumentHtml(articlePath, document, grade);
-    const pdfInput =
-      document.pdfIncludesGeneratedToc === false
-        ? articlePath
-        : path.join(publicationDirectory, 'publication.json');
-    const pdfPath = path.join(pdfRoot, document.outputDirectory, pdfFilename);
+    const pdfInput = document.pdfIncludesGeneratedToc === false ? articlePath : manifestPath;
     await buildPdf(pdfInput, pdfPath);
     await mkdir(path.join(distRoot, document.outputDirectory), {
       recursive: true,
     });
-    await copyFile(pdfPath, path.join(distRoot, document.outputDirectory, pdfFilename));
+    await copyFile(pdfPath, publishedPdfPath);
     await writeBuildInfo(
       publicationDirectory,
       buildInfo({
@@ -279,26 +329,63 @@ async function buildDocuments(grade) {
         ...(document.addFurigana === true ? {learnedThroughGrade: grade} : {}),
       }),
     );
+    builtCount += 1;
   }
+
+  return builtCount;
 }
 
-async function buildWorkshop(grade) {
+async function buildWorkshop(grade, force) {
   const configPath = path.join(projectRoot, 'docs/vivliostyle.workshop.config.mjs');
   const tempDirectory = path.join(projectRoot, 'tmp/vivliostyle/workshop');
   const outputDirectory = path.join(distRoot, workshopDocumentConfig.outputDirectory);
+  const pdfPath = path.join(
+    pdfRoot,
+    workshopDocumentConfig.outputDirectory,
+    workshopDocumentConfig.pdfFilename,
+  );
+  const publishedPdfPath = path.join(outputDirectory, workshopDocumentConfig.pdfFilename);
+  const sourcePaths = [
+    workshopDocumentConfig.coverFilename,
+    workshopDocumentConfig.sourceFilename,
+  ].map((filename) => path.join(docsRoot, workshopDocumentConfig.sourceDirectory, filename));
+  const inputs = [
+    ...commonPublicationInputs,
+    configPath,
+    path.join(docsRoot, 'document-theme.css'),
+    ...(await collectSourceInputs(sourcePaths)),
+  ];
+  if (
+    !(await shouldBuildPublication({
+      force,
+      inputs,
+      markerPath: path.join(outputDirectory, 'build-info.json'),
+      outputs: [
+        path.join(outputDirectory, 'publication.json'),
+        path.join(outputDirectory, workshopDocumentConfig.coverHtmlFilename),
+        path.join(outputDirectory, workshopDocumentConfig.tocHtmlFilename),
+        path.join(
+          outputDirectory,
+          workshopDocumentConfig.sourceFilename.replace(/\.md$/u, '.html'),
+        ),
+        pdfPath,
+        publishedPdfPath,
+      ],
+      expectedBuildInfo: {learnedThroughGrade: grade},
+      label: workshopDocumentConfig.sourceFilename,
+    }))
+  ) {
+    return 0;
+  }
+
   await buildWebPublication(configPath, tempDirectory);
   for (const htmlPath of await findHtmlFiles(tempDirectory)) {
     await prepareWorkshopHtml(htmlPath, grade);
     await applyRubygana(htmlPath, grade);
   }
   await cp(tempDirectory, outputDirectory, {recursive: true});
-  const pdfPath = path.join(
-    pdfRoot,
-    workshopDocumentConfig.outputDirectory,
-    workshopDocumentConfig.pdfFilename,
-  );
   await buildPdf(path.join(outputDirectory, 'publication.json'), pdfPath);
-  await copyFile(pdfPath, path.join(outputDirectory, workshopDocumentConfig.pdfFilename));
+  await copyFile(pdfPath, publishedPdfPath);
   await writeBuildInfo(
     outputDirectory,
     buildInfo({
@@ -309,23 +396,49 @@ async function buildWorkshop(grade) {
       kanjiDataset: rubyganaGradeData,
     }),
   );
+  return 1;
 }
 
-async function buildStaff() {
+async function buildStaff(force) {
   const configPath = path.join(projectRoot, 'docs/vivliostyle.staff.config.mjs');
   const tempDirectory = path.join(projectRoot, 'tmp/vivliostyle/staff');
   const outputDirectory = path.join(distRoot, staffDocumentConfig.outputDirectory);
-  await buildWebPublication(configPath, tempDirectory);
-  await cp(tempDirectory, outputDirectory, {recursive: true});
   const htmlPath = path.join(outputDirectory, staffDocumentConfig.htmlFilename);
-  await writeFile(htmlPath, normalizeWorkshopImagePaths(await readFile(htmlPath, 'utf8')));
   const pdfPath = path.join(
     pdfRoot,
     staffDocumentConfig.outputDirectory,
     staffDocumentConfig.pdfFilename,
   );
+  const publishedPdfPath = path.join(outputDirectory, staffDocumentConfig.pdfFilename);
+  const sourcePath = path.join(
+    docsRoot,
+    staffDocumentConfig.sourceDirectory,
+    staffDocumentConfig.sourceFilename,
+  );
+  const inputs = [
+    ...commonPublicationInputs,
+    configPath,
+    path.join(docsRoot, 'staff-theme.css'),
+    ...(await collectSourceInputs([sourcePath])),
+  ];
+  if (
+    !(await shouldBuildPublication({
+      force,
+      inputs,
+      markerPath: path.join(outputDirectory, 'build-info.json'),
+      outputs: [htmlPath, pdfPath, publishedPdfPath],
+      label: staffDocumentConfig.sourceFilename,
+    }))
+  ) {
+    return 0;
+  }
+
+  await buildWebPublication(configPath, tempDirectory);
+  await rm(outputDirectory, {recursive: true, force: true});
+  await cp(tempDirectory, outputDirectory, {recursive: true});
+  await writeFile(htmlPath, normalizeWorkshopImagePaths(await readFile(htmlPath, 'utf8')));
   await buildPdf(htmlPath, pdfPath);
-  await copyFile(pdfPath, path.join(outputDirectory, staffDocumentConfig.pdfFilename));
+  await copyFile(pdfPath, publishedPdfPath);
   await writeBuildInfo(
     outputDirectory,
     buildInfo({
@@ -333,14 +446,17 @@ async function buildStaff() {
       rubyApplied: false,
     }),
   );
+  return 1;
 }
 
-export async function buildDocs() {
+export async function buildDocs({force = false} = {}) {
   const grade = resolveLearnedThroughGrade();
-  await Promise.all([
-    rm(distRoot, {recursive: true, force: true}),
-    rm(pdfRoot, {recursive: true, force: true}),
-  ]);
+  if (force) {
+    await Promise.all([
+      rm(distRoot, {recursive: true, force: true}),
+      rm(pdfRoot, {recursive: true, force: true}),
+    ]);
+  }
   await mkdir(distRoot, {recursive: true});
   await writeFile(path.join(distRoot, '.nojekyll'), '');
   await Promise.all([
@@ -349,9 +465,10 @@ export async function buildDocs() {
     copyFile(path.join(projectRoot, 'site/site-shell.css'), path.join(distRoot, 'site-shell.css')),
     copyFile(path.join(projectRoot, 'site/site-shell.js'), path.join(distRoot, 'site-shell.js')),
   ]);
-  await buildDocuments(grade);
-  await buildWorkshop(grade);
-  await buildStaff();
+  const builtCount =
+    (await buildDocuments(grade, force)) +
+    (await buildWorkshop(grade, force)) +
+    (await buildStaff(force));
   const appBarResult = await installSiteAppBars(distRoot, distRoot);
   console.log(
     `Installed the shared AppBar in ${appBarResult.installedCount} of ` +
@@ -364,9 +481,18 @@ export async function buildDocs() {
       documentCount: documentationConfig.documents.length + 2,
     }),
   );
-  console.log(`Built ${documentationConfig.documents.length + 2} publications in dist/.`);
+  const publicationCount = documentationConfig.documents.length + 2;
+  console.log(
+    `Built ${builtCount} and skipped ${publicationCount - builtCount} of ` +
+      `${publicationCount} publications in dist/.`,
+  );
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  await buildDocs();
+  const argumentsAfterScript = process.argv.slice(2);
+  const unknownArguments = argumentsAfterScript.filter((argument) => argument !== '--force');
+  if (unknownArguments.length > 0) {
+    throw new Error(`Unknown build argument(s): ${unknownArguments.join(', ')}`);
+  }
+  await buildDocs({force: argumentsAfterScript.includes('--force')});
 }

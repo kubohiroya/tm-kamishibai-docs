@@ -435,6 +435,13 @@ Vivliostyle CLIの`toc`設定で
 Vivliostyle Viewer、PDF、文書横断目次、画像参照、しおり、ライセンスをまとめて検証します。
 Markdownだけを確認して完了にせず、生成されたHTML/PDFも確認します。
 
+2回目以降の`pnpm run build`は、出版物ごとにMarkdown、参照画像、共通theme、font、
+Vivliostyle設定、build scriptの更新時刻を調べます。必要なHTML/PDFと`build-info.json`が
+すべて存在し、生成物の最も古い更新時刻が入力の最も新しい更新時刻以後なら、
+その出版物のVivliostyle処理を省略します。全出版物を無条件に作り直す場合は
+`pnpm run build:full`を使用します。clean checkoutで生成物が存在しないCIでは、通常の
+`pnpm run build`でも全出版物を生成します。
+
 文書の変更が本体の実装変更を伴う場合は、2つのIssueとPRに依存関係を記録します。
 文書buildが本体をcheckoutしたり、本体buildが文書を生成したりする循環依存は作りません。
 
