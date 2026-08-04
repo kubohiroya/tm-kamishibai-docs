@@ -33,6 +33,8 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   assert.match(extensionGuide, /<code>kamishibaibundle<\/code>/u);
   assert.match(extensionGuide, /7 components → 1 ID/u);
   assert.match(extensionGuide, /<strong>15<\/strong>[\s\S]*<strong>9<\/strong>/u);
+  assert.match(extensionGuide, /class="extension-dependency-map"/u);
+  assert.equal((extensionGuide.match(/class="extension-dependency-row"/gu) ?? []).length, 4);
   const bundleSection = extensionGuide.slice(
     extensionGuide.indexOf('## 7拡張を1つのIDへまとめる'),
     extensionGuide.indexOf('## Consoles —'),

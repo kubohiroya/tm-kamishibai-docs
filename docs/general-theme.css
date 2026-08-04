@@ -656,6 +656,98 @@ body
   text-align: center;
 }
 
+.extension-dependency-map {
+  margin: 0.85rem 0 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--paper);
+  break-inside: avoid;
+}
+
+.extension-dependency-map figcaption {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin-bottom: 0.55rem;
+  color: var(--muted);
+}
+
+.extension-dependency-map figcaption strong {
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+
+.extension-dependency-rows {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.extension-dependency-row {
+  display: grid;
+  grid-template-columns: 10rem auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.extension-dependency-row > b {
+  color: var(--accent);
+  font-size: 1.15rem;
+}
+
+.extension-dependency-row > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.extension-dependency-from,
+.extension-dependency-row > div > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 1.75rem;
+  padding: 0.22rem 0.5rem;
+  border: 2px solid var(--accent);
+  border-radius: 0.38rem;
+  background: var(--accent-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.extension-dependency-from {
+  justify-content: center;
+  background: var(--accent);
+  color: var(--paper);
+  text-align: center;
+}
+
+.extension-dependency-row > div > span.extension-dependency-optional {
+  border-style: dashed;
+  background: var(--paper);
+}
+
+.extension-dependency-optional small {
+  color: var(--muted);
+  font-size: 0.58rem;
+  font-weight: 500;
+}
+
+.extension-dependency-legend {
+  display: flex;
+  gap: 1rem;
+  margin: 0.55rem 0 0;
+  color: var(--muted);
+  font-size: 0.66rem;
+}
+
+.extension-dependency-map > p {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
 body > section.level1:has(> .application-guide-kicker) {
   page: application-guide;
 }
@@ -1063,6 +1155,60 @@ h2.application-sheet {
 
   .extension-count-compare section {
     padding: 2mm 2.8mm;
+  }
+
+  .extension-bundle-sheet {
+    font-size: 7.8pt !important;
+    line-height: 1.4 !important;
+  }
+
+  .extension-bundle-sheet h2.extension-sheet {
+    font-size: 16.5pt;
+  }
+
+  .extension-dependency-map {
+    margin-top: 2.5mm;
+    padding: 2.2mm 2.6mm;
+  }
+
+  .extension-dependency-map figcaption {
+    gap: 2.2mm;
+    margin-bottom: 1.8mm;
+  }
+
+  .extension-dependency-row {
+    grid-template-columns: 34mm auto minmax(0, 1fr);
+    gap: 1.5mm;
+  }
+
+  .extension-dependency-rows {
+    gap: 1.1mm;
+  }
+
+  .extension-dependency-row > div {
+    gap: 1mm;
+  }
+
+  .extension-dependency-from,
+  .extension-dependency-row > div > span {
+    min-height: 6.2mm;
+    padding: 0.6mm 1.5mm;
+    font-size: 6.4pt;
+  }
+
+  .extension-dependency-optional small {
+    font-size: 5.3pt;
+  }
+
+  .extension-dependency-legend {
+    gap: 4mm;
+    margin-top: 1.7mm;
+    font-size: 5.8pt;
+  }
+
+  .extension-dependency-map > p {
+    margin-top: 1.3mm;
+    font-size: 5.9pt;
   }
 
   .extension-columns {
