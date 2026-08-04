@@ -2,7 +2,7 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象アプリ／DSL: `kamishibai=3.1`
+対象アプリ: tmpose-kamishibai 3.2.x（`kamishibai=3.1`と`kamishibai=3.2`を受理、新規台本は3.2を推奨）
 
 ## 概要
 
@@ -27,7 +27,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 | 分類 | 機能 |
 |---|---|
-| 台本実行 | `kamishibai=3.1` の外部TXT、または再生用SB3／Web版へ組み込んだ同じ台本を実行する |
+| 台本実行 | `kamishibai=3.1`または`kamishibai=3.2`の外部TXT、または再生用SB3／Web版へ組み込んだ同じ台本を実行する |
 | 再実行 | 前回読み込んだ台本をブラウザのlocalStorageから再生する |
 | アセット管理 | 画像・音声をURLまたはSB3内から読み込んで利用する |
 | 用途別成果物 | 汎用SB3、編集用SB3、再生用SB3、Web版を用途に応じて使い分ける |
@@ -35,7 +35,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | シーン制御 | `---` で区切られたシーンを順番に実行する |
 | 背景制御 | ステージ背景を台本から切り替える |
 | アクター制御 | 登場人物の表示、非表示、移動、サイズ、スキンを制御する |
-| テキスト表示 | テキストアセットを画面に表示し、内容を台本から更新する |
+| テキスト表示 | 旧Text Assetを互換表示しながら、相対サイズ・複数行・名前付きスタイルに対応するSVG Textへ段階移行する |
 | UI文言 | ポーズ案内はscene 0で変更し、タイトル・エラー・メニューはアプリ側で日本語／英語を切り替える |
 | アニメーション | 複数の画像・音をループまたは一回だけ連続再生する |
 | セリフ | セリフ吹き出しと思考吹き出しを表示する |

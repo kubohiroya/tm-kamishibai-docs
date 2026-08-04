@@ -14,7 +14,8 @@ custom block、呼出し関係、状態遷移の内部仕様を現在の実装�
 本書は「アプリが内部でどのように動くか」を扱い、「リポジトリをどう変更・公開するか」
 や「ビルダーをどう利用するか」は扱いません。
 
-対象アプリ／DSL: `kamishibai=3.1`
+対象アプリ: tmpose-kamishibai 3.2.x\
+受理するDSL宣言: `kamishibai=3.1`、`kamishibai=3.2`
 
 過去のバージョンからの変更は[`history.md`](../dsl-author-guides/history.md)を参照してください。
 
@@ -101,7 +102,7 @@ DSLランタイムはbroadcastや共有変数でproject内のtargetを統括し�
 | 項目                     | 件数 |
 | ------------------------ | ---: |
 | target（Stageを含む）    |    8 |
-| block                    | 1744 |
+| block                    | 1781 |
 | event hat                |   49 |
 | カスタムブロック定義     |   43 |
 | Scratch変数              |   13 |
@@ -109,33 +110,35 @@ DSLランタイムはbroadcastや共有変数でproject内のtargetを統括し�
 | broadcast message        |   23 |
 | 静的なruntime variable名 |   21 |
 | 静的なthread variable名  |   36 |
-| TurboWarp機能拡張        |   15 |
+| TurboWarp機能拡張        |   16 |
 
 本書に掲載するblock IDの意味と安定性は
 [「event、カスタムブロック、呼出し関係」](#events-custom-blocks-call-graph){data-ref="chapter"}で説明します。
 
 ### 使用する機能拡張
 
-| ID                            | 役割                                       | 取得形態 |
-| ----------------------------- | ------------------------------------------ | -------- |
-| `sipcconsole`                 | デバッグ用console                          | Gallery  |
-| `lmsTempVars2`                | runtime variable／thread variable          | Gallery  |
-| `strings`                     | 文字列処理                                 | Gallery  |
-| `kubohiroyaassetmanager`      | 画像・音声の登録とLoading進捗              | 埋め込み |
-| `tmpose`                      | カメラ姿勢認識                             | 埋め込み |
-| `localstorage`                | 台本と選択UI言語のローカル保存             | Gallery  |
-| `kubohiroyatextlines`         | 行単位の台本処理                           | 埋め込み |
-| `kubohiroyaruntimeexpression` | 分岐条件式の評価                           | 埋め込み |
-| `kubohiroyakamishibairuntime` | DSL 3.1の限定preflight、診断表示、安全停止 | 埋め込み |
-| `kubohiroyaasyncinput`        | key／touch入力とscene移動                  | 埋め込み |
-| `lmsTimers`                   | `wait`と時間ベースactor actionのタイマー   | Gallery  |
-| `files`                       | 外部台本ファイルの選択                     | Gallery  |
-| `text`                        | テキスト描画・アニメーション               | Gallery  |
-| `translate`                   | Scratch／TurboWarpの表示言語を取得         | 標準     |
-| `kubohiroyaweblink`           | HTTPSの公式Webサイトを新しいタブで開く     | 埋め込み |
+| ID                            | 役割                                                      | 取得形態  |
+| ----------------------------- | --------------------------------------------------------- | --------- |
+| `sipcconsole`                 | デバッグ用console                                         | Gallery   |
+| `lmsTempVars2`                | runtime variable／thread variable                         | Gallery   |
+| `strings`                     | 文字列処理                                                | Gallery   |
+| `kubohiroyaassetmanager`      | 画像・音声の登録とLoading進捗                             | 埋め込み  |
+| `tmpose`                      | カメラ姿勢認識                                            | 埋め込み  |
+| `localstorage`                | 台本と選択UI言語のローカル保存                            | Gallery   |
+| `kubohiroyatextlines`         | 行単位の台本処理                                          | 埋め込み  |
+| `kubohiroyaruntimeexpression` | 分岐条件式の評価                                          | 埋め込み  |
+| `kubohiroyakamishibairuntime` | DSL 3.1／3.2の限定preflight、互換警告、診断表示、安全停止 | 埋め込み  |
+| `kubohiroyasvgtext`           | 名前付きstyleによる相対sizeの吹き出しとSVG text actor     | npm埋込み |
+| `kubohiroyaasyncinput`        | key／touch入力とscene移動                                 | 埋め込み  |
+| `lmsTimers`                   | `wait`と時間ベースactor actionのタイマー                  | Gallery   |
+| `files`                       | 外部台本ファイルの選択                                    | Gallery   |
+| `text`                        | テキスト描画・アニメーション                              | Gallery   |
+| `translate`                   | Scratch／TurboWarpの表示言語を取得                        | 標準      |
+| `kubohiroyaweblink`           | HTTPSの公式Webサイトを新しいタブで開く                    | 埋め込み  |
 
-GitHub由来の管理対象となる埋め込み拡張では、由来、固定commit、SHA-256を
-`app/embedded-extensions.json`の`source`に記録します。更新方法は
+管理対象となる埋め込み拡張では、GitHubの固定commitまたはnpm packageの完全固定version、
+artifact path、SHA-256を`app/embedded-extensions.json`の`source`に記録します。SVG Textは
+`@kubohiroya/turbowarp-svg-text@0.1.0`の`dist/svg-text.js`とAPI manifestをnpm source providerから同期します。更新方法は
 [`sb3-toolchain`のワークフロー](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md)
 に従います。`kubohiroyakamishibairuntime`と`kubohiroyaweblink`はこのproject内で管理する
 小規模な拡張なので、`source`を持ちません。
@@ -187,6 +190,9 @@ Asset Managerへ登録し、対応するラベルと同じ`uiAction`を持つ独
 雛形は10×10の透明costumeを保持し、位置とsizeだけを設定してcloneします。2×2の透明costumeでは
 TurboWarpのsprite fencingにより50〜80%の指定が100%へ切り上げられるため、最小50%を保持できる寸法にしています。
 Asset Managerのruntime text skinはclone開始後にclone自身へ適用し、Animated Textのskinを雛形から複製しません。
+3.2.xアプリでは、台本宣言が3.1でも3.2でも旧Text Assetの登録、`text`／`textStyle`／`action=text`、Text Assetを参照する`show`／`setSkin`をこの経路で実行します。Kamishibai Runtimeは対象名を収集し、プロジェクトごとに一度`LEGACY_TEXT_ASSET_DEPRECATED`をconsoleへ出力しますが、実行経路を止めません。移行先は[`turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text)であり、旧経路は少なくとも3.2系列で維持します。
+
+新経路では、Stageが`svgTextStyle=STYLE:BACKGROUND:TEXT_COLOR:FONT:SIZE:ALIGN:DIRECTION`を7項目へ分解してSVG Textの`defineStyle`を呼びます。Actor cloneは`action=ACTOR:setText:TEXT:STYLE`を受け、リテラル`\n`を改行へ変換してから`setText`を呼びます。SVG Textはstage sizeを基準にfontと余白を再計算し、style size 100を480×360で14px相当として扱います。既存の`say`／`think`は`default`styleを通じて相対size、配色、font、配置、8方向の吹き出し方向を共有します。0.1.0ではanimationを実行しません。
 生成手続きはwarpで原子的に実行し、cloneへローカル値をコピーした直後に雛形の`uiIsTemplate`を数値`1`へ復元します。
 asset適用後に表示し、1 tick譲ってから最前面へ移動します。
 
@@ -308,21 +314,21 @@ runtime variableの3種類に分けます。
 
 ### Scratch変数
 
-| 所有者   | 変数                          | 初期値       | 役割                                    |
-| -------- | ----------------------------- | ------------ | --------------------------------------- |
-| `Stage`  | `ポーズ認識`                  | `0`          | pose認識中の表示・互換用状態            |
-| `Stage`  | `チャージ`                    | `0`          | pose成立までのcharge表示・互換用状態    |
-| `Stage`  | `actionIndex`                 | `1`          | 現在処理する`actionList`の位置          |
-| `Stage`  | `poseIndex`                   | `1`          | 現在処理する`poseList`の位置            |
-| `Stage`  | `featureDetailedScriptErrors` | `false`      | DSL 3.1詳細診断preflightの既定OFFフラグ |
-| `Stage`  | `cloneUiItemsEnabled`         | `true`       | clone UI lifecycle guard                |
-| `Stage`  | `__tmpose_embedded_script`    | 空文字       | `player` profileの組み込み台本予約領域  |
-| `Actor`  | `actorName`                   | `_template_` | cloneが担当する台本上のactor名          |
-| `UiItem` | `uiIsTemplate`                | `true`       | 本体とcloneを区別する                   |
-| `UiItem` | `uiId`                        | `_template_` | UI項目の論理ID                          |
-| `UiItem` | `uiAsset`                     | 空文字       | Asset Managerへ渡すasset名              |
-| `UiItem` | `uiAction`                    | 空文字       | click時にcontrollerへ渡すaction名       |
-| `UiItem` | `uiValue`                     | 空文字       | 言語値またはURLなどのaction引数         |
+| 所有者   | 変数                          | 初期値       | 役割                                         |
+| -------- | ----------------------------- | ------------ | -------------------------------------------- |
+| `Stage`  | `ポーズ認識`                  | `0`          | pose認識中の表示・互換用状態                 |
+| `Stage`  | `チャージ`                    | `0`          | pose成立までのcharge表示・互換用状態         |
+| `Stage`  | `actionIndex`                 | `1`          | 現在処理する`actionList`の位置               |
+| `Stage`  | `poseIndex`                   | `1`          | 現在処理する`poseList`の位置                 |
+| `Stage`  | `featureDetailedScriptErrors` | `false`      | DSL 3.1／3.2詳細診断preflightの既定OFFフラグ |
+| `Stage`  | `cloneUiItemsEnabled`         | `true`       | clone UI lifecycle guard                     |
+| `Stage`  | `__tmpose_embedded_script`    | 空文字       | `player` profileの組み込み台本予約領域       |
+| `Actor`  | `actorName`                   | `_template_` | cloneが担当する台本上のactor名               |
+| `UiItem` | `uiIsTemplate`                | `true`       | 本体とcloneを区別する                        |
+| `UiItem` | `uiId`                        | `_template_` | UI項目の論理ID                               |
+| `UiItem` | `uiAsset`                     | 空文字       | Asset Managerへ渡すasset名                   |
+| `UiItem` | `uiAction`                    | 空文字       | click時にcontrollerへ渡すaction名            |
+| `UiItem` | `uiValue`                     | 空文字       | 言語値またはURLなどのaction引数              |
 
 `__tmpose_embedded_script`はStageに一つだけ存在し、monitorを持ちません。`generic`と
 `editor`では空、`player`ではbuilderが変換済み台本を設定します。
@@ -547,17 +553,17 @@ blockが再生成されるとIDは変わります。したがって、IDは外�
 
 ### 主要な呼出し経路
 
-| 起点          | 経路                                                                                                                                           |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| green flag    | 保存済みUI言語または標準`（言語）`を判定 → app shell文言初期化 → camera／pose停止 → actor非表示 → `showTitle`                                  |
-| `startStory`  | flag ONなら副作用のないDSL 3.1 preflight → `create sceneList` → asset／actor生成 → `exec scene # %s with %s`                                   |
-| scene実行     | `exec command %s %s` → `exec actionList` → actionごとに`exec action %s`                                                                        |
-| Stage action  | branch、transition、key／touch入力、`wait`などへdispatch                                                                                       |
-| Actor action  | runtime envelope設定 → `execActorAction` → 対象clone → 移動・見た目・音・時間action                                                            |
-| UI clone      | `showTitle`／`showMenu`／`showLanguageMenu` → 旧clone削除 → `create UI item...` → click時は`runUiItemAction`で本体へactionを委譲               |
-| pose action   | camera preview／pose認識開始 → 第1音を再生 → `exec pose %s`反復（条件成立時は第2音を「ポーズ認識」更新前に再生）→音声／認識停止 → prompt非表示 |
-| asset loading | 組み込みの黒背景 → `setLoadingBackdrop`指定背景 → Loading用画像 → 通常アセット                                                                 |
-| 終了          | `stopStory` → camera／pose停止 → actor削除 → cover → menu                                                                                      |
+| 起点          | 経路                                                                                                                                             |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| green flag    | 保存済みUI言語または標準`（言語）`を判定 → app shell文言初期化 → camera／pose停止 → actor非表示 → `showTitle`                                    |
+| `startStory`  | 旧Text Assetのdeprecated警告 → flag ONなら副作用のないDSL 3.1／3.2 preflight → `create sceneList` → asset／actor生成 → `exec scene # %s with %s` |
+| scene実行     | `exec command %s %s` → `exec actionList` → actionごとに`exec action %s`                                                                          |
+| Stage action  | branch、transition、key／touch入力、`wait`などへdispatch                                                                                         |
+| Actor action  | runtime envelope設定 → `execActorAction` → 対象clone → 移動・見た目・音・時間action                                                              |
+| UI clone      | `showTitle`／`showMenu`／`showLanguageMenu` → 旧clone削除 → `create UI item...` → click時は`runUiItemAction`で本体へactionを委譲                 |
+| pose action   | camera preview／pose認識開始 → 第1音を再生 → `exec pose %s`反復（条件成立時は第2音を「ポーズ認識」更新前に再生）→音声／認識停止 → prompt非表示   |
+| asset loading | 組み込みの黒背景 → `setLoadingBackdrop`指定背景 → Loading用画像 → 通常アセット                                                                   |
+| 終了          | `stopStory` → camera／pose停止 → actor削除 → cover → menu                                                                                        |
 
 `create asset`はLoading用assetを先に登録し、`assetLoadingStarted`をbroadcast and waitします。
 通常assetは登録完了数がthread variable `loadingDisplayed`を上回る場合だけ最大値を保存し、
@@ -644,7 +650,7 @@ transitionの反復待ちは`skipMode`の存在で終了しますが、最後の
 - [`dsl-manual.md`](../dsl-author-guides/dsl-manual.md): 台本の構造と書き方
 - [`command-reference.md`](../dsl-author-guides/command-reference.md): コマンドとactionの外部仕様
 - [`developer-guide.md`](developer-guide.md): 成果物とビルダーの利用、setup、変更、検証、公開
-- [`extension-guide.md`](extension-guide.md): 依存機能拡張15個の一覧、図解、役割、利用箇所
-- [`application-materials-guide.md`](../user-guides/application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.1、sb3-toolchainの8ページ概要
+- [`extension-guide.md`](extension-guide.md): 依存機能拡張16個の一覧、図解、役割、利用箇所
+- [`application-materials-guide.md`](../user-guides/application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainの8ページ概要
 - [`history.md`](../dsl-author-guides/history.md): DSLとアプリの変更履歴
 - [アプリrepository README](https://github.com/kubohiroya/tmpose-kamishibai): プロジェクト全体の入口

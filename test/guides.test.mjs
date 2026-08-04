@@ -15,7 +15,7 @@ const applicationGuide = readFileSync(
 );
 const theme = readFileSync(new URL('../docs/general-theme.css', import.meta.url), 'utf8');
 
-test('keeps the extension guide as an index, bundle explanation, and fifteen two-page entries', () => {
+test('keeps the extension guide as an index, bundle explanation, and sixteen two-page entries', () => {
   const sheetIds = [
     ...extensionGuide.matchAll(/^## .+ \{#([^ ]+) \.extension-sheet(?: [^}]+)?\}$/gmu),
   ];
@@ -24,18 +24,18 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   const rightHeadings = [
     ...extensionGuide.matchAll(/^## (.+) \{#[^ ]+ \.extension-sheet \.extension-sheet-right\}$/gmu),
   ].map(([, heading]) => heading);
-  assert.equal(sheetIds.length, 31);
-  assert.equal(leftSheets.length, 15);
-  assert.equal(rightSheets.length, 15);
-  assert.equal(rightHeadings.length, 15);
+  assert.equal(sheetIds.length, 33);
+  assert.equal(leftSheets.length, 16);
+  assert.equal(rightSheets.length, 16);
+  assert.equal(rightHeadings.length, 16);
   assert.ok(rightHeadings.every((heading) => heading.includes('で') && !heading.includes(' — ')));
-  assert.equal((extensionGuide.match(/<a href="#extension-[^"]+">/gu) ?? []).length, 15);
+  assert.equal((extensionGuide.match(/<a href="#extension-[^"]+">/gu) ?? []).length, 16);
   assert.equal((extensionGuide.match(/extension-gallery-[^"]+\.svg/gu) ?? []).length, 7);
   const editorCaptures = [
     ...extensionGuide.matchAll(/\.\.\/images\/(extension-editor-[^"]+\.png)/gu),
   ].map(([, filename]) => filename);
-  assert.equal(editorCaptures.length, 15);
-  assert.equal(new Set(editorCaptures).size, 15);
+  assert.equal(editorCaptures.length, 16);
+  assert.equal(new Set(editorCaptures).size, 16);
   const editorCaptureDimensions = editorCaptures.map((filename) => {
     const png = readFileSync(new URL(`../docs/images/${filename}`, import.meta.url));
     return [png.readUInt32BE(16), png.readUInt32BE(20)];
@@ -47,9 +47,9 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
     new Set(editorCaptureDimensions.map(([width, height]) => `${width}x${height}`)).size >= 10,
   );
   assert.doesNotMatch(extensionGuide, /class="tw-/u);
-  assert.equal((extensionGuide.match(/class="extension-kamishibai-why"/gu) ?? []).length, 15);
-  assert.equal((extensionGuide.match(/機能拡張そのもの 1 \/ 2/gu) ?? []).length, 15);
-  assert.equal((extensionGuide.match(/TMPose 紙芝居での利用例 2 \/ 2/gu) ?? []).length, 15);
+  assert.equal((extensionGuide.match(/class="extension-kamishibai-why"/gu) ?? []).length, 16);
+  assert.equal((extensionGuide.match(/機能拡張そのもの 1 \/ 2/gu) ?? []).length, 16);
+  assert.equal((extensionGuide.match(/TMPose 紙芝居での利用例 2 \/ 2/gu) ?? []).length, 16);
   assert.match(extensionGuide, /^## TMPose — 学習済みモデルでカメラ映像のポーズを認識する /mu);
   assert.doesNotMatch(extensionGuide, /cameraをpose名へ変える/u);
   assert.match(extensionGuide, /^## Web Link — HTTPS URLを検証し、新しいタブで開く /mu);
@@ -77,23 +77,20 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
     assert.match(extensionGuide, new RegExp(`<code>${extensionId}</code>`, 'u'));
   }
   assert.match(extensionGuide, /\{#extension-bundle \.extension-sheet \.extension-bundle-sheet\}/u);
-  assert.match(extensionGuide, /<code>kamishibaibundle<\/code>/u);
-  assert.match(extensionGuide, /7 components → 1 ID/u);
-  assert.match(extensionGuide, /<strong>15<\/strong>[\s\S]*<strong>9<\/strong>/u);
+  assert.match(extensionGuide, /<code>tmposebundle<\/code>/u);
+  assert.match(extensionGuide, /4 components → 1 ID/u);
+  assert.match(extensionGuide, /<strong>16<\/strong>[\s\S]*<strong>13<\/strong>/u);
   assert.match(extensionGuide, /class="extension-dependency-map"/u);
   assert.equal((extensionGuide.match(/class="extension-dependency-row"/gu) ?? []).length, 4);
   const bundleSection = extensionGuide.slice(
-    extensionGuide.indexOf('## 7拡張を1つのIDへまとめる'),
+    extensionGuide.indexOf('## 4拡張を1つのIDへまとめる'),
     extensionGuide.indexOf('## Consoles —'),
   );
   for (const extensionId of [
     'kubohiroyaassetmanager',
-    'tmpose',
-    'kubohiroyatextlines',
-    'kubohiroyaruntimeexpression',
-    'kubohiroyaasyncinput',
+    'text',
     'kubohiroyakamishibairuntime',
-    'kubohiroyaweblink',
+    'kubohiroyasvgtext',
   ]) {
     assert.match(bundleSection, new RegExp(`<code>${extensionId}</code>`, 'u'));
   }
@@ -115,7 +112,12 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   assert.match(animatedTextExample, /Asset ManagerからAnimated Text opcodeを取得する処理/u);
   assert.doesNotMatch(extensionGuide, /さぁ行こう/u);
   assert.doesNotMatch(extensionGuide, /ポーズをとろう！/u);
-  assert.equal(findDocument('extension-guide.md')?.expectedPdfPageCount, 32);
+  assert.match(
+    extensionGuide,
+    /^## SVG Text — 名前付きスタイルで相対サイズの吹き出しとSVG文字を描画する /mu,
+  );
+  assert.match(extensionGuide, /@kubohiroya\/turbowarp-svg-text\/v\/0\.1\.0/u);
+  assert.equal(findDocument('extension-guide.md')?.expectedPdfPageCount, 34);
   assert.match(theme, /@page extension-guide\s*\{[\s\S]*size:\s*A4;/u);
 });
 
@@ -127,13 +129,13 @@ test('keeps the application guide in the requested eight-page allocation', () =>
     [1, 2, 3, 4, 5, 6, 7, 8],
   );
   assert.match(applicationGuide, /ポーズをとろう！/u);
-  assert.match(applicationGuide, /kamishibai=3\.1/u);
+  assert.match(applicationGuide, /kamishibai=3\.2/u);
   assert.doesNotMatch(
     applicationGuide,
     /<code>[^<]*\\n[^<]*<\/code>/gu,
     'DSL examples must use actual line breaks instead of escaped newline text.',
   );
-  assert.match(applicationGuide, /2c82aaf02f605564f79efe8ff3bbd8f1a78d6fe9/u);
+  assert.match(applicationGuide, /b3f4b9aa3ed3ede363700be815fe522f6a47df0b/u);
   assert.equal(findDocument('application-materials-guide.md')?.expectedPdfPageCount, 8);
   assert.match(theme, /@page application-guide\s*\{[\s\S]*size:\s*A4;/u);
 });

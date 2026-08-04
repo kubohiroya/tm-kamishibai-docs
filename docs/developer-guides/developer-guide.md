@@ -21,7 +21,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 [コマンドリファレンス](../dsl-author-guides/command-reference.md)を参照してください。本書には、
 これらの内部構造やDSL項目を重複して列挙しません。
 
-対象アプリ／DSL: `kamishibai=3.1`
+対象アプリ: tmpose-kamishibai 3.2.x\
+受理するDSL宣言: `kamishibai=3.1`、`kamishibai=3.2`
 
 過去のバージョンからの変更は[`history.md`](../dsl-author-guides/history.md)を参照してください。
 
@@ -60,7 +61,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | SB3の展開・検証・決定的再構築         | [`kubohiroya/sb3-toolchain`](https://github.com/kubohiroya/sb3-toolchain)                         | 固定依存として利用する。[「sb3-toolchain」](#sb3-toolchain){data-ref="section"}を参照 |
 | 文書source、図版、HTML／PDF           | [`kubohiroya/tmpose-kamishibai-docs`](https://github.com/kubohiroya/tmpose-kamishibai-docs)       | 本体のversion・固定snapshotを参照し、独立してbuild・公開する                          |
 | 浦島太郎などの公開用物語              | [`kubohiroya/tmpose-kamishibai-samples`](https://github.com/kubohiroya/tmpose-kamishibai-samples) | `stories/urashima/`で台本、固有アセット、生成物を管理する                             |
-| 埋め込み機能拡張                      | 各機能拡張のGitHubリポジトリ                                                                      | `app/`には検証済み成果物と由来情報だけを同期する                                      |
+| 埋め込み機能拡張                      | 各機能拡張のGitHubリポジトリまたはnpm package                                                     | `app/`には検証済み成果物と由来情報だけを同期する                                      |
 | TurboWarp Extension Galleryの機能拡張 | Galleryの公開URL                                                                                  | SB3から外部URLを参照する                                                              |
 
 [公開サンプル](https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/)
@@ -362,8 +363,10 @@ DSL、Loading表示、入力、分岐、テキスト、画面遷移などの振�
 ## 埋め込み機能拡張を更新する
 
 `app/extensions/`のJavaScriptは同期済み成果物です。バグ修正や機能追加は、
-`app/embedded-extensions.json`に記録された上流リポジトリで行い、レビュー済みの
-成果物だけを本リポジトリへ取り込みます。
+`app/embedded-extensions.json`に記録された上流リポジトリまたはnpm packageで行い、レビュー済みの
+成果物だけを本リポジトリへ取り込みます。`source.provider`が`npm`の場合はpackage名、完全固定version、
+artifact path、integrityを記録し、package managerがinstallした内容から同期します。アプリ側に
+package固有のコピーscriptを追加しません。この取得・検証・同期はsb3-toolchainの責務です。
 
 `status`、`sync`、`update`の意味、由来情報の形式、transactionalな更新、ID移行の
 対象schemaは、[`sb3-toolchain`のSB3ソース管理ワークフロー](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md)と
@@ -382,7 +385,8 @@ pnpm sb3:extensions:update -- EXTENSION_ID
 pnpm sb3:extensions:update -- OLD_ID --migrate-id NEW_ID
 ```
 
-上流の成果物パスも変わった場合だけ`--artifact PATH`を追加します。更新後は必ず
+GitHub providerで上流の成果物パスも変わった場合だけ`--artifact PATH`を追加します。npm providerでは、
+先にpackage managerで依存versionを更新してから`status`または`update`を実行します。更新後は必ず
 `git diff -- app`、`pnpm sb3:check`、`pnpm test`、`pnpm run build`を確認し、
 生成したSB3をTurboWarpで開いて対象拡張の主要機能を確認します。
 
@@ -593,7 +597,7 @@ TMPose紙芝居の開発から分離し、他のTurboWarp作品や開発環境�
 [`sb3-toolchain`](https://github.com/kubohiroya/sb3-toolchain)は、SB3をGit差分可能な
 展開ソースとして管理し、検証して決定的に再構築するためのCLI／JavaScript APIです。
 このリポジトリでは固定依存として利用し、`app/`のimport、検証、build、埋め込み
-機能拡張の同期とID移行を担います。
+機能拡張のGitHub／npm source同期、ID移行、bundle member間の動的opcode参照変換を担います。
 
 - [SB3ソース管理ワークフロー](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md)
 - [SB3展開ソース形式 v1](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/source-format-v1.md)
@@ -621,6 +625,8 @@ TMPose紙芝居の開発から分離し、他のTurboWarp作品や開発環境�
   キーボード、ポインター、姿勢入力を対象ごとに扱う非同期入力
 - [`turbowarp-runtime-expression`](https://github.com/kubohiroya/turbowarp-runtime-expression):
   runtime変数を使う条件式の安全な評価とbroadcast監視
+- [`turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text):
+  名前付きstyleを共有する相対sizeの吹き出しと複数行SVG text actor
 
 ### その他のライブラリ
 
@@ -635,7 +641,7 @@ TMPose紙芝居の開発から分離し、他のTurboWarp作品や開発環境�
 - [`dsl-manual.md`](../dsl-author-guides/dsl-manual.md): 台本の構造と書き方
 - [`command-reference.md`](../dsl-author-guides/command-reference.md): コマンドとアクションの仕様
 - [`internal-specification.md`](internal-specification.md): 汎用アプリSB3の内部構造、呼出し関係、状態遷移
-- [`extension-guide.md`](extension-guide.md): 依存機能拡張15個の一覧、図解、役割、利用箇所
-- [`application-materials-guide.md`](../user-guides/application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.1、sb3-toolchainの8ページ概要
+- [`extension-guide.md`](extension-guide.md): 依存機能拡張16個の一覧、図解、役割、利用箇所
+- [`application-materials-guide.md`](../user-guides/application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainの8ページ概要
 - [`history.md`](../dsl-author-guides/history.md): DSLとアプリの変更履歴
 - [アプリrepository README](https://github.com/kubohiroya/tmpose-kamishibai): プロジェクト全体の入口と主要コマンド

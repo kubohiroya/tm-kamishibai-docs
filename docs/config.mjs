@@ -27,7 +27,7 @@ export const documentCollections = [
         title: 'TMPose紙芝居 アプリ・教材・ツールチェインガイド',
         audience: 'アプリと教材の全体像を把握する方',
         description:
-          'アプリ概要、浦島太郎、体験会教材、DSL 3.1、sb3-toolchainを図解付き・全8ページで紹介します。',
+          'アプリ概要、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainを図解付き・全8ページで紹介します。',
         pdfIncludesGeneratedToc: false,
         expectedPdfPageCount: 8,
       },
@@ -42,21 +42,21 @@ export const documentCollections = [
         title: '紙芝居DSLファイル作成マニュアル',
         audience: '作品を作る方',
         description:
-          '3.1の台本を設計し、シーンラベル、分岐、入力、アニメーションを含めて作成・テストする手順を説明します。',
+          '3.1／3.2宣言の互換性、3.2台本の設計、旧Text Assetの互換期間、SVG Textへの移行を含む作成・テスト手順を説明します。',
       },
       {
         sourceFilename: 'command-reference.md',
         title: '紙芝居DSL コマンドリファレンス',
         audience: '台本文法を調べる方',
         description:
-          'kamishibai 3.1で利用できるコマンド、アクション、引数、注意事項を一覧化しています。',
+          '3.2.xが受理する3.1／3.2宣言、コマンド、アクション、Text Asset互換仕様、注意事項を一覧化しています。',
       },
       {
         sourceFilename: 'history.md',
-        title: '紙芝居DSL 2.0から3.1への変更履歴',
+        title: '紙芝居DSL 2.0から3.2への変更履歴',
         audience: '2.0から移行する方',
         description:
-          '2.0から3.1で追加・変更・置換したDSL仕様と、台本の移行手順を差分形式でまとめています。',
+          '2.0から3.1の累積差分と、3.2.xの宣言互換性、旧Text Asset互換期間、SVG Textへの段階移行をまとめています。',
       },
     ],
   },
@@ -83,9 +83,9 @@ export const documentCollections = [
         title: 'TMPose紙芝居 機能拡張ガイド',
         audience: 'アプリの依存機能を調査・変更する方',
         description:
-          '15個の依存機能拡張を1拡張2ページで図解し、sb3-toolchainによるbundle構成も説明する全32ページのガイドです。',
+          '16個の依存機能拡張を1拡張2ページで図解し、sb3-toolchainによるbundle構成も説明する全34ページのガイドです。',
         pdfIncludesGeneratedToc: false,
-        expectedPdfPageCount: 32,
+        expectedPdfPageCount: 34,
       },
       {
         sourceFilename: 'dsl-3.1-diagnostics-design.md',
