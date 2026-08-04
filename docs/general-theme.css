@@ -545,12 +545,15 @@ body > section.level1 > section.level2:has(> h2.extension-sheet-left) > .extensi
 .extension-editor-example {
   margin: 0.9rem 0;
   break-inside: avoid;
+  text-align: center;
 }
 
 .extension-editor-example img {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   height: auto;
+  margin-inline: auto;
   border: 1px solid #c9ced6;
   border-radius: 0.55rem;
   background: white;

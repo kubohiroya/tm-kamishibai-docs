@@ -31,6 +31,14 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   ].map(([, filename]) => filename);
   assert.equal(editorCaptures.length, 15);
   assert.equal(new Set(editorCaptures).size, 15);
+  const editorCaptureDimensions = editorCaptures.map((filename) => {
+    const png = readFileSync(new URL(`../docs/images/${filename}`, import.meta.url));
+    return [png.readUInt32BE(16), png.readUInt32BE(20)];
+  });
+  assert.ok(editorCaptureDimensions.every(([width, height]) => width < 1200 && height < 600));
+  assert.ok(
+    new Set(editorCaptureDimensions.map(([width, height]) => `${width}x${height}`)).size >= 10,
+  );
   assert.doesNotMatch(extensionGuide, /class="tw-/u);
   assert.equal((extensionGuide.match(/class="extension-kamishibai-why"/gu) ?? []).length, 15);
   assert.equal((extensionGuide.match(/機能拡張そのもの 1 \/ 2/gu) ?? []).length, 15);
@@ -76,6 +84,15 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
     extensionGuide.indexOf('#extension-asset-manager') <
       extensionGuide.indexOf('#extension-kamishibai-runtime'),
   );
+  const animatedTextExample = extensionGuide.slice(
+    extensionGuide.indexOf('## Animated Text — Asset Managerから間接利用する'),
+    extensionGuide.indexOf('## Translate —'),
+  );
+  assert.match(animatedTextExample, /接続済みscriptにAnimated Text blockはありません/u);
+  assert.match(animatedTextExample, /text_setFont/u);
+  assert.match(animatedTextExample, /text_setText/u);
+  assert.match(animatedTextExample, /Asset ManagerからAnimated Text opcodeを取得する処理/u);
+  assert.doesNotMatch(extensionGuide, /さぁ行こう/u);
   assert.doesNotMatch(extensionGuide, /ポーズをとろう！/u);
   assert.equal(findDocument('extension-guide.md')?.expectedPdfPageCount, 32);
   assert.match(theme, /@page extension-guide\s*\{[\s\S]*size:\s*A4;/u);

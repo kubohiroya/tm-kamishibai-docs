@@ -75,7 +75,7 @@ group、経過時間の計測、consoleの消去もblockから操作でき、実
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>紙芝居はasset読込、scene進行、入力待ちが非同期に重なります。画面だけでは「どの台本行まで進み、どこで止まったか」が分かりにくいため、観客向け表示を汚さずに制作者が舞台裏を追える記録経路が必要です。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-consoles.png" alt="TurboWarp EditorでStageのexec scene定義を開き、Consolesのログブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「exec scene # …」を表示。灰色のログブロックがscene開始と異常を記録します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-consoles.png" alt="TurboWarp Editorのexec scene定義から、接続された2つのConsolesログブロックだけを切り出した画面"><figcaption>「exec scene # …」冒頭の実ブロック。区切りとscene番号・labelを記録する2つのlogだけを切り出しています。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>いつ使う?</strong><span>scene開始、待機、asset生成、Actor処理の節目。</span></section><section><strong>何が分かる?</strong><span>どのcommandまで進み、どこで止まったか。</span></section><section><strong>異常時</strong><span>Kamishibai RuntimeのSVGと同じ原因をconsoleにも残す。</span></section></div>
 
@@ -106,7 +106,7 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>同じsceneの中でも複数のActorや入力処理が並行します。途中値を通常のScratch変数へ集めると別の実行が上書きし、変数一覧も膨らみます。呼出しごとの値はthreadへ、sceneや拡張をまたぐ合図だけはruntimeへ置くことで、状態の混線を防げます。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-temporary-variables.png" alt="TurboWarp EditorでStageのcreate asset定義を開き、一時変数ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「create asset」を表示。橙色のthread／runtime変数がasset解析と進捗をつなぎます。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-temporary-variables.png" alt="TurboWarp Editorのcreate asset定義から、asset解析に使うthread variableブロックだけを切り出した画面"><figcaption>「create asset」の解析部分。indexからasset、skin、resourceIdへ値を受け渡すthread variableの連鎖です。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>局所値</strong><span>assetName、address、引数番号をthreadへ置く。</span></section><section><strong>共有値</strong><span>scene、入力状態、Loading進捗をruntimeへ置く。</span></section><section><strong>連携</strong><span>Runtime ExpressionとAsync Inputが同じruntime値を読む。</span></section></div>
 
@@ -137,7 +137,7 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>紙芝居DSLは、人が直接編集できる一続きのtextです。専用parserをJavaScript側へ隠すのではなく、どの区切りを探し、どの引数を取り出したかをTurboWarpのblockとして読める形にすると、台本仕様と実装を制作者が照合しやすくなります。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-text.png" alt="TurboWarp EditorでStageのselectValue定義を開き、Text拡張の文字列ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「selectValue # …」を表示。緑色のcount、split、trimで指定引数を切り出します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-text.png" alt="TurboWarp EditorのselectValue定義から、Text拡張で区切り文字と項目を扱うreturn部分だけを切り出した画面"><figcaption>「selectValue # …」の中核。区切り文字の出現数を調べ、指定項目をtrimして返す2つの分岐です。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>command</strong><span><code>asset=...</code>の最初の<code>=</code>を境界にする。</span></section><section><strong>引数</strong><span>comma区切りの指定位置を取得する。</span></section><section><strong>比較</strong><span>空文字・command名・action名を厳密に照合する。</span></section></div>
 
@@ -168,7 +168,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>体験会で選んだ台本や表示言語がreloadのたびに消えると、参加者は上演より再設定に時間を取られます。小さな設定と台本文字列だけを保存し、次回は前回の続きから始められるようにします。camera映像や認識途中の値は保存しません。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-local-storage.png" alt="TurboWarp EditorでStageのstartStory受信処理を開き、Local Storageの名前空間と保存ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「startStory」を表示。緑色の名前空間／storageブロックで台本とUI設定を永続領域へ接続します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-local-storage.png" alt="TurboWarp EditorのstartStory処理から、Local Storageの名前空間設定とscript保存だけを切り出した画面"><figcaption>名前空間を<code>kamishibai</code>に定め、runtimeのscriptをstorageへ書く、隣接した2ブロックです。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>起動時</strong><span>保存済み言語を読み、なければTranslateへ進む。</span></section><section><strong>台本選択</strong><span>Filesで開いたtextを保存し、reloadで再利用する。</span></section><section><strong>UI操作</strong><span>言語変更時に保存値とruntime値を同時更新する。</span></section></div>
 
@@ -199,7 +199,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>標準の「待つ」だけでは、待機中に観客がskipしても、その時間が終わるまでsceneを進められません。名前付きtimerの値とskipの両方を短いloopで確認すれば、予定時間を守りながら操作にもすぐ反応できます。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-more-timers.png" alt="TurboWarp EditorでStageのwait定義を開き、More Timersの開始、値取得、削除ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「wait seconds」を表示。青緑色の名前付きtimerを開始し、skipと並行監視してから削除します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-more-timers.png" alt="TurboWarp Editorのwait定義から、More Timersの開始、値取得、削除を含む接続部分だけを切り出した画面"><figcaption>「wait seconds」のtimer部分。開始／reset、経過値の監視、最後の削除までを一続きで示します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>通常終了</strong><span>指定秒数へ達したらloopを抜ける。</span></section><section><strong>skip</strong><span>runtimeのskip状態でもloopを抜ける。</span></section><section><strong>後片付け</strong><span>どちらの終了でも名前付きtimerを削除する。</span></section></div>
 
@@ -230,7 +230,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>体験会では、参加者が書いたTXT台本をその場で試したい一方、台本ごとにWebへ公開したりアプリを作り直したりはできません。端末上のfileを利用者のclickで選び、埋め込み台本と同じ検査・実行経路へ渡す入口になります。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-files.png" alt="TurboWarp EditorでStageの緑の旗スクリプトを開き、Filesのファイルを開くモードを設定している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage初期化を表示。黄色のFilesブロックで「すぐにセレクターを開く」モードを指定してからメニューを表示します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-files.png" alt="TurboWarp Editorの初期化処理から、Filesのモード設定と直後のshowTitle broadcastだけを切り出した画面"><figcaption>ファイル選択を「すぐにセレクターを開く」に設定してから、title画面を表示する2ブロックです。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>UiItem</strong><span>menu buttonの操作からpickerを開く。</span></section><section><strong>runtime</strong><span>選択した全文を<code>script</code>へ渡す。</span></section><section><strong>合流</strong><span>埋め込み台本と同じpreflight・asset登録へ進む。</span></section></div>
 
@@ -255,19 +255,19 @@ spriteへ文字専用のrenderer skinを作り、font、色、幅、配置、out
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/lab/text.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/lab/text.js">配布ソース</a></p>
 
-## Animated Text — Asset Managerの描画backend {#extension-animated-text-example .extension-sheet .extension-sheet-right}
+## Animated Text — Asset Managerから間接利用する {#extension-animated-text-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">Gallery 7 / 7　TMPose紙芝居での利用 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>台詞、menu、prompt、診断文は台本や言語によって変わるため、すべてを事前にcostumeへ描いておくことはできません。実行時の文字列をStage上の見た目に変換すれば、同じUI部品を内容だけ差し替えて再利用できます。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-animated-text.png" alt="TurboWarp EditorのStage上に置かれたAnimated Textのレインボー文字アニメーションブロック"><figcaption>TurboWarp EditorでVersion 3.1.9のStageを表示。実プロジェクトに置かれた紫色のAnimated Textブロックが「さぁ行こう!」をレインボー表示します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-animated-text.png" alt="TurboWarp EditorのStageから、Asset Managerで文字assetを登録しstyleを設定する接続部分だけを切り出した画面"><figcaption>実プロジェクトでは、文字をAsset Managerへ登録し、font・color・width・alignを設定します。ここに見える青いblockはAsset Managerであり、Animated Textの呼出しはその内部で行われます。</figcaption></figure>
 
-<div class="extension-usage-grid"><section><strong>直接利用</strong><span>animation blockでtypingなどを開始できる。</span></section><section><strong>実アプリ</strong><span>Asset Managerがtext skin生成をbackendとして呼ぶ。</span></section><section><strong>表示先</strong><span>title、menu、prompt、SVG診断の説明文。</span></section></div>
+<div class="extension-usage-grid"><section><strong>project側</strong><span>Asset Managerでtext assetとstyleを登録する。</span></section><section><strong>内部呼出し</strong><span><code>text_setFont</code>等のopcodeをruntimeから取得する。</span></section><section><strong>描画時</strong><span><code>text_setText</code>／<code>text_animateText</code>でskinを作る。</span></section></div>
 
-<p class="extension-note"><strong>このアプリでの使い方:</strong> 多くの文字はAnimated Textを直接並べず、Asset Managerの<code>set text value/style</code>を経由します。asset名と表示targetを一元管理するためです。</p>
+<p class="extension-note"><strong>重要:</strong> 接続済みscriptにAnimated Text blockはありません。Asset Managerが表示時に<code>text_setFont</code>、<code>text_setColor</code>、<code>text_setWidth</code>、<code>text_setText</code>／<code>text_animateText</code>をprogrammaticに呼ぶ依存関係です。</p>
 
-<p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（<code>text_animateText</code>とAsset Manager連携）</p>
+<p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json">Version 3.1.9 project source</a>（text asset登録・style設定）、内部実装: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/extensions/kubohiroyaassetmanager.js#L1491-L1503">Asset ManagerからAnimated Text opcodeを取得する処理</a></p>
 
 ## Translate — viewerの言語を知る {#extension-translate .extension-sheet .extension-sheet-left}
 
@@ -292,7 +292,7 @@ Scratch／TurboWarp標準の翻訳拡張です。文章と翻訳先の言語を�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>初めて開いた利用者には日本語か英語のどちらかを提示する必要がありますが、選択前には保存値がありません。そこでviewerの言語を一度だけ「最初の推測」に使い、その後は利用者自身の選択を優先します。台本文を自動翻訳するための利用ではありません。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-translate.png" alt="TurboWarp EditorでStageの緑の旗スクリプトを開き、Translateの閲覧者言語ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9の緑の旗を表示。緑色のTranslate reporter「言語」を、保存済み設定がない場合の日本語／英語判定に使います。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-translate.png" alt="TurboWarp Editorの初期化条件から、Translateの言語reporterと親のor条件だけを切り出した画面"><figcaption>保存済み言語がないときの条件内にあるTranslateの「言語」reporter。日本語／英語の初期判定に使います。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>優先1</strong><span>Local Storageに保存済みの利用者選択。</span></section><section><strong>優先2</strong><span>Translateのviewer language。</span></section><section><strong>結果</strong><span>runtime変数を通して全UIへbroadcast。</span></section></div>
 
@@ -323,7 +323,7 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>紙芝居の作者には、素材がURLかSB3内のcostumeかを意識せず「Hero」「海」「鐘」のような名前で台本を書いてほしいからです。登録と読込を一か所へ集めることで、local素材は通信なしで速く使い、Web素材はcacheし、Loading進捗も同じ単位で数えられます。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-asset-manager.png" alt="TurboWarp EditorでStageのcreate asset定義を開き、Asset Managerの登録、読込確認、背景設定ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「create asset」を表示。青色のAsset ManagerブロックがLoading素材の取得、asset登録、背景反映を担います。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-asset-manager.png" alt="TurboWarp Editorのcreate asset定義から、Asset Managerの読込確認、登録、背景設定だけを切り出した画面"><figcaption>読込完了を待ち、resourceをassetとして登録し、Loading用なら背景へ反映する接続部分です。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>開始前</strong><span>Loading backdropとcostumeを先に登録。</span></section><section><strong>登録中</strong><span>台本の全assetを名前・addressで登録。</span></section><section><strong>実行中</strong><span>同じ名前で背景、Actor、音、textを操作。</span></section></div>
 
@@ -354,7 +354,7 @@ model、camera、preview、predictionを別々に開始・停止できます。
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>このアプリでは、観客がkeyやbuttonを押すだけでなく、物語に合わせて体を動かすこと自体が入力になります。学習済みmodel、camera、preview、認識loopを別々に管理できるため、必要なsceneだけでcameraを使い、poseが十分確かになった時に物語を進められます。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-tmpose.png" alt="TurboWarp EditorでStageのcameraとpose認識の補助定義を開き、TMPoseブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStageを表示。緑色のTMPoseブロックをcamera preview、認識開始／停止の補助定義から呼び出します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-tmpose.png" alt="TurboWarp Editorから、TMPoseの認識開始とcamera preview表示を呼ぶ2つの補助定義だけを切り出した画面"><figcaption><code>start pose recog</code>と<code>start camera preview</code>。各custom blockが対応するTMPose blockを1つずつ呼びます。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>scene準備</strong><span><code>TMPoseURL</code>でmodelをload。</span></section><section><strong>action</strong><span>指定poseのscoreが閾値を超えるまで反復。</span></section><section><strong>終了</strong><span>skip、scene終了、stopでpredictionとcameraを停止。</span></section></div>
 
@@ -385,7 +385,7 @@ LF、CRLF、CRを同じ改行として正規化するため、台本を作った
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>台本のerrorを直す人にとって最も役立つ手掛かりは、元のTXTと一致する行番号です。OSごとの改行差を吸収しつつ、検査と実行が同じ物理行のlistを使えば、「表示された行」と「直すべき行」がずれません。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-text-lines.png" alt="TurboWarp EditorでStageのcreate sceneList定義を開き、Text Linesのlist書込ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「create sceneList」を表示。青灰色のText Linesブロックが台本文字列をlinesリストへ一括展開します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-text-lines.png" alt="TurboWarp Editorのcreate sceneList定義から、Text LinesでsceneBlockをlinesへ展開する周辺だけを切り出した画面"><figcaption>scene単位に切り出した文字列を、Text Linesの1 blockで<code>lines</code> listへ展開する部分です。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>preflight</strong><span>物理行番号とcommandを一緒に検査。</span></section><section><strong>実行</strong><span>同じ<code>lines</code> listをscene生成へ渡す。</span></section><section><strong>診断</strong><span>errorの行番号を元TXTへ正確に対応。</span></section></div>
 
@@ -416,7 +416,7 @@ Temporary Variablesのruntime値を、JavaScriptに似た制限付き条件式�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>台本作者は「scoreが3以上なら次のsceneへ」のような分岐を書きたい一方、外部台本から任意のJavaScriptを動かしてはいけません。読める条件式の形を保ちつつ、許可した演算だけを現在のruntime値へ適用する安全な境界になります。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-runtime-expression.png" alt="TurboWarp EditorでStageのexec branch action定義を開き、Runtime Expressionの条件判定ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「exec branch action」を表示。紫色のruntime conditionが現在のruntime値で条件を評価します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-runtime-expression.png" alt="TurboWarp Editorのexec branch action定義から、Runtime Expressionのcondition reporterと入力だけを切り出した画面"><figcaption>branch条件を1件ずつ読むloop内の<code>condition</code> reporter。thread variableから渡した式を現在のruntime値で評価します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>登録</strong><span><code>registerBranch</code>が式とscene labelを保持。</span></section><section><strong>評価</strong><span>上から順にruntime値を使って判定。</span></section><section><strong>決定</strong><span>最初にtrueとなった遷移先だけを採用。</span></section></div>
 
@@ -447,7 +447,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>key、画面のActor、poseごとに「入力を待つ」scriptを増やすと、同時発火やsceneをまたいだ古い待機が競合します。入力源は違ってもruntime値とbroadcastへ合流させ、最初に成立した操作の後で残りを解除できる構造が必要です。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-async-input.png" alt="TurboWarp EditorでStageのkeyInputToChangeScene定義を開き、Async Inputのkey listenerブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「keyInputToChangeScene」を表示。青緑色のAsync Inputブロックがkey入力をruntime更新とbroadcastへ結びます。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-async-input.png" alt="TurboWarp EditorのkeyInputToChangeScene定義から、Async Input listenerと引数準備を含む接続部分だけを切り出した画面"><figcaption>keyとscene labelを対応付け、listenerがruntime更新とbroadcastを行う1回分のloopです。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>key</strong><span>物理keyからscene labelを選ぶ。</span></section><section><strong>touch</strong><span>画面のActor名から同じ遷移へ合流。</span></section><section><strong>競合</strong><span>最初の入力で解決し、残りのlistenerを解除。</span></section></div>
 
@@ -478,7 +478,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>外部から読み込む台本には、綴り間違いだけでなく、存在しないsceneや素材、危険なaddressが含まれ得ます。asset取得やcamera開始の後で失敗すると、利用者には半端な画面しか残りません。上演前に止め、直す行と理由を読める形で示します。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-kamishibai-runtime.png" alt="TurboWarp EditorでStageのstartStory受信処理を開き、Kamishibai Runtimeの検証ブロックを最初に使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「startStory」を表示。赤褐色のvalidateブロックをasset作成やcamera開始より前に実行します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-kamishibai-runtime.png" alt="TurboWarp EditorのstartStory処理から、Kamishibai Runtimeのvalidateと直後の初期化だけを切り出した画面"><figcaption><code>startStory</code>直後にvalidateし、成功した場合だけskip状態の初期化やcamera開始へ進む順序を示します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>位置</strong><span><code>startStory</code>直後、asset／cameraより前。</span></section><section><strong>失敗</strong><span>背景作業を始めず、promptへSVG診断を表示。</span></section><section><strong>成功</strong><span>従来のStage custom block群へ処理を返す。</span></section></div>
 
@@ -509,7 +509,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>title画面から公式サイトへ案内する必要はありますが、台本中の任意URLが勝手にtabを開ける設計にはできません。利用者が押した専用buttonから、packageに固定されたHTTPS URLだけを開くことで、案内機能と安全な上演を両立します。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-web-link.png" alt="TurboWarp EditorでofficialWebsiteButtonのクリック処理を開き、Web LinkのURLを新しいタブで開くブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のofficialWebsiteButtonを表示。クリック直後に青緑色のWeb Linkブロックで公式HTTPS URLを新しいtabへ開きます。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-web-link.png" alt="TurboWarp EditorのofficialWebsiteButtonから、クリックeventとWeb Link blockだけを切り出した画面"><figcaption>buttonクリック直後に、Web Linkが公式HTTPS URLを新しいtabで開く2ブロックのstackです。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>入口</strong><span>title画面の「公式Webサイト」button。</span></section><section><strong>値</strong><span>package metadata由来のhomepageをruntime経由で渡す。</span></section><section><strong>制約</strong><span>通常のscene actionからは呼び出さない。</span></section></div>
 
