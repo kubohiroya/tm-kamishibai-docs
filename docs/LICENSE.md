@@ -38,7 +38,9 @@ Copyright © 2026 Hiroya Kubo.
 `images/extension-editor-*.png`の15図版は、2026年8月4日に
 [TurboWarp Editor](https://turbowarp.org/editor)で
 [TMPose紙芝居 Version 3.1.9のSB3](https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai.sb3)
-を開き、実際のblock配置を表示して作成した画面キャプチャです。対応するproject sourceは
+を開き、Stageまたは対象spriteごとにTurboWarp Editorの「きれいにする」を実行して
+block同士の重なりを解消した後、2560×1440の表示領域で撮影し、説明対象の前後だけを
+切り出した画面キャプチャです。対応するproject sourceは
 [固定commit `b8de78a`](https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json)
 で確認できます。
 

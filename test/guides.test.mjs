@@ -35,7 +35,9 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
     const png = readFileSync(new URL(`../docs/images/${filename}`, import.meta.url));
     return [png.readUInt32BE(16), png.readUInt32BE(20)];
   });
-  assert.ok(editorCaptureDimensions.every(([width, height]) => width < 1200 && height < 600));
+  assert.ok(editorCaptureDimensions.every(([width, height]) => width <= 1400 && height <= 600));
+  assert.ok(editorCaptureDimensions.every(([width, height]) => width * height >= 50_000));
+  assert.ok(editorCaptureDimensions.filter(([width]) => width >= 800).length >= 7);
   assert.ok(
     new Set(editorCaptureDimensions.map(([width, height]) => `${width}x${height}`)).size >= 10,
   );

@@ -29,7 +29,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="extension-overview-note"><strong>2種類の数え方:</strong> このガイドは保守するソース単位で15個を説明します。一方、bundle版SB3では、そのうち7個を<code>kamishibaibundle</code>という1個のIDにまとめます。詳しくは次ページを参照してください。</p>
 
-<p class="extension-source extension-overview-source">詳しい呼出し関係は<a href="internal-specification.md">内部仕様書</a>、更新手順は<a href="developer-guide.md">メンテナンスガイド</a>を参照してください。</p>
+<p class="extension-source extension-overview-source">右ページの実画面例は、対象ごとにTurboWarp Editorの「きれいにする」を実行し、重なりを解消してから高解像度で撮影しています。詳しい呼出し関係は<a href="internal-specification.md">内部仕様書</a>、更新手順は<a href="developer-guide.md">メンテナンスガイド</a>を参照してください。</p>
 
 ## 7拡張を1つのIDへまとめる {#extension-bundle .extension-sheet .extension-bundle-sheet}
 
@@ -75,7 +75,7 @@ group、経過時間の計測、consoleの消去もblockから操作でき、実
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>紙芝居はasset読込、scene進行、入力待ちが非同期に重なります。画面だけでは「どの台本行まで進み、どこで止まったか」が分かりにくいため、観客向け表示を汚さずに制作者が舞台裏を追える記録経路が必要です。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-consoles.png" alt="TurboWarp Editorのexec scene定義から、接続された2つのConsolesログブロックだけを切り出した画面"><figcaption>「exec scene # …」冒頭の実ブロック。区切りとscene番号・labelを記録する2つのlogだけを切り出しています。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-consoles.png" alt="TurboWarp Editorのexec scene定義冒頭で、scene context設定に続いて2つのConsolesログを実行する画面"><figcaption>「exec scene # …」の入口。scene contextを設定し、区切りとscene番号・labelを2つのlogへ記録する順序が分かる範囲だけを示します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>いつ使う?</strong><span>scene開始、待機、asset生成、Actor処理の節目。</span></section><section><strong>何が分かる?</strong><span>どのcommandまで進み、どこで止まったか。</span></section><section><strong>異常時</strong><span>Kamishibai RuntimeのSVGと同じ原因をconsoleにも残す。</span></section></div>
 
@@ -416,7 +416,7 @@ Temporary Variablesのruntime値を、JavaScriptに似た制限付き条件式�
 
 <aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>台本作者は「scoreが3以上なら次のsceneへ」のような分岐を書きたい一方、外部台本から任意のJavaScriptを動かしてはいけません。読める条件式の形を保ちつつ、許可した演算だけを現在のruntime値へ適用する安全な境界になります。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-runtime-expression.png" alt="TurboWarp Editorのexec branch action定義から、Runtime Expressionのcondition reporterと入力だけを切り出した画面"><figcaption>branch条件を1件ずつ読むloop内の<code>condition</code> reporter。thread variableから渡した式を現在のruntime値で評価します。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-runtime-expression.png" alt="TurboWarp Editorのexec branch action定義で、condition文字列を取り出し、Runtime Expressionで評価して次の条件へ進む画面"><figcaption>branch条件を1件ずつ読むloop。thread variableへ式を取り出し、<code>condition</code> reporterで現在のruntime値に対して評価してから次の条件へ進みます。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>登録</strong><span><code>registerBranch</code>が式とscene labelを保持。</span></section><section><strong>評価</strong><span>上から順にruntime値を使って判定。</span></section><section><strong>決定</strong><span>最初にtrueとなった遷移先だけを採用。</span></section></div>
 
