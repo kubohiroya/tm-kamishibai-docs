@@ -8,9 +8,9 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 TMPose紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居にcamera映像を重ね、
 参加者のポーズやkey・touch入力で物語を進める「参加型」AI紙芝居アプリです。
-作品はテキストの`kamishibai=3.1`台本として記述し、絵・音・動き・分岐を組み合わせます。
+作品はテキストの`kamishibai=3.2`台本として記述し、絵・音・動き・分岐を組み合わせます。3.2.xは既存の`kamishibai=3.1`台本も読み込めます。
 
-<figure class="application-hero"><img src="../images/image60.png" alt="参加型AI紙芝居 Version 3.1.9と表示されたTMPose紙芝居のタイトル画面"><figcaption>同じアプリに台本と素材を読み込むことで、異なる物語を上演できます。</figcaption></figure>
+<figure class="application-hero"><img src="../images/image60.png" alt="参加型AI紙芝居 Version 3.1.9と表示されたTMPose紙芝居のタイトル画面"><figcaption>3.1.9時点の画面例。3.2.0でも、同じアプリに台本と素材を読み込むことで異なる物語を上演します。</figcaption></figure>
 
 <div class="application-value-grid"><section><strong>見る</strong><span>絵・台詞・音・animationで物語を伝える</span></section><section><strong>動く</strong><span>cameraの前でポーズを取り、登場人物へ働きかける</span></section><section><strong>作る</strong><span>台本と素材を差し替え、自分たちの作品へ育てる</span></section></div>
 
@@ -22,7 +22,7 @@ TMPose紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居に
 
 <p class="application-page-label">2 / 8　アプリ概要</p>
 
-アプリ本体は汎用のSB3です。作品固有の`kamishibai=3.1`台本とassetを読み込み、
+アプリ本体は汎用のSB3です。作品固有の`kamishibai=3.1`または`kamishibai=3.2`台本とassetを読み込み、
 事前検査、Loading、scene実行、入力待ち、画面更新を共通の流れで扱います。
 
 <figure class="application-flow"><figcaption>作品から上演まで</figcaption><div><span>台本・画像・音声</span><b>→</b><span>preflight検査</span><b>→</b><span>asset登録・Loading</span><b>→</b><span>scene実行</span></div></figure>
@@ -57,7 +57,7 @@ TMPose紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居に
 
 <figure class="application-flow"><figcaption>参加者の動きが物語へ届くまで</figcaption><div><span>身体のポーズ</span><b>→</b><span>TMPoseで分類</span><b>→</b><span>Async Inputで待機</span><b>→</b><span>scene actionを再開</span></div></figure>
 
-<div class="application-columns"><section><p class="application-subhead">台本側の指定</p><pre><code>kamishibai=3.1
+<div class="application-columns"><section><p class="application-subhead">台本側の指定</p><pre><code>kamishibai=3.2
 sceneLabel=ride-turtle
 TMPoseURL=https://…/model.json
 action=pose:ride,0.8
@@ -96,21 +96,23 @@ AIではないprogramを一つの作品へ組み合わせます。何を人が�
 
 <p class="application-source">出典: <a href="../workshops/2026-08-01/tmpose-kamishibai-20260801.md">体験会参加者用教材</a>、<a href="../workshops/2026-08-01/tmpose-kamishibai-staff-20260801.md">体験会スタッフ向け資料</a></p>
 
-## 紙芝居DSL 3.1が物語をデータにする {#dsl-31 .application-sheet .unnumbered}
+## 紙芝居DSL 3.2が物語をデータにする {#dsl-32 .application-sheet .unnumbered}
 
-<p class="application-page-label">7 / 8　DSL 3.1説明</p>
+<p class="application-page-label">7 / 8　DSL 3.2説明</p>
 
-紙芝居DSL 3.1は、一行を`command=value`として記述する人間可読の台本形式です。
-画像や音声をasset名へ登録し、sceneごとにActor、text、入力、分岐、transitionを並べます。
+紙芝居DSL 3.2は、一行を`command=value`として記述する人間可読の台本形式です。
+画像や音声をasset名へ登録し、sceneごとにActor、text、入力、分岐、transitionを並べます。旧Text Assetを互換維持しながら、相対サイズと複数行に対応するSVG Textを併用できます。
 
-<div class="application-columns"><section><p class="application-subhead">宣言するもの</p><ul><li><code>asset</code>: URLやSB3内costume・sound</li><li><code>sceneLabel</code>: 分岐先を表すscene名</li><li><code>actor</code>: 表示位置、costume、animation</li><li><code>action</code>: text、pose、入力待ち、遷移</li><li><code>registerBranch</code>: runtime変数による条件分岐</li></ul></section><section><p class="application-subhead">3.1の実行pipeline</p><ol><li>versionとcommand構造をpreflight</li><li>参照先・address・条件式を検査</li><li>Loading用assetを先に登録</li><li>通常assetを登録して進捗表示</li><li>sceneとactionを順に実行</li></ol></section></div>
+<div class="application-columns"><section><p class="application-subhead">宣言するもの</p><ul><li><code>asset</code>: URLやSB3内costume・sound</li><li><code>sceneLabel</code>: 分岐先を表すscene名</li><li><code>actor</code>: 表示位置、costume、animation</li><li><code>svgTextStyle</code>: textの共通style</li><li><code>action</code>: text、pose、入力待ち、遷移</li></ul></section><section><p class="application-subhead">3.2の実行pipeline</p><ol><li>3.1／3.2宣言とcommand構造をpreflight</li><li>参照先・address・条件式を検査</li><li>Loading用assetを先に登録</li><li>通常assetを登録して進捗表示</li><li>sceneとactionを順に実行</li></ol></section></div>
 
-<pre class="application-code"><code>kamishibai=3.1
+<pre class="application-code"><code>kamishibai=3.2
 asset=Hero,costume:Actor:hero1
+actor=Hero,hero1
+svgTextStyle=title:#112233:#fff:Noto Sans JP:150:center:up
 setLoadingBackdrop=loadingBackground
 sceneLabel=start
-actor=Hero,0,-80,100
 text=ui.prompt:Pose!
+action=Hero:setText:Title:title
 action=pose:rescue,0.8
 transition=fadeToWhite</code></pre>
 
@@ -128,10 +130,10 @@ transition=fadeToWhite</code></pre>
 
 <figure class="application-flow application-toolchain-flow"><figcaption>このrepositoryでのsource-of-truth</figcaption><div><span>TurboWarpで編集したSB3</span><b>→</b><span><code>pnpm sb3:import</code></span><b>→</b><span><code>app/</code>の展開source</span><b>→</b><span><code>check</code>・test・build</span><b>→</b><span>配布SB3</span></div></figure>
 
-<div class="application-columns"><section><p class="application-subhead">日常のworkflow</p><dl><dt><code>pnpm sb3:check</code></dt><dd>asset参照、hash、拡張mappingをoffline検証</dd><dt><code>pnpm sb3:build</code></dt><dd>固定順・timestamp・圧縮でSB3を再生成</dd><dt><code>pnpm sb3:extensions:status</code></dt><dd>上流拡張の更新候補だけを確認</dd></dl></section><section><p class="application-subhead">機能拡張の管理</p><ul><li>commitとSHA-256で埋め込みJSの由来を固定</li><li><code>sync</code>は固定commitから復元</li><li><code>update</code>は更新をtransactionとして適用</li><li>複数拡張のbundleは任意設定で、元JSとIDを保持したまま一つのpermission単位にできる</li></ul></section></div>
+<div class="application-columns"><section><p class="application-subhead">日常のworkflow</p><dl><dt><code>pnpm sb3:check</code></dt><dd>asset参照、hash、拡張mappingをoffline検証</dd><dt><code>pnpm sb3:build</code></dt><dd>固定順・timestamp・圧縮でSB3を再生成</dd><dt><code>pnpm sb3:extensions:status</code></dt><dd>固定したGitHub／npm由来を確認</dd></dl></section><section><p class="application-subhead">機能拡張の管理</p><ul><li>commitまたはnpm versionとSHA-256で由来を固定</li><li><code>sync</code>はinstall済みの固定sourceから復元</li><li><code>update</code>は更新をtransactionとして適用</li><li>複数拡張のbundleは元opcodeを変換し、一つの登録単位へまとめられる</li></ul></section></div>
 
 <p class="application-callout"><strong>再現性の境界:</strong> release build中にnetwork依存の<code>sync</code>や<code>update</code>を暗黙実行しません。更新は別のreview可能な変更として行い、固定sourceをcommitしてからbuildします。</p>
 
-<p class="application-source">出典: <a href="https://github.com/kubohiroya/sb3-toolchain/tree/2c82aaf02f605564f79efe8ff3bbd8f1a78d6fe9">sb3-toolchain 固定commit 2c82aaf</a>、<a href="https://github.com/kubohiroya/sb3-toolchain/blob/2c82aaf02f605564f79efe8ff3bbd8f1a78d6fe9/docs/workflows.md">推奨workflow</a>、<a href="https://github.com/kubohiroya/sb3-toolchain/blob/2c82aaf02f605564f79efe8ff3bbd8f1a78d6fe9/docs/source-format-v1.md">展開source形式</a></p>
+<p class="application-source">出典: <a href="https://github.com/kubohiroya/sb3-toolchain/tree/b3f4b9aa3ed3ede363700be815fe522f6a47df0b">sb3-toolchain 固定commit b3f4b9a</a>、<a href="https://github.com/kubohiroya/sb3-toolchain/blob/b3f4b9aa3ed3ede363700be815fe522f6a47df0b/docs/workflows.md">推奨workflow</a>、<a href="https://github.com/kubohiroya/sb3-toolchain/blob/b3f4b9aa3ed3ede363700be815fe522f6a47df0b/docs/source-format-v1.md">展開source形式</a></p>
 
 DSLとアプリの版ごとの差分は[`history.md`](../dsl-author-guides/history.md)を参照してください。

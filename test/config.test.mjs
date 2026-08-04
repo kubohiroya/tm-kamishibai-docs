@@ -55,9 +55,9 @@ test('organizes every migrated document into one reader-oriented collection', ()
   }
 });
 
-test('pins the merged PR 238 source contract', () => {
-  assert.equal(sourceSnapshot.pullRequest, 238);
-  assert.equal(sourceSnapshot.commit, '8166edb3a8b7ed360685bdcd6534c000054105bd');
-  assert.equal(sourceSnapshot.dslVersion, '3.1');
-  assert.equal(sourceSnapshot.extensions.length, 15);
+test('pins the merged 3.2.0 source contract', () => {
+  assert.equal(sourceSnapshot.pullRequest, 252);
+  assert.equal(sourceSnapshot.commit, 'd1624c9ce9464bf696b4bb97851dce9154a09ee6');
+  assert.equal(sourceSnapshot.dslVersion, '3.2');
+  assert.equal(sourceSnapshot.extensions.length, 16);
 });

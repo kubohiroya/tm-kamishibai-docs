@@ -1,8 +1,8 @@
 {
   "repository": "kubohiroya/tmpose-kamishibai",
-  "pullRequest": 238,
-  "commit": "8166edb3a8b7ed360685bdcd6534c000054105bd",
-  "dslVersion": "3.1",
+  "pullRequest": 252,
+  "commit": "d1624c9ce9464bf696b4bb97851dce9154a09ee6",
+  "dslVersion": "3.2",
   "extensions": [
     "sipcconsole",
     "lmsTempVars2",
@@ -13,6 +13,7 @@
     "kubohiroyatextlines",
     "kubohiroyaruntimeexpression",
     "kubohiroyakamishibairuntime",
+    "kubohiroyasvgtext",
     "kubohiroyaasyncinput",
     "lmsTimers",
     "files",

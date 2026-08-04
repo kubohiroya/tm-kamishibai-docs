@@ -13,7 +13,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 3.2では、シーンに名前を付け、条件分岐やキー・タッチ入力で移動先を変えられます。フェード演出、アクター画像のループ／一回再生、ランタイム変数、画面上のテキストも台本から扱えます。3.2.xアプリは`kamishibai=3.1`と`kamishibai=3.2`の台本を読み込むため、既存の3.1台本は冒頭を書き換えずに実行できます。新規台本には3.2を推奨します。3.1までの旧Text Assetは移行期間中も表示・更新できますが、開発者コンソールへdeprecated警告が出ます。
 
-旧Text Assetの警告コードは`LEGACY_TEXT_ASSET_DEPRECATED`です。この警告だけで再生が停止することはありません。旧Text Assetは少なくとも3.2系列で維持し、移行先の[`turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text)を組み込んだプロジェクトでは新旧の方式を併用できます。`say`と`think`の吹き出しは旧Text Assetとは別の機能で、警告の対象外です。
+旧Text Assetの警告コードは`LEGACY_TEXT_ASSET_DEPRECATED`です。この警告だけで再生が停止することはありません。旧Text Assetは少なくとも3.2系列で維持します。3.2.0には[`@kubohiroya/turbowarp-svg-text@0.1.0`](https://github.com/kubohiroya/turbowarp-svg-text)が組み込まれており、新旧の方式を併用できます。新方式は名前付きスタイルを吹き出しとSVGテキストアクターで共有し、画面サイズを変えても文字の相対的な大きさを保ち、`\n`を含む文字列を複数行で表示します。`say`と`think`の吹き出しは旧Text Assetとは別の機能で、警告の対象外です。
 
 ## 利用形態と必要なもの
 

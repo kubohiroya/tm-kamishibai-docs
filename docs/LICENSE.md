@@ -33,15 +33,20 @@ Copyright © 2026 Hiroya Kubo.
 [Mozilla Public License 2.0](../LICENSES/MPL-2.0.txt)（MPL-2.0）が適用されます。
 図版を含む生成PDFやHTMLでも、該当図版部分のライセンスは変わりません。
 
-## TurboWarp Editorの実画面キャプチャ
+## 機能拡張ガイドの実画面キャプチャ
 
-`images/extension-editor-*.png`の15図版は、2026年8月4日に
+`images/extension-editor-svg-text.png`を除く`images/extension-editor-*.png`の15図版は、2026年8月4日に
 [TurboWarp Editor](https://turbowarp.org/editor)で
-[TMPose紙芝居 Version 3.1.9のSB3](https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai.sb3)
+[TMPose紙芝居 Version 3.1.9のSB3](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v3.1.9)
 を開き、2560×1440の表示領域で撮影し、説明対象の前後だけを切り出した
 画面キャプチャです。対応するproject sourceは
 [固定commit `b8de78a`](https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json)
 で確認できます。
+
+`images/extension-editor-svg-text.png`は、2026年8月4日に
+[SVG Text日本語図解ガイド](https://kubohiroya.github.io/turbowarp-svg-text/ja/)の、say、think、
+SVG text actorの使用例を同一範囲で撮影した画面キャプチャです。対応する機能拡張は
+[`@kubohiroya/turbowarp-svg-text@0.1.0`](https://www.npmjs.com/package/@kubohiroya/turbowarp-svg-text/v/0.1.0)です。
 
 図版中のTurboWarp Editor UI、Scratch block由来の視覚要素、機能拡張およびアプリの
 block実装には、それぞれの権利者によるライセンスまたは利用条件が適用されます。

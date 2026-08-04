@@ -58,6 +58,18 @@ SB3生成、文書生成を含む開発依存も対象とします。
 外部URLで読み込むTurboWarp Gallery機能拡張はversionをこのrepositoryで固定しないため、
 URLを維持します。ローカル実装のKamishibai RuntimeとWeb Linkには別の上流versionはありません。
 
+## 3.2.0リリース追補
+
+2026-08-04の3.2.0では、開発時依存の`@kubohiroya/sb3-toolchain`をcommit
+`b3f4b9aa3ed3ede363700be815fe522f6a47df0b`へ更新しました。この版は、`source.provider: "npm"`の
+完全固定versionとintegrityを検証し、install済みpackageから成果物とAPI manifestを同期します。
+package固有の同期scriptはアプリ側へ追加しません。
+
+実行時依存として`@kubohiroya/turbowarp-svg-text@0.1.0`を完全固定し、
+`dist/svg-text.js`と`dist/extension-manifest.json`をtoolchain経由で埋め込みました。Asset Managerは
+0.4.1、固定commit `c55e657`です。3.2.0の標準検証ではproduction／devとも既知の監査問題が0件であること、
+122件のアプリテスト、SB3検査、build、npm release dry runを確認しました。
+
 ## 結果
 
 | 対象       | 更新前                      | 更新・override後 |

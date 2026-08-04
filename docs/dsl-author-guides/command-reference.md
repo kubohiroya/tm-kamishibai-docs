@@ -22,7 +22,7 @@ DSL 3.2では、旧Text Asset構文をdeprecatedな互換機能として維持�
 
 対象構文があると、開発者コンソールへプロジェクトごとに一度`LEGACY_TEXT_ASSET_DEPRECATED`警告を出します。旧構文は少なくとも3.2系列で維持し、削除する場合は将来のメジャーバージョンで事前に告知します。
 
-移行先は[`kubohiroya/turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text)です。SVG Textを組み込んだ3.2プロジェクトでは旧Text Assetと併用できます。SVG TextのDSL構文は機能拡張側で公開された仕様を参照してください。`say`と`think`の吹き出し、画像・音声アセットはこのdeprecated警告の対象外です。
+移行先は[`@kubohiroya/turbowarp-svg-text@0.1.0`](https://github.com/kubohiroya/turbowarp-svg-text)です。3.2.0にはこの機能拡張が組み込まれており、`svgTextStyle`とアクターの`setText`を旧Text Assetと併用できます。`say`と`think`の吹き出し、画像・音声アセットはこのdeprecated警告の対象外です。
 
 ## 記法の基本
 
@@ -426,7 +426,31 @@ textStyle=Narration:color:#ffffff
 textStyle=Narration:align:center
 ```
 
-このスタイルは旧Text Asset専用です。SVG Textへ移行する場合は、機能拡張側の仕様に従って名前付きスタイルを定義し直してください。
+このスタイルは旧Text Asset専用です。SVG Textへ移行する場合は、次の`svgTextStyle`で名前付きスタイルを定義し直してください。
+
+### `svgTextStyle`：吹き出しとSVGテキストアクターの名前付きスタイル
+
+```text
+svgTextStyle=STYLE:BACKGROUND:TEXT_COLOR:FONT:SIZE:ALIGN:DIRECTION
+```
+
+例:
+
+```text
+svgTextStyle=title:#112233:#ffffff:Noto Sans JP:150:center:up
+```
+
+| 値 | 内容 |
+|---|---|
+| `STYLE` | スタイル名。同名を再定義すると表示中の対象も更新する |
+| `BACKGROUND` | CSS形式の背景色 |
+| `TEXT_COLOR` | CSS形式の文字色 |
+| `FONT` | フォント名 |
+| `SIZE` | 480×360ステージの標準14pxを100とする相対サイズ。1〜1000 |
+| `ALIGN` | `left`、`center`、`right` |
+| `DIRECTION` | `up`、`up-right`、`right`、`down-right`、`down`、`down-left`、`left`、`up-left` |
+
+画面サイズが変わると、フォントと余白をステージ寸法に比例させます。`DIRECTION`は吹き出しにだけ適用します。`default`スタイルは通常の`say`、`think`、`ask`にも適用されます。3.2.0ではアニメーションしません。
 
 ## グローバルアクション
 
@@ -660,6 +684,20 @@ action=アクター名:think:文章:秒数
 ```text
 action=Urashima:think:あっという間におじいさんになってしまった…:3
 ```
+
+### `setText`
+
+```text
+action=アクター名:setText:文字列:スタイル名
+```
+
+アクター自身のスキンを、`svgTextStyle`で定義した名前付きスタイルのSVGテキストへ置き換えます。アクターに従属する吹き出しではなく、アクターそのものがテキストの表示領域になります。
+
+```text
+action=Hero:setText:タイトル\nサブタイトル:title
+```
+
+文字列中のリテラル`\n`は改行へ変換されます。空または未定義のスタイル名は`default`へfallbackします。スタイルを後から同名で再定義した場合、表示中のSVGテキストも再描画します。3.2.0ではアニメーションしません。
 
 ### `setSkin`
 
@@ -1025,7 +1063,7 @@ action=keyInputToChangeScene:ArrowLeft,ArrowRight:left,right
 
 ## 互換性メモ
 
-このリファレンスは、tmpose-kamishibai 3.2.xの実装を前提にしています。3.2.xは`kamishibai=3.1`と`kamishibai=3.2`を受理するため、既存の3.1台本は先頭を変更せずに実行できます。新規台本には3.2を使用してください。旧Text Assetは3.2系列で動作を維持しますが、宣言が3.1でも3.2でもdeprecated警告が出るため、SVG Textへの段階移行を計画してください。台本を配布する場合は、台本ファイルと対応するアプリのバージョンを一緒に管理してください。
+このリファレンスは、tmpose-kamishibai 3.2.xの実装を前提にしています。3.2.xは`kamishibai=3.1`と`kamishibai=3.2`を受理するため、既存の3.1台本は先頭を変更せずに実行できます。新規台本には3.2を使用してください。旧Text Assetは3.2系列で動作を維持しますが、宣言が3.1でも3.2でもdeprecated警告が出ます。新しい表示は`svgTextStyle`と`setText`で作り、旧Text Assetと併用しながら段階移行してください。台本を配布する場合は、台本ファイルと対応するアプリのバージョンを一緒に管理してください。
 
 ## 関連ドキュメント
 

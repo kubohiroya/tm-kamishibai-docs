@@ -31,9 +31,16 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 ### SVG Textへの段階移行
 
-移行先は[`kubohiroya/turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text)です。SVG Textを組み込んだ3.2プロジェクトでは、既存台本の旧Text Assetを動かしたまま、新規部分からSVG Textへ置き換えられます。
+移行先はnpmで公開した[`@kubohiroya/turbowarp-svg-text@0.1.0`](https://github.com/kubohiroya/turbowarp-svg-text)です。tmpose-kamishibai 3.2.0へ組み込まれているため、既存台本の旧Text Assetを動かしたまま、新規部分からSVG Textへ置き換えられます。
 
-SVG TextのDSL構文は、機能拡張側で確定・公開された仕様を使用します。この文書では未公開の構文を現行仕様として定義しません。
+3.2で追加したDSLは次の2つです。
+
+```text
+svgTextStyle=STYLE:BACKGROUND:TEXT_COLOR:FONT:SIZE:ALIGN:DIRECTION
+action=ACTOR:setText:TEXT:STYLE
+```
+
+名前付きスタイルは吹き出しとSVGテキストアクターで共有できます。サイズ`100`は480×360ステージで標準14px相当になり、画面サイズに比例して変わります。`TEXT`中のリテラル`\n`は改行になります。背景色、文字色、フォント、左右／中央揃えと8方向の吹き出し方向を指定でき、3.2.0ではアニメーションしません。
 
 ### 3.1から3.2への移行チェックリスト
 
@@ -41,7 +48,7 @@ SVG TextのDSL構文は、機能拡張側で確定・公開された仕様を使
 - [ ] 新規台本または3.2機能を前提に更新する台本では`kamishibai=3.2`を使用した
 - [ ] 旧Text Assetが3.2でも表示・更新されることを確認した
 - [ ] `LEGACY_TEXT_ASSET_DEPRECATED`をエラーではなく移行通知として扱う運用にした
-- [ ] 新規テキスト表示は`turbowarp-svg-text`の公開仕様を確認して設計した
+- [ ] 新規テキスト表示は`svgTextStyle`と`setText`で設計した
 - [ ] 旧Text AssetとSVG Textを併用する期間と置換順を決めた
 - [ ] `say`／`think`、画像、音声が従来どおり動作することを確認した
 

@@ -26,7 +26,7 @@ DSL 3.2では、3.1までのText Asset構文をdeprecatedな互換機能とし�
 
 旧Text Assetを使用すると、開発者コンソールへプロジェクトごとに一度`LEGACY_TEXT_ASSET_DEPRECATED`警告が出ますが、台本の実行は継続します。旧構文は少なくとも3.2系列で利用でき、削除する場合は将来のメジャーバージョンで事前に告知します。
 
-新しいテキスト表現の移行先は[`kubohiroya/turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text)です。SVG Textを組み込んだ3.2プロジェクトでは旧Text Assetと併用できます。SVG TextのDSL構文は機能拡張側で確定・公開された仕様に従い、未公開の構文を推測して台本へ書かないでください。`say`と`think`の吹き出しは旧Text Assetとは別の機能で、3.2でも引き続き利用できます。
+新しいテキスト表現の移行先は[`@kubohiroya/turbowarp-svg-text@0.1.0`](https://github.com/kubohiroya/turbowarp-svg-text)です。3.2.0にはこの機能拡張が組み込まれており、旧Text Assetと併用できます。DSLでは`svgTextStyle`で名前付きスタイルを定義し、アクターの`setText`アクションから利用します。`say`と`think`の吹き出しは旧Text Assetとは別の機能で、`default`スタイルを定義すると通常の吹き出しにも同じ相対サイズと配色が適用されます。
 
 ## ファイルの基本構造
 
@@ -43,6 +43,7 @@ asset=アセット名,costume:スプライト名
 asset=音名,sound
 asset=テキスト名,text
 actor=アクター名,初期スキン
+svgTextStyle=スタイル名:背景色:文字色:フォント:サイズ:配置:吹き出し方向
 cover=表紙背景アセット名,表紙音声アセット名
 ---
 # scene 1
@@ -479,6 +480,30 @@ action=Hero:sequence:Hero1,StepSound,Hero2:0,0.5
 ```
 
 `loop` はアセット数と待ち時間の数を同じにします。最後の待ち時間の後は先頭へ戻ります。`sequence` は一回だけバックグラウンド再生し、待ち時間はアセット数より1つ少なくします。待ち時間 `0` を使うと、画像と音などを同時に開始できます。
+
+### SVG Textでアクター自身に文字を表示する
+
+シーンより前のヘッダ部で、吹き出しとSVGテキストアクターが共有する名前付きスタイルを定義します。
+
+```text
+svgTextStyle=title:#112233:#ffffff:Noto Sans JP:150:center:up
+```
+
+値の並びは`スタイル名:背景色:文字色:フォント:サイズ:配置:吹き出し方向`です。
+
+- サイズ`100`は480×360ステージで標準14px相当です。画面サイズを変えても、ステージに対する比率を保って拡大・縮小します。
+- 配置は`left`、`center`、`right`から選びます。
+- 吹き出し方向は`up`、`up-right`、`right`、`down-right`、`down`、`down-left`、`left`、`up-left`から選びます。SVGテキストアクター自身には方向を適用しません。
+- 同じスタイル名を再定義すると、その名前を使用中の吹き出しとSVGテキストアクターも更新されます。
+- `default`を定義すると、通常の`say`、`think`、`ask`にも同じ相対サイズ、色、フォント、配置、方向を適用します。
+
+登録済みアクター自身をテキスト表示へ切り替えるには、文字列とスタイル名を指定します。
+
+```text
+action=Hero:setText:タイトル\nサブタイトル:title
+```
+
+文字列中の2文字`\n`は改行へ変換されるため、2行以上の文字を表示できます。SVGへ挿入する文字列はescapeされます。アニメーションは3.2.0の対象外です。
 
 ### 旧Text Assetを表示・更新する（互換機能）
 
