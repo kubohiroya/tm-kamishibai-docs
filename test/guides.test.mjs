@@ -15,15 +15,49 @@ const applicationGuide = readFileSync(
 );
 const theme = readFileSync(new URL('../docs/general-theme.css', import.meta.url), 'utf8');
 
-test('keeps the extension guide as an index plus fifteen extension pages', () => {
-  const sheetIds = [...extensionGuide.matchAll(/^## .+ \{#([^ ]+) \.extension-sheet\}$/gmu)];
-  assert.equal(sheetIds.length, 15);
+test('keeps the extension guide as an index, bundle explanation, and fifteen two-page entries', () => {
+  const sheetIds = [
+    ...extensionGuide.matchAll(/^## .+ \{#([^ ]+) \.extension-sheet(?: [^}]+)?\}$/gmu),
+  ];
+  const leftSheets = extensionGuide.match(/\.extension-sheet-left\}/gu) ?? [];
+  const rightSheets = extensionGuide.match(/\.extension-sheet-right\}/gu) ?? [];
+  assert.equal(sheetIds.length, 31);
+  assert.equal(leftSheets.length, 15);
+  assert.equal(rightSheets.length, 15);
   assert.equal((extensionGuide.match(/<a href="#extension-[^"]+">/gu) ?? []).length, 15);
+  assert.equal((extensionGuide.match(/extension-gallery-[^"]+\.svg/gu) ?? []).length, 7);
   for (const extensionId of sourceSnapshot.extensions) {
     assert.match(extensionGuide, new RegExp(`<code>${extensionId}</code>`, 'u'));
   }
+  assert.match(extensionGuide, /\{#extension-bundle \.extension-sheet \.extension-bundle-sheet\}/u);
+  assert.match(extensionGuide, /<code>kamishibaibundle<\/code>/u);
+  assert.match(extensionGuide, /7 components → 1 ID/u);
+  assert.match(extensionGuide, /<strong>15<\/strong>[\s\S]*<strong>9<\/strong>/u);
+  const bundleSection = extensionGuide.slice(
+    extensionGuide.indexOf('## 7拡張を1つのIDへまとめる'),
+    extensionGuide.indexOf('## Consoles —'),
+  );
+  for (const extensionId of [
+    'kubohiroyaassetmanager',
+    'tmpose',
+    'kubohiroyatextlines',
+    'kubohiroyaruntimeexpression',
+    'kubohiroyaasyncinput',
+    'kubohiroyakamishibairuntime',
+    'kubohiroyaweblink',
+  ]) {
+    assert.match(bundleSection, new RegExp(`<code>${extensionId}</code>`, 'u'));
+  }
+  assert.ok(
+    extensionGuide.indexOf('#extension-consoles') <
+      extensionGuide.indexOf('#extension-asset-manager'),
+  );
+  assert.ok(
+    extensionGuide.indexOf('#extension-asset-manager') <
+      extensionGuide.indexOf('#extension-kamishibai-runtime'),
+  );
   assert.doesNotMatch(extensionGuide, /ポーズをとろう！/u);
-  assert.equal(findDocument('extension-guide.md')?.expectedPdfPageCount, 16);
+  assert.equal(findDocument('extension-guide.md')?.expectedPdfPageCount, 32);
   assert.match(theme, /@page extension-guide\s*\{[\s\S]*size:\s*A4;/u);
 });
 

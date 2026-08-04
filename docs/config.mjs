@@ -82,9 +82,10 @@ export const documentCollections = [
         sourceFilename: 'extension-guide.md',
         title: 'TMPose紙芝居 機能拡張ガイド',
         audience: 'アプリの依存機能を調査・変更する方',
-        description: '15個の依存機能拡張を一覧と図解付き・1拡張1ページの全16ページで紹介します。',
+        description:
+          '15個の依存機能拡張を1拡張2ページで図解し、sb3-toolchainによるbundle構成も説明する全32ページのガイドです。',
         pdfIncludesGeneratedToc: false,
-        expectedPdfPageCount: 16,
+        expectedPdfPageCount: 32,
       },
       {
         sourceFilename: 'dsl-3.1-diagnostics-design.md',
