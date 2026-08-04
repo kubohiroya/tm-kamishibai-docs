@@ -327,7 +327,7 @@ body
   > section.level1:has(> .extension-overview-kicker)
   > section.level2:has(> h2.extension-sheet-right)
   > h2.extension-sheet-right:first-child::before {
-  content: "TMPose紙芝居での利用";
+  content: "TMPose 紙芝居での利用例";
 }
 
 .extension-meta {

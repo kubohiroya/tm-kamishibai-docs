@@ -21,9 +21,14 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   ];
   const leftSheets = extensionGuide.match(/\.extension-sheet-left\}/gu) ?? [];
   const rightSheets = extensionGuide.match(/\.extension-sheet-right\}/gu) ?? [];
+  const rightHeadings = [
+    ...extensionGuide.matchAll(/^## (.+) \{#[^ ]+ \.extension-sheet \.extension-sheet-right\}$/gmu),
+  ].map(([, heading]) => heading);
   assert.equal(sheetIds.length, 31);
   assert.equal(leftSheets.length, 15);
   assert.equal(rightSheets.length, 15);
+  assert.equal(rightHeadings.length, 15);
+  assert.ok(rightHeadings.every((heading) => heading.includes('で') && !heading.includes(' — ')));
   assert.equal((extensionGuide.match(/<a href="#extension-[^"]+">/gu) ?? []).length, 15);
   assert.equal((extensionGuide.match(/extension-gallery-[^"]+\.svg/gu) ?? []).length, 7);
   const editorCaptures = [
@@ -44,7 +49,21 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   assert.doesNotMatch(extensionGuide, /class="tw-/u);
   assert.equal((extensionGuide.match(/class="extension-kamishibai-why"/gu) ?? []).length, 15);
   assert.equal((extensionGuide.match(/機能拡張そのもの 1 \/ 2/gu) ?? []).length, 15);
-  assert.equal((extensionGuide.match(/TMPose紙芝居での利用 2 \/ 2/gu) ?? []).length, 15);
+  assert.equal((extensionGuide.match(/TMPose 紙芝居での利用例 2 \/ 2/gu) ?? []).length, 15);
+  assert.match(extensionGuide, /^## TMPose — 学習済みモデルでカメラ映像のポーズを認識する /mu);
+  assert.doesNotMatch(extensionGuide, /cameraをpose名へ変える/u);
+  assert.match(extensionGuide, /^## Web Link — HTTPS URLを検証し、新しいタブで開く /mu);
+  assert.match(
+    extensionGuide,
+    /^## Web Linkで利用者がボタンやメニューを操作したとき、設定済みのHTTPSページを開く /mu,
+  );
+  assert.doesNotMatch(extensionGuide, /公式URLだけを開く|title buttonからだけ開く/u);
+  assert.match(theme, /content: "TMPose 紙芝居での利用例";/u);
+  assert.doesNotMatch(`${extensionGuide}\n${theme}`, /TMPose紙芝居での利用/u);
+  assert.match(
+    extensionGuide,
+    /このアプリの体験会を実施する場合を想定すると、参加者が書いたTXT台本をその場ですぐ試してもらいたい一方、どのような技量・経験を持った参加者が集まるかがわからず時間的制約もある状況では、台本ごとにWebへ公開したりアプリを作り直したりはできません。/u,
+  );
   const galleryFigures = [
     ...extensionGuide.matchAll(/<figure class="extension-gallery-banner">([\s\S]*?)<\/figure>/gu),
   ];
@@ -87,8 +106,8 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
       extensionGuide.indexOf('#extension-kamishibai-runtime'),
   );
   const animatedTextExample = extensionGuide.slice(
-    extensionGuide.indexOf('## Animated Text — Asset Managerから間接利用する'),
-    extensionGuide.indexOf('## Translate —'),
+    extensionGuide.indexOf('{#extension-animated-text-example '),
+    extensionGuide.indexOf('{#extension-translate '),
   );
   assert.match(animatedTextExample, /接続済みscriptにAnimated Text blockはありません/u);
   assert.match(animatedTextExample, /text_setFont/u);
