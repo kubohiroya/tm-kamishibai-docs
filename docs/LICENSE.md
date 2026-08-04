@@ -32,3 +32,27 @@ Copyright © 2026 Hiroya Kubo.
 これら7図版にはCC BY-SA 4.0ではなく、引用元の
 [Mozilla Public License 2.0](../LICENSES/MPL-2.0.txt)（MPL-2.0）が適用されます。
 図版を含む生成PDFやHTMLでも、該当図版部分のライセンスは変わりません。
+
+## TurboWarp Editorの実画面キャプチャ
+
+`images/extension-editor-*.png`の15図版は、2026年8月4日に
+[TurboWarp Editor](https://turbowarp.org/editor)で
+[TMPose紙芝居 Version 3.1.9のSB3](https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai.sb3)
+を開き、実際のblock配置を表示して作成した画面キャプチャです。対応するproject sourceは
+[固定commit `b8de78a`](https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/project.source.json)
+で確認できます。
+
+図版中のTurboWarp Editor UI、Scratch block由来の視覚要素、機能拡張およびアプリの
+block実装には、それぞれの権利者によるライセンスまたは利用条件が適用されます。
+この文書のCC BY-SA 4.0表示は、それら第三者要素を別途再許諾するものではありません。
+
+## Noto Sans JP
+
+`fonts/NotoSansJP-VF.ttf`は、
+[Google Fontsの固定commit `2796410`](https://github.com/google/fonts/tree/2796410152d4f9524b68ed46e69c1b60f8e0f7c3/ofl/notosansjp)
+から内容を変更せず収録した第三者フォントです。日本語字形をPDFへ確実に埋め込み、
+build環境や閲覧環境によって文字が四角形へ置換されることを防ぐために使用します。
+
+このフォントにはCC BY-SA 4.0ではなく、
+[SIL Open Font License 1.1](fonts/NotoSansJP-OFL.txt)（OFL-1.1）が適用されます。
+フォントを含む生成PDFやHTMLでも、フォント部分のライセンスは変わりません。

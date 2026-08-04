@@ -4,6 +4,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="extension-overview-kicker">全32ページ。15個の機能拡張を、1拡張につき2ページの見開きで図解する</p>
 
+<div class="extension-reading-key"><section><strong>左ページ・青</strong><span>機能拡張そのもの</span><small>公式ドキュメントに基づく動作・入力・出力・制約</small></section><section><strong>右ページ・橙</strong><span>TMPose紙芝居での利用</span><small>なぜ必要か、実プロジェクトのどこでどう使うか</small></section></div>
+
 `kamishibai=3.1`台本を動かす現行アプリは、次の15機能拡張を利用します。
 読む順番は実行時の読込順ではなく、**Gallery由来 → TurboWarp標準 → 外部埋め込み → アプリ内蔵**です。
 
@@ -52,26 +54,28 @@ sb3-toolchainでbundle版SB3を生成すると、外部埋め込み5個とアプ
 
 ## Consoles — 実行の足跡を残す {#extension-consoles .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">Gallery 1 / 7　機能編 1 / 2</p>
+<p class="extension-spread-label">Gallery 1 / 7　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>Gallery</span><code>sipcconsole</code><span>開発支援</span></p>
 
-ブラウザーの開発者ツールへ、台本解析、scene実行、errorを種類別に記録します。
-利用者向け画面を増やさず、開発者だけが実行順を追える「舞台裏の記録係」です。
+ブラウザーの開発者ツールにあるJavaScript consoleへ、値をlog、warn、errorなどの種類で出力する拡張です。
+group、経過時間の計測、consoleの消去もblockから操作でき、実行中の処理をまとまりと時系列で追跡できます。
 
-<figure class="extension-gallery-banner"><img src="../images/extension-gallery-consoles.svg" alt="TurboWarp Extension GalleryのConsolesバナー"><figcaption>TurboWarp Extension Galleryの公式バナー。consoleへ色分けして情報を送る拡張です。</figcaption></figure>
+<figure class="extension-gallery-banner"><img src="../images/extension-gallery-consoles.svg" alt="TurboWarp Extension GalleryのConsolesバナー"></figure>
 
-<figure class="extension-flow"><figcaption>紙芝居から開発者ツールまで</figcaption><div><span>command・scene</span><b>→</b><span>journal / error</span><b>→</b><span>browser console</span></div></figure>
+<figure class="extension-flow"><figcaption>配布ソースの機能要約：記録の種類とconsole上の整理</figcaption><div><span>log / info<br>warn / error</span><b>→</b><span>group・timerで整理</span><b>→</b><span>browser console</span></div></figure>
 
-<div class="extension-columns"><section><p class="extension-subhead">見つけやすくする</p><ul><li>通常記録、warning、error、debug</li><li>処理groupと時間計測</li><li>開始時のconsole消去</li></ul></section><section><p class="extension-subhead">画面表示とは分離</p><ul><li>利用者向けerrorはSVG診断</li><li>consoleは開発者だけが確認</li><li>本番の演出を妨げない</li></ul></section></div>
+<div class="extension-columns"><section><p class="extension-subhead">記録する</p><ul><li>通常値、情報、warning、error</li><li>複数値の結合と整形</li><li>開発者ツールへ即時出力</li></ul></section><section><p class="extension-subhead">追跡する</p><ul><li>処理をgroup化</li><li>timerの開始・終了</li><li>前回のconsoleを消去</li></ul></section></div>
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/-SIPC-/consoles.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/-SIPC-/consoles.js">配布ソース</a></p>
 
 ## Consoles — scene実行を追跡する {#extension-consoles-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 1 / 7　使用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 1 / 7　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「exec scene # …」の代表部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>define exec scene # (index) with (transition)</code></div><div class="tw-script"><div class="tw-block tw-custom">定義 exec scene # <i>index</i> with <i>transition</i></div><div class="tw-block tw-extension">journal <i>scene開始 + index</i></div><div class="tw-block tw-control">もし <span class="tw-reporter">sceneが存在しない</span> なら</div><div class="tw-indent"><div class="tw-block tw-extension">error <i>scene not found</i></div></div><div class="tw-block tw-extension">journal <i>scene完了</i></div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>紙芝居はasset読込、scene進行、入力待ちが非同期に重なります。画面だけでは「どの台本行まで進み、どこで止まったか」が分かりにくいため、観客向け表示を汚さずに制作者が舞台裏を追える記録経路が必要です。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-consoles.png" alt="TurboWarp EditorでStageのexec scene定義を開き、Consolesのログブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「exec scene # …」を表示。灰色のログブロックがscene開始と異常を記録します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>いつ使う?</strong><span>scene開始、待機、asset生成、Actor処理の節目。</span></section><section><strong>何が分かる?</strong><span>どのcommandまで進み、どこで止まったか。</span></section><section><strong>異常時</strong><span>Kamishibai RuntimeのSVGと同じ原因をconsoleにも残す。</span></section></div>
 
@@ -81,26 +85,28 @@ sb3-toolchainでbundle版SB3を生成すると、外部埋め込み5個とアプ
 
 ## Temporary Variables — その場の状態を持つ {#extension-temporary-variables .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">Gallery 2 / 7　機能編 1 / 2</p>
+<p class="extension-spread-label">Gallery 2 / 7　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>Gallery</span><code>lmsTempVars2</code><span>状態管理</span></p>
 
 Scratch変数を増やさず、処理の途中だけ必要な名前付き値を保持します。
 一つのcustom block内だけのthread variableと、project全体で共有するruntime variableを使い分けます。
 
-<figure class="extension-gallery-banner"><img src="../images/extension-gallery-temporary-variables.svg" alt="TurboWarp Extension GalleryのTemporary Variablesバナー"><figcaption>局所的なthread値と、全体共有のruntime値を扱う公式Galleryバナー。</figcaption></figure>
+<figure class="extension-gallery-banner"><img src="../images/extension-gallery-temporary-variables.svg" alt="TurboWarp Extension GalleryのTemporary Variablesバナー"></figure>
 
-<figure class="extension-flow"><figcaption>値の届く範囲</figcaption><div><span>custom block内</span><b>→</b><span>thread variable</span><b>／</b><span>全target共有</span><b>→</b><span>runtime variable</span></div></figure>
+<figure class="extension-flow"><figcaption>配布ソースの機能要約：値を置く場所で寿命と共有範囲が変わる</figcaption><div><span>custom blockの呼出し</span><b>→</b><span>thread variable<br>その実行だけ</span><b>／</b><span>runtime variable<br>project全体</span></div></figure>
 
-<div class="extension-columns"><section><p class="extension-subhead">thread</p><ul><li>台本1行の分解結果</li><li>loop index</li><li>再帰呼出しでも値を分離</li></ul></section><section><p class="extension-subhead">runtime</p><ul><li>scene、skip、pose</li><li>UI言語と選択結果</li><li>拡張間の値の受渡し</li></ul></section></div>
+<div class="extension-columns"><section><p class="extension-subhead">thread variable</p><ul><li>blockの実行stackに所属</li><li>再帰や同時実行で値を分離</li><li>処理終了後に捨てられる</li></ul></section><section><p class="extension-subhead">runtime variable</p><ul><li>全target・拡張から共有</li><li>名前で作成・更新・削除</li><li>project停止時までの一時値</li></ul></section></div>
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/Lily/TempVariables2.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/Lily/TempVariables2.js">配布ソース</a></p>
 
 ## Temporary Variables — asset解析をつなぐ {#extension-temporary-variables-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 2 / 7　使用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 2 / 7　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「create asset」の代表部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>define create asset</code></div><div class="tw-script"><div class="tw-block tw-custom">定義 create asset</div><div class="tw-block tw-extension">thread変数 <i>assetName</i> を <span class="tw-reporter">解析結果</span> にする</div><div class="tw-block tw-extension">thread変数 <i>address</i> を <span class="tw-reporter">解析結果</span> にする</div><div class="tw-block tw-data">assetName と address を検査</div><div class="tw-block tw-extension">runtime変数 <i>loadingCount</i> を 1 ずつ変える</div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>同じsceneの中でも複数のActorや入力処理が並行します。途中値を通常のScratch変数へ集めると別の実行が上書きし、変数一覧も膨らみます。呼出しごとの値はthreadへ、sceneや拡張をまたぐ合図だけはruntimeへ置くことで、状態の混線を防げます。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-temporary-variables.png" alt="TurboWarp EditorでStageのcreate asset定義を開き、一時変数ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「create asset」を表示。橙色のthread／runtime変数がasset解析と進捗をつなぎます。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>局所値</strong><span>assetName、address、引数番号をthreadへ置く。</span></section><section><strong>共有値</strong><span>scene、入力状態、Loading進捗をruntimeへ置く。</span></section><section><strong>連携</strong><span>Runtime ExpressionとAsync Inputが同じruntime値を読む。</span></section></div>
 
@@ -110,16 +116,16 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 ## Text — `key=value`を読み解く {#extension-text-operators .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">Gallery 3 / 7　機能編 1 / 2</p>
+<p class="extension-spread-label">Gallery 3 / 7　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>Gallery</span><code>strings</code><span>文字列処理</span></p>
 
-検索、分割、置換、比較、trimを追加する文字列演算拡張です。
-紙芝居DSLの一行を、command名と値へ分解する基礎になります。
+文字や文章を検索、分割、置換、比較、trimするための文字列演算拡張です。
+「含むか」を調べるだけでなく、区切りごとの項目取得、部分文字列、文字種変換などを値blockとして組み合わせられます。
 
-<figure class="extension-gallery-banner"><img src="../images/extension-gallery-text.svg" alt="TurboWarp Extension GalleryのTextバナー"><figcaption>文字列の検索・分割・置換を視覚化した公式Galleryバナー。</figcaption></figure>
+<figure class="extension-gallery-banner"><img src="../images/extension-gallery-text.svg" alt="TurboWarp Extension GalleryのTextバナー"></figure>
 
-<figure class="extension-flow"><figcaption>台本1行の変換</figcaption><div><span>asset=Hero,...</span><b>→</b><span>位置を探す</span><b>→</b><span>split + trim</span><b>→</b><span>key / value</span></div></figure>
+<figure class="extension-flow"><figcaption>公式Galleryと配布ソースの要約：文字列を調べ、必要な形へ作り直す</figcaption><div><span>元のtext</span><b>→</b><span>検索・count・比較</span><b>／</b><span>split・replace・trim</span><b>→</b><span>値／整形済みtext</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">形を調べる</p><ul><li>文字数と出現回数</li><li>前方・後方一致</li><li>厳密な文字列比較</li></ul></section><section><p class="extension-subhead">値を取り出す</p><ul><li>区切り文字でsplit</li><li>部分文字列</li><li>前後の空白をtrim</li></ul></section></div>
 
@@ -127,9 +133,11 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 ## Text — 引数を安全に切り出す {#extension-text-operators-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 3 / 7　使用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 3 / 7　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「selectValue # …」の代表部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>define selectValue # (index) separated by (separator) from (text)</code></div><div class="tw-script"><div class="tw-block tw-custom">定義 selectValue # <i>index</i> separated by <i>separator</i> from <i>text</i></div><div class="tw-block tw-control">もし <span class="tw-reporter">separator の個数</span> &lt; index なら</div><div class="tw-indent"><div class="tw-block tw-custom">返す <span class="tw-reporter">最後の項目をtrim</span></div></div><div class="tw-block tw-custom">返す <span class="tw-reporter">text の index 番目をsplitしてtrim</span></div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>紙芝居DSLは、人が直接編集できる一続きのtextです。専用parserをJavaScript側へ隠すのではなく、どの区切りを探し、どの引数を取り出したかをTurboWarpのblockとして読める形にすると、台本仕様と実装を制作者が照合しやすくなります。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-text.png" alt="TurboWarp EditorでStageのselectValue定義を開き、Text拡張の文字列ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「selectValue # …」を表示。緑色のcount、split、trimで指定引数を切り出します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>command</strong><span><code>asset=...</code>の最初の<code>=</code>を境界にする。</span></section><section><strong>引数</strong><span>comma区切りの指定位置を取得する。</span></section><section><strong>比較</strong><span>空文字・command名・action名を厳密に照合する。</span></section></div>
 
@@ -139,26 +147,28 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 ## Local Storage — 次回起動まで覚える {#extension-local-storage .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">Gallery 4 / 7　機能編 1 / 2</p>
+<p class="extension-spread-label">Gallery 4 / 7　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>Gallery</span><code>localstorage</code><span>永続保存</span></p>
 
 browserの保存領域に、project固有のnamespaceで文字列を保持します。
 Scratch変数と違い、ページを閉じた後でも次回起動時に読み戻せます。
 
-<figure class="extension-gallery-banner"><img src="../images/extension-gallery-local-storage.svg" alt="TurboWarp Extension GalleryのLocal Storageバナー"><figcaption>project単位の保存領域へ値を書き、後で読み戻す公式Galleryバナー。</figcaption></figure>
+<figure class="extension-gallery-banner"><img src="../images/extension-gallery-local-storage.svg" alt="TurboWarp Extension GalleryのLocal Storageバナー"></figure>
 
-<figure class="extension-flow"><figcaption>sessionをまたぐ値</figcaption><div><span>台本・UI言語</span><b>→</b><span>project namespace</span><b>→</b><span>次回起動</span></div></figure>
+<figure class="extension-flow"><figcaption>公式ドキュメントの図解要約：namespaceでprojectごとの保存領域を分ける</figcaption><div><span>key + plain text</span><b>→</b><span>project namespace</span><b>→</b><span>browser storage</span><b>→</b><span>reload後も取得</span></div></figure>
 
-<div class="extension-columns"><section><p class="extension-subhead">保存する</p><ul><li>外部から開いた台本</li><li>English／日本語の選択</li><li>project IDで領域を分離</li></ul></section><section><p class="extension-subhead">保存しない</p><ul><li>camera映像</li><li>pose認識の途中結果</li><li>一時的なscene状態</li></ul></section></div>
+<div class="extension-columns"><section><p class="extension-subhead">できること</p><ul><li>plain textの保存・取得・削除</li><li>namespace単位の全削除</li><li>別windowでの変更検知</li></ul></section><section><p class="extension-subhead">性質と制約</p><ul><li>通常変数より書込が遅い</li><li>Web版は容量が小さい</li><li>同じnamespaceは互いに上書き</li></ul></section></div>
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/local-storage.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/docs/local-storage.md">公式ドキュメント</a></p>
 
 ## Local Storage — UI言語を復元する {#extension-local-storage-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 4 / 7　使用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 4 / 7　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「緑の旗」の初期化部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>when green flag clicked</code></div><div class="tw-script"><div class="tw-block tw-event">⚑ が押されたとき</div><div class="tw-block tw-extension">storage project ID を <i>tmpose-kamishibai</i> にする</div><div class="tw-block tw-control">もし <span class="tw-reporter">storageの uiLanguage</span> = ja なら</div><div class="tw-indent"><div class="tw-block tw-extension">runtime変数 <i>uiLanguage</i> を ja にする</div></div><div class="tw-block tw-event">UI言語を反映 を送って待つ</div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>体験会で選んだ台本や表示言語がreloadのたびに消えると、参加者は上演より再設定に時間を取られます。小さな設定と台本文字列だけを保存し、次回は前回の続きから始められるようにします。camera映像や認識途中の値は保存しません。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-local-storage.png" alt="TurboWarp EditorでStageのstartStory受信処理を開き、Local Storageの名前空間と保存ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「startStory」を表示。緑色の名前空間／storageブロックで台本とUI設定を永続領域へ接続します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>起動時</strong><span>保存済み言語を読み、なければTranslateへ進む。</span></section><section><strong>台本選択</strong><span>Filesで開いたtextを保存し、reloadで再利用する。</span></section><section><strong>UI操作</strong><span>言語変更時に保存値とruntime値を同時更新する。</span></section></div>
 
@@ -168,26 +178,28 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 ## More Timers — 同時に時間を測る {#extension-more-timers .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">Gallery 5 / 7　機能編 1 / 2</p>
+<p class="extension-spread-label">Gallery 5 / 7　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>Gallery</span><code>lmsTimers</code><span>時間管理</span></p>
 
 標準timerを一つだけでなく、文字列で名付けた複数timerとして並行管理します。
-待機、fade、glideが重なっても、それぞれの経過時間を独立して読めます。
+各timerを個別に開始、pause、resume、reset、増減、削除できるため、重なった処理の経過時間を独立して扱えます。
 
-<figure class="extension-gallery-banner"><img src="../images/extension-gallery-more-timers.svg" alt="TurboWarp Extension GalleryのMore Timersバナー"><figcaption>複数の名前付きtimerを作成・停止・再開する公式Galleryバナー。</figcaption></figure>
+<figure class="extension-gallery-banner"><img src="../images/extension-gallery-more-timers.svg" alt="TurboWarp Extension GalleryのMore Timersバナー"></figure>
 
-<figure class="extension-flow"><figcaption>timerのlife cycle</figcaption><div><span>start / reset</span><b>→</b><span>値を読む</span><b>→</b><span>完了判定</span><b>→</b><span>remove</span></div></figure>
+<figure class="extension-flow"><figcaption>公式Galleryと配布ソースの要約：名前ごとに独立したtimerのlife cycle</figcaption><div><span>start / reset</span><b>→</b><span>pause / resume<br>値を読む・増減</span><b>→</b><span>remove</span></div></figure>
 
-<div class="extension-columns"><section><p class="extension-subhead">操作</p><ul><li>start／reset</li><li>pause／resume</li><li>増減、削除、全削除</li></ul></section><section><p class="extension-subhead">紙芝居</p><ul><li><code>wait</code> action</li><li>Actorの待機</li><li>fadeとtransition進捗</li></ul></section></div>
+<div class="extension-columns"><section><p class="extension-subhead">個別timer</p><ul><li>名前で作成・照会</li><li>pause／resume</li><li>reset、増減、削除</li></ul></section><section><p class="extension-subhead">複数timer</p><ul><li>互いの値を上書きしない</li><li>存在する名前を確認</li><li>必要なら全timerを削除</li></ul></section></div>
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/Lily/MoreTimers.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/Lily/MoreTimers.js">配布ソース</a></p>
 
 ## More Timers — skipできる待機を作る {#extension-more-timers-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 5 / 7　使用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 5 / 7　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「wait (seconds) seconds」の代表部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>define wait (seconds) seconds</code></div><div class="tw-script"><div class="tw-block tw-custom">定義 wait <i>seconds</i> seconds</div><div class="tw-block tw-extension">timer <i>wait</i> を開始／reset</div><div class="tw-block tw-control">くり返す <span class="tw-reporter">timer wait &lt; seconds かつ skipでない</span></div><div class="tw-indent"><div class="tw-block tw-control">0秒待つ</div></div><div class="tw-block tw-extension">timer <i>wait</i> を削除</div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>標準の「待つ」だけでは、待機中に観客がskipしても、その時間が終わるまでsceneを進められません。名前付きtimerの値とskipの両方を短いloopで確認すれば、予定時間を守りながら操作にもすぐ反応できます。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-more-timers.png" alt="TurboWarp EditorでStageのwait定義を開き、More Timersの開始、値取得、削除ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「wait seconds」を表示。青緑色の名前付きtimerを開始し、skipと並行監視してから削除します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>通常終了</strong><span>指定秒数へ達したらloopを抜ける。</span></section><section><strong>skip</strong><span>runtimeのskip状態でもloopを抜ける。</span></section><section><strong>後片付け</strong><span>どちらの終了でも名前付きtimerを削除する。</span></section></div>
 
@@ -197,16 +209,16 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 ## Files — local台本を開く {#extension-files .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">Gallery 6 / 7　機能編 1 / 2</p>
+<p class="extension-spread-label">Gallery 6 / 7　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>Gallery</span><code>files</code><span>ファイル入力</span></p>
 
-利用者が選択またはdrag & dropしたlocal fileを、textまたはdata URLとしてprojectへ渡します。
-紙芝居では、作品ごとのTXT台本をアプリ本体へ読み込む入口です。
+利用者が選択またはdrag & dropしたlocal fileを、textまたはdata URLとしてprojectへ渡す拡張です。
+逆にproject内の値をfilename付きでdownloadでき、browserのfile pickerとTurboWarpのblockを橋渡しします。
 
-<figure class="extension-gallery-banner"><img src="../images/extension-gallery-files.svg" alt="TurboWarp Extension GalleryのFilesバナー"><figcaption>file pickerとdownloadをTurboWarp blockへ接続する公式Galleryバナー。</figcaption></figure>
+<figure class="extension-gallery-banner"><img src="../images/extension-gallery-files.svg" alt="TurboWarp Extension GalleryのFilesバナー"></figure>
 
-<figure class="extension-flow"><figcaption>外部台本を開く</figcaption><div><span>button / drop</span><b>→</b><span>.txt picker</span><b>→</b><span>script text</span><b>→</b><span>preflight</span></div></figure>
+<figure class="extension-flow"><figcaption>公式Galleryと配布ソースの要約：local fileを値へ、値をdownloadへ</figcaption><div><span>click / drop</span><b>→</b><span>file picker</span><b>→</b><span>text / data URL<br>+ filename</span><b>↔</b><span>download</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">入力</p><ul><li>拡張子・MIME type指定</li><li>text／data URL</li><li>cancel時は空文字</li></ul></section><section><p class="extension-subhead">出力</p><ul><li>filename付きdownload</li><li>browser内で完結</li><li>明示的な利用者操作から開始</li></ul></section></div>
 
@@ -214,9 +226,11 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 ## Files — 選択結果を通常経路へ渡す {#extension-files-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 6 / 7　使用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 6 / 7　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: UiItem「ファイルを開く」の代表部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>UiItem</strong><code>when I receive runUiItemAction</code></div><div class="tw-script"><div class="tw-block tw-event">runUiItemAction を受け取ったとき</div><div class="tw-block tw-control">もし <span class="tw-reporter">action = openFile</span> なら</div><div class="tw-indent"><div class="tw-block tw-extension">runtime変数 <i>script</i> を <span class="tw-reporter">拡張子 txt を textとして選ぶ</span> にする</div><div class="tw-block tw-event">startStory を送る</div></div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>体験会では、参加者が書いたTXT台本をその場で試したい一方、台本ごとにWebへ公開したりアプリを作り直したりはできません。端末上のfileを利用者のclickで選び、埋め込み台本と同じ検査・実行経路へ渡す入口になります。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-files.png" alt="TurboWarp EditorでStageの緑の旗スクリプトを開き、Filesのファイルを開くモードを設定している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage初期化を表示。黄色のFilesブロックで「すぐにセレクターを開く」モードを指定してからメニューを表示します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>UiItem</strong><span>menu buttonの操作からpickerを開く。</span></section><section><strong>runtime</strong><span>選択した全文を<code>script</code>へ渡す。</span></section><section><strong>合流</strong><span>埋め込み台本と同じpreflight・asset登録へ進む。</span></section></div>
 
@@ -226,16 +240,16 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 ## Animated Text — 文字をStageの素材にする {#extension-animated-text .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">Gallery 7 / 7　機能編 1 / 2</p>
+<p class="extension-spread-label">Gallery 7 / 7　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>Gallery</span><code>text</code><span>文字描画</span></p>
 
-spriteへ文字専用のrenderer skinを作り、font、色、幅、配置、outline、animationを設定します。
-紙芝居では台詞、prompt、menu、診断画面の文字を「表示できるasset」へ変換します。
+spriteへ文字専用のrenderer skinを作り、font、色、幅、配置、outlineを設定して表示する拡張です。
+文章をtyping、rainbow、zoom、shakeなどで演出でき、Scratch LabのAnimated Text実験と互換性があります。
 
-<figure class="extension-gallery-banner"><img src="../images/extension-gallery-animated-text.svg" alt="TurboWarp Extension GalleryのAnimated Textバナー"><figcaption>Scratch Lab互換の文字描画・animationを示す公式Galleryバナー。</figcaption></figure>
+<figure class="extension-gallery-banner"><img src="../images/extension-gallery-animated-text.svg" alt="TurboWarp Extension GalleryのAnimated Textバナー"></figure>
 
-<figure class="extension-flow"><figcaption>文字からStage表示へ</figcaption><div><span>text + style</span><b>→</b><span>renderer skin</span><b>→</b><span>sprite表示</span><b>→</b><span>animation</span></div></figure>
+<figure class="extension-flow"><figcaption>公式Galleryと配布ソースの要約：textをspriteの見た目へ変換する</figcaption><div><span>text + font<br>色・幅・配置</span><b>→</b><span>renderer skin</span><b>→</b><span>spriteへ表示</span><b>→</b><span>animation</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">style</p><ul><li>font、色、outline</li><li>幅、折返し、align</li><li>spriteのskinとして描画</li></ul></section><section><p class="extension-subhead">animation</p><ul><li>typing</li><li>rainbow、zoom</li><li>shakeなどの演出</li></ul></section></div>
 
@@ -243,9 +257,11 @@ spriteへ文字専用のrenderer skinを作り、font、色、幅、配置、out
 
 ## Animated Text — Asset Managerの描画backend {#extension-animated-text-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 7 / 7　使用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 7 / 7　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: 文字animationの最小例</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>Animated Text</code></div><div class="tw-script"><div class="tw-block tw-extension">textを <i>むかし、むかし</i> にする</div><div class="tw-block tw-extension">fontを <i>sans-serif</i> にする</div><div class="tw-block tw-extension">text幅を <i>420</i> にする</div><div class="tw-block tw-extension">textを <i>typing</i> でanimateする</div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>台詞、menu、prompt、診断文は台本や言語によって変わるため、すべてを事前にcostumeへ描いておくことはできません。実行時の文字列をStage上の見た目に変換すれば、同じUI部品を内容だけ差し替えて再利用できます。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-animated-text.png" alt="TurboWarp EditorのStage上に置かれたAnimated Textのレインボー文字アニメーションブロック"><figcaption>TurboWarp EditorでVersion 3.1.9のStageを表示。実プロジェクトに置かれた紫色のAnimated Textブロックが「さぁ行こう!」をレインボー表示します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>直接利用</strong><span>animation blockでtypingなどを開始できる。</span></section><section><strong>実アプリ</strong><span>Asset Managerがtext skin生成をbackendとして呼ぶ。</span></section><section><strong>表示先</strong><span>title、menu、prompt、SVG診断の説明文。</span></section></div>
 
@@ -255,26 +271,28 @@ spriteへ文字専用のrenderer skinを作り、font、色、幅、配置、out
 
 ## Translate — viewerの言語を知る {#extension-translate .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">TurboWarp標準 1 / 1　機能編 1 / 2</p>
+<p class="extension-spread-label">TurboWarp標準 1 / 1　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>TurboWarp標準</span><code>translate</code><span>表示言語</span></p>
 
-Scratch／TurboWarp標準の翻訳拡張です。文章を翻訳するblockに加え、viewerで選択中の言語を返します。
-このアプリが使うのは、network翻訳ではなく「viewerの言語」reporterです。
+Scratch／TurboWarp標準の翻訳拡張です。文章と翻訳先の言語を指定するblockに加え、viewerで選択中の言語を返します。
+翻訳結果とviewer languageは別のreporterであり、後者は通信せずに現在のlocale名を取得します。
 
-<div class="extension-concept-hero"><div class="extension-icon">文<br><small>Language</small></div><div><strong>viewer localeを最初のUIへ</strong><p>保存済み設定がなければ、TurboWarpの表示言語からEnglish／日本語の初期値を選びます。</p></div></div>
+<div class="extension-concept-hero"><div class="extension-icon">文<br><small>Language</small></div><div><strong>翻訳とviewer言語を別々に取得</strong><p>文章の翻訳結果と、現在のTurboWarp UIが使う言語名をreporterとして返します。</p></div></div>
 
-<figure class="extension-flow"><figcaption>初回起動の言語選択</figcaption><div><span>viewer language</span><b>→</b><span>ja / ja-JP?</span><b>→</b><span>日本語</span><b>／</b><span>English</span></div></figure>
+<figure class="extension-flow"><figcaption>scratch-vm実装の要約：二つの独立したreporter</figcaption><div><span>text + target language</span><b>→</b><span>translation</span><b>／</b><span>viewer locale</span><b>→</b><span>language名</span></div></figure>
 
-<div class="extension-columns"><section><p class="extension-subhead">利用する</p><ul><li>viewer language reporter</li><li>日本語codeの判定</li><li>初回だけの既定値</li></ul></section><section><p class="extension-subhead">利用しない</p><ul><li>台本文の自動翻訳</li><li>外部翻訳API</li><li>自由な言語追加</li></ul></section></div>
+<div class="extension-columns"><section><p class="extension-subhead">翻訳reporter</p><ul><li>入力textと翻訳先を指定</li><li>対応言語から選択</li><li>結果を文字列で返す</li></ul></section><section><p class="extension-subhead">language reporter</p><ul><li>viewerのlocaleを取得</li><li>通信を必要としない</li><li>UI初期値の判断に使える</li></ul></section></div>
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/scratch-vm/blob/c4823421cb7c17d8d8a89878851ce1668c26a21f/src/extensions/scratch3_translate/index.js">固定scratch-vmのTranslate実装</a></p>
 
 ## Translate — 保存値がない時だけ使う {#extension-translate-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">TurboWarp標準 1 / 1　使用例 2 / 2</p>
+<p class="extension-spread-label">TurboWarp標準 1 / 1　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「緑の旗」の言語判定</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>when green flag clicked</code></div><div class="tw-script"><div class="tw-block tw-event">⚑ が押されたとき</div><div class="tw-block tw-control">もし <span class="tw-reporter">保存済み uiLanguage がない</span> なら</div><div class="tw-indent"><div class="tw-block tw-control">もし <span class="tw-reporter">viewer language = Japanese / ja / ja-JP</span> なら</div><div class="tw-indent"><div class="tw-block tw-extension">runtime変数 <i>uiLanguage</i> を ja にする</div></div><div class="tw-block tw-control">でなければ English にする</div></div><div class="tw-block tw-event">UI言語を反映 を送って待つ</div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>初めて開いた利用者には日本語か英語のどちらかを提示する必要がありますが、選択前には保存値がありません。そこでviewerの言語を一度だけ「最初の推測」に使い、その後は利用者自身の選択を優先します。台本文を自動翻訳するための利用ではありません。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-translate.png" alt="TurboWarp EditorでStageの緑の旗スクリプトを開き、Translateの閲覧者言語ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9の緑の旗を表示。緑色のTranslate reporter「言語」を、保存済み設定がない場合の日本語／英語判定に使います。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>優先1</strong><span>Local Storageに保存済みの利用者選択。</span></section><section><strong>優先2</strong><span>Translateのviewer language。</span></section><section><strong>結果</strong><span>runtime変数を通して全UIへbroadcast。</span></section></div>
 
@@ -284,16 +302,16 @@ Scratch／TurboWarp標準の翻訳拡張です。文章を翻訳するblockに�
 
 ## Asset Manager — 素材を名前で扱う {#extension-asset-manager .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">外部埋め込み 1 / 5　機能編 1 / 2</p>
+<p class="extension-spread-label">外部埋め込み 1 / 5　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>外部埋め込み</span><code>kubohiroyaassetmanager</code><span>0.4.1</span></p>
 
 Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時textを一つの名前付き登録簿で扱います。
-台本は置き場所ではなくasset名だけを使って、表示・再生・animationを指示できます。
+登録後は素材の置き場所や種類に応じた処理を拡張が選び、共通のasset名で表示、再生、animation、cacheを操作できます。
 
 <div class="extension-concept-hero"><div class="extension-icon">A<br><small>Assets</small></div><div><strong>素材の住所を隠す登録簿</strong><p>URL、project内素材、textを同じasset名へまとめ、Stage・Actor・音声へ配ります。</p></div></div>
 
-<figure class="extension-flow"><figcaption>名前付きasset登録簿</figcaption><div><span>URL / costume / text</span><b>→</b><span>register + cache</span><b>→</b><span>Stage / Actor / sound</span></div></figure>
+<figure class="extension-flow"><figcaption>公式図解ガイドの要約：異なる素材を一つの登録簿から適切な出力先へ</figcaption><div><span>Web URL<br>project内素材<br>動的text</span><b>→</b><span>名前 + 種類を登録<br>Web素材はcache</span><b>→</b><span>sprite / Stage<br>sound / Actor timeline</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">読込</p><ul><li>種類判定と取得</li><li>IndexedDB cache</li><li>Loading用assetを先行</li></ul></section><section><p class="extension-subhead">利用</p><ul><li>Stage／sprite skin</li><li>音声再生・停止</li><li>Actor loop／sequence</li></ul></section></div>
 
@@ -301,9 +319,11 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 ## Asset Manager — Loadingからsceneへ渡す {#extension-asset-manager-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 1 / 5　使用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 1 / 5　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「create asset」のLoading部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>define create asset</code></div><div class="tw-script"><div class="tw-block tw-custom">定義 create asset</div><div class="tw-block tw-extension">Loading用assetを準備</div><div class="tw-block tw-extension">Loading costume <i>i</i> を取得</div><div class="tw-block tw-extension">asset <i>name</i> を address <i>source</i> から登録</div><div class="tw-block tw-control">もし <span class="tw-reporter">asset is loaded?</span> なら進捗を更新</div><div class="tw-block tw-extension">Stage skinを <i>background</i> にする</div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>紙芝居の作者には、素材がURLかSB3内のcostumeかを意識せず「Hero」「海」「鐘」のような名前で台本を書いてほしいからです。登録と読込を一か所へ集めることで、local素材は通信なしで速く使い、Web素材はcacheし、Loading進捗も同じ単位で数えられます。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-asset-manager.png" alt="TurboWarp EditorでStageのcreate asset定義を開き、Asset Managerの登録、読込確認、背景設定ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「create asset」を表示。青色のAsset ManagerブロックがLoading素材の取得、asset登録、背景反映を担います。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>開始前</strong><span>Loading backdropとcostumeを先に登録。</span></section><section><strong>登録中</strong><span>台本の全assetを名前・addressで登録。</span></section><section><strong>実行中</strong><span>同じ名前で背景、Actor、音、textを操作。</span></section></div>
 
@@ -313,26 +333,28 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 ## TMPose — cameraをpose名へ変える {#extension-tmpose .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">外部埋め込み 2 / 5　機能編 1 / 2</p>
+<p class="extension-spread-label">外部埋め込み 2 / 5　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>外部埋め込み</span><code>tmpose</code><span>1.4.0</span></p>
 
 Teachable Machine Pose modelとcamera映像を接続し、現在のpose名とconfidenceをTurboWarpの値として返します。
 model、camera、preview、predictionを別々に開始・停止できます。
 
-<div class="extension-concept-hero"><div class="extension-icon">◎<br><small>Pose</small></div><div><strong>身体の動きを入力eventへ</strong><p>camera frameを分類し、pose名とscoreをstory runtimeへ渡します。</p></div></div>
+<div class="extension-concept-hero"><div class="extension-icon">◎<br><small>Pose</small></div><div><strong>身体の動きを数値と名前へ</strong><p>カメラ映像から骨格を推定し、Teachable Machineで学習したposeごとのconfidenceを返します。</p></div></div>
 
-<figure class="extension-flow"><figcaption>pose認識pipeline</figcaption><div><span>camera frame</span><b>→</b><span>TM Pose model</span><b>→</b><span>pose + confidence</span></div></figure>
+<figure class="extension-flow"><figcaption>公式図解ガイドの要約：1枚の映像から現在値と時間でならした値へ</figcaption><div><span>camera frame</span><b>→</b><span>姿勢推定<br>keypoints</span><b>→</b><span>TM classifier</span><b>→</b><span>label・confidence<br>蓄積score</span></div></figure>
 
-<div class="extension-columns"><section><p class="extension-subhead">準備</p><ul><li>model URL設定・load</li><li>camera開始</li><li>preview位置・透明度</li></ul></section><section><p class="extension-subhead">認識</p><ul><li>prediction開始・停止</li><li>pose別confidence</li><li>最新errorと計測時間</li></ul></section></div>
+<div class="extension-columns"><section><p class="extension-subhead">現在の認識</p><ul><li>pose labelとconfidence</li><li>すばやい動きへ即時反応</li><li>camera previewを配置</li></ul></section><section><p class="extension-subhead">時間を含む認識</p><ul><li>confidenceを蓄積・減衰</li><li>一瞬の揺れを平滑化</li><li>開始・停止を個別管理</li></ul></section></div>
 
 <p class="extension-source">出典: <a href="https://kubohiroya.github.io/turbowarp-tmpose/ja/">TMPose図解ガイド</a>、<a href="https://github.com/kubohiroya/turbowarp-tmpose/tree/08fe0cf9da061b1eba75297b8ee187d68549eed4">固定commit 08fe0cf</a></p>
 
 ## TMPose — modelを読みposeを待つ {#extension-tmpose-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 2 / 5　使用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 2 / 5　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「setTMPoseURL」「exec pose」の代表部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>define setTMPoseURL with (url)</code></div><div class="tw-script"><div class="tw-block tw-custom">定義 setTMPoseURL with <i>url</i></div><div class="tw-block tw-extension">model URLを <i>url</i> にする</div><div class="tw-block tw-extension">modelをload</div><div class="tw-block tw-control"><span class="tw-reporter">model loaded?</span> まで待つ</div><div class="tw-block tw-custom">exec pose <i>rescue</i></div><div class="tw-block tw-control"><span class="tw-reporter">pose rescue が 0.8 以上</span> まで待つ</div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>このアプリでは、観客がkeyやbuttonを押すだけでなく、物語に合わせて体を動かすこと自体が入力になります。学習済みmodel、camera、preview、認識loopを別々に管理できるため、必要なsceneだけでcameraを使い、poseが十分確かになった時に物語を進められます。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-tmpose.png" alt="TurboWarp EditorでStageのcameraとpose認識の補助定義を開き、TMPoseブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStageを表示。緑色のTMPoseブロックをcamera preview、認識開始／停止の補助定義から呼び出します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>scene準備</strong><span><code>TMPoseURL</code>でmodelをload。</span></section><section><strong>action</strong><span>指定poseのscoreが閾値を超えるまで反復。</span></section><section><strong>終了</strong><span>skip、scene終了、stopでpredictionとcameraを停止。</span></section></div>
 
@@ -342,7 +364,7 @@ model、camera、preview、predictionを別々に開始・停止できます。
 
 ## Text Lines — 台本を行へ分ける {#extension-text-lines .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">外部埋め込み 3 / 5　機能編 1 / 2</p>
+<p class="extension-spread-label">外部埋め込み 3 / 5　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>外部埋め込み</span><code>kubohiroyatextlines</code><span>0.1.1</span></p>
 
@@ -351,7 +373,7 @@ LF、CRLF、CRを同じ改行として正規化するため、台本を作った
 
 <div class="extension-concept-hero"><div class="extension-icon">≡<br><small>Lines</small></div><div><strong>一つのtextを物理行へ</strong><p>元sourceの行番号を保ったまま、preflightと実行loopへ渡します。</p></div></div>
 
-<figure class="extension-flow"><figcaption>1入力から3つの結果</figcaption><div><span>複数行text</span><b>→</b><span>改行を正規化</span><b>→</b><span>行数 / 1行 / list</span></div></figure>
+<figure class="extension-flow"><figcaption>公式図解ガイドの要約：1つの入力から用途別の3つの結果を得る</figcaption><div><span>複数行text</span><b>→</b><span>LF / CRLF / CR<br>を正規化</span><b>→</b><span>行数<br>指定した1行<br>list全置換</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">入力</p><ul><li>LF、CRLF、CR</li><li>空行を含む全文</li><li>UTF-8の台本文字列</li></ul></section><section><p class="extension-subhead">出力</p><ul><li>行数</li><li>1始まりの指定行</li><li>list全置換</li></ul></section></div>
 
@@ -359,9 +381,11 @@ LF、CRLF、CRを同じ改行として正規化するため、台本を作った
 
 ## Text Lines — source行番号を守る {#extension-text-lines-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 3 / 5　使用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 3 / 5　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「create sceneList」の代表部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>define create sceneList</code></div><div class="tw-script"><div class="tw-block tw-custom">定義 create sceneList</div><div class="tw-block tw-extension">runtime変数 <i>script</i> の行をlist <i>lines</i> へ書く</div><div class="tw-block tw-control">lines の各項目について繰り返す</div><div class="tw-indent"><div class="tw-block tw-data">空行／comment／commandを分類</div><div class="tw-block tw-data">source line numberを保持</div></div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>台本のerrorを直す人にとって最も役立つ手掛かりは、元のTXTと一致する行番号です。OSごとの改行差を吸収しつつ、検査と実行が同じ物理行のlistを使えば、「表示された行」と「直すべき行」がずれません。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-text-lines.png" alt="TurboWarp EditorでStageのcreate sceneList定義を開き、Text Linesのlist書込ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「create sceneList」を表示。青灰色のText Linesブロックが台本文字列をlinesリストへ一括展開します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>preflight</strong><span>物理行番号とcommandを一緒に検査。</span></section><section><strong>実行</strong><span>同じ<code>lines</code> listをscene生成へ渡す。</span></section><section><strong>診断</strong><span>errorの行番号を元TXTへ正確に対応。</span></section></div>
 
@@ -371,26 +395,28 @@ LF、CRLF、CRを同じ改行として正規化するため、台本を作った
 
 ## Runtime Expression — 条件式を安全に評価 {#extension-runtime-expression .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">外部埋め込み 4 / 5　機能編 1 / 2</p>
+<p class="extension-spread-label">外部埋め込み 4 / 5　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>外部埋め込み</span><code>kubohiroyaruntimeexpression</code><span>0.2.0</span></p>
 
 Temporary Variablesのruntime値を、JavaScriptに似た制限付き条件式から参照し、true／falseを返します。
 任意codeを実行せず、許可した比較、論理、算術、括弧だけを評価します。
 
-<div class="extension-concept-hero"><div class="extension-icon">{?}<br><small>Expr</small></div><div><strong>分岐の条件だけを読む</strong><p><code>score &gt;= 3 && hasKey</code>のような式をparserで検査してから評価します。</p></div></div>
+<div class="extension-concept-hero"><div class="extension-icon">{?}<br><small>Expr</small></div><div><strong>状態を真偽値と変化eventへ</strong><p><code>score &gt;= 3 && hasKey</code>のような式を検査して評価し、必要ならfalse／trueの変化をbroadcastします。</p></div></div>
 
-<figure class="extension-flow"><figcaption>安全な条件評価</figcaption><div><span>runtime variables</span><b>→</b><span>限定parser</span><b>→</b><span>true / false</span><b>→</b><span>scene label</span></div></figure>
+<figure class="extension-flow"><figcaption>公式図解ガイドの要約：現在の判定と、判定結果が変わった時の通知</figcaption><div><span>runtime variables<br>+ 条件式</span><b>→</b><span>制限付きparser</span><b>→</b><span>true / false</span><b>／</b><span>false↔true時だけ<br>broadcast</span></div></figure>
 
-<div class="extension-columns"><section><p class="extension-subhead">許可</p><ul><li>比較、論理、算術</li><li>括弧</li><li><code>vars["日本語名"]</code></li></ul></section><section><p class="extension-subhead">禁止</p><ul><li>代入</li><li>関数呼出し</li><li>任意property／JavaScript</li></ul></section></div>
+<div class="extension-columns"><section><p class="extension-subhead">条件reporter</p><ul><li>比較、論理、算術、括弧</li><li><code>vars["日本語名"]</code></li><li>代入・関数呼出しは禁止</li></ul></section><section><p class="extension-subhead">条件付きbroadcast</p><ul><li>最初の状態を記憶</li><li>結果が変化した時だけ通知</li><li>IDで置換・解除・timeout</li></ul></section></div>
 
 <p class="extension-source">出典: <a href="https://kubohiroya.github.io/turbowarp-runtime-expression/ja/">Runtime Expression図解ガイド</a>、<a href="https://github.com/kubohiroya/turbowarp-runtime-expression/tree/7e2bd99fa57fa9f0cbe6b91306b4c53322f00aa3">固定commit 7e2bd99</a></p>
 
 ## Runtime Expression — 最初のtrueへ分岐 {#extension-runtime-expression-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 4 / 5　使用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 4 / 5　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「exec branch action」の代表部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>define exec branch action (definition)</code></div><div class="tw-script"><div class="tw-block tw-custom">定義 exec branch action <i>definition</i></div><div class="tw-block tw-control">登録したbranchを上から繰り返す</div><div class="tw-indent"><div class="tw-block tw-control">もし <span class="tw-reporter">runtime condition (expression)</span> なら</div><div class="tw-indent"><div class="tw-block tw-data">scene labelを選ぶ</div><div class="tw-block tw-custom">このcustom blockを終了</div></div></div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>台本作者は「scoreが3以上なら次のsceneへ」のような分岐を書きたい一方、外部台本から任意のJavaScriptを動かしてはいけません。読める条件式の形を保ちつつ、許可した演算だけを現在のruntime値へ適用する安全な境界になります。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-runtime-expression.png" alt="TurboWarp EditorでStageのexec branch action定義を開き、Runtime Expressionの条件判定ブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「exec branch action」を表示。紫色のruntime conditionが現在のruntime値で条件を評価します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>登録</strong><span><code>registerBranch</code>が式とscene labelを保持。</span></section><section><strong>評価</strong><span>上から順にruntime値を使って判定。</span></section><section><strong>決定</strong><span>最初にtrueとなった遷移先だけを採用。</span></section></div>
 
@@ -400,26 +426,28 @@ Temporary Variablesのruntime値を、JavaScriptに似た制限付き条件式�
 
 ## Async Input — 入力を待たずに束ねる {#extension-async-input .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">外部埋め込み 5 / 5　機能編 1 / 2</p>
+<p class="extension-spread-label">外部埋め込み 5 / 5　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>外部埋め込み</span><code>kubohiroyaasyncinput</code><span>0.2.0</span></p>
 
-key、sprite／Actorのtouchを、Temporary Variablesのruntime値更新とbroadcastへ接続します。
-入力ごとに待機scriptを増やさず、登録したlistenerから同じscene遷移経路へ合流できます。
+key、sprite／cloneのtouch、任意機能のpose入力を、Temporary Variablesのruntime値更新とbroadcastへ接続します。
+bindingは登録したtargetが所有し、値を更新してから受信scriptの完了を待たずにmessageを送ります。
 
-<div class="extension-concept-hero"><div class="extension-icon">↯<br><small>Input</small></div><div><strong>入力をruntime eventへ変換</strong><p>keyとtouchを「値を更新してmessageを送る」という同じ形へ揃えます。</p></div></div>
+<div class="extension-concept-hero"><div class="extension-icon">↯<br><small>Input</small></div><div><strong>異なる入力を同じeventの形へ</strong><p>key、touch、poseを「runtime値を更新し、必要ならmessageを送る」target所有のbindingへ揃えます。</p></div></div>
 
-<figure class="extension-flow"><figcaption>入力binding</figcaption><div><span>key / touch</span><b>→</b><span>target listener</span><b>→</b><span>runtime更新</span><b>→</b><span>broadcast</span></div></figure>
+<figure class="extension-flow"><figcaption>公式READMEの要約：入力をtarget所有のbindingから共通経路へ流す</figcaption><div><span>key / touch<br>pose（任意）</span><b>→</b><span>target-owned binding</span><b>→</b><span>runtime値を先に更新</span><b>→</b><span>broadcast<br>待機しない</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">登録</p><ul><li>KeyboardEvent.code</li><li>sprite／clone／Actor名</li><li>代入または算術更新</li></ul></section><section><p class="extension-subhead">解除</p><ul><li>cover表示</li><li>scene境界</li><li>target削除・stop</li></ul></section></div>
 
-<p class="extension-source">出典: <a href="https://kubohiroya.github.io/turbowarp-async-input/ja/">Async Input図解ガイド</a>、<a href="https://github.com/kubohiroya/turbowarp-async-input/tree/3ecd7ff406b86fd957333ae4978cec118322ebd1">固定commit 3ecd7ff</a></p>
+<p class="extension-source">出典: <a href="https://github.com/kubohiroya/turbowarp-async-input/blob/3ecd7ff406b86fd957333ae4978cec118322ebd1/README.md">Async Input公式README</a>、<a href="https://github.com/kubohiroya/turbowarp-async-input/tree/3ecd7ff406b86fd957333ae4978cec118322ebd1">固定commit 3ecd7ff</a></p>
 
 ## Async Input — keyをscene移動へ結ぶ {#extension-async-input-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 5 / 5　使用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 5 / 5　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「keyInputToChangeScene」の代表部分</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>define exec keyInputToChangeScene (key) (scene)</code></div><div class="tw-script"><div class="tw-block tw-custom">定義 keyInputToChangeScene <i>key</i> <i>scene</i></div><div class="tw-block tw-extension">key <i>key</i> をlistenし、runtime変数 <i>nextScene</i> を <i>scene</i> にして messageを送る</div><div class="tw-block tw-event">inputResolved を受け取ったとき</div><div class="tw-block tw-extension">すべてのinput listenerを停止</div><div class="tw-block tw-custom">nextSceneへ移動</div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>key、画面のActor、poseごとに「入力を待つ」scriptを増やすと、同時発火やsceneをまたいだ古い待機が競合します。入力源は違ってもruntime値とbroadcastへ合流させ、最初に成立した操作の後で残りを解除できる構造が必要です。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-async-input.png" alt="TurboWarp EditorでStageのkeyInputToChangeScene定義を開き、Async Inputのkey listenerブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「keyInputToChangeScene」を表示。青緑色のAsync Inputブロックがkey入力をruntime更新とbroadcastへ結びます。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>key</strong><span>物理keyからscene labelを選ぶ。</span></section><section><strong>touch</strong><span>画面のActor名から同じ遷移へ合流。</span></section><section><strong>競合</strong><span>最初の入力で解決し、残りのlistenerを解除。</span></section></div>
 
@@ -429,7 +457,7 @@ key、sprite／Actorのtouchを、Temporary Variablesのruntime値更新とbroad
 
 ## Kamishibai Runtime — 実行前に台本を守る {#extension-kamishibai-runtime .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">アプリ内蔵 1 / 2　機能編 1 / 2</p>
+<p class="extension-spread-label">アプリ内蔵 1 / 2　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>アプリ内蔵</span><code>kubohiroyakamishibairuntime</code><span>DSL診断</span></p>
 
@@ -438,7 +466,7 @@ key、sprite／Actorのtouchを、Temporary Variablesのruntime値更新とbroad
 
 <div class="extension-concept-hero"><div class="extension-icon">✓<br><small>Preflight</small></div><div><strong>安全に失敗する入口</strong><p>cameraや音声を始める前に、version、command、参照、条件式をまとめて検査します。</p></div></div>
 
-<figure class="extension-flow"><figcaption>preflightと安全停止</figcaption><div><span>DSL + project</span><b>→</b><span>構文・参照検証</span><b>→</b><span>実行許可</span><b>／</b><span>SVG診断</span></div></figure>
+<figure class="extension-flow"><figcaption>内部仕様の要約：副作用を始める前に段階的に検査し、構造化した結果を返す</figcaption><div><span>DSL + project</span><b>→</b><span>version・構文</span><b>→</b><span>scene / asset参照<br>address・条件式</span><b>→</b><span>実行許可<br>／ SVG診断</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">検査</p><ul><li>version、command、action</li><li>scene／asset参照</li><li>addressと条件式syntax</li></ul></section><section><p class="extension-subhead">診断</p><ul><li>error code</li><li>行・列</li><li>source抜粋とSVG文字</li></ul></section></div>
 
@@ -446,9 +474,11 @@ key、sprite／Actorのtouchを、Temporary Variablesのruntime値更新とbroad
 
 ## Kamishibai Runtime — startStoryの最初で止める {#extension-kamishibai-runtime-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">アプリ内蔵 1 / 2　使用例 2 / 2</p>
+<p class="extension-spread-label">アプリ内蔵 1 / 2　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: Stage「startStory」の入口</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>Stage</strong><code>when I receive startStory</code></div><div class="tw-script"><div class="tw-block tw-event">startStory を受け取ったとき</div><div class="tw-block tw-extension">scriptを検証し、errorなら停止</div><div class="tw-block tw-control">もし <span class="tw-reporter">preflight OK</span> なら</div><div class="tw-indent"><div class="tw-block tw-custom">create asset</div><div class="tw-block tw-custom">create sceneList</div><div class="tw-block tw-custom">最初のsceneを実行</div></div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>外部から読み込む台本には、綴り間違いだけでなく、存在しないsceneや素材、危険なaddressが含まれ得ます。asset取得やcamera開始の後で失敗すると、利用者には半端な画面しか残りません。上演前に止め、直す行と理由を読める形で示します。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-kamishibai-runtime.png" alt="TurboWarp EditorでStageのstartStory受信処理を開き、Kamishibai Runtimeの検証ブロックを最初に使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のStage「startStory」を表示。赤褐色のvalidateブロックをasset作成やcamera開始より前に実行します。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>位置</strong><span><code>startStory</code>直後、asset／cameraより前。</span></section><section><strong>失敗</strong><span>背景作業を始めず、promptへSVG診断を表示。</span></section><section><strong>成功</strong><span>従来のStage custom block群へ処理を返す。</span></section></div>
 
@@ -458,7 +488,7 @@ key、sprite／Actorのtouchを、Temporary Variablesのruntime値更新とbroad
 
 ## Web Link — 公式URLだけを開く {#extension-web-link .extension-sheet .extension-sheet-left}
 
-<p class="extension-spread-label">アプリ内蔵 2 / 2　機能編 1 / 2</p>
+<p class="extension-spread-label">アプリ内蔵 2 / 2　機能拡張そのもの 1 / 2</p>
 
 <p class="extension-meta"><span>アプリ内蔵</span><code>kubohiroyaweblink</code><span>外部navigation</span></p>
 
@@ -467,7 +497,7 @@ key、sprite／Actorのtouchを、Temporary Variablesのruntime値更新とbroad
 
 <div class="extension-concept-hero"><div class="extension-icon">↗<br><small>HTTPS</small></div><div><strong>アプリの外へ出る一つの安全な扉</strong><p>絶対URL、HTTPS、noopener／noreferrerを確認してから新しいtabを開きます。</p></div></div>
 
-<figure class="extension-flow"><figcaption>安全な外部link</figcaption><div><span>homepage URL</span><b>→</b><span>parse</span><b>→</b><span>HTTPS?</span><b>→</b><span>new tab</span></div></figure>
+<figure class="extension-flow"><figcaption>内部仕様の要約：文字列を検証し、開いたtabと元projectを分離する</figcaption><div><span>URL文字列</span><b>→</b><span>絶対URLとしてparse</span><b>→</b><span>https:だけ許可</span><b>→</b><span>new tab<br>noopener / noreferrer</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">許可</p><ul><li>絶対URL</li><li><code>https:</code></li><li>利用者clickからの呼出し</li></ul></section><section><p class="extension-subhead">拒否</p><ul><li><code>http:</code></li><li><code>file:</code>／<code>javascript:</code></li><li>通常sceneからの任意navigation</li></ul></section></div>
 
@@ -475,9 +505,11 @@ key、sprite／Actorのtouchを、Temporary Variablesのruntime値更新とbroad
 
 ## Web Link — title buttonからだけ開く {#extension-web-link-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">アプリ内蔵 2 / 2　使用例 2 / 2</p>
+<p class="extension-spread-label">アプリ内蔵 2 / 2　TMPose紙芝居での利用 2 / 2</p>
 
-<figure class="extension-editor-example"><figcaption>TurboWarp Editor: officialWebsiteButtonのclick</figcaption><div class="tw-editor"><div class="tw-editor-bar"><strong>officialWebsiteButton</strong><code>when this sprite clicked</code></div><div class="tw-script"><div class="tw-block tw-event">このspriteが押されたとき</div><div class="tw-block tw-data">runtime変数 <i>homepage</i> を読む</div><div class="tw-block tw-extension">URL <i>homepage</i> を新しいtabで開く</div></div></div></figure>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>title画面から公式サイトへ案内する必要はありますが、台本中の任意URLが勝手にtabを開ける設計にはできません。利用者が押した専用buttonから、packageに固定されたHTTPS URLだけを開くことで、案内機能と安全な上演を両立します。</p></aside>
+
+<figure class="extension-editor-example"><img src="../images/extension-editor-web-link.png" alt="TurboWarp EditorでofficialWebsiteButtonのクリック処理を開き、Web LinkのURLを新しいタブで開くブロックを使用している画面"><figcaption>TurboWarp EditorでVersion 3.1.9のofficialWebsiteButtonを表示。クリック直後に青緑色のWeb Linkブロックで公式HTTPS URLを新しいtabへ開きます。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>入口</strong><span>title画面の「公式Webサイト」button。</span></section><section><strong>値</strong><span>package metadata由来のhomepageをruntime経由で渡す。</span></section><section><strong>制約</strong><span>通常のscene actionからは呼び出さない。</span></section></div>
 

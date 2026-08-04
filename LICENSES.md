@@ -17,7 +17,7 @@ Copyright © 2026 Hiroya Kubo.
 - `docs/user-guides/**`
 - `docs/dsl-author-guides/**`
 - `docs/developer-guides/**`
-- `docs/images/**`（`docs/LICENSE.md`に列挙した第三者図版を除く）
+- `docs/images/**`（`docs/LICENSE.md`で個別に扱う第三者図版と実画面キャプチャを除く）
 - `sources/**`
 
 これらから生成される次の公開用HTML、PDF、画像および付随データにも、生成元と同じ
@@ -77,6 +77,14 @@ CC BY-SA 4.0を適用します。
 定めたライセンスまたは利用条件が適用されます。個別のライセンス表示がある場合は、
 この一覧より個別表示を優先します。依存パッケージはこの一覧の対象外であり、それぞれの
 パッケージに含まれるライセンスに従います。
+
+`docs/fonts/NotoSansJP-VF.ttf`にはOFL-1.1が適用されます。固定した引用元とライセンス
+本文は[`docs/LICENSE.md`](docs/LICENSE.md)および
+[`docs/fonts/NotoSansJP-OFL.txt`](docs/fonts/NotoSansJP-OFL.txt)に記録します。
+
+`docs/images/extension-editor-*.png`はTurboWarp Editorと実projectのblock配置を含む
+画面キャプチャです。撮影条件と第三者要素の扱いは[`docs/LICENSE.md`](docs/LICENSE.md)に
+記録します。
 
 `LICENSE`、このファイル、`LICENSES/**`、`docs/LICENSE.md`および
 `docs/workshops/LICENSE.md`は、適用条件を示すためのライセンス本文または通知文です。

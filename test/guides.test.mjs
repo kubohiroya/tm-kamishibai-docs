@@ -26,6 +26,24 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   assert.equal(rightSheets.length, 15);
   assert.equal((extensionGuide.match(/<a href="#extension-[^"]+">/gu) ?? []).length, 15);
   assert.equal((extensionGuide.match(/extension-gallery-[^"]+\.svg/gu) ?? []).length, 7);
+  const editorCaptures = [
+    ...extensionGuide.matchAll(/\.\.\/images\/(extension-editor-[^"]+\.png)/gu),
+  ].map(([, filename]) => filename);
+  assert.equal(editorCaptures.length, 15);
+  assert.equal(new Set(editorCaptures).size, 15);
+  assert.doesNotMatch(extensionGuide, /class="tw-/u);
+  assert.equal((extensionGuide.match(/class="extension-kamishibai-why"/gu) ?? []).length, 15);
+  assert.equal((extensionGuide.match(/機能拡張そのもの 1 \/ 2/gu) ?? []).length, 15);
+  assert.equal((extensionGuide.match(/TMPose紙芝居での利用 2 \/ 2/gu) ?? []).length, 15);
+  const galleryFigures = [
+    ...extensionGuide.matchAll(/<figure class="extension-gallery-banner">([\s\S]*?)<\/figure>/gu),
+  ];
+  assert.equal(galleryFigures.length, 7);
+  for (const [, galleryFigure] of galleryFigures) {
+    assert.doesNotMatch(galleryFigure, /<figcaption>/u);
+  }
+  assert.match(theme, /h2\.extension-sheet-left:first-child::before/u);
+  assert.match(theme, /h2\.extension-sheet-right:first-child::before/u);
   for (const extensionId of sourceSnapshot.extensions) {
     assert.match(extensionGuide, new RegExp(`<code>${extensionId}</code>`, 'u'));
   }
