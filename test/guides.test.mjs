@@ -21,9 +21,14 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   ];
   const leftSheets = extensionGuide.match(/\.extension-sheet-left\}/gu) ?? [];
   const rightSheets = extensionGuide.match(/\.extension-sheet-right\}/gu) ?? [];
+  const rightHeadings = [
+    ...extensionGuide.matchAll(/^## (.+) \{#[^ ]+ \.extension-sheet \.extension-sheet-right\}$/gmu),
+  ].map(([, heading]) => heading);
   assert.equal(sheetIds.length, 31);
   assert.equal(leftSheets.length, 15);
   assert.equal(rightSheets.length, 15);
+  assert.equal(rightHeadings.length, 15);
+  assert.ok(rightHeadings.every((heading) => heading.includes('で') && !heading.includes(' — ')));
   assert.equal((extensionGuide.match(/<a href="#extension-[^"]+">/gu) ?? []).length, 15);
   assert.equal((extensionGuide.match(/extension-gallery-[^"]+\.svg/gu) ?? []).length, 7);
   const editorCaptures = [
@@ -50,7 +55,7 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   assert.match(extensionGuide, /^## Web Link — HTTPS URLを新しいタブで開く /mu);
   assert.match(
     extensionGuide,
-    /^## Web Link — 利用者がボタンやメニューを操作したとき、設定済みのHTTPSページを開く /mu,
+    /^## Web Linkで利用者がボタンやメニューを操作したとき、設定済みのHTTPSページを開く /mu,
   );
   assert.doesNotMatch(extensionGuide, /公式URLだけを開く|title buttonからだけ開く/u);
   assert.match(theme, /content: "TMPose 紙芝居での利用例";/u);
