@@ -29,7 +29,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="extension-overview-note"><strong>2種類の数え方:</strong> このガイドは保守するソース単位で15個を説明します。一方、bundle版SB3では、そのうち7個を<code>kamishibaibundle</code>という1個のIDにまとめます。詳しくは次ページを参照してください。</p>
 
-<p class="extension-source extension-overview-source">右ページの実画面例は、対象ごとにTurboWarp Editorの「きれいにする」を実行し、重なりを解消してから高解像度で撮影しています。詳しい呼出し関係は<a href="internal-specification.md">内部仕様書</a>、更新手順は<a href="developer-guide.md">メンテナンスガイド</a>を参照してください。</p>
+<p class="extension-source extension-overview-source">右ページの実画面例は、TurboWarp Editorを高解像度で撮影しています。詳しい呼出し関係は<a href="internal-specification.md">内部仕様書</a>、更新手順は<a href="developer-guide.md">メンテナンスガイド</a>を参照してください。</p>
 
 ## 7拡張を1つのIDへまとめる {#extension-bundle .extension-sheet .extension-bundle-sheet}
 
