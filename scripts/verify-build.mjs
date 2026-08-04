@@ -9,12 +9,13 @@ import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const distRoot = path.join(projectRoot, 'dist');
 const pdfRoot = path.join(projectRoot, 'output/pdf');
+const documentFontPath = path.join(projectRoot, 'docs/fonts/NotoSansJP-VF.ttf');
 const faviconPath = path.join(distRoot, 'favicon.png');
 const siteShellCssPath = path.join(distRoot, 'site-shell.css');
 const siteShellScriptPath = path.join(distRoot, 'site-shell.js');
 const require = createRequire(import.meta.url);
 const vivliostyleRequire = createRequire(require.resolve('@vivliostyle/cli/package.json'));
-const {PDFDocument} = vivliostyleRequire('pdf-lib');
+const {PDFDocument, PDFName} = vivliostyleRequire('pdf-lib');
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -28,6 +29,16 @@ function attributeValues(html, tagName, attributeName) {
 async function pdfPageCount(pdfPath) {
   const document = await PDFDocument.load(await readFile(pdfPath));
   return document.getPageCount();
+}
+
+async function pdfUsesFont(pdf, expectedFontName) {
+  const document = await PDFDocument.load(pdf);
+  const fontNameKeys = [PDFName.of('BaseFont'), PDFName.of('FontName')];
+  return document.context
+    .enumerateIndirectObjects()
+    .some(([, object]) =>
+      fontNameKeys.some((key) => object.get?.(key)?.toString().includes(expectedFontName)),
+    );
 }
 
 async function findHtmlFiles(directory) {
@@ -112,7 +123,7 @@ async function verifySiteAppBars() {
   return htmlFiles.length;
 }
 
-async function verifyDocument(document) {
+async function verifyDocument(document, documentFont) {
   const basename = document.sourceFilename.replace(/\.md$/u, '');
   const pdfFilename = document.sourceFilename.replace(/\.md$/u, '.pdf');
   const publicationDirectory = path.join(distRoot, document.outputDirectory, basename);
@@ -123,14 +134,21 @@ async function verifyDocument(document) {
   const manifestPath = path.join(publicationDirectory, 'publication.json');
   const publishedPdfPath = path.join(distRoot, document.outputDirectory, pdfFilename);
   const outputPdfPath = path.join(pdfRoot, document.outputDirectory, pdfFilename);
-  const [article, publishedPdf, outputPdf] = await Promise.all([
+  const publishedFontPath = path.join(publicationDirectory, 'fonts/NotoSansJP-VF.ttf');
+  const [article, publishedPdf, outputPdf, publishedFont] = await Promise.all([
     readFile(articlePath, 'utf8'),
     readFile(publishedPdfPath),
     readFile(outputPdfPath),
+    readFile(publishedFontPath),
     access(manifestPath),
   ]);
 
   assert(publishedPdf.equals(outputPdf), `${pdfFilename} differs between dist and output/pdf.`);
+  assert(
+    publishedFont.equals(documentFont),
+    `${basename} does not publish the pinned Noto Sans JP font.`,
+  );
+  assert(await pdfUsesFont(outputPdf, 'NotoSansJP'), `${pdfFilename} does not embed Noto Sans JP.`);
   assert(
     !/href="(?!https?:)[^"]+\.md(?:#[^"]*)?"/iu.test(article),
     `${basename} has a local .md link.`,
@@ -195,9 +213,10 @@ async function verifyWorkshop() {
 
 export async function verifyBuild() {
   await verifyIndex();
+  const documentFont = await readFile(documentFontPath);
   const pageCounts = new Map();
   for (const document of documentationConfig.documents) {
-    pageCounts.set(document.sourceFilename, await verifyDocument(document));
+    pageCounts.set(document.sourceFilename, await verifyDocument(document, documentFont));
   }
   await verifyWorkshop();
   const appBarHtmlCount = await verifySiteAppBars();

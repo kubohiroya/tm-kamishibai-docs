@@ -26,6 +26,34 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   assert.equal(rightSheets.length, 15);
   assert.equal((extensionGuide.match(/<a href="#extension-[^"]+">/gu) ?? []).length, 15);
   assert.equal((extensionGuide.match(/extension-gallery-[^"]+\.svg/gu) ?? []).length, 7);
+  const editorCaptures = [
+    ...extensionGuide.matchAll(/\.\.\/images\/(extension-editor-[^"]+\.png)/gu),
+  ].map(([, filename]) => filename);
+  assert.equal(editorCaptures.length, 15);
+  assert.equal(new Set(editorCaptures).size, 15);
+  const editorCaptureDimensions = editorCaptures.map((filename) => {
+    const png = readFileSync(new URL(`../docs/images/${filename}`, import.meta.url));
+    return [png.readUInt32BE(16), png.readUInt32BE(20)];
+  });
+  assert.ok(editorCaptureDimensions.every(([width, height]) => width <= 1400 && height <= 600));
+  assert.ok(editorCaptureDimensions.every(([width, height]) => width * height >= 50_000));
+  assert.ok(editorCaptureDimensions.filter(([width]) => width >= 800).length >= 7);
+  assert.ok(
+    new Set(editorCaptureDimensions.map(([width, height]) => `${width}x${height}`)).size >= 10,
+  );
+  assert.doesNotMatch(extensionGuide, /class="tw-/u);
+  assert.equal((extensionGuide.match(/class="extension-kamishibai-why"/gu) ?? []).length, 15);
+  assert.equal((extensionGuide.match(/機能拡張そのもの 1 \/ 2/gu) ?? []).length, 15);
+  assert.equal((extensionGuide.match(/TMPose紙芝居での利用 2 \/ 2/gu) ?? []).length, 15);
+  const galleryFigures = [
+    ...extensionGuide.matchAll(/<figure class="extension-gallery-banner">([\s\S]*?)<\/figure>/gu),
+  ];
+  assert.equal(galleryFigures.length, 7);
+  for (const [, galleryFigure] of galleryFigures) {
+    assert.doesNotMatch(galleryFigure, /<figcaption>/u);
+  }
+  assert.match(theme, /h2\.extension-sheet-left:first-child::before/u);
+  assert.match(theme, /h2\.extension-sheet-right:first-child::before/u);
   for (const extensionId of sourceSnapshot.extensions) {
     assert.match(extensionGuide, new RegExp(`<code>${extensionId}</code>`, 'u'));
   }
@@ -58,6 +86,15 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
     extensionGuide.indexOf('#extension-asset-manager') <
       extensionGuide.indexOf('#extension-kamishibai-runtime'),
   );
+  const animatedTextExample = extensionGuide.slice(
+    extensionGuide.indexOf('## Animated Text — Asset Managerから間接利用する'),
+    extensionGuide.indexOf('## Translate —'),
+  );
+  assert.match(animatedTextExample, /接続済みscriptにAnimated Text blockはありません/u);
+  assert.match(animatedTextExample, /text_setFont/u);
+  assert.match(animatedTextExample, /text_setText/u);
+  assert.match(animatedTextExample, /Asset ManagerからAnimated Text opcodeを取得する処理/u);
+  assert.doesNotMatch(extensionGuide, /さぁ行こう/u);
   assert.doesNotMatch(extensionGuide, /ポーズをとろう！/u);
   assert.equal(findDocument('extension-guide.md')?.expectedPdfPageCount, 32);
   assert.match(theme, /@page extension-guide\s*\{[\s\S]*size:\s*A4;/u);

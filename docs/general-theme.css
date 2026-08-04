@@ -152,6 +152,47 @@ body > section.level1:has(> .extension-overview-kicker) {
   letter-spacing: 0.04em;
 }
 
+.extension-reading-key {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 0 0 0.85rem;
+}
+
+.extension-reading-key section {
+  display: grid;
+  gap: 0.18rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line);
+  border-left: 0.38rem solid #17698c;
+  border-radius: 0.4rem;
+  background: #e7f4fa;
+}
+
+.extension-reading-key section:last-child {
+  border-left-color: #a8462d;
+  background: #fbe9df;
+}
+
+.extension-reading-key strong {
+  color: #17698c;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+}
+
+.extension-reading-key section:last-child strong {
+  color: #a8462d;
+}
+
+.extension-reading-key span {
+  font-weight: 800;
+}
+
+.extension-reading-key small {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
 .extension-flow figcaption,
 .application-hero figcaption,
 .application-flow figcaption,
@@ -226,6 +267,22 @@ body > section.level1 > section.level2:has(> h2.extension-sheet) {
   break-inside: avoid;
 }
 
+body > section.level1 > section.level2:has(> h2.extension-sheet-left) {
+  --accent: #17698c;
+  --accent-soft: #e7f4fa;
+
+  border-top: 0.32rem solid var(--accent);
+  background: linear-gradient(180deg, #d9eef7 0, var(--paper) 7.2rem);
+}
+
+body > section.level1 > section.level2:has(> h2.extension-sheet-right) {
+  --accent: #a8462d;
+  --accent-soft: #fbe9df;
+
+  border-top: 0.32rem solid var(--accent);
+  background: linear-gradient(180deg, #f8dfd1 0, var(--paper) 7.2rem);
+}
+
 h2.extension-sheet {
   margin: 0 0 0.65rem;
   padding: 0 0 0.42rem;
@@ -237,6 +294,40 @@ body
   > section.level2:has(> h2.extension-sheet)
   > h2:first-child::before {
   content: none;
+}
+
+body
+  > section.level1:has(> .extension-overview-kicker)
+  > section.level2:has(> h2.extension-sheet-left)
+  > h2.extension-sheet-left:first-child::before,
+body
+  > section.level1:has(> .extension-overview-kicker)
+  > section.level2:has(> h2.extension-sheet-right)
+  > h2.extension-sheet-right:first-child::before {
+  display: block;
+  width: fit-content;
+  margin: 0 0 0.32rem;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+body
+  > section.level1:has(> .extension-overview-kicker)
+  > section.level2:has(> h2.extension-sheet-left)
+  > h2.extension-sheet-left:first-child::before {
+  content: "機能拡張そのもの";
+}
+
+body
+  > section.level1:has(> .extension-overview-kicker)
+  > section.level2:has(> h2.extension-sheet-right)
+  > h2.extension-sheet-right:first-child::before {
+  content: "TMPose紙芝居での利用";
 }
 
 .extension-meta {
@@ -260,6 +351,37 @@ body
 .extension-meta code {
   color: var(--ink);
   font-weight: 700;
+}
+
+body > section.level1 > section.level2:has(> h2.extension-sheet-left) > .extension-meta + p {
+  margin: 0 0 0.9rem;
+  padding: 0.72rem 0.88rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, white);
+  border-left: 0.34rem solid var(--accent);
+  border-radius: 0.4rem;
+  background: white;
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
+.extension-kamishibai-why {
+  margin: 0.2rem 0 0.8rem;
+  padding: 0.72rem 0.88rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, white);
+  border-radius: 0.48rem;
+  background: var(--accent-soft);
+  break-inside: avoid;
+}
+
+.extension-kamishibai-why strong {
+  display: block;
+  margin-bottom: 0.28rem;
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.extension-kamishibai-why p {
+  margin: 0;
 }
 
 .extension-flow {
@@ -356,7 +478,7 @@ body
 
 .extension-gallery-banner {
   display: grid;
-  grid-template-rows: minmax(0, 12rem) auto;
+  grid-template-rows: minmax(0, 12rem);
   margin: 0.9rem 0;
   padding: 0.45rem;
   border: 1px solid var(--line);
@@ -423,95 +545,19 @@ body
 .extension-editor-example {
   margin: 0.9rem 0;
   break-inside: avoid;
+  text-align: center;
 }
 
-.tw-editor {
-  overflow: hidden;
+.extension-editor-example img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
   border: 1px solid #c9ced6;
   border-radius: 0.55rem;
-  background: #f3f5f8;
+  background: white;
   box-shadow: 0 0.25rem 0.9rem rgb(22 31 48 / 10%);
-}
-
-.tw-editor-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.55rem 0.75rem;
-  background: #dde3ea;
-  color: #273344;
-}
-
-.tw-editor-bar code {
-  overflow-wrap: anywhere;
-  font-size: 0.72rem;
-  text-align: right;
-}
-
-.tw-script {
-  display: grid;
-  justify-items: start;
-  gap: 0.3rem;
-  min-height: 11.5rem;
-  padding: 0.9rem 1rem 1rem;
-  background:
-    linear-gradient(rgb(255 255 255 / 55%), rgb(255 255 255 / 55%)),
-    repeating-linear-gradient(0deg, transparent 0 23px, rgb(151 164 181 / 12%) 24px),
-    repeating-linear-gradient(90deg, transparent 0 23px, rgb(151 164 181 / 12%) 24px);
-}
-
-.tw-block {
-  display: inline-block;
-  max-width: 100%;
-  padding: 0.42rem 0.72rem;
-  border: 1px solid rgb(0 0 0 / 16%);
-  border-radius: 0.38rem;
-  color: white;
-  font-weight: 700;
-  line-height: 1.35;
-  box-shadow: inset 0 -2px rgb(0 0 0 / 12%);
-}
-
-.tw-block i,
-.tw-reporter {
-  display: inline-block;
-  margin: 0 0.1rem;
-  padding: 0.08rem 0.35rem;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 92%);
-  color: #29313d;
-  font-style: normal;
-  font-weight: 500;
-}
-
-.tw-custom {
-  background: #ff6680;
-}
-
-.tw-extension {
-  background: #0fbd8c;
-}
-
-.tw-control {
-  background: #ffab19;
-}
-
-.tw-event {
-  background: #ffbf00;
-  color: #302800;
-}
-
-.tw-data {
-  background: #ff8c1a;
-}
-
-.tw-indent {
-  display: grid;
-  gap: 0.3rem;
-  margin-left: 1.7rem;
-  padding-left: 0.65rem;
-  border-left: 0.25rem solid #ffab19;
 }
 
 .extension-usage-grid {
@@ -1036,6 +1082,16 @@ h2.application-sheet {
     font-size: 9.5pt;
   }
 
+  .extension-reading-key {
+    gap: 2.2mm;
+    margin-bottom: 2.4mm;
+  }
+
+  .extension-reading-key section {
+    gap: 0.5mm;
+    padding: 1.8mm 2.2mm;
+  }
+
   .extension-index-grid {
     gap: 2.2mm;
     margin: 3mm 0;
@@ -1091,7 +1147,7 @@ h2.application-sheet {
   }
 
   .extension-gallery-banner {
-    grid-template-rows: minmax(0, 48mm) auto;
+    grid-template-rows: minmax(0, 42mm);
     margin: 3mm 0;
   }
 
@@ -1111,20 +1167,19 @@ h2.application-sheet {
     margin: 3mm 0;
   }
 
-  .tw-editor-bar {
-    padding: 2mm 3mm;
+  .extension-editor-example img {
+    max-height: 86mm;
+    object-fit: contain;
   }
 
-  .tw-script {
-    gap: 1.2mm;
-    min-height: 62mm;
-    padding: 3mm 4mm 4mm;
+  .extension-kamishibai-why {
+    margin: 1.5mm 0 2.5mm;
+    padding: 2.4mm 2.8mm;
   }
 
-  .tw-block {
-    padding: 1.4mm 2.3mm;
-    border-radius: 1.5mm;
-    font-size: 7.6pt;
+  .extension-kamishibai-why strong {
+    margin-bottom: 0.8mm;
+    font-size: 8.5pt;
   }
 
   .extension-usage-grid {
