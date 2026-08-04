@@ -69,7 +69,7 @@ group、経過時間の計測、consoleの消去もblockから操作でき、実
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/-SIPC-/consoles.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/-SIPC-/consoles.js">配布ソース</a></p>
 
-## Consoles — scene実行を追跡する {#extension-consoles-example .extension-sheet .extension-sheet-right}
+## Consoles — 台本の実行状況をログへ記録し、停止した処理を突き止める {#extension-consoles-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">Gallery 1 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -100,7 +100,7 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/Lily/TempVariables2.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/Lily/TempVariables2.js">配布ソース</a></p>
 
-## Temporary Variables — asset解析をつなぐ {#extension-temporary-variables-example .extension-sheet .extension-sheet-right}
+## Temporary Variables — 処理ごとの一時値を分け、同時実行による上書きを防ぐ {#extension-temporary-variables-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">Gallery 2 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -131,7 +131,7 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/text.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/text.js">配布ソース</a></p>
 
-## Text — 引数を安全に切り出す {#extension-text-operators-example .extension-sheet .extension-sheet-right}
+## Text — 台本のコマンド名と引数を、区切り文字から読み取る {#extension-text-operators-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">Gallery 3 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -162,7 +162,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/local-storage.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/docs/local-storage.md">公式ドキュメント</a></p>
 
-## Local Storage — UI言語を復元する {#extension-local-storage-example .extension-sheet .extension-sheet-right}
+## Local Storage — 選んだ台本と言語設定を保存し、次回起動時に復元する {#extension-local-storage-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">Gallery 4 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -193,7 +193,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/Lily/MoreTimers.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/Lily/MoreTimers.js">配布ソース</a></p>
 
-## More Timers — skipできる待機を作る {#extension-more-timers-example .extension-sheet .extension-sheet-right}
+## More Timers — 待機時間を計測しながら、利用者のスキップ操作にも応答する {#extension-more-timers-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">Gallery 5 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -224,7 +224,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/files.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/files.js">配布ソース</a></p>
 
-## Files — 選択結果を通常経路へ渡す {#extension-files-example .extension-sheet .extension-sheet-right}
+## Files — 参加者が選んだTXT台本を、埋め込み台本と同じ検査・実行経路へ渡す {#extension-files-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">Gallery 6 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -255,7 +255,7 @@ spriteへ文字専用のrenderer skinを作り、font、色、幅、配置、out
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/lab/text.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/lab/text.js">配布ソース</a></p>
 
-## Animated Text — Asset Managerから間接利用する {#extension-animated-text-example .extension-sheet .extension-sheet-right}
+## Animated Text — Asset Managerを通して、台詞やメニューの文字列を画面へ描画する {#extension-animated-text-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">Gallery 7 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -286,7 +286,7 @@ Scratch／TurboWarp標準の翻訳拡張です。文章と翻訳先の言語を�
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/scratch-vm/blob/c4823421cb7c17d8d8a89878851ce1668c26a21f/src/extensions/scratch3_translate/index.js">固定scratch-vmのTranslate実装</a></p>
 
-## Translate — 保存値がない時だけ使う {#extension-translate-example .extension-sheet .extension-sheet-right}
+## Translate — 保存済み言語がないとき、閲覧環境の言語を初期表示へ反映する {#extension-translate-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">TurboWarp標準 1 / 1　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -317,7 +317,7 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 <p class="extension-source">出典: <a href="https://kubohiroya.github.io/turbowarp-asset-manager/ja/">Asset Manager図解ガイド</a>、<a href="https://github.com/kubohiroya/turbowarp-asset-manager/tree/c55e65787eed21d2e70b96a28dd6705d118f9995">固定commit c55e657</a></p>
 
-## Asset Manager — Loadingからsceneへ渡す {#extension-asset-manager-example .extension-sheet .extension-sheet-right}
+## Asset Manager — 台本で指定した素材を読み込み、名前で背景・登場人物・音を操作する {#extension-asset-manager-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">外部埋め込み 1 / 5　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -348,7 +348,7 @@ model、camera、preview、predictionを別々に開始・停止できます。
 
 <p class="extension-source">出典: <a href="https://kubohiroya.github.io/turbowarp-tmpose/ja/">TMPose図解ガイド</a>、<a href="https://github.com/kubohiroya/turbowarp-tmpose/tree/08fe0cf9da061b1eba75297b8ee187d68549eed4">固定commit 08fe0cf</a></p>
 
-## TMPose — modelを読みposeを待つ {#extension-tmpose-example .extension-sheet .extension-sheet-right}
+## TMPose — 観客のポーズを認識し、物語を進める入力として扱う {#extension-tmpose-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">外部埋め込み 2 / 5　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -379,7 +379,7 @@ LF、CRLF、CRを同じ改行として正規化するため、台本を作った
 
 <p class="extension-source">出典: <a href="https://kubohiroya.github.io/turbowarp-text-lines/ja/">Text Lines図解ガイド</a>、<a href="https://github.com/kubohiroya/turbowarp-text-lines/tree/8655d764cf3af0d783ba6f138086db927abd3570">固定commit 8655d76</a></p>
 
-## Text Lines — source行番号を守る {#extension-text-lines-example .extension-sheet .extension-sheet-right}
+## Text Lines — 台本を行ごとに分け、エラー表示を元のTXTの行番号へ対応させる {#extension-text-lines-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">外部埋め込み 3 / 5　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -410,7 +410,7 @@ Temporary Variablesのruntime値を、JavaScriptに似た制限付き条件式�
 
 <p class="extension-source">出典: <a href="https://kubohiroya.github.io/turbowarp-runtime-expression/ja/">Runtime Expression図解ガイド</a>、<a href="https://github.com/kubohiroya/turbowarp-runtime-expression/tree/7e2bd99fa57fa9f0cbe6b91306b4c53322f00aa3">固定commit 7e2bd99</a></p>
 
-## Runtime Expression — 最初のtrueへ分岐 {#extension-runtime-expression-example .extension-sheet .extension-sheet-right}
+## Runtime Expression — 台本の条件式を安全に評価し、最初に成立した場面へ進む {#extension-runtime-expression-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">外部埋め込み 4 / 5　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -441,7 +441,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-source">出典: <a href="https://github.com/kubohiroya/turbowarp-async-input/blob/3ecd7ff406b86fd957333ae4978cec118322ebd1/README.md">Async Input公式README</a>、<a href="https://github.com/kubohiroya/turbowarp-async-input/tree/3ecd7ff406b86fd957333ae4978cec118322ebd1">固定commit 3ecd7ff</a></p>
 
-## Async Input — keyをscene移動へ結ぶ {#extension-async-input-example .extension-sheet .extension-sheet-right}
+## Async Input — キー・画面タッチ・ポーズ入力を、競合しない場面遷移へまとめる {#extension-async-input-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">外部埋め込み 5 / 5　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -472,7 +472,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-source">出典: <a href="internal-specification.md">紙芝居アプリ内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/extensions/kubohiroyakamishibairuntime.js">内蔵拡張ソース</a></p>
 
-## Kamishibai Runtime — startStoryの最初で止める {#extension-kamishibai-runtime-example .extension-sheet .extension-sheet-right}
+## Kamishibai Runtime — 素材読込やカメラ開始の前に台本を検査し、エラーを表示する {#extension-kamishibai-runtime-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">アプリ内蔵 1 / 2　TMPose 紙芝居での利用例 2 / 2</p>
 
@@ -503,7 +503,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-source">出典: <a href="internal-specification.md">紙芝居アプリ内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/b8de78adcc38e7caf6010ad660e49cb89e5ac763/app/extensions/kubohiroyaweblink.js">内蔵拡張ソース</a></p>
 
-## Web Link — UI操作からWebページを開く {#extension-web-link-example .extension-sheet .extension-sheet-right}
+## Web Link — 利用者がボタンやメニューを操作したとき、設定済みのHTTPSページを開く {#extension-web-link-example .extension-sheet .extension-sheet-right}
 
 <p class="extension-spread-label">アプリ内蔵 2 / 2　TMPose 紙芝居での利用例 2 / 2</p>
 

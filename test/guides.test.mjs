@@ -48,7 +48,10 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
   assert.match(extensionGuide, /^## TMPose — カメラ映像からポーズを認識する /mu);
   assert.doesNotMatch(extensionGuide, /cameraをpose名へ変える/u);
   assert.match(extensionGuide, /^## Web Link — HTTPS URLを新しいタブで開く /mu);
-  assert.match(extensionGuide, /^## Web Link — UI操作からWebページを開く /mu);
+  assert.match(
+    extensionGuide,
+    /^## Web Link — 利用者がボタンやメニューを操作したとき、設定済みのHTTPSページを開く /mu,
+  );
   assert.doesNotMatch(extensionGuide, /公式URLだけを開く|title buttonからだけ開く/u);
   assert.match(theme, /content: "TMPose 紙芝居での利用例";/u);
   assert.doesNotMatch(`${extensionGuide}\n${theme}`, /TMPose紙芝居での利用/u);
@@ -98,8 +101,8 @@ test('keeps the extension guide as an index, bundle explanation, and fifteen two
       extensionGuide.indexOf('#extension-kamishibai-runtime'),
   );
   const animatedTextExample = extensionGuide.slice(
-    extensionGuide.indexOf('## Animated Text — Asset Managerから間接利用する'),
-    extensionGuide.indexOf('## Translate —'),
+    extensionGuide.indexOf('{#extension-animated-text-example '),
+    extensionGuide.indexOf('{#extension-translate '),
   );
   assert.match(animatedTextExample, /接続済みscriptにAnimated Text blockはありません/u);
   assert.match(animatedTextExample, /text_setFont/u);
