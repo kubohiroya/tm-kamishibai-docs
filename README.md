@@ -42,7 +42,9 @@ pnpm check
 ```
 
 `pnpm build`は、各文書のWeb PublicationとPDFを`dist/`へ、確認用PDFを
-`output/pdf/`へ生成します。移設元の固定情報と機能拡張一覧は
+`output/pdf/`へ生成します。2回目以降は入力と生成物の更新時刻を比較し、変更された
+出版物だけを再生成します。全出版物を作り直す場合は`pnpm build:full`を使用します。
+移設元の固定情報と機能拡張一覧は
 [`sources/tmpose-kamishibai.json`](sources/tmpose-kamishibai.json)で管理します。
 
 準備は[Issue #1](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/1)、
