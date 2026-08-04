@@ -36,6 +36,11 @@ test('keeps the application guide in the requested eight-page allocation', () =>
   );
   assert.match(applicationGuide, /ポーズをとろう！/u);
   assert.match(applicationGuide, /kamishibai=3\.1/u);
+  assert.doesNotMatch(
+    applicationGuide,
+    /<code>[^<]*\\n[^<]*<\/code>/gu,
+    'DSL examples must use actual line breaks instead of escaped newline text.',
+  );
   assert.match(applicationGuide, /2c82aaf02f605564f79efe8ff3bbd8f1a78d6fe9/u);
   assert.equal(findDocument('application-materials-guide.md')?.expectedPdfPageCount, 8);
   assert.match(theme, /@page application-guide\s*\{[\s\S]*size:\s*A4;/u);
