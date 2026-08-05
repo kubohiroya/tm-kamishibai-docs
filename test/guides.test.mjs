@@ -13,7 +13,33 @@ const applicationGuide = readFileSync(
   new URL('../docs/user-guides/application-materials-guide.md', import.meta.url),
   'utf8',
 );
+const commandReference = readFileSync(
+  new URL('../docs/dsl-author-guides/command-reference.md', import.meta.url),
+  'utf8',
+);
+const dslManual = readFileSync(
+  new URL('../docs/dsl-author-guides/dsl-manual.md', import.meta.url),
+  'utf8',
+);
+const internalSpecification = readFileSync(
+  new URL('../docs/developer-guides/internal-specification.md', import.meta.url),
+  'utf8',
+);
 const theme = readFileSync(new URL('../docs/general-theme.css', import.meta.url), 'utf8');
+
+test('documents named SVG Text styles for say and think actions', () => {
+  for (const guide of [commandReference, dslManual]) {
+    assert.match(guide, /action=Hero:say:こんにちは:5\.0:baloonStyle/u);
+    assert.match(guide, /action=Hero:think:考え中:5\.0:baloonStyle/u);
+    assert.match(guide, /action=ACTOR:say\|think:TEXT:SECONDS:STYLE/u);
+    assert.match(guide, /default/u);
+  }
+  assert.match(internalSpecification, /actionParam3/u);
+  assert.match(internalSpecification, /sayWithStyle/u);
+  assert.match(internalSpecification, /thinkWithStyle/u);
+  assert.match(extensionGuide, /sayWithStyle/u);
+  assert.match(extensionGuide, /thinkWithStyle/u);
+});
 
 test('keeps the extension guide as an index, bundle explanation, and sixteen two-page entries', () => {
   const sheetIds = [

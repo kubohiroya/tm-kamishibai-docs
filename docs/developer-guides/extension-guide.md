@@ -451,11 +451,11 @@ Temporary Variablesのruntime値を、JavaScriptに似た制限付き条件式�
 
 <figure class="extension-editor-example"><img src="../images/extension-editor-svg-text.png" alt="SVG Text日本語図解ガイドにある複数行のsay、think、SVGテキストアクターの使用例"><figcaption>公開済み日本語ガイドの3つの使用例。<code>\n</code>で改行し、同じ名前付きstyleを吹き出しとSVG text actorへ適用します。</figcaption></figure>
 
-<div class="extension-usage-grid"><section><strong>header</strong><span><code>svgTextStyle</code>で共通styleを定義。</span></section><section><strong>Actor</strong><span><code>setText</code>でActor自身をSVG文字へ変更。</span></section><section><strong>bubble</strong><span><code>default</code>を通常のsay／thinkへ適用。</span></section></div>
+<div class="extension-usage-grid"><section><strong>header</strong><span><code>svgTextStyle</code>で共通styleを定義。</span></section><section><strong>Actor</strong><span><code>setText</code>でActor自身をSVG文字へ変更。</span></section><section><strong>bubble</strong><span><code>say|think:TEXT:SECONDS:STYLE</code>で個別に選択。</span></section></div>
 
-<p class="extension-note"><strong>DSL 3.2:</strong> <code>svgTextStyle=STYLE:BACKGROUND:TEXT_COLOR:FONT:SIZE:ALIGN:DIRECTION</code>と<code>action=ACTOR:setText:TEXT:STYLE</code>を追加しました。旧Text Assetはdeprecated警告を出しながら同じ台本内で動作を維持します。</p>
+<p class="extension-note"><strong>DSL 3.2:</strong> <code>svgTextStyle</code>で定義したstyleを、<code>setText</code>または<code>action=ACTOR:say|think:TEXT:SECONDS:STYLE</code>から使います。後者は内部で<code>sayWithStyle</code>／<code>thinkWithStyle</code>を呼び、STYLE省略時は<code>default</code>を使います。旧Text Assetもdeprecated互換として維持します。</p>
 
-<p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/project.source.json">Version 3.2.0 project source</a>（Stage: <code>svgTextStyle</code>、Actor: <code>setText</code>）、図版: <a href="https://kubohiroya.github.io/turbowarp-svg-text/ja/">SVG Text日本語ガイド</a></p>
+<p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/project.source.json">Version 3.2.0 project source</a>（Stage: <code>svgTextStyle</code>、Actor: <code>setText</code>）、<a href="https://github.com/kubohiroya/tmpose-kamishibai/pull/270">スタイル付きsay／think実装PR</a>、図版: <a href="https://kubohiroya.github.io/turbowarp-svg-text/ja/">SVG Text日本語ガイド</a></p>
 
 ## Async Input — キー・タッチ・カスタム入力を値更新と通知へ接続する {#extension-async-input .extension-sheet .extension-sheet-left}
 
