@@ -45,6 +45,13 @@ export const documentCollections = [
           '3.1／3.2宣言の互換性、3.2台本の設計、旧Text Assetの互換期間、SVG Textへの移行を含む作成・テスト手順を説明します。',
       },
       {
+        sourceFilename: 'dsl-4.0-author-guide.md',
+        title: '紙芝居DSL 4.0 台本作成ガイド',
+        audience: '4.0の仕様確認・先行試作を行う方',
+        description:
+          '開発中のDSL 4.0について、YAML構造、アセット、シーン、アクション、分岐、診断、3.2との非混在境界を説明します。',
+      },
+      {
         sourceFilename: 'command-reference.md',
         title: '紙芝居DSL コマンドリファレンス',
         audience: '台本文法を調べる方',

@@ -16,7 +16,12 @@ const expectedCollections = {
     'user-guide.md',
     'application-materials-guide.md',
   ],
-  'dsl-author-guides': ['dsl-manual.md', 'command-reference.md', 'history.md'],
+  'dsl-author-guides': [
+    'dsl-manual.md',
+    'dsl-4.0-author-guide.md',
+    'command-reference.md',
+    'history.md',
+  ],
   'developer-guides': [
     'developer-guide.md',
     'internal-specification.md',
@@ -37,7 +42,7 @@ test('organizes every migrated document into one reader-oriented collection', ()
     ),
     expectedCollections,
   );
-  assert.equal(documentationConfig.documents.length, 13);
+  assert.equal(documentationConfig.documents.length, 14);
   assert(!existsSync(path.join(projectRoot, 'docs/general')));
 
   for (const document of documentationConfig.documents) {

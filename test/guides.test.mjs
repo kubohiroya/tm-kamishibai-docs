@@ -21,11 +21,26 @@ const dslManual = readFileSync(
   new URL('../docs/dsl-author-guides/dsl-manual.md', import.meta.url),
   'utf8',
 );
+const dsl4AuthorGuide = readFileSync(
+  new URL('../docs/dsl-author-guides/dsl-4.0-author-guide.md', import.meta.url),
+  'utf8',
+);
 const internalSpecification = readFileSync(
   new URL('../docs/developer-guides/internal-specification.md', import.meta.url),
   'utf8',
 );
 const theme = readFileSync(new URL('../docs/general-theme.css', import.meta.url), 'utf8');
+
+test('keeps the DSL 4.0 preview guide separate from the production 3.2 manual', () => {
+  assert.match(dslManual, /対象アプリ: tmpose-kamishibai 3\.2\.x/u);
+  assert.match(dsl4AuthorGuide, /DSL 4\.0は開発中/u);
+  assert.match(dsl4AuthorGuide, /kamishibai: '4\.0'/u);
+  assert.match(dsl4AuthorGuide, /\.kamishibai\.yaml/u);
+  assert.match(dsl4AuthorGuide, /一つのファイルへ混在させたり/u);
+  assert.match(dsl4AuthorGuide, /K4-SCHEMA-UNKNOWN-KEY/u);
+  assert.match(dsl4AuthorGuide, /DSL 3\.2から移行するときの考え方/u);
+  assert.doesNotMatch(dslManual, /kamishibai: '4\.0'/u);
+});
 
 test('documents named SVG Text styles for say and think actions', () => {
   for (const guide of [commandReference, dslManual]) {
