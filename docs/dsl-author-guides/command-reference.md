@@ -450,7 +450,7 @@ svgTextStyle=title:#112233:#ffffff:Noto Sans JP:150:center:up
 | `ALIGN` | `left`、`center`、`right` |
 | `DIRECTION` | `up`、`up-right`、`right`、`down-right`、`down`、`down-left`、`left`、`up-left` |
 
-画面サイズが変わると、フォントと余白をステージ寸法に比例させます。`DIRECTION`は吹き出しにだけ適用します。`default`スタイルは通常の`say`、`think`、`ask`にも適用されます。3.2.0ではアニメーションしません。
+画面サイズが変わると、フォントと余白をステージ寸法に比例させます。`DIRECTION`は吹き出しにだけ適用します。`default`スタイルはスタイル名を省略した通常の`say`、`think`、`ask`にも適用されます。名前付きスタイルは、後述する`say`／`think`の5番目の値から吹き出しごとに選択できます。3.2.0ではアニメーションしません。
 
 ## グローバルアクション
 
@@ -654,15 +654,21 @@ action=Princess:hide
 ```text
 action=アクター名:say:セリフ
 action=アクター名:say:セリフ:秒数
+action=アクター名:say:セリフ:秒数:スタイル名
 ```
 
-セリフ吹き出しを表示します。
+セリフ吹き出しを表示します。5番目の値に`svgTextStyle`で定義した名前を指定すると、その吹き出しにSVG Textの名前付きスタイルを適用します。スタイル名を指定する場合は、直前の秒数も記述します。
+
+`say`と`think`に共通するスタイル付き書式は`action=ACTOR:say|think:TEXT:SECONDS:STYLE`です。
 
 例:
 
 ```text
 action=Princess:say:ようこそ竜宮城へ。:2.5
+action=Hero:say:こんにちは:5.0:baloonStyle
 ```
+
+スタイル名を省略した従来の書式、空のスタイル名、未定義のスタイル名は`default`を使用します。秒数が経過したとき、Rightでそのアクションを終了したとき、またはDownでシーンをスキップしたときは、吹き出しを消去します。
 
 吹き出しを消す例:
 
@@ -675,14 +681,16 @@ action=Urashima:say:
 ```text
 action=アクター名:think:文章
 action=アクター名:think:文章:秒数
+action=アクター名:think:文章:秒数:スタイル名
 ```
 
-思考吹き出しを表示します。
+思考吹き出しを表示します。名前付きスタイルの指定方法、`default`へのfallback、終了・スキップ時の消去は`say`と同じです。
 
 例:
 
 ```text
 action=Urashima:think:あっという間におじいさんになってしまった…:3
+action=Hero:think:考え中:5.0:baloonStyle
 ```
 
 ### `setText`

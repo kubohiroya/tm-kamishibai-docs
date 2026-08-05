@@ -26,7 +26,7 @@ DSL 3.2では、3.1までのText Asset構文をdeprecatedな互換機能とし�
 
 旧Text Assetを使用すると、開発者コンソールへプロジェクトごとに一度`LEGACY_TEXT_ASSET_DEPRECATED`警告が出ますが、台本の実行は継続します。旧構文は少なくとも3.2系列で利用でき、削除する場合は将来のメジャーバージョンで事前に告知します。
 
-新しいテキスト表現の移行先は[`@kubohiroya/turbowarp-svg-text@0.1.0`](https://github.com/kubohiroya/turbowarp-svg-text)です。3.2.0にはこの機能拡張が組み込まれており、旧Text Assetと併用できます。DSLでは`svgTextStyle`で名前付きスタイルを定義し、アクターの`setText`アクションから利用します。`say`と`think`の吹き出しは旧Text Assetとは別の機能で、`default`スタイルを定義すると通常の吹き出しにも同じ相対サイズと配色が適用されます。
+新しいテキスト表現の移行先は[`@kubohiroya/turbowarp-svg-text@0.1.0`](https://github.com/kubohiroya/turbowarp-svg-text)です。3.2.0にはこの機能拡張が組み込まれており、旧Text Assetと併用できます。DSLでは`svgTextStyle`で名前付きスタイルを定義し、アクターの`setText`アクションや`say`／`think`の吹き出しから利用します。スタイル名を省略した吹き出しには`default`スタイルを適用します。
 
 ## ファイルの基本構造
 
@@ -444,6 +444,17 @@ action=Urashima:think:あっという間におじいさんになってしまっ�
 
 秒数を省略すると、次に変更されるまで表示されます。
 
+`svgTextStyle`で定義した名前付きスタイルを吹き出しごとに選ぶ場合は、秒数の後にスタイル名を追加します。
+
+```text
+svgTextStyle=baloonStyle:#ffffff:#222222:Noto Sans JP:120:left:up-right
+
+action=Hero:say:こんにちは:5.0:baloonStyle
+action=Hero:think:考え中:5.0:baloonStyle
+```
+
+書式は`action=ACTOR:say|think:TEXT:SECONDS:STYLE`です。スタイル名を指定する場合は秒数を省略できません。従来のスタイル名なしの書式、空のスタイル名、未定義のスタイル名は`default`を使用します。指定秒数の経過、Rightによるアクション終了、Downによるシーンスキップのいずれでも吹き出しを消去します。
+
 吹き出しを消したい場合は、空のセリフを使います。
 
 ```text
@@ -496,6 +507,7 @@ svgTextStyle=title:#112233:#ffffff:Noto Sans JP:150:center:up
 - 吹き出し方向は`up`、`up-right`、`right`、`down-right`、`down`、`down-left`、`left`、`up-left`から選びます。SVGテキストアクター自身には方向を適用しません。
 - 同じスタイル名を再定義すると、その名前を使用中の吹き出しとSVGテキストアクターも更新されます。
 - `default`を定義すると、通常の`say`、`think`、`ask`にも同じ相対サイズ、色、フォント、配置、方向を適用します。
+- `say`／`think`では、`action=ACTOR:say|think:TEXT:SECONDS:STYLE`の`STYLE`から名前付きスタイルを吹き出しごとに選択できます。
 
 登録済みアクター自身をテキスト表示へ切り替えるには、文字列とスタイル名を指定します。
 

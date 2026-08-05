@@ -192,7 +192,9 @@ TurboWarpのsprite fencingにより50〜80%の指定が100%へ切り上げられ
 Asset Managerのruntime text skinはclone開始後にclone自身へ適用し、Animated Textのskinを雛形から複製しません。
 3.2.xアプリでは、台本宣言が3.1でも3.2でも旧Text Assetの登録、`text`／`textStyle`／`action=text`、Text Assetを参照する`show`／`setSkin`をこの経路で実行します。Kamishibai Runtimeは対象名を収集し、プロジェクトごとに一度`LEGACY_TEXT_ASSET_DEPRECATED`をconsoleへ出力しますが、実行経路を止めません。移行先は[`turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text)であり、旧経路は少なくとも3.2系列で維持します。
 
-新経路では、Stageが`svgTextStyle=STYLE:BACKGROUND:TEXT_COLOR:FONT:SIZE:ALIGN:DIRECTION`を7項目へ分解してSVG Textの`defineStyle`を呼びます。Actor cloneは`action=ACTOR:setText:TEXT:STYLE`を受け、リテラル`\n`を改行へ変換してから`setText`を呼びます。SVG Textはstage sizeを基準にfontと余白を再計算し、style size 100を480×360で14px相当として扱います。既存の`say`／`think`は`default`styleを通じて相対size、配色、font、配置、8方向の吹き出し方向を共有します。0.1.0ではanimationを実行しません。
+新経路では、Stageが`svgTextStyle=STYLE:BACKGROUND:TEXT_COLOR:FONT:SIZE:ALIGN:DIRECTION`を7項目へ分解してSVG Textの`defineStyle`を呼びます。Actor cloneは`action=ACTOR:setText:TEXT:STYLE`を受け、リテラル`\n`を改行へ変換してから`setText`を呼びます。SVG Textはstage sizeを基準にfontと余白を再計算し、style size 100を480×360で14px相当として扱います。
+
+スタイル付き吹き出しでは、Stageの`exec actor action`が`action=ACTOR:say|think:TEXT:SECONDS:STYLE`の5番目の値をruntime variable `actionParam3`へ設定します。対象Actor cloneはこの変数が存在するときだけ、通常のLooks blockではなくSVG Textの`sayWithStyle`／`thinkWithStyle`を呼びます。変数が存在しない従来書式は通常の`say`／`think`を通じて`default`styleを使用します。通常完了、Rightによるaction skip、Downによるscene skip、次のaction開始時のcleanupで、吹き出しと`actionParam3`を残しません。0.1.0ではanimationを実行しません。
 生成手続きはwarpで原子的に実行し、cloneへローカル値をコピーした直後に雛形の`uiIsTemplate`を数値`1`へ復元します。
 asset適用後に表示し、1 tick譲ってから最前面へ移動します。
 
