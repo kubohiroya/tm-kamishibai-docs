@@ -125,7 +125,7 @@ pnpm test
 
 文書リポジトリでは、読者別の`docs/user-guides/`、`docs/dsl-author-guides/`、
 `docs/developer-guides/`、開催日別の`docs/workshops/`をsourceとし、`scripts/`で
-HTML／PDFを生成します。
+全文書のHTMLと、`docs/workshops/`配下の体験会資料だけのPDFを生成します。
 
 次の場所は生成物であり、Git管理上の正本ではありません。
 
@@ -436,12 +436,13 @@ RUBYGANA_GRADE=4 pnpm run build
 文書リポジトリの`pnpm run build`は一般文書ごとにWeb Publicationを構築し、
 Vivliostyle CLIの`toc`設定で
 `h2`・`h3`までを含む目次を生成します。目次をMarkdownへ重複して記述しません。HTML、
-Vivliostyle Viewer、PDF、文書横断目次、画像参照、しおり、ライセンスをまとめて検証します。
-Markdownだけを確認して完了にせず、生成されたHTML/PDFも確認します。
+Vivliostyle Viewer、体験会資料のPDF、文書横断目次、画像参照、しおり、ライセンスを
+まとめて検証します。Markdownだけを確認して完了にせず、生成されたHTMLと、
+`docs/workshops/`を変更した場合のPDFも確認します。
 
 2回目以降の`pnpm run build`は、出版物ごとにMarkdown、参照画像、共通theme、font、
-Vivliostyle設定、build scriptの更新時刻を調べます。必要なHTML/PDFと`build-info.json`が
-すべて存在し、生成物の最も古い更新時刻が入力の最も新しい更新時刻以後なら、
+Vivliostyle設定、build scriptの更新時刻を調べます。必要なHTML、体験会資料のPDF、
+`build-info.json`がすべて存在し、生成物の最も古い更新時刻が入力の最も新しい更新時刻以後なら、
 その出版物のVivliostyle処理を省略します。全出版物を無条件に作り直す場合は
 `pnpm run build:full`を使用します。clean checkoutで生成物が存在しないCIでは、通常の
 `pnpm run build`でも全出版物を生成します。
@@ -488,8 +489,8 @@ GitHub ActionsはcleanなLinux環境で`pnpm install --frozen-lockfile`、`pnpm 
 - 公開入口、ダウンロードページ、移転案内
 - 公開サイトのリンク、画像、AppBar、favicon
 
-文書リポジトリの`pnpm run build`は、一般文書ごとのWeb PublicationとHTML/PDF、
-参加者向け・スタッフ向け体験会資料、文書サイトのリンク、画像、固定ページ数を検証します。
+文書リポジトリの`pnpm run build`は、一般文書ごとのWeb PublicationとHTML、
+参加者向け・スタッフ向け体験会資料のHTML/PDF、文書サイトのリンクと画像を検証します。
 
 SB3またはruntimeを変更した場合は、生成SB3をTurboWarpで開いて次を手動確認します。
 
@@ -513,8 +514,8 @@ pnpm run deploy
 
 本体リポジトリでは`predeploy`がbuildを行い、成功した`dist/`だけを`gh-pages`へ公開します。
 文書リポジトリはGitHub ActionsのPages workflowで`pnpm check`後の`dist/`を公開します。
-公開後はtop page、文書一覧、各カードのHTML／Vivliostyle Viewer／PDF、SB3 downloadを
-それぞれの実URLから確認します。
+公開後はtop page、文書一覧、全文書のHTML／Vivliostyle Viewer、体験会資料のPDF、
+SB3 downloadをそれぞれの実URLから確認します。
 
 問題がある場合は、直前の検証済みcommitをcheckoutしたcleanな環境から再度build・
 deployします。生成済み`dist/`だけを手作業で修正しません。

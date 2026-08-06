@@ -13,7 +13,7 @@
 ## 公開サイトの役割
 
 - `tmpose-kamishibai`: アプリ本体と、アプリ・文書・サンプルへ移動する公開入口
-- `tmpose-kamishibai-docs`: 文書のHTML、Vivliostyle Viewer、PDF
+- `tmpose-kamishibai-docs`: 全文書のHTMLとVivliostyle Viewer、体験会資料のPDF
 - `tmpose-kamishibai-samples`: サンプル台本と実行可能な作品
 
 公開入口は `https://kubohiroya.github.io/tmpose-kamishibai/` に固定します。
@@ -41,8 +41,9 @@ pnpm install
 pnpm check
 ```
 
-`pnpm build`は、各文書のWeb PublicationとPDFを`dist/`へ、確認用PDFを
-`output/pdf/`へ生成します。2回目以降は入力と生成物の更新時刻を比較し、変更された
+`pnpm build`は、各文書のWeb Publicationを`dist/`へ生成します。PDFを生成するのは
+`docs/workshops/`配下の体験会資料だけで、公開用PDFを`dist/`、確認用PDFを
+`output/pdf/`へ出力します。2回目以降は入力と生成物の更新時刻を比較し、変更された
 出版物だけを再生成します。全出版物を作り直す場合は`pnpm build:full`を使用します。
 移設元の固定情報と機能拡張一覧は
 [`sources/tmpose-kamishibai.json`](sources/tmpose-kamishibai.json)で管理します。

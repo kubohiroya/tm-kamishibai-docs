@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import test from 'node:test';
 
-import {findDocument} from '../docs/config.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
 
 const extensionGuide = readFileSync(
@@ -158,7 +157,6 @@ test('keeps the extension guide as an index, bundle explanation, and sixteen two
     /^## SVG Text — 名前付きスタイルで相対サイズの吹き出しとSVG文字を描画する /mu,
   );
   assert.match(extensionGuide, /@kubohiroya\/turbowarp-svg-text\/v\/0\.1\.0/u);
-  assert.equal(findDocument('extension-guide.md')?.expectedPdfPageCount, 34);
   assert.match(theme, /@page extension-guide\s*\{[\s\S]*size:\s*A4;/u);
 });
 
@@ -177,6 +175,5 @@ test('keeps the application guide in the requested eight-page allocation', () =>
     'DSL examples must use actual line breaks instead of escaped newline text.',
   );
   assert.match(applicationGuide, /b3f4b9aa3ed3ede363700be815fe522f6a47df0b/u);
-  assert.equal(findDocument('application-materials-guide.md')?.expectedPdfPageCount, 8);
   assert.match(theme, /@page application-guide\s*\{[\s\S]*size:\s*A4;/u);
 });
