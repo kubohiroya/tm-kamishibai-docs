@@ -80,7 +80,7 @@ git diff -- package.json pnpm-lock.yaml
 
 ### 必要な環境
 
-- Node.js 22.12.0以上
+- Node.js 24.0.0以上
 - pnpm 11
 - 文書をbuildする場合は、PDF生成に利用できるChromeまたはChromium
 - Gitと、GitHub操作に利用するGitHub CLI
