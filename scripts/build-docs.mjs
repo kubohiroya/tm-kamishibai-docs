@@ -13,6 +13,7 @@ import {
 } from '../docs/config.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
 import {collectSourceInputs, isBuildCurrent} from './build-freshness.mjs';
+import {organizePublicationAssets} from './publication-assets.mjs';
 import {installSiteAppBars} from './site-appbar.mjs';
 
 const require = createRequire(import.meta.url);
@@ -33,6 +34,7 @@ const rubyganaGradeData = require('rubygana/lib/学年別漢字.js').metadata;
 const commonPublicationInputs = [
   fileURLToPath(import.meta.url),
   path.join(projectRoot, 'scripts/build-freshness.mjs'),
+  path.join(projectRoot, 'scripts/publication-assets.mjs'),
   path.join(projectRoot, 'scripts/site-appbar.mjs'),
   path.join(projectRoot, 'docs/config.mjs'),
   path.join(projectRoot, 'docs/theme.css'),
@@ -449,6 +451,41 @@ async function buildStaff(force) {
   return 1;
 }
 
+function publicationImagePlans() {
+  const documentPlans = documentationConfig.documents.map((document) => ({
+    outputDirectory: path.join(
+      document.outputDirectory,
+      document.sourceFilename.replace(/\.md$/u, ''),
+    ),
+    sourcePaths: [
+      path.join(document.sourceDirectory, document.sourceFilename),
+      'theme.css',
+      'general-theme.css',
+    ],
+  }));
+  return [
+    ...documentPlans,
+    {
+      outputDirectory: workshopDocumentConfig.outputDirectory,
+      sourcePaths: [
+        path.join(workshopDocumentConfig.sourceDirectory, workshopDocumentConfig.coverFilename),
+        path.join(workshopDocumentConfig.sourceDirectory, workshopDocumentConfig.sourceFilename),
+        'theme.css',
+        'document-theme.css',
+      ],
+      additionalAssetPaths: ['images/image01.png'],
+    },
+    {
+      outputDirectory: staffDocumentConfig.outputDirectory,
+      sourcePaths: [
+        path.join(staffDocumentConfig.sourceDirectory, staffDocumentConfig.sourceFilename),
+        'theme.css',
+        'staff-theme.css',
+      ],
+    },
+  ];
+}
+
 export async function buildDocs({force = false} = {}) {
   const grade = resolveLearnedThroughGrade();
   if (force) {
@@ -469,6 +506,17 @@ export async function buildDocs({force = false} = {}) {
     (await buildDocuments(grade, force)) +
     (await buildWorkshop(grade, force)) +
     (await buildStaff(force));
+  const assetResult = await organizePublicationAssets({
+    sourceRoot: docsRoot,
+    outputRoot: distRoot,
+    publications: publicationImagePlans(),
+  });
+  console.log(
+    `Organized ${assetResult.referencedAssetCount} referenced image/font assets: ` +
+      `${assetResult.sharedAssetCount} shared and ` +
+      `${assetResult.publicationSpecificAssetCount} publication-specific; ` +
+      `saved ${assetResult.sharedAssetSavings} bytes versus per-publication copies.`,
+  );
   const appBarResult = await installSiteAppBars(distRoot, distRoot);
   console.log(
     `Installed the shared AppBar in ${appBarResult.installedCount} of ` +

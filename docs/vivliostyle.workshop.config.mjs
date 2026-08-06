@@ -1,6 +1,21 @@
 import {defineConfig} from '@vivliostyle/cli';
+import {fileURLToPath} from 'node:url';
 
 import {workshopDocumentConfig} from './config.mjs';
+import {createSelectiveImageCopyAsset} from '../scripts/publication-assets.mjs';
+
+const docsRoot = fileURLToPath(new URL('./', import.meta.url));
+
+export const workshopImageCopyAsset = createSelectiveImageCopyAsset({
+  rootDirectory: docsRoot,
+  sourcePaths: [
+    `${workshopDocumentConfig.sourceDirectory}/${workshopDocumentConfig.coverFilename}`,
+    `${workshopDocumentConfig.sourceDirectory}/${workshopDocumentConfig.sourceFilename}`,
+    'theme.css',
+    'document-theme.css',
+  ],
+  additionalAssetPaths: ['images/image01.png'],
+});
 
 function flattenDocumentTableOfContents() {
   return (documentProps) => ({
@@ -42,6 +57,7 @@ export default defineConfig({
   theme: ['theme.css', 'document-theme.css'],
   workspaceDir: '../tmp/docs-workshop-vivliostyle',
   copyAsset: {
+    ...workshopImageCopyAsset,
     excludes: [
       'dist/**',
       'tmp/**',

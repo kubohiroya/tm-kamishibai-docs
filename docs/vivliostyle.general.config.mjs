@@ -1,6 +1,10 @@
 import {defineConfig} from '@vivliostyle/cli';
+import {fileURLToPath} from 'node:url';
 
 import {documentationConfig, findDocument} from './config.mjs';
+import {createSelectiveImageCopyAsset} from '../scripts/publication-assets.mjs';
+
+const docsRoot = fileURLToPath(new URL('./', import.meta.url));
 
 export function createDocumentVivliostyleConfig(sourceFilename) {
   const selectedDocument = findDocument(sourceFilename);
@@ -25,6 +29,14 @@ export function createDocumentVivliostyleConfig(sourceFilename) {
       `../tmp/vivliostyle/${selectedDocument.collectionId}/` +
       selectedDocument.sourceFilename.replace(/\.md$/u, ''),
     copyAsset: {
+      ...createSelectiveImageCopyAsset({
+        rootDirectory: docsRoot,
+        sourcePaths: [
+          `${selectedDocument.sourceDirectory}/${selectedDocument.sourceFilename}`,
+          'theme.css',
+          'general-theme.css',
+        ],
+      }),
       excludes: [
         'dist/**',
         'tmp/**',
