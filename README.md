@@ -34,7 +34,7 @@
 
 ## 開発
 
-Node.js 22.12.0以降とpnpm 11を使用します。
+Node.js 24.0.0以降とpnpm 11を使用します。
 
 ```bash
 pnpm install
