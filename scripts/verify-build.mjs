@@ -5,11 +5,13 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 
 import {documentationConfig, staffDocumentConfig, workshopDocumentConfig} from '../docs/config.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
+import {referencedLocalAssets} from './build-freshness.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const distRoot = path.join(projectRoot, 'dist');
 const pdfRoot = path.join(projectRoot, 'output/pdf');
 const documentFontPath = path.join(projectRoot, 'docs/fonts/NotoSansJP-VF.ttf');
+const publishedFontPath = path.join(distRoot, 'assets/fonts/NotoSansJP-VF.ttf');
 const faviconPath = path.join(distRoot, 'favicon.png');
 const siteShellCssPath = path.join(distRoot, 'site-shell.css');
 const siteShellScriptPath = path.join(distRoot, 'site-shell.js');
@@ -41,16 +43,63 @@ async function pdfUsesFont(pdf, expectedFontName) {
     );
 }
 
-async function findHtmlFiles(directory) {
+async function findFiles(directory, predicate) {
   const entries = await readdir(directory, {withFileTypes: true});
   const nested = await Promise.all(
     entries.map(async (entry) => {
       const entryPath = path.join(directory, entry.name);
-      if (entry.isDirectory()) return findHtmlFiles(entryPath);
-      return entry.isFile() && entry.name.endsWith('.html') ? [entryPath] : [];
+      if (entry.isDirectory()) return findFiles(entryPath, predicate);
+      return entry.isFile() && predicate(entryPath) ? [entryPath] : [];
     }),
   );
   return nested.flat();
+}
+
+async function findHtmlFiles(directory) {
+  return findFiles(directory, (filePath) => filePath.endsWith('.html'));
+}
+
+function jsonAssetReferences(value) {
+  if (typeof value === 'string') {
+    const reference = value.split(/[?#]/u, 1)[0];
+    if (
+      reference !== '' &&
+      !reference.startsWith('/') &&
+      !/^[a-z][a-z0-9+.-]*:/iu.test(reference) &&
+      /\.(?:png|jpe?g|svg|gif|webp|apng|ttf|otf|woff2?)$/iu.test(reference)
+    ) {
+      return [reference];
+    }
+    return [];
+  }
+  if (Array.isArray(value)) return value.flatMap(jsonAssetReferences);
+  if (value !== null && typeof value === 'object') {
+    return Object.values(value).flatMap(jsonAssetReferences);
+  }
+  return [];
+}
+
+async function verifyPublicationAssetReferences(publicationDirectory) {
+  const textFiles = await findFiles(publicationDirectory, (filePath) =>
+    ['.html', '.css', '.json'].includes(path.extname(filePath).toLowerCase()),
+  );
+  for (const textFile of textFiles) {
+    const source = await readFile(textFile, 'utf8');
+    const references = textFile.endsWith('.json')
+      ? jsonAssetReferences(JSON.parse(source))
+      : referencedLocalAssets(source, textFile).map((assetPath) =>
+          path.relative(path.dirname(textFile), assetPath),
+        );
+    for (const reference of references) {
+      const assetPath = path.resolve(path.dirname(textFile), decodeURIComponent(reference));
+      const relativeToDist = path.relative(distRoot, assetPath);
+      assert(
+        relativeToDist !== '..' && !relativeToDist.startsWith(`..${path.sep}`),
+        `${path.relative(distRoot, textFile)} references an asset outside dist/: ${reference}`,
+      );
+      await access(assetPath);
+    }
+  }
 }
 
 async function verifyLocalImages(htmlPath, html) {
@@ -123,7 +172,7 @@ async function verifySiteAppBars() {
   return htmlFiles.length;
 }
 
-async function verifyDocument(document, documentFont) {
+async function verifyDocument(document) {
   const basename = document.sourceFilename.replace(/\.md$/u, '');
   const pdfFilename = document.sourceFilename.replace(/\.md$/u, '.pdf');
   const publicationDirectory = path.join(distRoot, document.outputDirectory, basename);
@@ -134,20 +183,14 @@ async function verifyDocument(document, documentFont) {
   const manifestPath = path.join(publicationDirectory, 'publication.json');
   const publishedPdfPath = path.join(distRoot, document.outputDirectory, pdfFilename);
   const outputPdfPath = path.join(pdfRoot, document.outputDirectory, pdfFilename);
-  const publishedFontPath = path.join(publicationDirectory, 'fonts/NotoSansJP-VF.ttf');
-  const [article, publishedPdf, outputPdf, publishedFont] = await Promise.all([
+  const [article, publishedPdf, outputPdf] = await Promise.all([
     readFile(articlePath, 'utf8'),
     readFile(publishedPdfPath),
     readFile(outputPdfPath),
-    readFile(publishedFontPath),
     access(manifestPath),
   ]);
 
   assert(publishedPdf.equals(outputPdf), `${pdfFilename} differs between dist and output/pdf.`);
-  assert(
-    publishedFont.equals(documentFont),
-    `${basename} does not publish the pinned Noto Sans JP font.`,
-  );
   assert(await pdfUsesFont(outputPdf, 'NotoSansJP'), `${pdfFilename} does not embed Noto Sans JP.`);
   assert(
     !/href="(?!https?:)[^"]+\.md(?:#[^"]*)?"/iu.test(article),
@@ -155,6 +198,7 @@ async function verifyDocument(document, documentFont) {
   );
   assert(article.includes(document.title), `${basename} does not contain its configured title.`);
   await verifyLocalImages(articlePath, article);
+  await verifyPublicationAssetReferences(publicationDirectory);
 
   const pageCount = await pdfPageCount(outputPdfPath);
   if (document.expectedPdfPageCount !== undefined) {
@@ -209,14 +253,20 @@ async function verifyWorkshop() {
   ]);
   assert((await pdfPageCount(workshopPdf)) > 0, 'The workshop PDF has no pages.');
   assert((await pdfPageCount(staffPdf)) > 0, 'The staff PDF has no pages.');
+  await verifyPublicationAssetReferences(workshopDirectory);
+  await verifyPublicationAssetReferences(staffDirectory);
 }
 
 export async function verifyBuild() {
   await verifyIndex();
-  const documentFont = await readFile(documentFontPath);
+  const [documentFont, publishedFont] = await Promise.all([
+    readFile(documentFontPath),
+    readFile(publishedFontPath),
+  ]);
+  assert(publishedFont.equals(documentFont), 'The shared site font differs from its source.');
   const pageCounts = new Map();
   for (const document of documentationConfig.documents) {
-    pageCounts.set(document.sourceFilename, await verifyDocument(document, documentFont));
+    pageCounts.set(document.sourceFilename, await verifyDocument(document));
   }
   await verifyWorkshop();
   const appBarHtmlCount = await verifySiteAppBars();
