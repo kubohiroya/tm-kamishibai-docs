@@ -286,8 +286,8 @@ async function buildDocuments(grade, force) {
       documentationConfig.standaloneArticleHtmlFilename,
     );
     const manifestPath = path.join(publicationDirectory, 'publication.json');
-    const pdfPath = path.join(pdfRoot, document.outputDirectory, pdfFilename);
-    const publishedPdfPath = path.join(distRoot, document.outputDirectory, pdfFilename);
+    const legacyPdfPath = path.join(pdfRoot, document.outputDirectory, pdfFilename);
+    const legacyPublishedPdfPath = path.join(distRoot, document.outputDirectory, pdfFilename);
     const sourcePath = path.join(docsRoot, document.sourceDirectory, document.sourceFilename);
     const inputs = [
       ...commonPublicationInputs,
@@ -296,12 +296,16 @@ async function buildDocuments(grade, force) {
       ...(await collectSourceInputs([sourcePath])),
     ];
     const expectedBuildInfo = document.addFurigana === true ? {learnedThroughGrade: grade} : {};
+    await Promise.all([
+      rm(legacyPdfPath, {force: true}),
+      rm(legacyPublishedPdfPath, {force: true}),
+    ]);
     if (
       !(await shouldBuildPublication({
         force,
         inputs,
         markerPath: path.join(publicationDirectory, 'build-info.json'),
-        outputs: [articlePath, manifestPath, pdfPath, publishedPdfPath],
+        outputs: [articlePath, manifestPath],
         expectedBuildInfo,
         label: document.sourceFilename,
       }))
@@ -315,12 +319,6 @@ async function buildDocuments(grade, force) {
     });
 
     await prepareDocumentHtml(articlePath, document, grade);
-    const pdfInput = document.pdfIncludesGeneratedToc === false ? articlePath : manifestPath;
-    await buildPdf(pdfInput, pdfPath);
-    await mkdir(path.join(distRoot, document.outputDirectory), {
-      recursive: true,
-    });
-    await copyFile(pdfPath, publishedPdfPath);
     await writeBuildInfo(
       publicationDirectory,
       buildInfo({

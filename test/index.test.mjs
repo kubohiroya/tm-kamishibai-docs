@@ -16,7 +16,10 @@ test('publishes each document in its reader-oriented directory', () => {
   for (const document of documentationConfig.documents) {
     const basename = document.sourceFilename.replace(/\.md$/u, '');
     assert.match(index, new RegExp(`href="${document.outputDirectory}/${basename}/"`, 'u'));
-    assert.match(index, new RegExp(`href="${document.outputDirectory}/${basename}\\.pdf"`, 'u'));
+    assert.doesNotMatch(
+      index,
+      new RegExp(`href="${document.outputDirectory}/${basename}\\.pdf"`, 'u'),
+    );
     assert.match(
       index,
       new RegExp(
@@ -27,10 +30,18 @@ test('publishes each document in its reader-oriented directory', () => {
   }
 });
 
-test('offers HTML, Viewer, and PDF for sixteen publications', () => {
+test('offers PDFs only for workshop publications', () => {
   const actionGroups = [...index.matchAll(/<div class="actions">([\s\S]*?)<\/div>/gu)];
   assert.equal(actionGroups.length, 16);
-  for (const [, actions] of actionGroups) {
+  for (const [, actions] of actionGroups.slice(0, documentationConfig.documents.length)) {
+    assert.deepEqual(
+      [...actions.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a\s*>/gu)].map(([, label]) =>
+        label.replace(/\s+/gu, ' ').trim(),
+      ),
+      ['HTML', 'Vivliostyle Viewer'],
+    );
+  }
+  for (const [, actions] of actionGroups.slice(documentationConfig.documents.length)) {
     assert.deepEqual(
       [...actions.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a\s*>/gu)].map(([, label]) =>
         label.replace(/\s+/gu, ' ').trim(),

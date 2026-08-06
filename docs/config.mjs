@@ -28,8 +28,6 @@ export const documentCollections = [
         audience: 'アプリと教材の全体像を把握する方',
         description:
           'アプリ概要、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainを図解付き・全8ページで紹介します。',
-        pdfIncludesGeneratedToc: false,
-        expectedPdfPageCount: 8,
       },
     ],
   },
@@ -91,8 +89,6 @@ export const documentCollections = [
         audience: 'アプリの依存機能を調査・変更する方',
         description:
           '16個の依存機能拡張を1拡張2ページで図解し、sb3-toolchainによるbundle構成も説明する全34ページのガイドです。',
-        pdfIncludesGeneratedToc: false,
-        expectedPdfPageCount: 34,
       },
       {
         sourceFilename: 'dsl-3.1-diagnostics-design.md',

@@ -17,7 +17,7 @@ const siteShellCssPath = path.join(distRoot, 'site-shell.css');
 const siteShellScriptPath = path.join(distRoot, 'site-shell.js');
 const require = createRequire(import.meta.url);
 const vivliostyleRequire = createRequire(require.resolve('@vivliostyle/cli/package.json'));
-const {PDFDocument, PDFName} = vivliostyleRequire('pdf-lib');
+const {PDFDocument} = vivliostyleRequire('pdf-lib');
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -31,16 +31,6 @@ function attributeValues(html, tagName, attributeName) {
 async function pdfPageCount(pdfPath) {
   const document = await PDFDocument.load(await readFile(pdfPath));
   return document.getPageCount();
-}
-
-async function pdfUsesFont(pdf, expectedFontName) {
-  const document = await PDFDocument.load(pdf);
-  const fontNameKeys = [PDFName.of('BaseFont'), PDFName.of('FontName')];
-  return document.context
-    .enumerateIndirectObjects()
-    .some(([, object]) =>
-      fontNameKeys.some((key) => object.get?.(key)?.toString().includes(expectedFontName)),
-    );
 }
 
 async function findFiles(directory, predicate) {
@@ -174,24 +164,14 @@ async function verifySiteAppBars() {
 
 async function verifyDocument(document) {
   const basename = document.sourceFilename.replace(/\.md$/u, '');
-  const pdfFilename = document.sourceFilename.replace(/\.md$/u, '.pdf');
   const publicationDirectory = path.join(distRoot, document.outputDirectory, basename);
   const articlePath = path.join(
     publicationDirectory,
     documentationConfig.standaloneArticleHtmlFilename,
   );
   const manifestPath = path.join(publicationDirectory, 'publication.json');
-  const publishedPdfPath = path.join(distRoot, document.outputDirectory, pdfFilename);
-  const outputPdfPath = path.join(pdfRoot, document.outputDirectory, pdfFilename);
-  const [article, publishedPdf, outputPdf] = await Promise.all([
-    readFile(articlePath, 'utf8'),
-    readFile(publishedPdfPath),
-    readFile(outputPdfPath),
-    access(manifestPath),
-  ]);
+  const [article] = await Promise.all([readFile(articlePath, 'utf8'), access(manifestPath)]);
 
-  assert(publishedPdf.equals(outputPdf), `${pdfFilename} differs between dist and output/pdf.`);
-  assert(await pdfUsesFont(outputPdf, 'NotoSansJP'), `${pdfFilename} does not embed Noto Sans JP.`);
   assert(
     !/href="(?!https?:)[^"]+\.md(?:#[^"]*)?"/iu.test(article),
     `${basename} has a local .md link.`,
@@ -199,18 +179,6 @@ async function verifyDocument(document) {
   assert(article.includes(document.title), `${basename} does not contain its configured title.`);
   await verifyLocalImages(articlePath, article);
   await verifyPublicationAssetReferences(publicationDirectory);
-
-  const pageCount = await pdfPageCount(outputPdfPath);
-  if (document.expectedPdfPageCount !== undefined) {
-    assert(
-      pageCount === document.expectedPdfPageCount,
-      `${pdfFilename} has ${pageCount} pages; expected ${document.expectedPdfPageCount}.`,
-    );
-  } else {
-    assert(pageCount > 0, `${pdfFilename} has no pages.`);
-  }
-
-  return pageCount;
 }
 
 async function verifyIndex() {
@@ -228,8 +196,8 @@ async function verifyIndex() {
       `${basename} HTML link is missing.`,
     );
     assert(
-      index.includes(`href="${document.outputDirectory}/${basename}.pdf"`),
-      `${basename} PDF link is missing.`,
+      !index.includes(`href="${document.outputDirectory}/${basename}.pdf"`),
+      `${basename} PDF link must not be published.`,
     );
     assert(
       index.includes(
@@ -243,16 +211,51 @@ async function verifyIndex() {
 async function verifyWorkshop() {
   const workshopDirectory = path.join(distRoot, workshopDocumentConfig.outputDirectory);
   const workshopPdf = path.join(workshopDirectory, workshopDocumentConfig.pdfFilename);
+  const workshopOutputPdf = path.join(
+    pdfRoot,
+    workshopDocumentConfig.outputDirectory,
+    workshopDocumentConfig.pdfFilename,
+  );
   const staffDirectory = path.join(distRoot, staffDocumentConfig.outputDirectory);
   const staffPdf = path.join(staffDirectory, staffDocumentConfig.pdfFilename);
+  const staffOutputPdf = path.join(
+    pdfRoot,
+    staffDocumentConfig.outputDirectory,
+    staffDocumentConfig.pdfFilename,
+  );
   await Promise.all([
     access(path.join(workshopDirectory, workshopDocumentConfig.coverHtmlFilename)),
     access(path.join(workshopDirectory, workshopDocumentConfig.tocHtmlFilename)),
     access(path.join(workshopDirectory, 'publication.json')),
     access(path.join(staffDirectory, staffDocumentConfig.htmlFilename)),
   ]);
-  assert((await pdfPageCount(workshopPdf)) > 0, 'The workshop PDF has no pages.');
-  assert((await pdfPageCount(staffPdf)) > 0, 'The staff PDF has no pages.');
+  const [workshopPublished, workshopOutput, staffPublished, staffOutput] = await Promise.all([
+    readFile(workshopPdf),
+    readFile(workshopOutputPdf),
+    readFile(staffPdf),
+    readFile(staffOutputPdf),
+  ]);
+  assert(workshopPublished.equals(workshopOutput), 'The workshop PDF copies differ.');
+  assert(staffPublished.equals(staffOutput), 'The staff PDF copies differ.');
+  assert((await pdfPageCount(workshopOutputPdf)) > 0, 'The workshop PDF has no pages.');
+  assert((await pdfPageCount(staffOutputPdf)) > 0, 'The staff PDF has no pages.');
+
+  const expectedPdfPaths = [
+    path.join(workshopDocumentConfig.outputDirectory, workshopDocumentConfig.pdfFilename),
+    path.join(staffDocumentConfig.outputDirectory, staffDocumentConfig.pdfFilename),
+  ].sort();
+  for (const [directory, label] of [
+    [distRoot, 'dist'],
+    [pdfRoot, 'output/pdf'],
+  ]) {
+    const actualPdfPaths = (await findFiles(directory, (filePath) => filePath.endsWith('.pdf')))
+      .map((filePath) => path.relative(directory, filePath))
+      .sort();
+    assert(
+      JSON.stringify(actualPdfPaths) === JSON.stringify(expectedPdfPaths),
+      `${label} must contain only workshop PDFs; found ${actualPdfPaths.join(', ')}.`,
+    );
+  }
   await verifyPublicationAssetReferences(workshopDirectory);
   await verifyPublicationAssetReferences(staffDirectory);
 }
@@ -264,9 +267,8 @@ export async function verifyBuild() {
     readFile(publishedFontPath),
   ]);
   assert(publishedFont.equals(documentFont), 'The shared site font differs from its source.');
-  const pageCounts = new Map();
   for (const document of documentationConfig.documents) {
-    pageCounts.set(document.sourceFilename, await verifyDocument(document));
+    await verifyDocument(document);
   }
   await verifyWorkshop();
   const appBarHtmlCount = await verifySiteAppBars();
@@ -283,9 +285,8 @@ export async function verifyBuild() {
   const htmlFiles = await findHtmlFiles(distRoot);
   assert(htmlFiles.length > 0, 'The generated site has no HTML files.');
   console.log(
-    `Verified ${documentationConfig.documents.length + 2} publications, ${htmlFiles.length} HTML files/AppBars, ` +
-      `${pageCounts.get('extension-guide.md')} extension-guide pages, and ` +
-      `${pageCounts.get('application-materials-guide.md')} application-guide pages.`,
+    `Verified ${documentationConfig.documents.length + 2} publications, ` +
+      `${htmlFiles.length} HTML files/AppBars, and 2 workshop PDFs.`,
   );
   assert(appBarHtmlCount === htmlFiles.length, 'The AppBar verification skipped HTML files.');
 }
