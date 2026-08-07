@@ -19,8 +19,9 @@
 公開入口は `https://kubohiroya.github.io/tmpose-kamishibai/` に固定します。
 このリポジトリのPagesは `https://kubohiroya.github.io/tmpose-kamishibai-docs/` を予定しています。
 
-ドキュメントサイトの公開rootは、3.2系と4.0系に共通する入口と版選択バナーだけを
-表示します。版固有の文書一覧は混在させず、次の専用topで提供します。
+ドキュメントサイトの公開rootは版選択バナーだけを表示します。ワークショップ、サンプル、
+ダウンロードへの共通導線はAppBarと公式トップで提供し、版固有の文書一覧は混在させず、
+次の専用topで提供します。
 
 - `/3.2/`: TXT台本、3.2.xアプリ、既存作品・教材を保守するための文書
 - `/4.0/`: YAML project、Source Graph、preview／build toolchainで新しく制作するための文書
