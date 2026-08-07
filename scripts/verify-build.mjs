@@ -196,7 +196,10 @@ async function verifyIndex() {
     'The index still links to the old Pages path.',
   );
   assert(!index.includes('general/'), 'The index still uses the old general directory.');
-  assert(index.includes('3.2／4.0 共通コンテンツ'), 'The common-content section is missing.');
+  assert(
+    !index.includes('common-content'),
+    'The duplicate common-content section is still present.',
+  );
   assert(index.includes('href="3.2/"'), 'The DSL 3.2 banner destination is missing.');
   assert(index.includes('href="4.0/"'), 'The DSL 4.0 banner destination is missing.');
   assert(!index.includes('publication.json'), 'The root must not list version-specific documents.');

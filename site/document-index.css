@@ -43,57 +43,6 @@ main {
   letter-spacing: 0.08em;
 }
 
-.common-content {
-  margin-top: 2.25rem;
-}
-
-.common-content h2 {
-  margin: 0 0 0.45rem;
-  font-size: 1.55rem;
-}
-
-.common-content > p {
-  margin: 0;
-  color: var(--site-muted);
-  line-height: 1.7;
-}
-
-.common-links {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin: 1rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.common-links a {
-  display: flex;
-  min-height: 100%;
-  padding: 17px 18px;
-  flex-direction: column;
-  gap: 0.35rem;
-  border: 1px solid var(--site-line);
-  border-radius: 9px;
-  background: var(--site-paper);
-  color: var(--site-ink);
-  text-decoration: none;
-}
-
-.common-links strong {
-  color: var(--site-accent);
-  font-size: 1.05rem;
-}
-
-.common-links span {
-  color: var(--site-muted);
-  line-height: 1.55;
-}
-
-.common-links a:hover {
-  border-color: var(--site-accent);
-}
-
 .version-banners {
   display: grid;
   gap: 20px;
@@ -192,7 +141,6 @@ main {
 
 .version-banner__primary:focus-visible,
 .version-switch a:focus-visible,
-.common-links a:focus-visible,
 .button:focus-visible {
   outline: 3px solid var(--site-accent);
   outline-offset: 4px;
@@ -392,7 +340,6 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .common-links,
   .workshop-release {
     grid-template-columns: 1fr;
   }

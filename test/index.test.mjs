@@ -16,11 +16,11 @@ const documentIndexCss = readFileSync(
   'utf8',
 );
 
-test('keeps only common content and version banners on the site root', () => {
+test('keeps only version banners on the site root', () => {
   assert.match(rootIndex, /<h1>紙芝居DSLの版を選ぶ<\/h1>/u);
   assert.equal((rootIndex.match(/class="version-banner version-banner--/gu) ?? []).length, 2);
-  assert.match(rootIndex, /<h2 id="common-content-title">3\.2／4\.0 共通コンテンツ<\/h2>/u);
-  assert.match(rootIndex, /href="workshops\/"/u);
+  assert.doesNotMatch(rootIndex, /common-content|3\.2／4\.0 共通コンテンツ/u);
+  assert.doesNotMatch(rootIndex, /href="workshops\/"/u);
   assert.doesNotMatch(rootIndex, /class="actions"/u);
   assert.doesNotMatch(rootIndex, /publication\.json/u);
   assert.match(rootIndex, /href="3\.2\/">DSL 3\.2のドキュメントへ/u);
