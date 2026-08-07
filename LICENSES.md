@@ -15,6 +15,7 @@ Copyright © 2026 Hiroya Kubo.
 - `README.md`
 - `MIGRATION.md`
 - `docs/user-guides/**`
+- `docs/tutorials/**`
 - `docs/dsl-author-guides/**`
 - `docs/developer-guides/**`
 - `docs/images/**`（`docs/LICENSE.md`で個別に扱う第三者図版と実画面キャプチャを除く）
@@ -25,6 +26,7 @@ Copyright © 2026 Hiroya Kubo.
 CC BY-SA 4.0を適用します。
 
 - `dist/user-guides/**`
+- `dist/tutorials/**`
 - `dist/dsl-author-guides/**`
 - `dist/developer-guides/**`
 - `output/pdf/user-guides/**`
