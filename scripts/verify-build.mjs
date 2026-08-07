@@ -208,12 +208,22 @@ async function verifyIndex() {
   }
 }
 
-async function verifyDslReferencePublications() {
-  for (const [basename, title] of [
-    ['command-reference', '紙芝居DSL コマンドリファレンス'],
-    ['dsl-4.0-schema-reference', '紙芝居DSL 4.0 Schemaリファレンス'],
+async function verifyVersionedPublications() {
+  for (const [outputDirectory, basename, title] of [
+    ['dsl-author-guides', 'command-reference', '紙芝居DSL 3.2 コマンドリファレンス'],
+    ['dsl-author-guides', 'dsl-4.0-schema-reference', '紙芝居DSL 4.0 Schemaリファレンス'],
+    [
+      'user-guides',
+      'application-materials-guide',
+      'TMPose紙芝居 3.2 アプリ・教材・ツールチェインガイド',
+    ],
+    [
+      'developer-guides',
+      'application-materials-guide-4.0',
+      'TMPose紙芝居 4.0 アプリ・教材・ツールチェインガイド',
+    ],
   ]) {
-    const publicationDirectory = path.join(distRoot, 'dsl-author-guides', basename);
+    const publicationDirectory = path.join(distRoot, outputDirectory, basename);
     const [article, publicationSource] = await Promise.all([
       readFile(path.join(publicationDirectory, 'document.html'), 'utf8'),
       readFile(path.join(publicationDirectory, 'publication.json'), 'utf8'),
@@ -282,7 +292,7 @@ async function verifyWorkshop() {
 
 export async function verifyBuild() {
   await verifyIndex();
-  await verifyDslReferencePublications();
+  await verifyVersionedPublications();
   const [documentFont, publishedFont] = await Promise.all([
     readFile(documentFontPath),
     readFile(publishedFontPath),

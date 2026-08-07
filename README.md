@@ -54,6 +54,10 @@ pnpm check
 
 DSL 3系とDSL 4.0では、リファレンスの正本と保守方法を分けます。
 
+公開サイトではDSL 3.2とDSL 4.0を並列の正式サポート対象として扱い、版ごとの専用セクションと
+専用ページを提供します。既存のTXT台本と3.2.xを保守する場合は3.2、新しいYAML project、
+Source Graph、preview／build toolchainで制作する場合は4.0を選びます。
+
 - DSL 3系（現行実装が受理する宣言は3.1／3.2）: 過去リリースから引き継いだ手書きMarkdown
   [`docs/dsl-author-guides/command-reference.md`](docs/dsl-author-guides/command-reference.md)を、
   このリポジトリで引き続き保守します。
@@ -65,6 +69,10 @@ DSL 3系とDSL 4.0では、リファレンスの正本と保守方法を分け�
 （各公開ディレクトリの`document.html`）とVivliostyle Viewer版（`publication.json`）を同時に
 用意します。DSL 3系をJSON Schemaへ置き換えたり、DSL 4.0と同じ生成方式へ擬似的に統一したりは
 しません。
+
+「TMPose紙芝居 アプリ・教材・ツールチェインガイド」も3.2版と4.0版を別のMarkdownとして保守し、
+それぞれに通常HTML版とVivliostyle Viewer版を用意します。3.2版は既存公開URLを維持し、4.0版は
+独立した開発者向けpublicationとして提供します。
 
 ### DSL 4.0 Schemaリファレンスの生成
 
