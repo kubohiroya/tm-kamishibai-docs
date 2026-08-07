@@ -22,18 +22,21 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
   const actualHash = createHash('sha256').update(schemaSource).digest('hex');
   assert.equal(actualHash, lock.schemaSha256);
   assert.equal(lock.repository, 'kubohiroya/tmpose-kamishibai');
-  assert.equal(lock.commit, 'fcdd54c45dee5782f5112af1e45ba35bc823882c');
-  assert.equal(lock.snapshotLicense, 'MPL-2.0');
+  assert.equal(lock.sourceKind, 'working-tree-candidate');
+  assert.equal(lock.baseCommit, '813f369af1fe1f9e7e0be9d93553644800287a1d');
+  assert.equal(lock.candidateIssue, 388);
   assert.equal(
-    lock.schemaUrl,
-    `https://github.com/${lock.repository}/blob/${lock.commit}/${lock.schemaPath}`,
+    lock.candidateIssueUrl,
+    'https://github.com/kubohiroya/tmpose-kamishibai/issues/388',
   );
+  assert.equal(lock.snapshotLicense, 'MPL-2.0');
+  assert.equal(lock.schemaUrl, undefined);
 });
 
 test('covers every top-level field and every Schema action with validated annotations', () => {
   assert.deepEqual(validateReferenceInputs({schema, annotations}), {
     actionCount: 17,
-    annotationCount: 59,
+    annotationCount: 66,
     topLevelFieldCount: 11,
   });
 });
@@ -43,8 +46,12 @@ test('generates the checked-in reference byte-for-byte deterministically', () =>
   const second = renderReferenceDocument({schema, annotations, lock});
   assert.equal(first, second);
   assert.equal(generated, first);
-  assert.match(generated, new RegExp(lock.commit, 'u'));
+  assert.match(generated, new RegExp(lock.baseCommit.slice(0, 7), 'u'));
   assert.match(generated, new RegExp(lock.schemaSha256, 'u'));
+  assert.match(generated, /Issue #388/u);
+  assert.match(generated, /camera preview操作UI/u);
+  assert.match(generated, /物理device IDは台本やruntime変数へ保存しません/u);
+  assert.match(generated, /`mirrored` \/ `unmirrored`/u);
 });
 
 test('rejects missing, extra, and ambiguously ordered annotations', () => {

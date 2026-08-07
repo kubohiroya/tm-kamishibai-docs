@@ -47,14 +47,14 @@ export const documentCollections = [
         title: '紙芝居DSL 4.0 台本作成ガイド',
         audience: '4.0の仕様確認・先行試作を行う方',
         description:
-          '開発中のDSL 4.0について、YAML構造、アセット、シーン、アクション、分岐、診断、3.2との非混在境界を説明します。',
+          '開発中のDSL 4.0について、YAML構造、camera preview操作UI、app shell所有の一時状態、シーン、アクション、分岐、診断を説明します。',
       },
       {
         sourceFilename: 'dsl-4.0-schema-reference.md',
         title: '紙芝居DSL 4.0 Schemaリファレンス',
         audience: '4.0への移行準備・Schema確認を行う方',
         description:
-          '実装リリース前の先行資料として、固定JSON Schemaから全トップレベルfield、asset、設定、scene、actionの型と制約を生成しています。',
+          '実装リリース前の先行資料として、camera preview操作UI候補を含む固定JSON Schemaからfield、asset、設定、scene、actionの型と制約を生成しています。',
       },
       {
         sourceFilename: 'command-reference.md',

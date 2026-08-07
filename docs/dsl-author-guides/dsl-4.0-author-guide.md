@@ -5,15 +5,16 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: 台本作者、教材作成者、授業設計者、DSL 3.2からの移行を検討する開発者\
 対象仕様: `kamishibai: '4.0'`\
 文書状態: DSL 4.0の実装基準に基づく先行ガイド\
-調査基準: tmpose-kamishibai `371f2fb`、2026年8月6日
+調査基準: tmpose-kamishibai `813f369`とcamera preview操作UI候補（Issue #388）、2026年8月7日
 
 > **重要:** DSL 4.0は開発中です。現行の公開アプリtmpose-kamishibai 3.2.xへ、
 > この文書のYAML台本を読み込ませることはできません。実際に作品を制作・上映する場合は、
 > 既存の[紙芝居DSLファイル作成マニュアル](dsl-manual.md)と
 > [紙芝居DSL コマンドリファレンス](command-reference.md)を使用してください。
 
-このガイド本文は上記の`371f2fb`時点を調査基準としています。移行候補で使うfield、型、必須性、
-既定値、action引数を確認するときは、より新しい固定Schemaから生成した
+このガイド本文は上記の公開済みcommitと、まだ上流へcommitされていないIssue #388の実装候補を
+調査基準としています。移行候補で使うfield、型、必須性、既定値、action引数を確認するときは、
+実装候補を固定したSchemaから生成した
 [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)を併用してください。Schemaリファレンスも
 実装のリリースを意味せず、4.0用YAMLへ上映環境を切り替える判断には使用できません。
 
@@ -21,10 +22,12 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 置き換えるものではありません。4.0のアプリ統合と配布ツールが完成するまでは、仕様の確認、台本設計、
 試作、レビューに使用してください。
 
-仕様の正本は、tmpose-kamishibaiリポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/371f2fb6595735dcaba72d55b871ea6ba63d6078/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/371f2fb6595735dcaba72d55b871ea6ba63d6078/schema/dsl-4.schema.json)です。
-このガイドと正本が異なる場合は、正本を優先します。
+公開済み仕様の正本は、tmpose-kamishibaiリポジトリの
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/813f369af1fe1f9e7e0be9d93553644800287a1d/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/813f369af1fe1f9e7e0be9d93553644800287a1d/schema/dsl-4.schema.json)です。
+camera preview操作UIとその一時状態の所有境界は
+[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)で先行しています。この候補と
+公開済み正本が異なる場合は、mergeされるまでは公開済み正本を優先してください。
 
 ## DSL 4.0で変わること
 
@@ -65,13 +68,17 @@ action=Hero:show:HeroHappy:0,-60,30
 
 ## 現在の利用範囲
 
-2026年8月6日の調査基準では、次の実装がtmpose-kamishibaiの`main`へ入っています。
+2026年8月7日の調査基準では、次の実装がtmpose-kamishibaiの`main`へ入っています。
 
 - 制限付きYAMLの解析、JSON Schema検証、参照関係の意味検証
 - 行・列とStory Pathを保持するSource Map、`K4-*`診断
 - 検証後の台本をimmutableな`StoryDocument`へ正規化するsource frontend
 - action実行、分岐、シーン遷移、停止を扱うpure runtime controller
 - control profileの解決、キー入力adapter、時系列history reducer、runtime navigation control
+- camera previewのstory既定とscene固有の非stickyな左右反転指定
+
+左右反転button、camera選択menu、8方向配置、UI画像、opacity、端末固有camera IDをstory変数へ
+保存しないapp shell境界は、Issue #388の実装候補と本先行資料へ反映済みですが、`main`には未収載です。
 
 一方、公開アプリで4.0作品を開いて上映するために必要なbuilder、TurboWarpとの実動作接続、
 アプリUI、配布artifact、既定OFFの機能フラグを含むend-to-end統合は完了していません。
@@ -120,13 +127,13 @@ scenes:
 | キー              | 必須 | 役割                                           |
 | ----------------- | ---- | ---------------------------------------------- |
 | `kamishibai`      | 必須 | 文字列`'4.0'`を指定する                        |
-| `assets`          | 任意 | 背景、コスチューム、音、ポーズモデルを登録する |
+| `assets`          | 任意 | 背景、音、costume、ポーズモデル、UI画像を登録する |
 | `actors`          | 任意 | アクターと初期コスチュームを対応付ける         |
 | `cover`           | 任意 | 表紙の背景とBGMを指定する                      |
 | `textStyles`      | 任意 | SVG Textの名前付きスタイルを定義する           |
 | `variables`       | 任意 | 物語で使う変数の初期値を定義する               |
 | `loading`         | 任意 | 読み込み中の背景とコスチューム列を指定する     |
-| `poseRecognition` | 任意 | ポーズ認識中と認識成立時の音を指定する         |
+| `poseRecognition` | 任意 | ポーズ認識、preview表示、任意の操作UIを設定する |
 | `controls`        | 任意 | 実行環境ごとの操作キーを定義する               |
 | `branches`        | 任意 | 順序付きの条件分岐を登録する                   |
 | `scenes`          | 必須 | 一つ以上のシーンとアクションを記述する         |
@@ -281,10 +288,16 @@ assets:
     kind: poseModel
     file: pose-models/rescue
     loading: lazy
+
+  CameraMenuButton:
+    kind: image
+    file: ui/select-camera.svg
+    loading: eager
 ```
 
-`kind`に指定できる値は`backdrop`、`costume`、`sound`、`poseModel`です。`costume`には`target`が
-必須です。`poseModel`には`file`が必須で、`name`は使用できません。
+`kind`に指定できる値は`backdrop`、`costume`、`sound`、`poseModel`、`image`です。`costume`には
+`target`が必須です。`poseModel`と`image`には`name`を使用できません。`image`はapp shellが表示する
+camera preview control icon用であり、Scratch spriteやcostumeを追加する機能ではありません。
 
 `file`はproject rootを基準にした安全なPOSIX相対pathです。次の値は使用できません。
 
@@ -307,6 +320,8 @@ assets:
 
 `lazy`でもアセット自体は配布成果物へ埋め込みます。scene開始時に準備が終わっていない場合は
 Loading表示で待ち、準備に失敗した場合はそのsceneのアクションを開始せず診断を表示する設計です。
+camera preview controlから参照する`image`はpreview開始時に必要なため、`loading: eager`だけを使用します。
+`lazy`のcontrol画像参照は意味検証でエラーになります。
 
 ## アクターを登録する
 
@@ -326,7 +341,7 @@ actors:
 初期コスチュームは`costume`アセットであり、その`target`がアクターIDと一致している必要があります。
 アクションでは`Hero.show`、`Turtle.say`のように、アクターIDと命令を`.`でつなぎます。
 
-## 表紙、Loading、ポーズ認識音を設定する
+## 表紙、Loading、ポーズ認識とcamera previewを設定する
 
 ### 表紙
 
@@ -364,6 +379,58 @@ poseRecognition:
 
 `poseRecognition`を記述する場合は、認識待機中の`idleSound`と、認識成立時の`chargeSound`を
 どちらも指定します。参照先は音アセットでなければなりません。
+
+### camera previewの表示と操作UI
+
+story全体の左右反転既定と、必要な操作UIを`poseRecognition.preview`へ記述します。
+
+```yaml
+assets:
+  ShowMirroredButton:
+    kind: image
+    file: ui/show-mirrored.svg
+    loading: eager
+  ShowUnmirroredButton:
+    kind: image
+    file: ui/show-unmirrored.svg
+    loading: eager
+  CameraMenuButton:
+    kind: image
+    file: ui/select-camera.svg
+    loading: eager
+
+poseRecognition:
+  idleSound: ClockTicking
+  chargeSound: Success
+  preview:
+    mirroring: mirrored
+    controls:
+      mirroring:
+        position: top-center
+        opacity: 0.8
+        assets:
+          showMirrored: ShowMirroredButton
+          showUnmirrored: ShowUnmirroredButton
+      cameraMenu:
+        position: bottom-center
+        opacity: 0.8
+        buttonAsset: CameraMenuButton
+```
+
+`mirroring`は`mirrored`または`unmirrored`で、省略時は従来表示と同じ`mirrored`です。これはpreview
+canvasの見た目だけを変更し、認識へ渡すframe、pose confidence、sequence／selection判定を変更しません。
+
+`controls`には左右反転buttonとcamera選択menuの一方または両方を記述します。配置は
+`top-center`、`bottom-center`、`left-center`、`right-center`と四隅の8 anchor、`opacity`は0〜1です。
+同じanchorでは左右反転button、camera menuの順に並びます。controlを省略した場合はUIを生成せず、
+暗黙の標準iconも補いません。buttonには台本画像とは別にlocale対応の名前、focus表示、keyboard操作を
+app shellが提供します。
+
+camera menuは開くたびに利用可能な入力を列挙します。`default`、`front`、`back`と検出済みcameraを
+選べますが、端末固有の物理device IDは台本、StoryDocument、`variables`へ保存しません。opaqueなIDと
+UIの選択状態はapp shellがsession内だけで保持し、camera切替失敗時は以前のcameraと表示へ戻します。
+起動時固定・既定OFFの`dsl4CameraPreviewControls`がOFFならcontrol画像、DOM、listener、上流camera APIへ
+接続しません。
 
 ## SVG Textを設定する
 
@@ -414,6 +481,9 @@ variables:
 初期値に使用できる型はstring、number、booleanだけです。list、mapping、`null`、式を初期値には
 使用できません。実行中に値を変更する処理はruntimeまたは登録済みactionが担当し、宣言時の型と異なる値へ
 暗黙変換しません。
+
+`variables`は物語の意味を持つ値だけに使います。cameraの物理device ID、preview buttonの選択状態、
+DOM node、listener、Object URLはapp shell所有の一時状態であり、story変数やScratch変数へ写さないでください。
 
 ### 分岐
 
@@ -498,17 +568,21 @@ scenes:
 scenes:
   rescue:
     poseModel: 救助Pose
+    posePreview:
+      mirroring: unmirrored
     actions:
       - stage: Ocean
       - Hero.pose:
-          choices:
+          steps:
             - pose: help
               skin: HeroHelp
               sound: Success
 ```
 
-長形式では`actions`が必須です。`poseModel`とアクションを同じ階層へ混在させず、アクションは必ず
-`actions`のlistへ入れます。短形式と長形式は、検証後に同じ内部の`SceneNode`へ正規化されます。
+長形式では`actions`が必須です。`poseModel`、`posePreview`とアクションを同じ階層へ混在させず、
+アクションは必ず`actions`のlistへ入れます。`posePreview.mirroring`はそのsceneだけの上書きです。次に入る
+sceneへ指定がなければstory既定へ戻り、前sceneの値を持ち越しません。短形式と長形式は、検証後に同じ
+内部の`SceneNode`へ正規化されます。
 
 ## Global action
 
@@ -657,7 +731,7 @@ Actor actionは`ActorID.command`をキーにします。
 
 ```yaml
 - Hero.pose:
-    choices:
+    steps:
       - pose: help
         skin: HeroHelp
         sound: Success
@@ -666,7 +740,7 @@ Actor actionは`ActorID.command`をキーにします。
         sound: Success
 ```
 
-`choices`は一つ以上必要です。各項目は、認識する`pose`、認識後に表示する`skin`、再生する`sound`を
+`steps`は一つ以上必要です。各項目は、順に認識する`pose`、認識後に表示する`skin`、再生する`sound`を
 一組として持ちます。シーン側の長形式で`poseModel`も指定してください。
 
 ## stableIdを付ける
@@ -704,6 +778,18 @@ assets:
   OpeningSound: sound
   ClockTicking: sound
   Success: sound
+  ShowMirroredButton:
+    kind: image
+    file: ui/show-mirrored.svg
+    loading: eager
+  ShowUnmirroredButton:
+    kind: image
+    file: ui/show-unmirrored.svg
+    loading: eager
+  CameraMenuButton:
+    kind: image
+    file: ui/select-camera.svg
+    loading: eager
   救助Pose:
     kind: poseModel
     file: pose-models/rescue
@@ -733,6 +819,19 @@ variables:
 poseRecognition:
   idleSound: ClockTicking
   chargeSound: Success
+  preview:
+    mirroring: mirrored
+    controls:
+      mirroring:
+        position: top-center
+        opacity: 0.8
+        assets:
+          showMirrored: ShowMirroredButton
+          showUnmirrored: ShowUnmirroredButton
+      cameraMenu:
+        position: bottom-center
+        opacity: 0.8
+        buttonAsset: CameraMenuButton
 
 controls:
   keymaps:
@@ -776,11 +875,13 @@ scenes:
 
   rescue:
     poseModel: 救助Pose
+    posePreview:
+      mirroring: unmirrored
     actions:
       - stage: Ocean
       - Hero.setSkin: HeroHelp
       - Hero.pose:
-          choices:
+          steps:
             - pose: help
               skin: HeroHelp
               sound: Success
@@ -847,7 +948,7 @@ scenes:
 
 ### 移行時に個別判断が必要な機能
 
-2026年8月6日の4.0 core schemaには、3.2のすべての命令が揃っているわけではありません。
+2026年8月7日の4.0 core schema候補には、3.2のすべての命令が揃っているわけではありません。
 特に次の機能は、同名の4.0 core actionとして受理されません。
 
 - 旧Text Asset関連の`asset=...,text`、`text`、`textStyle`、`action=text`

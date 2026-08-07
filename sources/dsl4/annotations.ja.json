@@ -20,8 +20,8 @@
           "pointer": "#/properties/assets",
           "order": 20,
           "title": "`assets` — asset登録",
-          "summary": "背景、音、costume、ポーズモデルへ安定したIDを割り当てます。実体の指定方法はasset種別を参照してください。",
-          "example": "Beach: backdrop\nHeroIdle: costume:Hero",
+          "summary": "背景、音、costume、ポーズモデル、app shell UI用画像へ安定したIDを割り当てます。実体の指定方法はasset種別を参照してください。",
+          "example": "Beach: backdrop\nHeroIdle: costume:Hero\nCameraMenuButton:\n  kind: image\n  file: ui/select-camera.svg\n  loading: eager",
           "exampleContext": "`assets` fieldの値:"
         },
         {
@@ -54,7 +54,10 @@
           "title": "`variables` — runtime変数",
           "summary": "条件式やcustom actionへ渡すstory変数の初期値を定義します。値は文字列、数値、真偽値に限定されます。",
           "example": "score: 0\nready: false",
-          "exampleContext": "`variables` fieldの値:"
+          "exampleContext": "`variables` fieldの値:",
+          "notes": [
+            "cameraの物理device ID、UIの選択状態、DOMやlistenerはstory変数へ保存しません。これらはapp shellがsession内だけで管理します。"
+          ]
         },
         {
           "pointer": "#/properties/loading",
@@ -68,8 +71,8 @@
           "pointer": "#/properties/poseRecognition",
           "order": 80,
           "title": "`poseRecognition` — ポーズ認識設定",
-          "summary": "認識中の音、判定方法、feedback、上映操作からのskip可否をまとめます。idle音とcharge音は必須です。",
-          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nfeedback:\n  mode: presenter\nnavigation:\n  allowSkip: true",
+          "summary": "認識中の音、判定方法、feedback、上映操作からのskip可否、camera previewの表示と任意UIをまとめます。idle音とcharge音は必須です。",
+          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nfeedback:\n  mode: presenter\nnavigation:\n  allowSkip: true\npreview:\n  mirroring: mirrored\n  controls:\n    cameraMenu:\n      position: bottom-center\n      opacity: 0.8\n      buttonAsset: CameraMenuButton",
           "exampleContext": "`poseRecognition` fieldの値:"
         },
         {
@@ -148,6 +151,16 @@
           "title": "名前付きポーズモデル",
           "summary": "ポーズモデルは相対fileまたは固定remote sourceで指定し、project内の表示名だけを使う形式はありません。",
           "example": "kind: poseModel\ndelivery: remote\nsource:\n  url: https://example.com/model.json\n  integrity: sha256-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n  contentType: application/json\n  size: 4096"
+        },
+        {
+          "pointer": "#/$defs/namedImage",
+          "order": 70,
+          "title": "名前付きUI画像",
+          "summary": "app shellが表示するpreview control iconを、project内相対fileまたは固定remote sourceとして登録します。",
+          "example": "kind: image\nfile: ui/select-camera.svg\nloading: eager",
+          "notes": [
+            "camera preview controlから参照する画像は、preview開始時に必要なため`loading: eager`にします。"
+          ]
         }
       ]
     },
@@ -182,7 +195,10 @@
           "order": 40,
           "title": "runtime変数mapping",
           "summary": "変数IDごとに文字列、数値、真偽値の初期値を保持します。objectや配列はcore変数値ではありません。",
-          "example": "message: start\nscore: 0\nready: true"
+          "example": "message: start\nscore: 0\nready: true",
+          "notes": [
+            "端末固有のcamera device IDやpreview controlの一時状態はこのmappingへ永続化せず、app shellのsession stateとして扱います。"
+          ]
         },
         {
           "pointer": "#/$defs/loadingScreen",
@@ -195,8 +211,8 @@
           "pointer": "#/$defs/poseRecognition",
           "order": 60,
           "title": "ポーズ認識全体設定",
-          "summary": "共通音と、sequence、selection、feedback、navigationの任意設定をまとめます。",
-          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nsequence:\n  confidenceThreshold: 0.6\nfeedback:\n  mode: scratchMirror\nnavigation:\n  allowSkip: false"
+          "summary": "共通音と、sequence、selection、feedback、navigation、camera previewの任意設定をまとめます。",
+          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nsequence:\n  confidenceThreshold: 0.6\nfeedback:\n  mode: scratchMirror\nnavigation:\n  allowSkip: false\npreview:\n  mirroring: mirrored"
         },
         {
           "pointer": "#/$defs/poseSequenceRecognition",
@@ -227,15 +243,70 @@
           "example": "allowSkip: true"
         },
         {
-          "pointer": "#/$defs/controls",
+          "pointer": "#/$defs/posePreview",
           "order": 110,
+          "title": "camera previewのstory設定",
+          "summary": "preview canvasの左右反転をstory既定として指定し、必要な場合だけapp shell所有の操作UIを構成します。",
+          "example": "mirroring: mirrored\ncontrols:\n  mirroring:\n    position: top-center\n    opacity: 0.8\n    assets:\n      showMirrored: ShowMirroredButton\n      showUnmirrored: ShowUnmirroredButton\n  cameraMenu:\n    position: bottom-center\n    opacity: 0.8\n    buttonAsset: CameraMenuButton",
+          "notes": [
+            "`mirroring`の省略時は`mirrored`です。操作UIは`controls`を省略すると生成されません。",
+            "この設定はpreview canvasの表示だけを変更し、認識frame、confidence、sequence／selection判定には影響しません。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/scenePosePreview",
+          "order": 120,
+          "title": "scene固有のpreview表示",
+          "summary": "長形式sceneで左右反転だけを上書きします。上書きはそのsceneだけに適用され、次のsceneへ持ち越しません。",
+          "example": "mirroring: unmirrored"
+        },
+        {
+          "pointer": "#/$defs/posePreviewControlPosition",
+          "order": 130,
+          "title": "preview controlの配置",
+          "summary": "preview表示矩形を基準に、上下左右と四隅を含む8個のanchorから選びます。",
+          "example": "bottom-center"
+        },
+        {
+          "pointer": "#/$defs/posePreviewMirroringControl",
+          "order": 140,
+          "title": "左右反転button",
+          "summary": "押した後のtarget stateを示す2画像、配置、任意のopacityで反転buttonを構成します。",
+          "example": "position: top-center\nopacity: 0.8\nassets:\n  showMirrored: ShowMirroredButton\n  showUnmirrored: ShowUnmirroredButton",
+          "notes": [
+            "現在がunmirroredなら`showMirrored`、mirroredなら`showUnmirrored`を表示し、操作成功後だけiconを切り替えます。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/posePreviewCameraMenuControl",
+          "order": 150,
+          "title": "camera選択menu button",
+          "summary": "camera選択menuを開くbutton画像、配置、任意のopacityを指定します。",
+          "example": "position: bottom-center\nopacity: 0.8\nbuttonAsset: CameraMenuButton",
+          "notes": [
+            "menuは開くたびに利用可能なcameraを列挙します。物理device IDは台本やruntime変数へ保存しません。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/posePreviewControls",
+          "order": 160,
+          "title": "camera preview操作UI",
+          "summary": "左右反転buttonとcamera選択menuのうち、一つ以上を任意に有効化します。",
+          "example": "cameraMenu:\n  position: bottom-right\n  buttonAsset: CameraMenuButton",
+          "notes": [
+            "同じanchorでは左右反転button、camera menuの順に一つのgroupとして並べます。暗黙の標準iconはありません。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/controls",
+          "order": 170,
           "title": "操作profile",
           "summary": "一つ以上のkeymapを名前付きprofileとして登録します。キー衝突は意味検証でも確認します。",
           "example": "keymaps:\n  presenter:\n    Space: navigation.nextAction"
         },
         {
           "pointer": "#/$defs/branchRules",
-          "order": 120,
+          "order": 180,
           "title": "分岐規則列",
           "summary": "条件規則を上から評価し、一つだけ含めたelse規則をfallbackにします。",
           "example": "- if: score >= 10\n  goto: success\n- else: retry"
@@ -328,8 +399,11 @@
           "pointer": "#/$defs/longScene",
           "order": 20,
           "title": "long form scene",
-          "summary": "scene固有のposeModelを指定する場合に、`poseModel`と`actions`をobjectへまとめます。",
-          "example": "poseModel: StoryPose\nactions:\n  - wait: 1"
+          "summary": "scene固有のposeModelまたはpreview左右反転を指定する場合に、設定と`actions`をobjectへまとめます。",
+          "example": "poseModel: StoryPose\nposePreview:\n  mirroring: unmirrored\nactions:\n  - wait: 1",
+          "notes": [
+            "`posePreview`はそのsceneだけの非stickyな上書きです。次のsceneに指定がなければstory既定へ戻ります。"
+          ]
         },
         {
           "pointer": "#/$defs/scene",

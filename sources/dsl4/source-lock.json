@@ -1,10 +1,11 @@
 {
   "repository": "kubohiroya/tmpose-kamishibai",
-  "commit": "fcdd54c45dee5782f5112af1e45ba35bc823882c",
-  "commitDate": "2026-08-07T10:24:40+09:00",
+  "sourceKind": "working-tree-candidate",
+  "baseCommit": "813f369af1fe1f9e7e0be9d93553644800287a1d",
+  "baseCommitDate": "2026-08-07T11:22:28+09:00",
+  "candidateIssue": 388,
+  "candidateIssueUrl": "https://github.com/kubohiroya/tmpose-kamishibai/issues/388",
   "schemaPath": "schema/dsl-4.schema.json",
-  "schemaSha256": "d54303687d1cb82a5ec4bd70f854bb7fb368cf7ab1ed40ddd0b93adeabd473bf",
-  "schemaUrl": "https://github.com/kubohiroya/tmpose-kamishibai/blob/fcdd54c45dee5782f5112af1e45ba35bc823882c/schema/dsl-4.schema.json",
-  "surfaceSpecificationUrl": "https://github.com/kubohiroya/tmpose-kamishibai/blob/fcdd54c45dee5782f5112af1e45ba35bc823882c/docs/design/dsl-4-surface.md",
+  "schemaSha256": "b5e99c0dcb3a748ee24b0187e99e418bc759f70a453c863557eee169a73e875f",
   "snapshotLicense": "MPL-2.0"
 }

@@ -6,8 +6,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: DSL 3.2からの移行準備、DSL 4.0台本の先行試作、構造・制約の確認を行う方\
 対象仕様: `kamishibai: '4.0'`\
 文書状態: **先行公開（DSL 4.0実装は未リリース）**\
-Schema固定commit: [`fcdd54c`](https://github.com/kubohiroya/tmpose-kamishibai/commit/fcdd54c45dee5782f5112af1e45ba35bc823882c)\
-Schema SHA-256: `d54303687d1cb82a5ec4bd70f854bb7fb368cf7ab1ed40ddd0b93adeabd473bf`
+Schema candidate: [`813f369`をbaseにした実装候補](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)\
+Schema SHA-256: `b5e99c0dcb3a748ee24b0187e99e418bc759f70a453c863557eee169a73e875f`
 
 > **重要:** このリファレンスは移行の調査、台本の別ファイルでの試作、レビューに使用できますが、
 > 現行の公開アプリtmpose-kamishibai 3.2.xではDSL 4.0台本を実行できません。
@@ -15,15 +15,17 @@ Schema SHA-256: `d54303687d1cb82a5ec4bd70f854bb7fb368cf7ab1ed40ddd0b93adeabd473b
 
 ## このリファレンスについて
 
-この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/fcdd54c45dee5782f5112af1e45ba35bc823882c/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
+この文書は、[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)の作業ツリー実装候補から固定したDSL 4.0 JSON Schema snapshotとCC BY-SA 4.0の日本語Annotationから
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
 注意事項、例はAnnotationで管理します。Schemaと生成物が異なる場合はSchemaを優先します。
 
+> **候補snapshot:** このSchemaには、上流`813f369`へまだcommitされていないcamera preview操作UI候補を含みます。公開された上流仕様は[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)で確認でき、対応実装のmergeまでは候補fieldとして扱ってください。
+
 - 上流repository: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai)
 - Schema path: `schema/dsl-4.schema.json`
-- 上流commit日時: `2026-08-07T10:24:40+09:00`
-- 掲載範囲: トップレベル11 field、action 17種類、Annotation 59項目
-- 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>`
+- base commit日時: `2026-08-07T11:22:28+09:00`
+- 掲載範囲: トップレベル11 field、action 17種類、Annotation 66項目
+- 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai-camera-preview-controls --commit <base-commit> --working-tree --issue 388`
 - 差分確認: `pnpm docs:dsl4:check`
 
 表中の「必須」は、そのobjectまたは形式を選んだ場合の必須性です。`stableId`などの任意fieldは、
@@ -52,19 +54,23 @@ Schema位置: `#/properties/kamishibai`
 
 ### `assets` — asset登録
 
-背景、音、costume、ポーズモデルへ安定したIDを割り当てます。実体の指定方法はasset種別を参照してください。
+背景、音、costume、ポーズモデル、app shell UI用画像へ安定したIDを割り当てます。実体の指定方法はasset種別を参照してください。
 
 Schema位置: `#/properties/assets`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 任意 | 文字列（`compactAsset`） または object または object または object（`namedBackdrop`） または object または object または object（`namedSound`） または object または object または object（`namedCostume`） または object または object（`namedPoseModel`）（`asset`） | — |
+| 任意のID key | 任意 | 文字列（`compactAsset`） または object または object または object（`namedBackdrop`） または object または object または object（`namedSound`） または object または object または object（`namedCostume`） または object または object（`namedPoseModel`） または object または object（`namedImage`）（`asset`） | — |
 
 `assets` fieldの値:
 
 ```yaml
 Beach: backdrop
 HeroIdle: costume:Hero
+CameraMenuButton:
+  kind: image
+  file: ui/select-camera.svg
+  loading: eager
 ```
 
 ### `actors` — actor初期costume
@@ -130,6 +136,8 @@ Schema位置: `#/properties/variables`
 | --- | --- | --- | --- |
 | 任意のID key | 任意 | 文字列 または 数値 または 真偽値（`variableValue`） | — |
 
+- cameraの物理device ID、UIの選択状態、DOMやlistenerはstory変数へ保存しません。これらはapp shellがsession内だけで管理します。
+
 `variables` fieldの値:
 
 ```yaml
@@ -159,7 +167,7 @@ costumes:
 
 ### `poseRecognition` — ポーズ認識設定
 
-認識中の音、判定方法、feedback、上映操作からのskip可否をまとめます。idle音とcharge音は必須です。
+認識中の音、判定方法、feedback、上映操作からのskip可否、camera previewの表示と任意UIをまとめます。idle音とcharge音は必須です。
 
 Schema位置: `#/properties/poseRecognition`
 
@@ -171,6 +179,7 @@ Schema位置: `#/properties/poseRecognition`
 | `selection` | 任意 | object（`poseSelectionRecognition`） | 未知field不可 |
 | `feedback` | 任意 | object（`poseFeedback`） | 未知field不可 |
 | `navigation` | 任意 | object（`poseNavigation`） | 未知field不可 |
+| `preview` | 任意 | object（`posePreview`） | 未知field不可 |
 
 `poseRecognition` fieldの値:
 
@@ -181,6 +190,13 @@ feedback:
   mode: presenter
 navigation:
   allowSkip: true
+preview:
+  mirroring: mirrored
+  controls:
+    cameraMenu:
+      position: bottom-center
+      opacity: 0.8
+      buttonAsset: CameraMenuButton
 ```
 
 ### `controls` — 操作profile
@@ -256,6 +272,7 @@ Schema位置: `#/$defs/asset`
 | 形式3 | いずれか一つ | object または object または object（`namedSound`） | 未知field不可 |
 | 形式4 | いずれか一つ | object または object または object（`namedCostume`） | 未知field不可 |
 | 形式5 | いずれか一つ | object または object（`namedPoseModel`） | 未知field不可 |
+| 形式6 | いずれか一つ | object または object（`namedImage`） | 未知field不可 |
 
 - 短縮形式はproject内に同名のassetがある場合に使います。
 - remote sourceはHTTPS URLだけでなくSHA-256、content type、byte sizeを固定します。
@@ -383,6 +400,31 @@ source:
   size: 4096
 ```
 
+### 名前付きUI画像
+
+app shellが表示するpreview control iconを、project内相対fileまたは固定remote sourceとして登録します。
+
+Schema位置: `#/$defs/namedImage`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `kind` | 必須 | 固定値 `image` | — |
+| `file` | 任意 | 文字列（`filePath`） | 1文字以上、pattern `^(?!/)(?![A-Za-z]:[\\/])(?![A-Za-z][A-Za-z0-9+.-]*:)[^\\\u0000]+$` |
+| `source` | 任意 | object（`remoteAssetSource`） | 未知field不可 |
+| `delivery` | 任意 | `embedded` / `remote`（`deliveryPolicy`） | 既定値 `embedded` |
+| `loading` | 任意 | `eager` / `lazy`（`loadingPolicy`） | 既定値 `eager` |
+| `retention` | 任意 | `scene` / `story`（`retentionPolicy`） | — |
+
+- camera preview controlから参照する画像は、preview開始時に必要なため`loading: eager`にします。
+
+Schemaで検証できる値の例:
+
+```yaml
+kind: image
+file: ui/select-camera.svg
+loading: eager
+```
+
 ## actor・表示・認識・分岐設定
 
 トップレベルfieldが参照するobjectの詳細です。表の必須性は、それぞれのobjectを記述した場合に適用されます。
@@ -457,6 +499,8 @@ Schema位置: `#/$defs/variables`
 | --- | --- | --- | --- |
 | 任意のID key | 任意 | 文字列 または 数値 または 真偽値（`variableValue`） | — |
 
+- 端末固有のcamera device IDやpreview controlの一時状態はこのmappingへ永続化せず、app shellのsession stateとして扱います。
+
 Schemaで検証できる値の例:
 
 ```yaml
@@ -486,7 +530,7 @@ costumes:
 
 ### ポーズ認識全体設定
 
-共通音と、sequence、selection、feedback、navigationの任意設定をまとめます。
+共通音と、sequence、selection、feedback、navigation、camera previewの任意設定をまとめます。
 
 Schema位置: `#/$defs/poseRecognition`
 
@@ -498,6 +542,7 @@ Schema位置: `#/$defs/poseRecognition`
 | `selection` | 任意 | object（`poseSelectionRecognition`） | 未知field不可 |
 | `feedback` | 任意 | object（`poseFeedback`） | 未知field不可 |
 | `navigation` | 任意 | object（`poseNavigation`） | 未知field不可 |
+| `preview` | 任意 | object（`posePreview`） | 未知field不可 |
 
 Schemaで検証できる値の例:
 
@@ -510,6 +555,8 @@ feedback:
   mode: scratchMirror
 navigation:
   allowSkip: false
+preview:
+  mirroring: mirrored
 ```
 
 ### sequence認識設定
@@ -582,6 +629,143 @@ Schemaで検証できる値の例:
 
 ```yaml
 allowSkip: true
+```
+
+### camera previewのstory設定
+
+preview canvasの左右反転をstory既定として指定し、必要な場合だけapp shell所有の操作UIを構成します。
+
+Schema位置: `#/$defs/posePreview`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `mirroring` | 必須 | `mirrored` / `unmirrored` | — |
+| `controls` | 任意 | object（`posePreviewControls`） | 1 field以上、未知field不可 |
+
+引数の詳細:
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `mirroring` | 任意 | object（`posePreviewMirroringControl`） | 未知field不可 |
+| `cameraMenu` | 任意 | object（`posePreviewCameraMenuControl`） | 未知field不可 |
+
+- `mirroring`の省略時は`mirrored`です。操作UIは`controls`を省略すると生成されません。
+- この設定はpreview canvasの表示だけを変更し、認識frame、confidence、sequence／selection判定には影響しません。
+
+Schemaで検証できる値の例:
+
+```yaml
+mirroring: mirrored
+controls:
+  mirroring:
+    position: top-center
+    opacity: 0.8
+    assets:
+      showMirrored: ShowMirroredButton
+      showUnmirrored: ShowUnmirroredButton
+  cameraMenu:
+    position: bottom-center
+    opacity: 0.8
+    buttonAsset: CameraMenuButton
+```
+
+### scene固有のpreview表示
+
+長形式sceneで左右反転だけを上書きします。上書きはそのsceneだけに適用され、次のsceneへ持ち越しません。
+
+Schema位置: `#/$defs/scenePosePreview`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `mirroring` | 必須 | `mirrored` / `unmirrored` | — |
+
+Schemaで検証できる値の例:
+
+```yaml
+mirroring: unmirrored
+```
+
+### preview controlの配置
+
+preview表示矩形を基準に、上下左右と四隅を含む8個のanchorから選びます。
+
+Schema位置: `#/$defs/posePreviewControlPosition`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| 値 | 必須 | `top-center` / `bottom-center` / `left-center` / `right-center` / `top-right` / `bottom-right` / `top-left` / `bottom-left` | — |
+
+Schemaで検証できる値の例:
+
+```yaml
+bottom-center
+```
+
+### 左右反転button
+
+押した後のtarget stateを示す2画像、配置、任意のopacityで反転buttonを構成します。
+
+Schema位置: `#/$defs/posePreviewMirroringControl`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `position` | 必須 | `top-center` / `bottom-center` / `left-center` / `right-center` / `top-right` / `bottom-right` / `top-left` / `bottom-left`（`posePreviewControlPosition`） | — |
+| `opacity` | 任意 | 数値 | 既定値 `1`、0以上、1以下 |
+| `assets` | 必須 | object | 未知field不可 |
+
+- 現在がunmirroredなら`showMirrored`、mirroredなら`showUnmirrored`を表示し、操作成功後だけiconを切り替えます。
+
+Schemaで検証できる値の例:
+
+```yaml
+position: top-center
+opacity: 0.8
+assets:
+  showMirrored: ShowMirroredButton
+  showUnmirrored: ShowUnmirroredButton
+```
+
+### camera選択menu button
+
+camera選択menuを開くbutton画像、配置、任意のopacityを指定します。
+
+Schema位置: `#/$defs/posePreviewCameraMenuControl`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `position` | 必須 | `top-center` / `bottom-center` / `left-center` / `right-center` / `top-right` / `bottom-right` / `top-left` / `bottom-left`（`posePreviewControlPosition`） | — |
+| `opacity` | 任意 | 数値 | 既定値 `1`、0以上、1以下 |
+| `buttonAsset` | 必須 | 文字列（`id`）（`assetId`） | — |
+
+- menuは開くたびに利用可能なcameraを列挙します。物理device IDは台本やruntime変数へ保存しません。
+
+Schemaで検証できる値の例:
+
+```yaml
+position: bottom-center
+opacity: 0.8
+buttonAsset: CameraMenuButton
+```
+
+### camera preview操作UI
+
+左右反転buttonとcamera選択menuのうち、一つ以上を任意に有効化します。
+
+Schema位置: `#/$defs/posePreviewControls`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `mirroring` | 任意 | object（`posePreviewMirroringControl`） | 未知field不可 |
+| `cameraMenu` | 任意 | object（`posePreviewCameraMenuControl`） | 未知field不可 |
+
+- 同じanchorでは左右反転button、camera menuの順に一つのgroupとして並べます。暗黙の標準iconはありません。
+
+Schemaで検証できる値の例:
+
+```yaml
+cameraMenu:
+  position: bottom-right
+  buttonAsset: CameraMenuButton
 ```
 
 ### 操作profile
@@ -799,19 +983,24 @@ Schemaで検証できる値の例:
 
 ### long form scene
 
-scene固有のposeModelを指定する場合に、`poseModel`と`actions`をobjectへまとめます。
+scene固有のposeModelまたはpreview左右反転を指定する場合に、設定と`actions`をobjectへまとめます。
 
 Schema位置: `#/$defs/longScene`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
 | `poseModel` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `posePreview` | 任意 | object（`scenePosePreview`） | 未知field不可 |
 | `actions` | 必須 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
+
+- `posePreview`はそのsceneだけの非stickyな上書きです。次のsceneに指定がなければstory既定へ戻ります。
 
 Schemaで検証できる値の例:
 
 ```yaml
 poseModel: StoryPose
+posePreview:
+  mirroring: unmirrored
 actions:
   - wait: 1
 ```
