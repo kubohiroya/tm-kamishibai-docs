@@ -5,16 +5,15 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: 台本作者、教材作成者、授業設計者、DSL 3.2からの移行を検討する開発者\
 対象仕様: `kamishibai: '4.0'`\
 文書状態: DSL 4.0の実装基準に基づく先行ガイド\
-調査基準: tmpose-kamishibai `813f369`とIssue #388、#390、#391の実装候補、2026年8月7日
+調査基準: tmpose-kamishibai `5f1c1d0`とIssue #390、#391の実装候補、2026年8月7日
 
 > **重要:** DSL 4.0は開発中です。現行の公開アプリtmpose-kamishibai 3.2.xへ、
 > この文書のYAML台本を読み込ませることはできません。実際に作品を制作・上映する場合は、
 > 既存の[紙芝居DSLファイル作成マニュアル](dsl-manual.md)と
 > [紙芝居DSL コマンドリファレンス](command-reference.md)を使用してください。
 
-このガイド本文は上記の公開済みcommitと、まだ上流へcommitされていないIssue #388、#390、#391の実装候補を
-調査基準としています。移行候補で使うfield、型、必須性、既定値、action引数を確認するときは、
-実装候補を固定したSchemaから生成した
+このガイド本文は上記の公開済みcommitと、Issue #390、#391の実装候補を調査基準としています。
+移行候補で使うfield、型、必須性、既定値、action引数を確認するときは、公開済みcommitのSchemaを固定して生成した
 [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)を併用してください。Schemaリファレンスも
 実装のリリースを意味せず、4.0用YAMLへ上映環境を切り替える判断には使用できません。
 
@@ -23,11 +22,12 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 試作、レビューに使用してください。
 
 公開済み仕様の正本は、tmpose-kamishibaiリポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/813f369af1fe1f9e7e0be9d93553644800287a1d/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/813f369af1fe1f9e7e0be9d93553644800287a1d/schema/dsl-4.schema.json)です。
-camera preview操作UIとその一時状態の所有境界は
-[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)で先行しています。この候補と
-公開済み正本が異なる場合は、mergeされるまでは公開済み正本を優先してください。project directory選択と
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/5f1c1d08871a057dfff8ff802cfacce12dcd10df/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/5f1c1d08871a057dfff8ff802cfacce12dcd10df/schema/dsl-4.schema.json)です。
+camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)、advanced speechと
+`speechStyles`は[Issue #396](https://github.com/kubohiroya/tmpose-kamishibai/issues/396)、
+`Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tmpose-kamishibai/issues/398)から
+上記commitまでにmergeされています。project directory選択と
 YAML live reloadは[Issue #390](https://github.com/kubohiroya/tmpose-kamishibai/issues/390)、local assetの
 追加・内容更新のlive reloadは
 [Issue #391](https://github.com/kubohiroya/tmpose-kamishibai/issues/391)で仕様化しています。
@@ -78,10 +78,12 @@ action=Hero:show:HeroHappy:0,-60,30
 - 検証後の台本をimmutableな`StoryDocument`へ正規化するsource frontend
 - action実行、分岐、シーン遷移、停止を扱うpure runtime controller
 - control profileの解決、キー入力adapter、時系列history reducer、runtime navigation control
-- camera previewのstory既定とscene固有の非stickyな左右反転指定
+- camera previewのstory既定、scene固有の非stickyな左右反転指定、任意の操作UI
+- `Actor.say`／`Actor.think`の入力待ち、文字送り、開始音／文字音、名前付き`speechStyles`
+- `Actor.moveTo`の`linear`、`easeIn`、`easeOut`、`easeInOut`
 
-左右反転button、camera選択menu、8方向配置、UI画像、opacity、端末固有camera IDをstory変数へ
-保存しないapp shell境界は、Issue #388の実装候補と本先行資料へ反映済みですが、`main`には未収載です。
+Issue #406の`Actor.setTransparency`はDraft PR #409が未マージで`main`と競合しているため、今回固定した
+Schemaには含めません。merge後のSchemaを次回同期するまでは、先行台本へ記述しないでください。
 
 一方、公開アプリで4.0作品を開いて上映するために必要なbuilder、TurboWarpとの実動作接続、
 アプリUI、配布artifact、既定OFFの機能フラグを含むend-to-end統合は完了していません。
@@ -178,6 +180,7 @@ Web Previewはroot直下の`project.source.json`を読み、次の規則でYAML�
 | `actors`          | 任意 | アクターと初期コスチュームを対応付ける         |
 | `cover`           | 任意 | 表紙の背景とBGMを指定する                      |
 | `textStyles`      | 任意 | SVG Textの名前付きスタイルを定義する           |
+| `speechStyles`    | 任意 | say／thinkの名前付き文字送りstyleを定義する    |
 | `variables`       | 任意 | 物語で使う変数の初期値を定義する               |
 | `loading`         | 任意 | 読み込み中の背景とコスチューム列を指定する     |
 | `poseRecognition` | 任意 | ポーズ認識、preview表示、任意の操作UIを設定する |
@@ -514,6 +517,30 @@ textStyles:
 `asset=NAME,text`、`text=`、`textStyle=`、`action=text:...`に相当する旧Text Asset構文は、
 4.0 core schemaにありません。3.2では互換機能として動作しますが、4.0へは持ち込まないでください。
 
+## Speech styleを設定する
+
+`Actor.say`と`Actor.think`で同じ文字送り演出を再利用するときは、トップレベルの`speechStyles`へ
+名前付きstyleを定義します。
+
+```yaml
+speechStyles:
+  novel:
+    characterIntervalSeconds: 0.05
+    characterSound: Typewriter
+    noSoundCharacters: '「」'
+    restCharacters: '、。…'
+    restCharacterIntervalSeconds: 0.5
+```
+
+`characterIntervalSeconds`は必須で、Unicode grapheme cluster一つを表示してから次を表示するまでの秒数です。
+`characterSound`は逐次表示した各文字で鳴らすsound asset、`noSoundCharacters`は文字音を鳴らさない文字、
+`restCharacters`は無音にしたうえで表示後の間隔を`restCharacterIntervalSeconds`へ置き換える文字です。
+`noSoundCharacters`を使う場合は`characterSound`、`restCharacters`を使う場合は
+`restCharacterIntervalSeconds`も指定します。
+
+styleには本文、完了条件、吹き出し開始時の音声を含めません。`text`、`seconds`、`waitFor`、
+`startSound`はセリフごとにactionへ記述します。
+
 ## 変数と条件分岐を設定する
 
 ### 変数
@@ -711,14 +738,14 @@ Global actionはアクター名を付けずに記述します。
 
 Actor actionは`ActorID.command`をキーにします。
 
-| action          | 必須引数                  | 役割                                         |
-| --------------- | ------------------------- | -------------------------------------------- |
-| `Actor.show`    | `skin`、`x`、`y`、`scale` | コスチューム、位置、倍率を指定して表示する   |
-| `Actor.moveTo`  | `x`、`y`、`seconds`       | 指定位置へ移動する                           |
-| `Actor.say`     | `text`、`seconds`         | 指定時間セリフを表示する                     |
-| `Actor.setSkin` | コスチュームID            | コスチュームを変更する                       |
-| `Actor.setText` | `text`、`style`           | SVG Textを更新する                           |
-| `Actor.pose`    | `choices`                 | ポーズ認識結果に応じてコスチュームと音を選ぶ |
+| action                    | 必須引数                                  | 役割                                         |
+| ------------------------- | ----------------------------------------- | -------------------------------------------- |
+| `Actor.show`              | `skin`、`x`、`y`、`scale`                 | コスチューム、位置、倍率を指定して表示する   |
+| `Actor.moveTo`            | `x`、`y`、`seconds`                       | 任意のeasingで指定位置へ移動する              |
+| `Actor.say`／`Actor.think` | `text`と、`seconds`／`waitFor`の一方以上 | セリフまたは思考を表示する                   |
+| `Actor.setSkin`           | コスチュームID                            | コスチュームを変更する                       |
+| `Actor.setText`           | `text`、`style`                           | SVG Textを更新する                           |
+| `Actor.pose`              | `steps`                                   | ポーズを順に認識してcostumeと音を適用する    |
 
 ### 表示する
 
@@ -740,17 +767,40 @@ Actor actionは`ActorID.command`をキーにします。
     x: 40
     y: -57
     seconds: 1.5
+    easing: easeInOut
 ```
 
-`seconds`は0以上です。
+`seconds`は0以上です。`easing`は`linear`、`easeIn`、`easeOut`、`easeInOut`から選び、省略時は
+`linear`です。XとYへ同じ補間率を使い、0秒、完了、skip時は指定した終点へ確定します。
 
-### セリフを表示する
+### セリフと思考を表示する
 
 ```yaml
 - Hero.say:
     text: 助けに行こう
-    seconds: 2
+    seconds: 8
+    waitFor: advance
+    style: novel
+    startSound: HeroGreetingVoice
+- Hero.think:
+    text: どうしよう……
+    waitFor: advance
+    characterIntervalSeconds: 0.1
+    characterSound: Typewriter
 ```
+
+`seconds`だけなら表示開始から指定秒数後、`waitFor: advance`だけならprimary pointer／tapまたは有効な
+任意キーの入力後に完了します。両方を指定すると、入力とtimeoutのうち先に成立した方で完了します。
+speech開始に使った同じ入力、interactive UI、IME composition、modifier shortcut、key repeatは
+advanceとして再利用しません。
+
+`style`には`speechStyles`のIDを指定します。styleを指定したactionでは、
+`characterIntervalSeconds`、`characterSound`、`noSoundCharacters`、`restCharacters`、
+`restCharacterIntervalSeconds`をinline指定できません。styleを使わない既存のinline形式は引き続き使えます。
+
+`startSound`は吹き出し表示開始時に1回再生し、speech完了、入力、timeout、cancelで停止します。
+文字送り途中に入力またはtimeoutした場合は、残り全文を文字音と文字別休止なしで即時表示して完了します。
+`Actor.say`と`Actor.think`は同じlifecycleを使い、吹き出しの種類だけが異なります。
 
 ### コスチュームを変える
 
@@ -860,7 +910,7 @@ production用にbuildした自己完結SB3には、directory handle、poll timer
 
 ## 総合サンプル
 
-次の例は、アセット、表紙、SVG Text、変数、keymap、分岐、入力、ポーズ認識を一つの台本へまとめた
+次の例は、アセット、表紙、SVG Text、speech style、変数、keymap、分岐、入力、ポーズ認識を一つの台本へまとめた
 ものです。構文確認用であり、現行3.2.xアプリでは実行できません。
 
 ```yaml
@@ -879,6 +929,9 @@ assets:
   OpeningSound: sound
   ClockTicking: sound
   Success: sound
+  Typewriter: sound
+  HeroGreetingVoice: sound
+  HeroThinkingVoice: sound
   ShowMirroredButton:
     kind: image
     file: show-mirrored.svg
@@ -912,6 +965,14 @@ textStyles:
     size: 150
     align: center
     direction: up
+
+speechStyles:
+  novel:
+    characterIntervalSeconds: 0.05
+    characterSound: Typewriter
+    noSoundCharacters: '「」'
+    restCharacters: '、。…'
+    restCharacterIntervalSeconds: 0.5
 
 variables:
   score: 1
@@ -969,7 +1030,10 @@ scenes:
         scale: 30
     - Hero.say:
         text: 助けに行こう
-        seconds: 2
+        seconds: 8
+        waitFor: advance
+        style: novel
+        startSound: HeroGreetingVoice
     - keyInputToChangeScene:
         Digit1: rescue
         Digit2: ending
@@ -996,9 +1060,11 @@ scenes:
         x: 40
         y: -57
         seconds: 1.5
-    - Hero.say:
-        text: 海路で帰ろう
-        seconds: 2
+        easing: easeInOut
+    - Hero.think:
+        text: 海路で帰ろう……
+        waitFor: advance
+        startSound: HeroThinkingVoice
     - transition:
         effect: fadeOut
         seconds: 0.5

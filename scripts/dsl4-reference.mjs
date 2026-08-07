@@ -17,6 +17,8 @@ const expectedStaticSectionPointers = {
     '#/$defs/actors',
     '#/$defs/cover',
     '#/$defs/textStyle',
+    '#/$defs/speechStyle',
+    '#/$defs/speechStyles',
     '#/$defs/variables',
     '#/$defs/loadingScreen',
     '#/$defs/poseRecognition',

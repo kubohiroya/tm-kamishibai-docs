@@ -6,8 +6,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: DSL 3.2からの移行準備、DSL 4.0台本の先行試作、構造・制約の確認を行う方\
 対象仕様: `kamishibai: '4.0'`\
 文書状態: **先行公開（DSL 4.0実装は未リリース）**\
-Schema candidate: [`813f369`をbaseにした実装候補](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)\
-Schema SHA-256: `b5e99c0dcb3a748ee24b0187e99e418bc759f70a453c863557eee169a73e875f`
+Schema固定commit: [`5f1c1d0`](https://github.com/kubohiroya/tmpose-kamishibai/commit/5f1c1d08871a057dfff8ff802cfacce12dcd10df)\
+Schema SHA-256: `c353b8ce6e906463bcb45b50db634b7d30d7075ee061a96b6ef380c514525ca8`
 
 > **重要:** このリファレンスは移行の調査、台本の別ファイルでの試作、レビューに使用できますが、
 > 現行の公開アプリtmpose-kamishibai 3.2.xではDSL 4.0台本を実行できません。
@@ -15,17 +15,17 @@ Schema SHA-256: `b5e99c0dcb3a748ee24b0187e99e418bc759f70a453c863557eee169a73e875
 
 ## このリファレンスについて
 
-この文書は、[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)の作業ツリー実装候補から固定したDSL 4.0 JSON Schema snapshotとCC BY-SA 4.0の日本語Annotationから
+この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/5f1c1d08871a057dfff8ff802cfacce12dcd10df/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
 注意事項、例はAnnotationで管理します。Schemaと生成物が異なる場合はSchemaを優先します。
 
-> **候補snapshot:** このSchemaには、上流`813f369`へまだcommitされていないcamera preview操作UI候補を含みます。公開された上流仕様は[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)で確認でき、対応実装のmergeまでは候補fieldとして扱ってください。
+
 
 - 上流repository: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai)
 - Schema path: `schema/dsl-4.schema.json`
-- base commit日時: `2026-08-07T11:22:28+09:00`
-- 掲載範囲: トップレベル11 field、action 17種類、Annotation 66項目
-- 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai-camera-preview-controls --commit <base-commit> --working-tree --issue 388`
+- 上流commit日時: `2026-08-07T16:21:35+09:00`
+- 掲載範囲: トップレベル12 field、action 18種類、Annotation 70項目
+- 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>`
 - 差分確認: `pnpm docs:dsl4:check`
 
 表中の「必須」は、そのobjectまたは形式を選んだ場合の必須性です。`stableId`などの任意fieldは、
@@ -124,6 +124,27 @@ caption:
   color: '#ffffff'
   size: 28
   align: center
+```
+
+### `speechStyles` — speech style
+
+`Actor.say`と`Actor.think`から参照する文字送り、文字効果音、無音文字、句読点休止を名前付きで再利用します。
+
+Schema位置: `#/properties/speechStyles`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| 任意のID key | 任意 | object（`speechStyle`） | 未知field不可 |
+
+`speechStyles` fieldの値:
+
+```yaml
+novel:
+  characterIntervalSeconds: 0.05
+  characterSound: Typewriter
+  noSoundCharacters: '「」'
+  restCharacters: '、。…'
+  restCharacterIntervalSeconds: 0.5
 ```
 
 ### `variables` — runtime変数
@@ -245,7 +266,7 @@ Schema位置: `#/properties/scenes`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
+| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
 
 `scenes` fieldの値:
 
@@ -487,6 +508,51 @@ font: Noto Sans JP
 size: 28
 align: center
 direction: right
+```
+
+### speech style
+
+Unicode grapheme単位の文字送り間隔と、任意の文字効果音、無音文字、句読点休止を再利用可能な設定にします。
+
+Schema位置: `#/$defs/speechStyle`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `characterIntervalSeconds` | 必須 | 数値 | 0より大きい |
+| `characterSound` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `noSoundCharacters` | 任意 | 文字列 | 1文字以上 |
+| `restCharacters` | 任意 | 文字列 | 1文字以上 |
+| `restCharacterIntervalSeconds` | 任意 | 数値 | 0より大きい |
+
+- `characterIntervalSeconds`は必須です。`noSoundCharacters`には`characterSound`が、`restCharacters`には`restCharacterIntervalSeconds`が必要です。
+
+Schemaで検証できる値の例:
+
+```yaml
+characterIntervalSeconds: 0.05
+characterSound: Typewriter
+noSoundCharacters: '「」'
+restCharacters: '、。…'
+restCharacterIntervalSeconds: 0.5
+```
+
+### speech style mapping
+
+style IDをspeech styleへ対応付けます。`Actor.say`と`Actor.think`の`style`から参照します。
+
+Schema位置: `#/$defs/speechStyles`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| 任意のID key | 任意 | object（`speechStyle`） | 未知field不可 |
+
+Schemaで検証できる値の例:
+
+```yaml
+novel:
+  characterIntervalSeconds: 0.05
+  restCharacters: '、。'
+  restCharacterIntervalSeconds: 0.4
 ```
 
 ### runtime変数mapping
@@ -972,7 +1038,7 @@ Schema位置: `#/$defs/actions`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 各項目 | 任意件数 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`） | — |
+| 各項目 | 任意件数 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`） | — |
 
 Schemaで検証できる値の例:
 
@@ -991,7 +1057,7 @@ Schema位置: `#/$defs/longScene`
 | --- | --- | --- | --- |
 | `poseModel` | 任意 | 文字列（`id`）（`assetId`） | — |
 | `posePreview` | 任意 | object（`scenePosePreview`） | 未知field不可 |
-| `actions` | 必須 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
+| `actions` | 必須 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
 
 - `posePreview`はそのsceneだけの非stickyな上書きです。次のsceneに指定がなければstory既定へ戻ります。
 
@@ -1013,7 +1079,7 @@ Schema位置: `#/$defs/scene`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 形式1 | いずれか一つ | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
+| 形式1 | いずれか一つ | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
 | 形式2 | いずれか一つ | object（`longScene`） | 未知field不可 |
 
 Schemaで検証できる値の例:
@@ -1030,7 +1096,7 @@ Schema位置: `#/$defs/scenes`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
+| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
 
 Schemaで検証できる値の例:
 
@@ -1320,7 +1386,7 @@ Hero.show:
 
 ### `Actor.moveTo`
 
-指定秒数でactorを座標へ移動します。
+指定秒数でactorを座標へ移動します。任意のeasingでlinear、ease-in、ease-out、ease-in-outを選べます。
 
 Schema位置: `#/$defs/moveToAction`
 
@@ -1336,6 +1402,7 @@ Schema位置: `#/$defs/moveToAction`
 | `x` | 必須 | 数値 | — |
 | `y` | 必須 | 数値 | — |
 | `seconds` | 必須 | 数値 | 0以上 |
+| `easing` | 任意 | `linear` / `easeIn` / `easeOut` / `easeInOut` | — |
 
 Schemaで検証できる値の例:
 
@@ -1344,17 +1411,18 @@ Hero.moveTo:
   x: 40
   y: -57
   seconds: 1.5
+  easing: easeInOut
 ```
 
 ### `Actor.say`
 
-actorの吹き出しへ指定秒数テキストを表示します。
+actorのsay吹き出しへテキストを表示し、秒数、advance入力、または両者の先着で完了します。文字送りとsoundも指定できます。
 
 Schema位置: `#/$defs/sayAction`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.say$` | 1件以上 | object（`sayArgs`） | 未知field不可 |
+| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.say$` | 1件以上 | object（`speechArgs`） | 未知field不可 |
 
 引数の詳細:
 
@@ -1362,14 +1430,60 @@ Schema位置: `#/$defs/sayAction`
 | --- | --- | --- | --- |
 | `stableId` | 任意 | 文字列（`id`）（`stableId`） | — |
 | `text` | 必須 | 文字列 | — |
-| `seconds` | 必須 | 数値 | 0以上 |
+| `seconds` | 任意 | 数値 | 0以上 |
+| `waitFor` | 任意 | 固定値 `advance` | — |
+| `style` | 任意 | 文字列（`id`）（`styleId`） | — |
+| `characterIntervalSeconds` | 任意 | 数値 | 0より大きい |
+| `startSound` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `characterSound` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `noSoundCharacters` | 任意 | 文字列 | 1文字以上 |
+| `restCharacters` | 任意 | 文字列 | 1文字以上 |
+| `restCharacterIntervalSeconds` | 任意 | 数値 | 0より大きい |
 
 Schemaで検証できる値の例:
 
 ```yaml
 Hero.say:
   text: こんにちは！
-  seconds: 2
+  seconds: 8
+  waitFor: advance
+  style: novel
+  startSound: GreetingVoice
+```
+
+### `Actor.think`
+
+`Actor.say`と同じspeech lifecycleを使い、think吹き出しへテキストを表示します。
+
+Schema位置: `#/$defs/thinkAction`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.think$` | 1件以上 | object（`speechArgs`） | 未知field不可 |
+
+引数の詳細:
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `stableId` | 任意 | 文字列（`id`）（`stableId`） | — |
+| `text` | 必須 | 文字列 | — |
+| `seconds` | 任意 | 数値 | 0以上 |
+| `waitFor` | 任意 | 固定値 `advance` | — |
+| `style` | 任意 | 文字列（`id`）（`styleId`） | — |
+| `characterIntervalSeconds` | 任意 | 数値 | 0より大きい |
+| `startSound` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `characterSound` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `noSoundCharacters` | 任意 | 文字列 | 1文字以上 |
+| `restCharacters` | 任意 | 文字列 | 1文字以上 |
+| `restCharacterIntervalSeconds` | 任意 | 数値 | 0より大きい |
+
+Schemaで検証できる値の例:
+
+```yaml
+Hero.think:
+  text: どうしよう……
+  waitFor: advance
+  characterIntervalSeconds: 0.1
 ```
 
 ### `Actor.setSkin`
@@ -1456,7 +1570,7 @@ Schema位置: `#/$defs/customActorAction`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.(?!(?:show\|moveTo\|say\|setSkin\|setText\|pose)$)[\p{L}_][\p{L}\p{N}_-]*$` | 1件以上 | object（`customActorActionArgs`） | 未知field不可 |
+| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.(?!(?:show\|moveTo\|say\|think\|setSkin\|setText\|pose)$)[\p{L}_][\p{L}\p{N}_-]*$` | 1件以上 | object（`customActorActionArgs`） | 未知field不可 |
 
 引数の詳細:
 

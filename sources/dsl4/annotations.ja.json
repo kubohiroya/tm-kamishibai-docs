@@ -49,6 +49,14 @@
           "exampleContext": "`textStyles` fieldの値:"
         },
         {
+          "pointer": "#/properties/speechStyles",
+          "order": 55,
+          "title": "`speechStyles` — speech style",
+          "summary": "`Actor.say`と`Actor.think`から参照する文字送り、文字効果音、無音文字、句読点休止を名前付きで再利用します。",
+          "example": "novel:\n  characterIntervalSeconds: 0.05\n  characterSound: Typewriter\n  noSoundCharacters: '「」'\n  restCharacters: '、。…'\n  restCharacterIntervalSeconds: 0.5",
+          "exampleContext": "`speechStyles` fieldの値:"
+        },
+        {
           "pointer": "#/properties/variables",
           "order": 60,
           "title": "`variables` — runtime変数",
@@ -189,6 +197,23 @@
           "title": "SVG Text style",
           "summary": "背景色、文字色、font、size、配置、書字方向を名前付きstyleとして再利用します。",
           "example": "background: '#00000080'\ncolor: '#ffffff'\nfont: Noto Sans JP\nsize: 28\nalign: center\ndirection: right"
+        },
+        {
+          "pointer": "#/$defs/speechStyle",
+          "order": 35,
+          "title": "speech style",
+          "summary": "Unicode grapheme単位の文字送り間隔と、任意の文字効果音、無音文字、句読点休止を再利用可能な設定にします。",
+          "example": "characterIntervalSeconds: 0.05\ncharacterSound: Typewriter\nnoSoundCharacters: '「」'\nrestCharacters: '、。…'\nrestCharacterIntervalSeconds: 0.5",
+          "notes": [
+            "`characterIntervalSeconds`は必須です。`noSoundCharacters`には`characterSound`が、`restCharacters`には`restCharacterIntervalSeconds`が必要です。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/speechStyles",
+          "order": 36,
+          "title": "speech style mapping",
+          "summary": "style IDをspeech styleへ対応付けます。`Actor.say`と`Actor.think`の`style`から参照します。",
+          "example": "novel:\n  characterIntervalSeconds: 0.05\n  restCharacters: '、。'\n  restCharacterIntervalSeconds: 0.4"
         },
         {
           "pointer": "#/$defs/variables",
@@ -514,15 +539,22 @@
           "pointer": "#/$defs/moveToAction",
           "order": 20,
           "title": "`Actor.moveTo`",
-          "summary": "指定秒数でactorを座標へ移動します。",
-          "example": "Hero.moveTo:\n  x: 40\n  y: -57\n  seconds: 1.5"
+          "summary": "指定秒数でactorを座標へ移動します。任意のeasingでlinear、ease-in、ease-out、ease-in-outを選べます。",
+          "example": "Hero.moveTo:\n  x: 40\n  y: -57\n  seconds: 1.5\n  easing: easeInOut"
         },
         {
           "pointer": "#/$defs/sayAction",
           "order": 30,
           "title": "`Actor.say`",
-          "summary": "actorの吹き出しへ指定秒数テキストを表示します。",
-          "example": "Hero.say:\n  text: こんにちは！\n  seconds: 2"
+          "summary": "actorのsay吹き出しへテキストを表示し、秒数、advance入力、または両者の先着で完了します。文字送りとsoundも指定できます。",
+          "example": "Hero.say:\n  text: こんにちは！\n  seconds: 8\n  waitFor: advance\n  style: novel\n  startSound: GreetingVoice"
+        },
+        {
+          "pointer": "#/$defs/thinkAction",
+          "order": 35,
+          "title": "`Actor.think`",
+          "summary": "`Actor.say`と同じspeech lifecycleを使い、think吹き出しへテキストを表示します。",
+          "example": "Hero.think:\n  text: どうしよう……\n  waitFor: advance\n  characterIntervalSeconds: 0.1"
         },
         {
           "pointer": "#/$defs/setSkinAction",
