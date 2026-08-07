@@ -653,6 +653,6 @@ transitionの反復待ちは`skipMode`の存在で終了しますが、最後の
 - [`command-reference.md`](../dsl-author-guides/command-reference.md): コマンドとactionの外部仕様
 - [`developer-guide.md`](developer-guide.md): 成果物とビルダーの利用、setup、変更、検証、公開
 - [`extension-guide.md`](extension-guide.md): 依存機能拡張16個の一覧、図解、役割、利用箇所
-- [`application-materials-guide.md`](../user-guides/application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainの8ページ概要
+- [`application-materials-guide.md`](application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainの8ページ概要
 - [`history.md`](../dsl-author-guides/history.md): DSLとアプリの変更履歴
 - [アプリrepository README](https://github.com/kubohiroya/tmpose-kamishibai): プロジェクト全体の入口

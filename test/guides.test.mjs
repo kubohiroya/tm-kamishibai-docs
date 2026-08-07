@@ -12,7 +12,7 @@ const extensionGuide = readFileSync(
   'utf8',
 );
 const applicationGuide = readFileSync(
-  new URL('../docs/user-guides/application-materials-guide.md', import.meta.url),
+  new URL('../docs/developer-guides/application-materials-guide.md', import.meta.url),
   'utf8',
 );
 const commandReference = readFileSync(

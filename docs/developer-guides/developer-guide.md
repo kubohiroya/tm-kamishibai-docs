@@ -643,6 +643,6 @@ TMPose紙芝居の開発から分離し、他のTurboWarp作品や開発環境�
 - [`command-reference.md`](../dsl-author-guides/command-reference.md): コマンドとアクションの仕様
 - [`internal-specification.md`](internal-specification.md): 汎用アプリSB3の内部構造、呼出し関係、状態遷移
 - [`extension-guide.md`](extension-guide.md): 依存機能拡張16個の一覧、図解、役割、利用箇所
-- [`application-materials-guide.md`](../user-guides/application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainの8ページ概要
+- [`application-materials-guide.md`](application-materials-guide.md): アプリ、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainの8ページ概要
 - [`history.md`](../dsl-author-guides/history.md): DSLとアプリの変更履歴
 - [アプリrepository README](https://github.com/kubohiroya/tmpose-kamishibai): プロジェクト全体の入口と主要コマンド

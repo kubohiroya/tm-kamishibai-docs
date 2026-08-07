@@ -50,3 +50,18 @@ test('offers PDFs only for workshop publications', () => {
     );
   }
 });
+
+test('places the application and toolchain guide first in the developer collection', () => {
+  const generalSection = index.slice(
+    index.indexOf('<section aria-labelledby="general-documents">'),
+    index.indexOf('<section aria-labelledby="dsl-author-documents">'),
+  );
+  const developerSection = index.slice(
+    index.indexOf('<section aria-labelledby="developer-documents">'),
+  );
+  assert.doesNotMatch(generalSection, /アプリ・教材・ツールチェインガイド/u);
+  assert.ok(
+    developerSection.indexOf('アプリ・教材・ツールチェインガイド') <
+      developerSection.indexOf('ソフトウェアメンテナンスガイド'),
+  );
+});
