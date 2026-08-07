@@ -122,6 +122,53 @@
           </div>
         </section>
       </div>
+
+      <aside class="camera-privacy" aria-labelledby="camera-privacy-title">
+        <div class="camera-privacy__header">
+          <span class="camera-privacy__icon" aria-hidden="true">📷</span>
+          <div>
+            <p class="camera-privacy__eyebrow">カメラとプライバシー</p>
+            <h2 id="camera-privacy-title">このアプリにおけるカメラ利用について</h2>
+          </div>
+        </div>
+        <p class="camera-privacy__intro">
+          このアプリは、鑑賞する人がカメラの前でとったポーズを認識し、その結果に応じて物語を進めます。ポーズ認識には<a
+            href="https://teachablemachine.withgoogle.com/train/pose"
+            >Teachable Machineの「ポーズ」機能</a
+          >を利用しています。人物の顔や身元を特定するための機能ではありません。
+        </p>
+        <div class="camera-privacy__grid">
+          <section aria-labelledby="camera-privacy-authoring-title">
+            <h3 id="camera-privacy-authoring-title">紙芝居を作成するとき</h3>
+            <ul>
+              <li>
+                Teachable
+                Machineでカメラから集めるサンプル画像と学習処理は、ブラウザ内で扱われます。画像が学習のために自動でサーバーへ送信されることはありません。
+              </li>
+              <li>
+                ただし、プロジェクトをファイルとして保存すると、そのファイルにはサンプル画像が含まれます。また、作成者がプロジェクトをクラウドへ保存・共有したり、画像を別途保存したりした場合は、その操作に応じて端末の外へ保存・送信されます。保存したファイルは、写真と同じように慎重に扱ってください。
+              </li>
+              <li>
+                エクスポートされる学習済みモデルには、元のサンプル画像そのものは含まれません。一方で、モデルはサンプルから得た学習結果であり、クラス名など入力した文字は含まれます。クラス名に個人名などを使わず、公開前に内容を確認してください。「モデルをアップロード」を選ぶと、この学習済みモデルが共有用サーバーへ送信されます。
+              </li>
+            </ul>
+          </section>
+          <section aria-labelledby="camera-privacy-viewing-title">
+            <h3 id="camera-privacy-viewing-title">紙芝居を鑑賞するとき</h3>
+            <ul>
+              <li>
+                カメラ映像は、ブラウザ内で姿勢の推定とポーズの識別に使われます。このアプリのTMPose機能は、カメラの画像を外部へアップロードしません。
+              </li>
+              <li>
+                作品の構成によっては、認識に必要なプログラムや学習済みモデルをネットワークから読み込む場合があります。4.0系では学習済みモデルを紙芝居自体に含めて配布でき、その構成ではモデル取得のための通信は行いません。ネットワークから読み込む構成でも、カメラ画像は送信しません。
+              </li>
+              <li>
+                このアプリには、鑑賞中のカメラ映像や静止画を記録・保存する機能はありません。利用が終わったら、カメラを停止するかページを閉じてください。
+              </li>
+            </ul>
+          </section>
+        </div>
+      </aside>
     </main>
   </body>
 </html>

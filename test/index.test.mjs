@@ -16,7 +16,7 @@ const documentIndexCss = readFileSync(
   'utf8',
 );
 
-test('keeps only version banners on the site root', () => {
+test('keeps version selection and camera privacy guidance on the site root', () => {
   assert.match(rootIndex, /<h1>紙芝居DSLの版を選ぶ<\/h1>/u);
   assert.equal((rootIndex.match(/class="version-banner version-banner--/gu) ?? []).length, 2);
   assert.doesNotMatch(rootIndex, /common-content|3\.2／4\.0 共通コンテンツ/u);
@@ -31,6 +31,31 @@ test('keeps only version banners on the site root', () => {
     const basename = document.sourceFilename.replace(/\.md$/u, '');
     assert.doesNotMatch(rootIndex, new RegExp(`${basename}/`, 'u'));
   }
+});
+
+test('explains camera privacy immediately after the version banners', () => {
+  const bannersStart = rootIndex.indexOf('<div class="version-banners"');
+  const privacyStart = rootIndex.indexOf('<aside class="camera-privacy"');
+  const mainEnd = rootIndex.indexOf('</main>');
+  const privacy = rootIndex.slice(privacyStart, mainEnd);
+
+  assert.ok(bannersStart >= 0);
+  assert.ok(privacyStart > bannersStart);
+  assert.ok(mainEnd > privacyStart);
+  assert.match(privacy, /このアプリにおけるカメラ利用について/u);
+  assert.match(privacy, /紙芝居を作成するとき/u);
+  assert.match(privacy, /紙芝居を鑑賞するとき/u);
+  assert.match(privacy, /ファイルにはサンプル画像が含まれます/u);
+  assert.match(privacy, /元のサンプル画像そのものは含まれません/u);
+  assert.match(privacy, /カメラの画像を外部へアップロードしません/u);
+  assert.match(privacy, /学習済みモデルを紙芝居自体に含めて配布でき/u);
+  assert.match(privacy, /モデル取得のための通信は行いません/u);
+  assert.match(privacy, /記録・保存する機能はありません/u);
+  assert.match(documentIndexCss, /\.camera-privacy__grid/u);
+  assert.match(
+    documentIndexCss,
+    /@media \(max-width: 700px\)[\s\S]*\.camera-privacy__grid\s*\{\s*grid-template-columns: 1fr/u,
+  );
 });
 
 test('publishes each document only from its version-specific top page', () => {
