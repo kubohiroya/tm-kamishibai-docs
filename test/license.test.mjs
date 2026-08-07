@@ -61,6 +61,10 @@ test('declares the repository as multi-licensed without a residual MPL category'
   assert.match(rootNotice, /単一のライセンスは適用されません/u);
   assert.match(licenseMap, /`scripts\/\*\*`/u);
   assert.match(licenseMap, /`docs\/developer-guides\/\*\*`/u);
+  assert.match(licenseMap, /`sources\/dsl4\/annotations\.ja\.json`/u);
+  assert.match(licenseMap, /`sources\/dsl4\/dsl-4\.schema\.json`/u);
+  assert.match(licenseMap, /Schema snapshot/u);
+  assert.doesNotMatch(licenseMap, /`sources\/\*\*`/u);
   assert.match(licenseMap, /生成元の\s*ライセンスや利用条件は変わりません/u);
   assert.doesNotMatch(licenseMap, /上記以外/u);
   assert.match(mplText, /^Mozilla Public License Version 2\.0/u);

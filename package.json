@@ -10,8 +10,11 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "build": "node scripts/build-docs.mjs && node scripts/verify-build.mjs",
-    "build:full": "node scripts/build-docs.mjs --force && node scripts/verify-build.mjs",
+    "build": "pnpm docs:dsl4:check && node scripts/build-docs.mjs && node scripts/verify-build.mjs",
+    "build:full": "pnpm docs:dsl4:check && node scripts/build-docs.mjs --force && node scripts/verify-build.mjs",
+    "docs:dsl4:check": "node scripts/generate-dsl4-reference.mjs --check",
+    "docs:dsl4:generate": "node scripts/generate-dsl4-reference.mjs",
+    "docs:dsl4:sync": "node scripts/sync-dsl4-schema.mjs",
     "lint": "eslint .",
     "format": "prettier --check \"**/*.{js,mjs,cjs,json,yaml,yml}\" \".github/**/*.{yaml,yml}\" \"*.md\" \"docs/{developer-guides/{developer-guide,internal-specification,extension-guide,dsl-3.1-diagnostics-design,dependency-audit,release-smoke},user-guides/application-materials-guide,LICENSE}.md\" \"site/index.html\"",
     "typecheck": "tsc --project tsconfig.json",
@@ -24,10 +27,12 @@
   "devDependencies": {
     "@types/node": "26.1.2",
     "@vivliostyle/cli": "11.1.0",
+    "ajv": "8.18.0",
     "eslint": "10.8.0",
     "globals": "17.8.0",
     "prettier": "3.9.6",
     "rubygana": "github:kubohiroya/rubygana#649cba1138f73f71f514711716e9a61a858ba712",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "yaml": "2.8.1"
   }
 }

@@ -1,0 +1,10 @@
+{
+  "repository": "kubohiroya/tmpose-kamishibai",
+  "commit": "fcdd54c45dee5782f5112af1e45ba35bc823882c",
+  "commitDate": "2026-08-07T10:24:40+09:00",
+  "schemaPath": "schema/dsl-4.schema.json",
+  "schemaSha256": "d54303687d1cb82a5ec4bd70f854bb7fb368cf7ab1ed40ddd0b93adeabd473bf",
+  "schemaUrl": "https://github.com/kubohiroya/tmpose-kamishibai/blob/fcdd54c45dee5782f5112af1e45ba35bc823882c/schema/dsl-4.schema.json",
+  "surfaceSpecificationUrl": "https://github.com/kubohiroya/tmpose-kamishibai/blob/fcdd54c45dee5782f5112af1e45ba35bc823882c/docs/design/dsl-4-surface.md",
+  "snapshotLicense": "MPL-2.0"
+}

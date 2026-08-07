@@ -12,6 +12,11 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 > 既存の[紙芝居DSLファイル作成マニュアル](dsl-manual.md)と
 > [紙芝居DSL コマンドリファレンス](command-reference.md)を使用してください。
 
+このガイド本文は上記の`371f2fb`時点を調査基準としています。移行候補で使うfield、型、必須性、
+既定値、action引数を確認するときは、より新しい固定Schemaから生成した
+[紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)を併用してください。Schemaリファレンスも
+実装のリリースを意味せず、4.0用YAMLへ上映環境を切り替える判断には使用できません。
+
 この文書は、確定済みのDSL 4.0表層仕様を、台本作者が読める形で説明します。既存の3.1／3.2向け文書を
 置き換えるものではありません。4.0のアプリ統合と配布ツールが完成するまでは、仕様の確認、台本設計、
 試作、レビューに使用してください。
@@ -909,6 +914,7 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 
 ## 関連資料
 
+- [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
 - [紙芝居DSLファイル作成マニュアル](dsl-manual.md): 現行3.1／3.2作品の作成手順
 - [紙芝居DSL コマンドリファレンス](command-reference.md): 現行3.1／3.2の詳細な命令一覧
 - [紙芝居DSL 2.0から3.2への変更履歴](history.md): 現行DSL系列の移行履歴

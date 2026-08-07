@@ -48,6 +48,22 @@ pnpm check
 移設元の固定情報と機能拡張一覧は
 [`sources/tmpose-kamishibai.json`](sources/tmpose-kamishibai.json)で管理します。
 
+### DSL 4.0 Schemaリファレンス
+
+DSL 4.0のリファレンスは、上流JSON Schemaの固定snapshot、source lock、日本語Annotationから
+決定的に生成します。通常のbuildはnetworkへ接続せず、固定snapshotだけを読みます。
+
+```bash
+pnpm docs:dsl4:check
+pnpm docs:dsl4:generate
+pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>
+```
+
+上流を更新するときだけ`docs:dsl4:sync`を明示的に実行します。このコマンドは指定commitから
+`schema/dsl-4.schema.json`を取得し、SHA-256とsource URLをlock fileへ記録してからリファレンスを
+再生成します。生成Markdownは直接編集せず、日本語の説明、掲載順、例は
+[`sources/dsl4/annotations.ja.json`](sources/dsl4/annotations.ja.json)で変更します。
+
 準備は[Issue #1](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/1)、
 本文移設は[Issue #3](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/3)、
 残存文書と生成機構の移設は[Issue #5](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/5)で管理します。

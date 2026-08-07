@@ -24,6 +24,10 @@ const dsl4AuthorGuide = readFileSync(
   new URL('../docs/dsl-author-guides/dsl-4.0-author-guide.md', import.meta.url),
   'utf8',
 );
+const dsl4SchemaReference = readFileSync(
+  new URL('../docs/dsl-author-guides/dsl-4.0-schema-reference.md', import.meta.url),
+  'utf8',
+);
 const internalSpecification = readFileSync(
   new URL('../docs/developer-guides/internal-specification.md', import.meta.url),
   'utf8',
@@ -38,6 +42,9 @@ test('keeps the DSL 4.0 preview guide separate from the production 3.2 manual', 
   assert.match(dsl4AuthorGuide, /一つのファイルへ混在させたり/u);
   assert.match(dsl4AuthorGuide, /K4-SCHEMA-UNKNOWN-KEY/u);
   assert.match(dsl4AuthorGuide, /DSL 3\.2から移行するときの考え方/u);
+  assert.match(dsl4AuthorGuide, /紙芝居DSL 4\.0 Schemaリファレンス/u);
+  assert.match(dsl4SchemaReference, /先行公開（DSL 4\.0実装は未リリース）/u);
+  assert.match(dsl4SchemaReference, /現行の公開アプリtmpose-kamishibai 3\.2\.x/u);
   assert.doesNotMatch(dslManual, /kamishibai: '4\.0'/u);
 });
 

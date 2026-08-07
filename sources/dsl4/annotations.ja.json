@@ -1,0 +1,488 @@
+{
+  "license": "CC-BY-SA-4.0",
+  "copyright": "Copyright © 2026 Hiroya Kubo",
+  "language": "ja",
+  "sections": [
+    {
+      "id": "top-level",
+      "title": "トップレベル構造",
+      "description": "台本のroot mappingで使用できるfieldです。Schemaの `additionalProperties: false` により、ここにないfieldは受理されません。",
+      "entries": [
+        {
+          "pointer": "#/properties/kamishibai",
+          "order": 10,
+          "title": "`kamishibai` — DSL version",
+          "summary": "文書がDSL 4.0であることを文字列で宣言します。引用符を外すとYAMLの数値になるため受理されません。",
+          "example": "'4.0'",
+          "exampleContext": "`kamishibai` fieldの値:"
+        },
+        {
+          "pointer": "#/properties/assets",
+          "order": 20,
+          "title": "`assets` — asset登録",
+          "summary": "背景、音、costume、ポーズモデルへ安定したIDを割り当てます。実体の指定方法はasset種別を参照してください。",
+          "example": "Beach: backdrop\nHeroIdle: costume:Hero",
+          "exampleContext": "`assets` fieldの値:"
+        },
+        {
+          "pointer": "#/properties/actors",
+          "order": 30,
+          "title": "`actors` — actor初期costume",
+          "summary": "actor IDを、同じactorをtargetにするcostume asset IDへ対応付けます。参照整合性は意味検証でも確認します。",
+          "example": "Hero: HeroIdle",
+          "exampleContext": "`actors` fieldの値:"
+        },
+        {
+          "pointer": "#/properties/cover",
+          "order": 40,
+          "title": "`cover` — 表紙",
+          "summary": "表紙に使う背景と任意のBGMを指定します。背景はbackdrop、BGMはsound assetを参照します。",
+          "example": "backdrop: Title\nbgm: Theme",
+          "exampleContext": "`cover` fieldの値:"
+        },
+        {
+          "pointer": "#/properties/textStyles",
+          "order": 50,
+          "title": "`textStyles` — SVG Text style",
+          "summary": "`Actor.setText`から参照する名前付きstyleを登録します。旧Text Assetの定義とは互換ではありません。",
+          "example": "caption:\n  color: '#ffffff'\n  size: 28\n  align: center",
+          "exampleContext": "`textStyles` fieldの値:"
+        },
+        {
+          "pointer": "#/properties/variables",
+          "order": 60,
+          "title": "`variables` — runtime変数",
+          "summary": "条件式やcustom actionへ渡すstory変数の初期値を定義します。値は文字列、数値、真偽値に限定されます。",
+          "example": "score: 0\nready: false",
+          "exampleContext": "`variables` fieldの値:"
+        },
+        {
+          "pointer": "#/properties/loading",
+          "order": 70,
+          "title": "`loading` — 読み込み画面",
+          "summary": "asset準備中に表示する背景と、一つ以上のcostume列を指定します。",
+          "example": "backdrop: Loading\ncostumes:\n  - Spinner1\n  - Spinner2",
+          "exampleContext": "`loading` fieldの値:"
+        },
+        {
+          "pointer": "#/properties/poseRecognition",
+          "order": 80,
+          "title": "`poseRecognition` — ポーズ認識設定",
+          "summary": "認識中の音、判定方法、feedback、上映操作からのskip可否をまとめます。idle音とcharge音は必須です。",
+          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nfeedback:\n  mode: presenter\nnavigation:\n  allowSkip: true",
+          "exampleContext": "`poseRecognition` fieldの値:"
+        },
+        {
+          "pointer": "#/properties/controls",
+          "order": 90,
+          "title": "`controls` — 操作profile",
+          "summary": "実行環境ごとのkeymapを定義し、キーをnavigationまたはhistory操作へ割り当てます。",
+          "example": "keymaps:\n  presenter:\n    Space: navigation.nextAction\n    ArrowLeft: history.previousAction",
+          "exampleContext": "`controls` fieldの値:"
+        },
+        {
+          "pointer": "#/properties/branches",
+          "order": 100,
+          "title": "`branches` — 条件分岐",
+          "summary": "上から評価する条件と遷移先を名前付きで登録します。各分岐にはelse規則を一つ含めます。",
+          "example": "result:\n  - if: score > 0\n    goto: success\n  - else: retry",
+          "exampleContext": "`branches` fieldの値:"
+        },
+        {
+          "pointer": "#/properties/scenes",
+          "order": 110,
+          "title": "`scenes` — scene定義",
+          "summary": "一つ以上のsceneを記述します。短縮形のaction配列と、poseModelを持てるlong formがあります。",
+          "example": "opening:\n  - stage: Beach\n  - wait: 1",
+          "exampleContext": "`scenes` fieldの値:"
+        }
+      ]
+    },
+    {
+      "id": "asset-types",
+      "title": "asset種別",
+      "description": "assetは短縮文字列または名前付きobjectで記述します。名前付きobjectでは、project内asset名、相対file、integrity付きremote sourceのいずれか一つを選びます。",
+      "entries": [
+        {
+          "pointer": "#/$defs/asset",
+          "order": 10,
+          "title": "assetで選べる形式",
+          "summary": "各asset IDの値は、短縮形式、背景、音、costume、ポーズモデルのいずれかです。",
+          "example": "backdrop",
+          "notes": [
+            "短縮形式はproject内に同名のassetがある場合に使います。",
+            "remote sourceはHTTPS URLだけでなくSHA-256、content type、byte sizeを固定します。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/compactAsset",
+          "order": 20,
+          "title": "短縮asset",
+          "summary": "`backdrop`、`sound`、または `costume:<actor ID>` でproject内の同名assetを参照します。",
+          "example": "costume:Hero"
+        },
+        {
+          "pointer": "#/$defs/namedBackdrop",
+          "order": 30,
+          "title": "名前付き背景",
+          "summary": "背景をproject内の名前、project内相対file、または固定remote sourceから読み込みます。",
+          "example": "kind: backdrop\nfile: assets/beach.svg\nloading: eager\nretention: story"
+        },
+        {
+          "pointer": "#/$defs/namedSound",
+          "order": 40,
+          "title": "名前付き音",
+          "summary": "音をproject内の名前、project内相対file、または固定remote sourceから読み込みます。",
+          "example": "kind: sound\nname: Theme\nloading: lazy"
+        },
+        {
+          "pointer": "#/$defs/namedCostume",
+          "order": 50,
+          "title": "名前付きcostume",
+          "summary": "costumeではtarget actorを必ず指定します。参照側actorとの一致も意味検証の対象です。",
+          "example": "kind: costume\ntarget: Hero\nfile: assets/hero-happy.svg"
+        },
+        {
+          "pointer": "#/$defs/namedPoseModel",
+          "order": 60,
+          "title": "名前付きポーズモデル",
+          "summary": "ポーズモデルは相対fileまたは固定remote sourceで指定し、project内の表示名だけを使う形式はありません。",
+          "example": "kind: poseModel\ndelivery: remote\nsource:\n  url: https://example.com/model.json\n  integrity: sha256-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n  contentType: application/json\n  size: 4096"
+        }
+      ]
+    },
+    {
+      "id": "settings",
+      "title": "actor・表示・認識・分岐設定",
+      "description": "トップレベルfieldが参照するobjectの詳細です。表の必須性は、それぞれのobjectを記述した場合に適用されます。",
+      "entries": [
+        {
+          "pointer": "#/$defs/actors",
+          "order": 10,
+          "title": "actor mapping",
+          "summary": "任意のactor IDを初期costume asset IDへ対応付けます。",
+          "example": "Hero: HeroIdle"
+        },
+        {
+          "pointer": "#/$defs/cover",
+          "order": 20,
+          "title": "表紙設定",
+          "summary": "表紙背景は必須、BGMは任意です。asset種別の一致は意味検証で確認します。",
+          "example": "backdrop: Title\nbgm: Theme"
+        },
+        {
+          "pointer": "#/$defs/textStyle",
+          "order": 30,
+          "title": "SVG Text style",
+          "summary": "背景色、文字色、font、size、配置、書字方向を名前付きstyleとして再利用します。",
+          "example": "background: '#00000080'\ncolor: '#ffffff'\nfont: Noto Sans JP\nsize: 28\nalign: center\ndirection: right"
+        },
+        {
+          "pointer": "#/$defs/variables",
+          "order": 40,
+          "title": "runtime変数mapping",
+          "summary": "変数IDごとに文字列、数値、真偽値の初期値を保持します。objectや配列はcore変数値ではありません。",
+          "example": "message: start\nscore: 0\nready: true"
+        },
+        {
+          "pointer": "#/$defs/loadingScreen",
+          "order": 50,
+          "title": "読み込み画面設定",
+          "summary": "読み込み用背景と、一つ以上のcostumeを指定します。",
+          "example": "backdrop: Loading\ncostumes:\n  - Spinner1"
+        },
+        {
+          "pointer": "#/$defs/poseRecognition",
+          "order": 60,
+          "title": "ポーズ認識全体設定",
+          "summary": "共通音と、sequence、selection、feedback、navigationの任意設定をまとめます。",
+          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nsequence:\n  confidenceThreshold: 0.6\nfeedback:\n  mode: scratchMirror\nnavigation:\n  allowSkip: false"
+        },
+        {
+          "pointer": "#/$defs/poseSequenceRecognition",
+          "order": 70,
+          "title": "sequence認識設定",
+          "summary": "連続ポーズのconfidence閾値、満点保持時間、idle時のcharge量を調整します。",
+          "example": "confidenceThreshold: 0.6\nfullConfidenceHoldSeconds: 1.2\nidleChargePerSecond: 0"
+        },
+        {
+          "pointer": "#/$defs/poseSelectionRecognition",
+          "order": 80,
+          "title": "selection認識設定",
+          "summary": "複数候補の蓄積速度、減衰、決定scoreを調整します。",
+          "example": "accumulationPerSecond: 1\ndecayPerSecond: 0.9\nscoreThreshold: 2"
+        },
+        {
+          "pointer": "#/$defs/poseFeedback",
+          "order": 90,
+          "title": "ポーズfeedback mode",
+          "summary": "Scratch mirror、Scratch binding、presenter UIのどこへ認識状態を反映するかを選びます。",
+          "example": "mode: presenter"
+        },
+        {
+          "pointer": "#/$defs/poseNavigation",
+          "order": 100,
+          "title": "ポーズ中のnavigation",
+          "summary": "上映操作からポーズ待ちをskipできるかを明示します。",
+          "example": "allowSkip: true"
+        },
+        {
+          "pointer": "#/$defs/controls",
+          "order": 110,
+          "title": "操作profile",
+          "summary": "一つ以上のkeymapを名前付きprofileとして登録します。キー衝突は意味検証でも確認します。",
+          "example": "keymaps:\n  presenter:\n    Space: navigation.nextAction"
+        },
+        {
+          "pointer": "#/$defs/branchRules",
+          "order": 120,
+          "title": "分岐規則列",
+          "summary": "条件規則を上から評価し、一つだけ含めたelse規則をfallbackにします。",
+          "example": "- if: score >= 10\n  goto: success\n- else: retry"
+        }
+      ]
+    },
+    {
+      "id": "shared-types",
+      "title": "共通型と制約",
+      "description": "複数のfieldやactionから参照される値の型です。ID、path、key codeのpatternは移行時に特に確認してください。",
+      "entries": [
+        {
+          "pointer": "#/$defs/id",
+          "order": 10,
+          "title": "ID",
+          "summary": "Unicode文字またはunderscoreで始まり、以降に文字、数字、underscore、hyphenを使えます。",
+          "example": "Hero_1"
+        },
+        {
+          "pointer": "#/$defs/filePath",
+          "order": 20,
+          "title": "安全な相対file path",
+          "summary": "絶対path、Windows drive path、URL scheme、backslash、NULを許可しないproject内相対pathです。",
+          "example": "assets/hero.svg"
+        },
+        {
+          "pointer": "#/$defs/loadingPolicy",
+          "order": 30,
+          "title": "読み込みpolicy",
+          "summary": "story開始前に読むeagerと、利用時に読むlazyから選びます。",
+          "example": "lazy"
+        },
+        {
+          "pointer": "#/$defs/retentionPolicy",
+          "order": 40,
+          "title": "保持policy",
+          "summary": "assetをsceneの範囲で保持するか、story全体で保持するかを指定します。",
+          "example": "story"
+        },
+        {
+          "pointer": "#/$defs/deliveryPolicy",
+          "order": 50,
+          "title": "配布policy",
+          "summary": "成果物へ埋め込むembeddedと、integrity付きURLを使うremoteから選びます。",
+          "example": "remote"
+        },
+        {
+          "pointer": "#/$defs/remoteAssetSource",
+          "order": 60,
+          "title": "remote asset source",
+          "summary": "HTTPS URL、SHA-256、content type、byte sizeをすべて固定し、取得対象を決定的にします。",
+          "example": "url: https://example.com/audio.ogg\nintegrity: sha256-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\ncontentType: audio/ogg\nsize: 1024"
+        },
+        {
+          "pointer": "#/$defs/keyCode",
+          "order": 70,
+          "title": "key code",
+          "summary": "文字そのものではなく、Schemaが列挙するKeyboardEvent code形式を使用します。",
+          "example": "Space"
+        },
+        {
+          "pointer": "#/$defs/navigationCommand",
+          "order": 80,
+          "title": "navigation command",
+          "summary": "次のaction、前のaction、前のscene、次のsceneのいずれかへ操作を割り当てます。",
+          "example": "navigation.nextAction"
+        },
+        {
+          "pointer": "#/$defs/variableValue",
+          "order": 90,
+          "title": "変数・custom引数の値",
+          "summary": "core schemaで保持できるscalarは文字列、数値、真偽値です。",
+          "example": "42"
+        }
+      ]
+    },
+    {
+      "id": "scenes",
+      "title": "sceneとaction列",
+      "description": "sceneはaction配列の短縮形、またはposeModelとaction列を持つlong formで記述します。scene間参照は意味検証の対象です。",
+      "entries": [
+        {
+          "pointer": "#/$defs/actions",
+          "order": 10,
+          "title": "action配列",
+          "summary": "各項目にはglobal actionまたはactor actionを一つだけ記述します。",
+          "example": "- stage: Beach\n- wait: 1"
+        },
+        {
+          "pointer": "#/$defs/longScene",
+          "order": 20,
+          "title": "long form scene",
+          "summary": "scene固有のposeModelを指定する場合に、`poseModel`と`actions`をobjectへまとめます。",
+          "example": "poseModel: StoryPose\nactions:\n  - wait: 1"
+        },
+        {
+          "pointer": "#/$defs/scene",
+          "order": 30,
+          "title": "sceneで選べる形式",
+          "summary": "短いaction配列またはlong formのいずれかを使用します。",
+          "example": "- wait: 1"
+        },
+        {
+          "pointer": "#/$defs/scenes",
+          "order": 40,
+          "title": "scene mapping",
+          "summary": "一つ以上のscene IDを定義します。通常実行は記述順で最初のsceneから始まります。",
+          "example": "opening:\n  - wait: 1"
+        }
+      ]
+    },
+    {
+      "id": "global-actions",
+      "title": "Global action",
+      "description": "actor名を付けずにstage、音、時間、scene遷移、入力待ちを制御するcore actionです。",
+      "entries": [
+        {
+          "pointer": "#/$defs/stageAction",
+          "order": 10,
+          "title": "`stage`",
+          "summary": "背景assetへ切り替えます。短縮値またはstableId付きobjectを使用できます。",
+          "example": "stage: Beach"
+        },
+        {
+          "pointer": "#/$defs/bgmAction",
+          "order": 20,
+          "title": "`bgm`",
+          "summary": "BGMとしてsound assetを開始します。",
+          "example": "bgm: Theme"
+        },
+        {
+          "pointer": "#/$defs/soundAction",
+          "order": 30,
+          "title": "`sound`",
+          "summary": "効果音としてsound assetを再生します。",
+          "example": "sound:\n  stableId: opening-chime\n  sound: Chime"
+        },
+        {
+          "pointer": "#/$defs/waitAction",
+          "order": 40,
+          "title": "`wait`",
+          "summary": "指定秒数だけaction列の進行を待ちます。0秒も受理します。",
+          "example": "wait: 1.5"
+        },
+        {
+          "pointer": "#/$defs/transitionAction",
+          "order": 50,
+          "title": "`transition`",
+          "summary": "名前付きeffectを指定秒数で実行します。利用できるeffectはruntime capabilityとも照合します。",
+          "example": "transition:\n  effect: fadeOut\n  seconds: 0.5"
+        },
+        {
+          "pointer": "#/$defs/gotoAction",
+          "order": 60,
+          "title": "`goto`",
+          "summary": "指定sceneへ無条件に遷移します。",
+          "example": "goto: ending"
+        },
+        {
+          "pointer": "#/$defs/branchAction",
+          "order": 70,
+          "title": "`branch`",
+          "summary": "名前付き分岐規則を評価し、選ばれたsceneへ遷移します。",
+          "example": "branch: result"
+        },
+        {
+          "pointer": "#/$defs/keyInputAction",
+          "order": 80,
+          "title": "`keyInputToChangeScene`",
+          "summary": "キー入力と遷移先sceneのmappingを待ちます。navigation keymapとの衝突に注意します。",
+          "example": "keyInputToChangeScene:\n  Space: nextScene\n  Escape: cancelScene"
+        },
+        {
+          "pointer": "#/$defs/touchInputAction",
+          "order": 90,
+          "title": "`touchInputToChangeScene`",
+          "summary": "touchされたactor IDに応じてsceneを選びます。",
+          "example": "touchInputToChangeScene:\n  Hero: heroRoute\n  Guide: guideRoute"
+        },
+        {
+          "pointer": "#/$defs/poseInputAction",
+          "order": 100,
+          "title": "`poseInputToChangeScene`",
+          "summary": "認識されたpose IDに応じてsceneを選びます。",
+          "example": "poseInputToChangeScene:\n  wave: greeting\n  jump: celebration"
+        }
+      ]
+    },
+    {
+      "id": "actor-actions",
+      "title": "Actor action",
+      "description": "`<actor ID>.<action名>`をkeyにするactionです。core action名とcustom action名は同じpattern空間を使います。",
+      "entries": [
+        {
+          "pointer": "#/$defs/showAction",
+          "order": 10,
+          "title": "`Actor.show`",
+          "summary": "costume、座標、scaleを指定してactorを表示します。",
+          "example": "Hero.show:\n  skin: HeroHappy\n  x: 0\n  y: -60\n  scale: 30"
+        },
+        {
+          "pointer": "#/$defs/moveToAction",
+          "order": 20,
+          "title": "`Actor.moveTo`",
+          "summary": "指定秒数でactorを座標へ移動します。",
+          "example": "Hero.moveTo:\n  x: 40\n  y: -57\n  seconds: 1.5"
+        },
+        {
+          "pointer": "#/$defs/sayAction",
+          "order": 30,
+          "title": "`Actor.say`",
+          "summary": "actorの吹き出しへ指定秒数テキストを表示します。",
+          "example": "Hero.say:\n  text: こんにちは！\n  seconds: 2"
+        },
+        {
+          "pointer": "#/$defs/setSkinAction",
+          "order": 40,
+          "title": "`Actor.setSkin`",
+          "summary": "actorのcostumeを切り替えます。短縮値またはstableId付きobjectを使用できます。",
+          "example": "Hero.setSkin: HeroHappy"
+        },
+        {
+          "pointer": "#/$defs/setTextAction",
+          "order": 50,
+          "title": "`Actor.setText`",
+          "summary": "SVG Text actorの本文と名前付きstyleを更新します。旧Text Assetの更新命令ではありません。",
+          "example": "Caption.setText:\n  text: おしまい\n  style: title"
+        },
+        {
+          "pointer": "#/$defs/poseAction",
+          "order": 60,
+          "title": "`Actor.pose`",
+          "summary": "一つ以上のpose stepを順に認識し、任意のcostumeとsoundでfeedbackします。",
+          "example": "Hero.pose:\n  steps:\n    - pose: wave\n      skin: HeroWave\n      sound: Success"
+        },
+        {
+          "pointer": "#/$defs/customActorAction",
+          "order": 70,
+          "title": "`Actor.<customAction>`",
+          "summary": "core action名以外の名前をcapability registryへ委譲します。引数値は文字列、数値、真偽値です。",
+          "example": "Hero.wave:\n  stableId: hero-wave\n  arguments:\n    speed: 1\n    reverse: false",
+          "notes": [
+            "Schemaを通ることは、そのcustom actionを実行環境が提供することを意味しません。",
+            "公開前にcapability、引数契約、rollback時の扱いを確認してください。"
+          ]
+        }
+      ]
+    }
+  ]
+}

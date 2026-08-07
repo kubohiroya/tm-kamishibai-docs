@@ -50,6 +50,13 @@ export const documentCollections = [
           '開発中のDSL 4.0について、YAML構造、アセット、シーン、アクション、分岐、診断、3.2との非混在境界を説明します。',
       },
       {
+        sourceFilename: 'dsl-4.0-schema-reference.md',
+        title: '紙芝居DSL 4.0 Schemaリファレンス',
+        audience: '4.0への移行準備・Schema確認を行う方',
+        description:
+          '実装リリース前の先行資料として、固定JSON Schemaから全トップレベルfield、asset、設定、scene、actionの型と制約を生成しています。',
+      },
+      {
         sourceFilename: 'command-reference.md',
         title: '紙芝居DSL コマンドリファレンス',
         audience: '台本文法を調べる方',
