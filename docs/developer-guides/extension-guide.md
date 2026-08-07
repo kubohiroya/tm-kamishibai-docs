@@ -1,4 +1,4 @@
-# TMPose紙芝居 機能拡張ガイド
+# TMPose紙芝居 3.2 機能拡張ガイド
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。引用図版には各出典の条件が適用されます。
 
@@ -503,7 +503,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <div class="extension-columns"><section><p class="extension-subhead">検査</p><ul><li>version、command、action</li><li>scene／asset参照</li><li>addressと条件式syntax</li></ul></section><section><p class="extension-subhead">診断</p><ul><li>error code</li><li>行・列</li><li>source抜粋とSVG文字</li></ul></section></div>
 
-<p class="extension-source">出典: <a href="internal-specification.md">紙芝居アプリ内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/extensions/kubohiroyakamishibairuntime.js">内蔵拡張ソース</a></p>
+<p class="extension-source">出典: <a href="internal-specification.md">紙芝居アプリ 3.2 内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/extensions/kubohiroyakamishibairuntime.js">内蔵拡張ソース</a></p>
 
 ## Kamishibai Runtimeで素材読込やカメラ開始の前に台本を検査し、エラーを表示する {#extension-kamishibai-runtime-example .extension-sheet .extension-sheet-right}
 
@@ -534,7 +534,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <div class="extension-columns"><section><p class="extension-subhead">許可</p><ul><li>絶対URL</li><li><code>https:</code></li><li>利用者clickからの呼出し</li></ul></section><section><p class="extension-subhead">拒否</p><ul><li><code>http:</code></li><li><code>file:</code>／<code>javascript:</code></li><li>通常sceneからの任意navigation</li></ul></section></div>
 
-<p class="extension-source">出典: <a href="internal-specification.md">紙芝居アプリ内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/extensions/kubohiroyaweblink.js">内蔵拡張ソース</a></p>
+<p class="extension-source">出典: <a href="internal-specification.md">紙芝居アプリ 3.2 内部仕様書</a>、<a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/extensions/kubohiroyaweblink.js">内蔵拡張ソース</a></p>
 
 ## Web Linkで利用者がボタンやメニューを操作したとき、設定済みのHTTPSページを開く {#extension-web-link-example .extension-sheet .extension-sheet-right}
 

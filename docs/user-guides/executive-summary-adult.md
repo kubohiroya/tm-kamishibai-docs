@@ -1,4 +1,4 @@
-# 紙芝居アプリ 概要説明書 大人向け
+# 紙芝居アプリ 3.2 概要説明書 大人向け
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
@@ -160,10 +160,10 @@ TurboWarp紙芝居アプリ／Web版
 
 ## 関連ドキュメント
 
-- `user-guide.md`: 実際にアプリを操作する人向けの説明
-- `dsl-manual.md`: 紙芝居DSLファイルを作る人向けの説明
-- `command-reference.md`: コマンド・アクションの詳細仕様
-- `executive-summary-kids.md`: 子供向けの概要説明
-- `developer-guide.md`: 成果物とビルダーの利用、開発、検証、公開の手順
-- `internal-specification.md`: 汎用アプリSB3の内部構造、呼出し関係、状態遷移
-- `history.md`: 紙芝居DSL 2.0から3.1への変更履歴
+- `user-guide.md`: 紙芝居アプリ3.2を実際に操作する人向けの説明
+- `dsl-manual.md`: 紙芝居DSL 3.2ファイルを作る人向けの説明
+- `command-reference.md`: 紙芝居DSL 3.2のコマンド・アクションの詳細仕様
+- `executive-summary-kids.md`: 紙芝居アプリ3.2の子供向け概要説明
+- `developer-guide.md`: 紙芝居アプリ3.2の成果物、開発、検証、公開の手順
+- `internal-specification.md`: 紙芝居アプリ3.2の内部構造、呼出し関係、状態遷移
+- `history.md`: 紙芝居DSL 2.0から3.2への変更履歴

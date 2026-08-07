@@ -1,15 +1,15 @@
-# 紙芝居アプリ内部仕様書
+# 紙芝居アプリ 3.2 内部仕様書
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 この文書は、TMPose紙芝居の汎用アプリSB3について、target、変数、event、
 custom block、呼出し関係、状態遷移の内部仕様を現在の実装に対応させて記録します。
 成果物プロファイル、SB3・台本変換ビルダーの外部契約、開発・検証・公開手順は
-[ソフトウェアメンテナンスガイド](developer-guide.md)を参照してください。台本の
+[紙芝居アプリ 3.2 ソフトウェアメンテナンスガイド](developer-guide.md)を参照してください。台本の
 外部仕様は[台本DSLマニュアル](../dsl-author-guides/dsl-manual.md)と
 [コマンドリファレンス](../dsl-author-guides/command-reference.md)を参照してください。
 各機能拡張の役割と現行アプリでの利用箇所は
-[機能拡張ガイド](extension-guide.md)を参照してください。
+[TMPose紙芝居 3.2 機能拡張ガイド](extension-guide.md)を参照してください。
 
 本書は「アプリが内部でどのように動くか」を扱い、「リポジトリをどう変更・公開するか」
 や「ビルダーをどう利用するか」は扱いません。

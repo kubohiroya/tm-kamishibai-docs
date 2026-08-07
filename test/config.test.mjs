@@ -30,6 +30,22 @@ const expectedCollections = {
   ],
 };
 
+const threeSeriesSourceFilenames = [
+  'executive-summary-adult.md',
+  'executive-summary-kids.md',
+  'user-guide.md',
+  'dsl-manual.md',
+  'command-reference.md',
+  'history.md',
+  'application-materials-guide.md',
+  'developer-guide.md',
+  'internal-specification.md',
+  'extension-guide.md',
+  'dsl-3.1-diagnostics-design.md',
+  'dependency-audit.md',
+  'release-smoke.md',
+];
+
 test('organizes every migrated document into one reader-oriented collection', () => {
   assert.deepEqual(
     Object.fromEntries(
@@ -94,4 +110,14 @@ test('places every version-specific document below an explicit version root', ()
   assert.equal(staffDocumentConfig.versionFamily, '3.2系');
   assert.equal(workshopDocumentConfig.outputDirectory, 'workshops/2026-08-01');
   assert.equal(staffDocumentConfig.outputDirectory, 'workshops/2026-08-01/staff');
+});
+
+test('marks every 3-series publication in its public title', () => {
+  for (const sourceFilename of threeSeriesSourceFilenames) {
+    const document = documentationConfig.documents.find(
+      (candidate) => candidate.sourceFilename === sourceFilename,
+    );
+    assert.ok(document, `${sourceFilename} must be published`);
+    assert.match(document.title, /3\.[12]|2\.0から3\.2/u, `${sourceFilename} needs a 3.x title`);
+  }
 });
