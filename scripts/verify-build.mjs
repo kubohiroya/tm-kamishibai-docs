@@ -226,13 +226,29 @@ async function verifyIndex() {
     assert(!index.includes(`${basename}/`), `${basename} appears on the root selector.`);
   }
 
-  assert(workshopIndex.includes('DSL 4.2系'), 'The DSL 4.2 workshop group is missing.');
+  assert(workshopIndex.includes('DSL 4.0系'), 'The DSL 4.0 workshop group is missing.');
   assert(
     workshopIndex.includes('現在公開中の資料はありません'),
-    'The unpublished DSL 4.2 workshop state is missing.',
+    'The unpublished DSL 4.0 workshop state is missing.',
   );
   assert(workshopIndex.includes('DSL 3.2系'), 'The DSL 3.2 workshop group is missing.');
   assert(workshopIndex.includes('datetime="2026-08-01"'), 'The workshop date is missing.');
+  assert(
+    workshopIndex.includes('href="https://www.chibanippo.co.jp/articles/1648690"'),
+    'The Chiba Nippo coverage link is missing.',
+  );
+  assert(
+    workshopIndex.includes('ＡＩプログラミング体験会　千葉商大で親子学ぶ　市川'),
+    'The Chiba Nippo coverage title is missing.',
+  );
+  assert(
+    workshopIndex.includes('千葉日報オンライン（有料）'),
+    'The paid article label is missing.',
+  );
+  assert(
+    workshopIndex.includes('datetime="2026-08-02"'),
+    'The coverage publication date is missing.',
+  );
   for (const destination of [
     '2026-08-01/',
     '2026-08-01/staff/',

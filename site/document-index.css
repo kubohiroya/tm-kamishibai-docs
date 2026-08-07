@@ -321,12 +321,47 @@ main {
   letter-spacing: 0.07em;
 }
 
-.workshop-event time {
+.workshop-event > time {
   display: block;
   margin-bottom: 0.85rem;
   color: var(--site-ink);
   font-size: 1.15rem;
   font-weight: 800;
+}
+
+.workshop-coverage {
+  margin-top: 1rem;
+  padding: 18px 20px;
+  border-left: 4px solid var(--site-accent);
+  border-radius: 0 8px 8px 0;
+  background: color-mix(in srgb, var(--site-paper) 82%, var(--site-canvas));
+}
+
+.workshop-coverage h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+}
+
+.workshop-coverage p {
+  margin: 0;
+  line-height: 1.65;
+}
+
+.workshop-coverage__label {
+  display: block;
+  color: var(--site-muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.workshop-coverage a {
+  color: var(--site-accent);
+  font-weight: 700;
+}
+
+.workshop-coverage__date {
+  color: var(--site-muted);
+  white-space: nowrap;
 }
 
 .empty-state {

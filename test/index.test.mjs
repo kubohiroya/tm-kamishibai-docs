@@ -98,17 +98,21 @@ test('explains how to choose between the versions on the root page', () => {
 });
 
 test('lists workshop material chronologically with explicit DSL families', () => {
-  const dsl42Position = workshopIndex.indexOf('id="workshops-42"');
+  const dsl40Position = workshopIndex.indexOf('id="workshops-40"');
   const dsl32Position = workshopIndex.indexOf('id="workshops-32"');
 
-  assert.ok(dsl42Position >= 0);
-  assert.ok(dsl32Position > dsl42Position);
-  assert.match(workshopIndex, /<h2 id="workshops-42">DSL 4\.2系<\/h2>/u);
+  assert.ok(dsl40Position >= 0);
+  assert.ok(dsl32Position > dsl40Position);
+  assert.match(workshopIndex, /<h2 id="workshops-40">DSL 4\.0系<\/h2>/u);
   assert.match(workshopIndex, /現在公開中の資料はありません/u);
   assert.match(workshopIndex, /<h2 id="workshops-32">DSL 3\.2系<\/h2>/u);
   assert.match(workshopIndex, /<time datetime="2026-08-01">2026年8月1日<\/time>/u);
   assert.match(workshopIndex, /href="2026-08-01\/"/u);
   assert.match(workshopIndex, /href="2026-08-01\/staff\/"/u);
+  assert.match(workshopIndex, /href="https:\/\/www\.chibanippo\.co\.jp\/articles\/1648690"/u);
+  assert.match(workshopIndex, /千葉日報オンライン（有料）/u);
+  assert.match(workshopIndex, /ＡＩプログラミング体験会　千葉商大で親子学ぶ　市川/u);
+  assert.match(workshopIndex, /<time datetime="2026-08-02">2026年8月2日<\/time>公開/u);
   assert.doesNotMatch(dsl32Index, /体験会資料|workshops\/2026-08-01/u);
   assert.doesNotMatch(dsl40Index, /体験会資料|workshops\/2026-08-01/u);
 });
