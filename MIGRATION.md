@@ -14,12 +14,12 @@ build・公開できる状態にします。
 
 ### 一般向けドキュメント
 
-| 現在のパス                                       | 移設先候補                                        |
-| ------------------------------------------------ | ------------------------------------------------- |
-| `docs/general/01-executive-summary-adult.md`     | `docs/user-guides/executive-summary-adult.md`     |
-| `docs/general/02-executive-summary-kids.md`      | `docs/user-guides/executive-summary-kids.md`      |
-| `docs/general/03-user-guide.md`                  | `docs/user-guides/user-guide.md`                  |
-| `docs/general/09-application-materials-guide.md` | `docs/user-guides/application-materials-guide.md` |
+| 現在のパス                                       | 移設先候補                                             |
+| ------------------------------------------------ | ------------------------------------------------------ |
+| `docs/general/01-executive-summary-adult.md`     | `docs/user-guides/executive-summary-adult.md`          |
+| `docs/general/02-executive-summary-kids.md`      | `docs/user-guides/executive-summary-kids.md`           |
+| `docs/general/03-user-guide.md`                  | `docs/user-guides/user-guide.md`                       |
+| `docs/general/09-application-materials-guide.md` | `docs/developer-guides/application-materials-guide.md` |
 
 ### 紙芝居DSL作成者向けドキュメント
 

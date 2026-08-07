@@ -22,13 +22,6 @@ export const documentCollections = [
         audience: 'アプリを使う方',
         description: '台本の読み込み、再生、ポーズ認識、本番前の確認方法を説明します。',
       },
-      {
-        sourceFilename: 'application-materials-guide.md',
-        title: 'TMPose紙芝居 アプリ・教材・ツールチェインガイド',
-        audience: 'アプリと教材の全体像を把握する方',
-        description:
-          'アプリ概要、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainを図解付き・全8ページで紹介します。',
-      },
     ],
   },
   {
@@ -76,6 +69,14 @@ export const documentCollections = [
     id: 'developer-guides',
     title: '開発者向けドキュメント',
     documents: [
+      {
+        sourceFilename: 'application-materials-guide.md',
+        outputDirectory: 'user-guides',
+        title: 'TMPose紙芝居 アプリ・教材・ツールチェインガイド',
+        audience: 'アプリと教材の全体像を把握する方',
+        description:
+          'アプリ概要、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainを図解付き・全8ページで紹介します。',
+      },
       {
         sourceFilename: 'developer-guide.md',
         title: '紙芝居アプリ ソフトウェアメンテナンスガイド',
@@ -133,8 +134,8 @@ export const documentationConfig = {
     collection.documents.map((document) => ({
       ...document,
       collectionId: collection.id,
-      sourceDirectory: collection.id,
-      outputDirectory: collection.id,
+      sourceDirectory: document.sourceDirectory ?? collection.id,
+      outputDirectory: document.outputDirectory ?? collection.id,
     })),
   ),
 };

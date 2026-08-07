@@ -10,12 +10,7 @@ import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 
 const expectedCollections = {
-  'user-guides': [
-    'executive-summary-adult.md',
-    'executive-summary-kids.md',
-    'user-guide.md',
-    'application-materials-guide.md',
-  ],
+  'user-guides': ['executive-summary-adult.md', 'executive-summary-kids.md', 'user-guide.md'],
   'dsl-author-guides': [
     'dsl-manual.md',
     'dsl-4.0-author-guide.md',
@@ -24,6 +19,7 @@ const expectedCollections = {
     'history.md',
   ],
   'developer-guides': [
+    'application-materials-guide.md',
     'developer-guide.md',
     'internal-specification.md',
     'extension-guide.md',
@@ -66,4 +62,13 @@ test('pins the merged 3.2.0 source contract', () => {
   assert.equal(sourceSnapshot.commit, 'd1624c9ce9464bf696b4bb97851dce9154a09ee6');
   assert.equal(sourceSnapshot.dslVersion, '3.2');
   assert.equal(sourceSnapshot.extensions.length, 16);
+});
+
+test('keeps the developer guide source classification without breaking its public URL', () => {
+  const document = documentationConfig.documents.find(
+    ({sourceFilename}) => sourceFilename === 'application-materials-guide.md',
+  );
+  assert.equal(document?.collectionId, 'developer-guides');
+  assert.equal(document?.sourceDirectory, 'developer-guides');
+  assert.equal(document?.outputDirectory, 'user-guides');
 });
