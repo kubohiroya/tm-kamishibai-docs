@@ -113,6 +113,20 @@ test('lists workshop material chronologically with explicit DSL families', () =>
   assert.match(workshopIndex, /千葉日報オンライン（有料）/u);
   assert.match(workshopIndex, /ＡＩプログラミング体験会　千葉商大で親子学ぶ　市川/u);
   assert.match(workshopIndex, /<time datetime="2026-08-02">2026年8月2日<\/time>公開/u);
+  const normalizedWorkshopIndex = workshopIndex.replace(/\s+/gu, ' ');
+  const cucEventPosition = normalizedWorkshopIndex.indexOf(
+    '[実施済み] 親子AIプログラミング体験会(千葉商科大学イベント)',
+  );
+  const participantMaterialPosition =
+    normalizedWorkshopIndex.indexOf('「親子AIプログラミング体験会」参加者向け資料');
+  assert.ok(cucEventPosition >= 0);
+  assert.ok(participantMaterialPosition > cucEventPosition);
+  assert.match(
+    workshopIndex,
+    /href="https:\/\/www\.cuc\.ac\.jp\/event\/2026\/ai_programming0801\.html"/u,
+  );
+  assert.match(workshopIndex, /小学生以上を対象とした「親子AIプログラミング体験会」/u);
+  assert.match(workshopIndex, /AI技術を応用した紙芝居アプリ/u);
   assert.doesNotMatch(dsl32Index, /体験会資料|workshops\/2026-08-01/u);
   assert.doesNotMatch(dsl40Index, /体験会資料|workshops\/2026-08-01/u);
 });

@@ -203,6 +203,11 @@ main {
   box-shadow: 0 5px 18px rgb(89 61 43 / 8%);
 }
 
+.cards .workshop-event-card {
+  grid-column: 1 / -1;
+  border-left: 4px solid var(--site-accent);
+}
+
 .cards h3 {
   margin: 0 0 0.5rem;
   font-size: 1.15rem;
