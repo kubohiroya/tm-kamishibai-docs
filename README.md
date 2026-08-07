@@ -19,6 +19,18 @@
 公開入口は `https://kubohiroya.github.io/tmpose-kamishibai/` に固定します。
 このリポジトリのPagesは `https://kubohiroya.github.io/tmpose-kamishibai-docs/` を予定しています。
 
+ドキュメントサイトの公開rootは、3.2系と4.0系に共通する入口と版選択バナーだけを
+表示します。版固有の文書一覧は混在させず、次の専用topで提供します。
+
+- `/3.2/`: TXT台本、3.2.xアプリ、既存作品・教材を保守するための文書
+- `/4.0/`: YAML project、Source Graph、preview／build toolchainで新しく制作するための文書
+- `/workshops/`: 体験会資料を開催時期とDSL系列ごとに一覧表示する独立した入口
+
+各版固有文書の通常HTML、`document.html`、`publication.json`、local assetは、
+`/3.2/`または`/4.0/`以下へ生成します。以前のversion番号なしURLには自動転送を置かず、
+対応する新URLと版選択rootを案内するページを残します。以前のVivliostyle Viewer URLが参照する
+`publication.json`も、同じ移転案内を表示するWeb Publicationとして維持します。
+
 ## 文書の分類
 
 移設元の`docs/general/`をそのまま再現せず、読者と用途により次のように分割します。
@@ -71,8 +83,8 @@ Source Graph、preview／build toolchainで制作する場合は4.0を選びま�
 しません。
 
 「TMPose紙芝居 アプリ・教材・ツールチェインガイド」も3.2版と4.0版を別のMarkdownとして保守し、
-それぞれに通常HTML版とVivliostyle Viewer版を用意します。3.2版は既存公開URLを維持し、4.0版は
-独立した開発者向けpublicationとして提供します。
+それぞれに通常HTML版とVivliostyle Viewer版を用意します。3.2版は`/3.2/`、4.0版は`/4.0/`以下の
+独立した開発者向けpublicationとして提供し、以前のversion番号なしURLには移転案内を残します。
 
 ### DSL 4.0 Schemaリファレンスの生成
 

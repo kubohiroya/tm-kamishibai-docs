@@ -2,106 +2,133 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import test from 'node:test';
 
-import {documentationConfig, documentCollections} from '../docs/config.mjs';
+import {documentationConfig} from '../docs/config.mjs';
 
-const index = readFileSync(new URL('../site/index.html', import.meta.url), 'utf8');
+const rootIndex = readFileSync(new URL('../site/index.html', import.meta.url), 'utf8');
+const dsl32Index = readFileSync(new URL('../site/3.2/index.html', import.meta.url), 'utf8');
+const dsl40Index = readFileSync(new URL('../site/4.0/index.html', import.meta.url), 'utf8');
+const workshopIndex = readFileSync(
+  new URL('../site/workshops/index.html', import.meta.url),
+  'utf8',
+);
+const documentIndexCss = readFileSync(
+  new URL('../site/document-index.css', import.meta.url),
+  'utf8',
+);
 
-test('publishes each document in its reader-oriented directory', () => {
-  assert.doesNotMatch(index, /tmpose-kamishibai\/docs\//u);
-  assert.doesNotMatch(index, /href="general\//u);
+test('keeps only common content and version banners on the site root', () => {
+  assert.match(rootIndex, /<h1>紙芝居DSLの版を選ぶ<\/h1>/u);
+  assert.equal((rootIndex.match(/class="version-banner version-banner--/gu) ?? []).length, 2);
+  assert.match(rootIndex, /<h2 id="common-content-title">3\.2／4\.0 共通コンテンツ<\/h2>/u);
+  assert.match(rootIndex, /href="workshops\/"/u);
+  assert.doesNotMatch(rootIndex, /class="actions"/u);
+  assert.doesNotMatch(rootIndex, /publication\.json/u);
+  assert.match(rootIndex, /href="3\.2\/">DSL 3\.2のドキュメントへ/u);
+  assert.match(rootIndex, /href="4\.0\/">DSL 4\.0のドキュメントへ/u);
 
-  for (const collection of documentCollections) {
-    assert.match(index, new RegExp(`<h2[^>]*>${collection.title}</h2>`, 'u'));
-  }
   for (const document of documentationConfig.documents) {
     const basename = document.sourceFilename.replace(/\.md$/u, '');
-    assert.match(index, new RegExp(`href="${document.outputDirectory}/${basename}/"`, 'u'));
-    assert.doesNotMatch(
-      index,
-      new RegExp(`href="${document.outputDirectory}/${basename}\\.pdf"`, 'u'),
-    );
+    assert.doesNotMatch(rootIndex, new RegExp(`${basename}/`, 'u'));
+  }
+});
+
+test('publishes each document only from its version-specific top page', () => {
+  for (const document of documentationConfig.documents) {
+    const basename = document.sourceFilename.replace(/\.md$/u, '');
+    const versionIndex = document.version === '3.2' ? dsl32Index : dsl40Index;
+    const otherVersionIndex = document.version === '3.2' ? dsl40Index : dsl32Index;
+    const localDirectory = `${document.legacyOutputDirectory}/${basename}`;
+
+    assert.match(versionIndex, new RegExp(`href="${localDirectory}/"`, 'u'));
     assert.match(
-      index,
+      versionIndex,
       new RegExp(
         `tmpose-kamishibai-docs/${document.outputDirectory}/${basename}/publication\\.json`,
         'u',
       ),
     );
+    assert.doesNotMatch(otherVersionIndex, new RegExp(`href="${localDirectory}/"`, 'u'));
+    assert.doesNotMatch(versionIndex, new RegExp(`href="${localDirectory}\\.pdf"`, 'u'));
   }
 });
 
-test('offers PDFs only for workshop publications', () => {
-  const actionGroups = [...index.matchAll(/<div class="actions">([\s\S]*?)<\/div>/gu)];
-  assert.equal(actionGroups.length, documentationConfig.documents.length + 2);
-  for (const [, actions] of actionGroups.slice(0, documentationConfig.documents.length)) {
-    assert.deepEqual(
-      [...actions.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a\s*>/gu)].map(([, label]) =>
-        label.replace(/\s+/gu, ' ').trim(),
-      ),
-      ['HTML', 'Vivliostyle Viewer'],
+test('keeps publication actions on their dedicated version and workshop pages', () => {
+  const dsl32Actions = [...dsl32Index.matchAll(/<div class="actions">([\s\S]*?)<\/div>/gu)];
+  const dsl40Actions = [...dsl40Index.matchAll(/<div class="actions">([\s\S]*?)<\/div>/gu)];
+  const workshopActions = [...workshopIndex.matchAll(/<div class="actions">([\s\S]*?)<\/div>/gu)];
+  const dsl32Documents = documentationConfig.documents.filter(({version}) => version === '3.2');
+  const dsl40Documents = documentationConfig.documents.filter(({version}) => version === '4.0');
+
+  assert.equal(dsl32Actions.length, dsl32Documents.length);
+  assert.equal(dsl40Actions.length, dsl40Documents.length);
+  assert.equal(workshopActions.length, 2);
+  for (const [, actions] of dsl32Actions) {
+    assert.deepEqual(linkLabels(actions), ['HTML', 'Vivliostyle Viewer']);
+  }
+  for (const [, actions] of workshopActions) {
+    assert.deepEqual(linkLabels(actions), ['HTML', 'Vivliostyle Viewer', 'PDF']);
+  }
+  for (const [, actions] of dsl40Actions) {
+    assert.deepEqual(linkLabels(actions), ['HTML', 'Vivliostyle Viewer']);
+  }
+});
+
+test('keeps the two version tops independent', () => {
+  const dsl40Content = dsl40Index.replace(/<nav class="version-switch"[\s\S]*?<\/nav>/u, '');
+
+  assert.match(dsl32Index, /<h1>紙芝居DSL 3\.2 ドキュメント<\/h1>/u);
+  assert.match(dsl40Index, /<h1>紙芝居DSL 4\.0 ドキュメント<\/h1>/u);
+  assert.doesNotMatch(dsl32Index, /kamishibai: '4\.0'|Source Graph/u);
+  assert.doesNotMatch(dsl40Content, /kamishibai=3\.[12]|DSL 3\.[12]/u);
+  assert.match(dsl32Index, /href="\.\.\/4\.0\/">DSL 4\.0へ切り替える/u);
+  assert.match(dsl40Index, /href="\.\.\/3\.2\/">DSL 3\.2へ切り替える/u);
+});
+
+test('explains how to choose between the versions on the root page', () => {
+  assert.match(rootIndex, /既存作品を継続/u);
+  assert.match(rootIndex, /新規制作を開始/u);
+  assert.match(rootIndex, /kamishibai=3\.2/u);
+  assert.match(rootIndex, /<code>\.txt<\/code>/u);
+  assert.match(rootIndex, /kamishibai: '4\.0'/u);
+  assert.match(rootIndex, /<code>\.k4\.yml<\/code>/u);
+  assert.match(rootIndex, /Source Graph/u);
+  assert.match(documentIndexCss, /\.version-banner__primary:focus-visible/u);
+  assert.match(rootIndex, /aria-labelledby="version-32-title"/u);
+  assert.match(rootIndex, /aria-labelledby="version-40-title"/u);
+});
+
+test('lists workshop material chronologically with explicit DSL families', () => {
+  const dsl42Position = workshopIndex.indexOf('id="workshops-42"');
+  const dsl32Position = workshopIndex.indexOf('id="workshops-32"');
+
+  assert.ok(dsl42Position >= 0);
+  assert.ok(dsl32Position > dsl42Position);
+  assert.match(workshopIndex, /<h2 id="workshops-42">DSL 4\.2系<\/h2>/u);
+  assert.match(workshopIndex, /現在公開中の資料はありません/u);
+  assert.match(workshopIndex, /<h2 id="workshops-32">DSL 3\.2系<\/h2>/u);
+  assert.match(workshopIndex, /<time datetime="2026-08-01">2026年8月1日<\/time>/u);
+  assert.match(workshopIndex, /href="2026-08-01\/"/u);
+  assert.match(workshopIndex, /href="2026-08-01\/staff\/"/u);
+  assert.doesNotMatch(dsl32Index, /体験会資料|workshops\/2026-08-01/u);
+  assert.doesNotMatch(dsl40Index, /体験会資料|workshops\/2026-08-01/u);
+});
+
+test('provides the workshop menu in every static AppBar', () => {
+  for (const index of [rootIndex, dsl32Index, dsl40Index, workshopIndex]) {
+    assert.match(
+      index,
+      /href="https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-docs\/workshops\/"/u,
     );
+    assert.match(index, /<main id="main-content"[^>]*tabindex="-1"/u);
   }
-  for (const [, actions] of actionGroups.slice(documentationConfig.documents.length)) {
-    assert.deepEqual(
-      [...actions.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a\s*>/gu)].map(([, label]) =>
-        label.replace(/\s+/gu, ' ').trim(),
-      ),
-      ['HTML', 'Vivliostyle Viewer', 'PDF'],
-    );
-  }
-});
-
-test('places the application and toolchain guide first in the developer collection', () => {
-  const generalSection = index.slice(
-    index.indexOf('<section aria-labelledby="general-documents">'),
-    index.indexOf('<section aria-labelledby="dsl-32-documents">'),
-  );
-  const developerSection = index.slice(
-    index.indexOf('<section aria-labelledby="developer-documents">'),
-  );
-  assert.doesNotMatch(generalSection, /アプリ・教材・ツールチェインガイド/u);
-  assert.ok(
-    developerSection.indexOf('TMPose紙芝居 3.2') <
-      developerSection.indexOf('ソフトウェアメンテナンスガイド'),
-  );
-  assert.ok(
-    developerSection.indexOf('TMPose紙芝居 4.0') <
-      developerSection.indexOf('ソフトウェアメンテナンスガイド'),
+  assert.match(
+    workshopIndex,
+    /href="https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-docs\/workshops\/"\s+aria-current="page"/u,
   );
 });
 
-test('separates the officially supported DSL 3.2 and 4.0 pages', () => {
-  const dsl32Section = index.slice(
-    index.indexOf('<section aria-labelledby="dsl-32-documents">'),
-    index.indexOf('<section aria-labelledby="dsl-40-documents">'),
+function linkLabels(actions) {
+  return [...actions.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a\s*>/gu)].map(([, label]) =>
+    label.replace(/\s+/gu, ' ').trim(),
   );
-  const dsl40Section = index.slice(
-    index.indexOf('<section aria-labelledby="dsl-40-documents">'),
-    index.indexOf('<section aria-labelledby="developer-documents">'),
-  );
-  assert.doesNotMatch(dsl32Section, /DSL 4\.0/u);
-  assert.doesNotMatch(dsl40Section, /DSL 3\.[12]/u);
-});
-
-test('offers two detailed version banners instead of ordinary document cards', () => {
-  const chooser = index.slice(
-    index.indexOf('<section class="dsl-version-chooser"'),
-    index.indexOf('<section aria-labelledby="dsl-32-documents">'),
-  );
-  assert.ok(chooser.length > 0);
-  assert.equal((chooser.match(/class="dsl-version-banner dsl-version-banner--/gu) ?? []).length, 2);
-  assert.doesNotMatch(chooser, /<article\b/u);
-  assert.match(chooser, /aria-labelledby="dsl-version-32-title"/u);
-  assert.match(chooser, /aria-labelledby="dsl-version-40-title"/u);
-  assert.match(chooser, /kamishibai=3\.2/u);
-  assert.match(chooser, /<code>\.txt<\/code>/u);
-  assert.match(chooser, /kamishibai: '4\.0'/u);
-  assert.match(chooser, /<code>\.k4\.yml<\/code>/u);
-  assert.match(chooser, /Source Graph/u);
-  assert.match(chooser, /既存作品を継続/u);
-  assert.match(chooser, /新規制作を開始/u);
-  assert.match(chooser, /href="#dsl-32-documents"/u);
-  assert.match(chooser, /href="#dsl-40-documents"/u);
-  assert.match(index, /\.dsl-version-banner__link:focus-visible/u);
-  assert.match(index, /@media \(max-width: 700px\)[\s\S]*\.dsl-version-banner/u);
-});
+}

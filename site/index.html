@@ -5,269 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="TMPose紙芝居の一般向け、紙芝居DSL作成者向け、開発者向けドキュメントと体験会資料"
+      content="紙芝居DSL 3.2と4.0のどちらの公式ドキュメントへ進むかを選びます"
     />
-    <title>ドキュメント | TMPose紙芝居</title>
+    <title>紙芝居DSLの版を選ぶ | TMPose紙芝居</title>
     <link rel="icon" type="image/png" sizes="256x256" href="favicon.png" />
     <link rel="stylesheet" href="site-shell.css" />
+    <link rel="stylesheet" href="document-index.css" />
     <script type="module" src="site-shell.js"></script>
-    <style>
-      :root {
-        color-scheme: light;
-        font-family: system-ui, sans-serif;
-        --ink: #3f302b;
-        --muted: #756960;
-        --paper: #fffdf8;
-        --canvas: #fff8ee;
-        --accent: #963f2f;
-        --line: #dbc9bb;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        background: var(--canvas);
-        color: var(--ink);
-      }
-      .skip-link {
-        position: absolute;
-        left: -9999px;
-      }
-      .skip-link:focus {
-        left: 1rem;
-        top: 1rem;
-        z-index: 2;
-        padding: 0.6rem 1rem;
-        background: white;
-      }
-      .site-header {
-        border-bottom: 1px solid var(--line);
-        background: var(--paper);
-      }
-      .site-header__inner {
-        display: flex;
-        max-width: 1080px;
-        margin: auto;
-        padding: 14px 24px;
-        align-items: center;
-        gap: 24px;
-      }
-      .site-brand {
-        color: var(--ink);
-        font-weight: 800;
-        text-decoration: none;
-      }
-      .site-nav {
-        display: flex;
-        flex: 1;
-        flex-wrap: wrap;
-        gap: 14px;
-      }
-      .site-nav__link,
-      .site-repository {
-        color: var(--accent);
-        font-weight: 700;
-        text-decoration: none;
-      }
-      .site-nav__link[aria-current='page'] {
-        text-decoration: underline;
-        text-underline-offset: 0.3em;
-      }
-      main {
-        max-width: 1080px;
-        margin: auto;
-        padding: 40px 24px 72px;
-      }
-      h1 {
-        margin-bottom: 0.35rem;
-        font-size: clamp(2rem, 6vw, 3.5rem);
-      }
-      h2 {
-        margin-top: 3rem;
-        font-size: 1.65rem;
-      }
-      .cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 18px;
-      }
-      article {
-        padding: 22px;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        background: var(--paper);
-        box-shadow: 0 5px 18px rgb(89 61 43 / 8%);
-      }
-      article h3 {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.65rem;
-        margin: 0 0 0.45rem;
-        font-size: 1.15rem;
-      }
-      .card-icon {
-        flex: 0 0 auto;
-        font-size: 1.45rem;
-        line-height: 1;
-      }
-      article p {
-        line-height: 1.65;
-      }
-      .audience {
-        margin: 0 0 0.8rem;
-        color: var(--muted);
-        font-size: 0.92rem;
-      }
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 1rem;
-      }
-      .button {
-        display: inline-block;
-        padding: 8px 12px;
-        border-radius: 7px;
-        background: var(--accent);
-        color: white;
-        text-decoration: none;
-        font-weight: 700;
-      }
-      .button.secondary {
-        border: 1px solid var(--accent);
-        background: white;
-        color: var(--accent);
-      }
-      .dsl-version-chooser {
-        margin-top: 3rem;
-        padding-top: 0.25rem;
-      }
-      .dsl-version-chooser h2 {
-        margin: 0;
-      }
-      .dsl-version-chooser__intro {
-        max-width: 76ch;
-        margin: 0.75rem 0 1.4rem;
-        color: var(--muted);
-        line-height: 1.75;
-      }
-      .dsl-version-banners {
-        display: grid;
-        gap: 18px;
-      }
-      .dsl-version-banner {
-        --banner-accent: #7d4937;
-        --banner-tint: #fff2e8;
-        display: grid;
-        grid-template-columns: minmax(170px, 0.28fr) minmax(0, 1fr);
-        overflow: hidden;
-        border: 1px solid color-mix(in srgb, var(--banner-accent) 38%, white);
-        border-left: 10px solid var(--banner-accent);
-        border-radius: 8px;
-        background: linear-gradient(100deg, var(--banner-tint), var(--paper) 72%);
-      }
-      .dsl-version-banner--40 {
-        --banner-accent: #17635f;
-        --banner-tint: #e8f7f3;
-      }
-      .dsl-version-banner__label {
-        display: flex;
-        min-height: 100%;
-        padding: 24px 20px;
-        align-items: flex-start;
-        flex-direction: column;
-        justify-content: center;
-        border-right: 1px solid color-mix(in srgb, var(--banner-accent) 24%, white);
-        color: var(--banner-accent);
-      }
-      .dsl-version-banner__status {
-        font-size: 0.88rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-      }
-      .dsl-version-banner__version {
-        font-size: clamp(3rem, 8vw, 4.8rem);
-        font-weight: 900;
-        letter-spacing: -0.08em;
-        line-height: 1;
-      }
-      .dsl-version-banner__body {
-        padding: 24px 28px 26px;
-      }
-      .dsl-version-banner__body h3 {
-        margin: 0;
-        font-size: 1.35rem;
-        line-height: 1.4;
-      }
-      .dsl-version-banner__recommendation {
-        margin: 0.7rem 0 1rem;
-        line-height: 1.7;
-      }
-      .dsl-version-banner__criteria {
-        display: grid;
-        grid-template-columns: max-content minmax(0, 1fr);
-        gap: 0.45rem 1rem;
-        margin: 0;
-        line-height: 1.65;
-      }
-      .dsl-version-banner__criteria dt {
-        color: var(--banner-accent);
-        font-weight: 800;
-      }
-      .dsl-version-banner__criteria dd {
-        margin: 0;
-      }
-      .dsl-version-banner__links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.65rem 1rem;
-        margin-top: 1.1rem;
-      }
-      .dsl-version-banner__link {
-        color: var(--banner-accent);
-        font-weight: 800;
-        text-underline-offset: 0.22em;
-      }
-      .dsl-version-banner__link:focus-visible {
-        outline: 3px solid var(--banner-accent);
-        outline-offset: 4px;
-        border-radius: 2px;
-      }
-      @media (max-width: 700px) {
-        .site-header__inner {
-          align-items: flex-start;
-          flex-direction: column;
-          gap: 10px;
-        }
-        .dsl-version-banner {
-          grid-template-columns: 1fr;
-        }
-        .dsl-version-banner__label {
-          min-height: auto;
-          padding: 16px 20px;
-          align-items: baseline;
-          flex-direction: row;
-          justify-content: flex-start;
-          gap: 12px;
-          border-right: 0;
-          border-bottom: 1px solid color-mix(in srgb, var(--banner-accent) 24%, white);
-        }
-        .dsl-version-banner__version {
-          font-size: 2.8rem;
-        }
-        .dsl-version-banner__body {
-          padding: 20px;
-        }
-        .dsl-version-banner__criteria {
-          grid-template-columns: 1fr;
-          gap: 0.1rem;
-        }
-        .dsl-version-banner__criteria dd + dt {
-          margin-top: 0.55rem;
-        }
-      }
-    </style>
   </head>
   <body>
     <a class="skip-link" href="#main-content">本文へ移動</a>
@@ -286,6 +30,11 @@
             href="https://kubohiroya.github.io/tmpose-kamishibai-docs/"
             aria-current="page"
             >ドキュメント</a
+          >
+          <a
+            class="site-nav__link"
+            href="https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/"
+            >ワークショップ</a
           >
           <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/"
             >サンプル</a
@@ -309,484 +58,95 @@
         ></a>
       </div>
     </header>
-    <main id="main-content">
-      <header>
-        <h1>ドキュメント</h1>
+    <main id="main-content" class="version-selection-page" tabindex="-1">
+      <header class="page-intro">
+        <p class="page-kicker">TMPose紙芝居 公式ドキュメント</p>
+        <h1>紙芝居DSLの版を選ぶ</h1>
+        <p>
+          DSL 3.2と4.0は、台本形式と制作環境が異なる独立した正式サポート系列です。
+          既存作品を維持するか、新しい制作基盤を使うかを基準に、進む版を選んでください。
+        </p>
       </header>
 
-      <section aria-labelledby="general-documents">
-        <h2 id="general-documents">一般向けドキュメント</h2>
-        <div class="cards">
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">👥</span>紙芝居アプリ 概要説明書 大人向け
-            </h3>
-            <p class="audience">保護者・教員・運営者</p>
-            <p>アプリの価値、仕組み、利用場面、教育的な意義を簡潔にまとめています。</p>
-            <div class="actions">
-              <a class="button" href="user-guides/executive-summary-adult/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/user-guides/executive-summary-adult/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">🧒</span>紙芝居アプリ 概要説明書 子供向け
-            </h3>
-            <p class="audience">子供・初めての方</p>
-            <p>紙芝居でできることや安全な使い方を、やさしい言葉で紹介します。</p>
-            <div class="actions">
-              <a class="button" href="user-guides/executive-summary-kids/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/user-guides/executive-summary-kids/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3><span class="card-icon" aria-hidden="true">🕹️</span>紙芝居アプリ 操作説明書</h3>
-            <p class="audience">アプリを使う方</p>
-            <p>台本の読み込み、再生、ポーズ認識、本番前の確認方法を説明します。</p>
-            <div class="actions">
-              <a class="button" href="user-guides/user-guide/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/user-guides/user-guide/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-        </div>
+      <section class="common-content" aria-labelledby="common-content-title">
+        <h2 id="common-content-title">3.2／4.0 共通コンテンツ</h2>
+        <p>DSLの版にかかわらず利用できる、作品例、アプリ、ワークショップ資料への入口です。</p>
+        <ul class="common-links">
+          <li>
+            <a href="https://kubohiroya.github.io/tmpose-kamishibai-samples/">
+              <strong>サンプル</strong>
+              <span>台本と実行できる紙芝居作品を見る</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://kubohiroya.github.io/tmpose-kamishibai/downloads/">
+              <strong>ダウンロード</strong>
+              <span>紙芝居アプリと関連ツールを入手する</span>
+            </a>
+          </li>
+          <li>
+            <a href="workshops/">
+              <strong>ワークショップ</strong>
+              <span>開催時期とDSL系列から体験会資料を探す</span>
+            </a>
+          </li>
+        </ul>
       </section>
 
-      <section class="dsl-version-chooser" aria-labelledby="dsl-version-chooser-title">
-        <h2 id="dsl-version-chooser-title">紙芝居DSLの版を選ぶ</h2>
-        <p class="dsl-version-chooser__intro">
-          DSL 3.2と4.0は、どちらも正式にサポートしています。ただし台本形式と制作環境は異なり、
-          相互に同じ文法としては読み込めません。既存作品を維持するか、新しい制作基盤を使うかを基準に選んでください。
-        </p>
-        <div class="dsl-version-banners">
-          <section
-            class="dsl-version-banner dsl-version-banner--32"
-            aria-labelledby="dsl-version-32-title"
-          >
-            <div class="dsl-version-banner__label">
-              <span class="dsl-version-banner__status">既存作品を継続</span>
-              <strong class="dsl-version-banner__version" aria-hidden="true">3.2</strong>
-            </div>
-            <div class="dsl-version-banner__body">
-              <h3 id="dsl-version-32-title">TXT台本と3.2.xアプリを使い続ける</h3>
-              <p class="dsl-version-banner__recommendation">
-                すでに上映している作品や教材を保守する方、従来のアプリとツールチェインを継続利用する方にはDSL
-                3.2をおすすめします。
-              </p>
-              <dl class="dsl-version-banner__criteria">
-                <dt>対象と形式</dt>
-                <dd>
-                  TMPose紙芝居3.2.xと、先頭に<code>kamishibai=3.2</code>を書く<code>.txt</code>台本。3.1宣言も読み込めます。
-                </dd>
-                <dt>主な利用場面</dt>
-                <dd>既存作品・体験会教材の修正、汎用SB3への台本読込、従来素材の継続利用。</dd>
-                <dt>互換性</dt>
-                <dd>
-                  3.2.xは3.1／3.2台本を受理します。DSL 4.0のYAMLやSource
-                  Graphとは文法互換ではありません。
-                </dd>
-                <dt>4.0を選ぶ基準</dt>
-                <dd>新規projectでYAML、複数source、preview／buildの一体化を使いたい場合。</dd>
-              </dl>
-              <nav class="dsl-version-banner__links" aria-label="DSL 3.2の主要文書">
-                <a class="dsl-version-banner__link" href="#dsl-32-documents">3.2文書の一覧へ</a>
-                <a class="dsl-version-banner__link" href="dsl-author-guides/dsl-manual/"
-                  >ファイル作成マニュアル</a
-                >
-                <a class="dsl-version-banner__link" href="dsl-author-guides/command-reference/"
-                  >コマンドリファレンス</a
-                >
-              </nav>
-            </div>
-          </section>
+      <div class="version-banners" aria-label="紙芝居DSLの版">
+        <section class="version-banner version-banner--32" aria-labelledby="version-32-title">
+          <div class="version-banner__label">
+            <span class="version-banner__status">既存作品を継続</span>
+            <strong class="version-banner__version" aria-hidden="true">3.2</strong>
+          </div>
+          <div class="version-banner__body">
+            <h2 id="version-32-title">TXT台本と3.2.xアプリを使い続ける</h2>
+            <p>
+              すでに上映している作品や教材、従来のアプリとツールチェインを保守する場合はDSL
+              3.2へ進みます。
+            </p>
+            <dl class="version-banner__criteria">
+              <dt>台本形式</dt>
+              <dd>
+                <code>kamishibai=3.2</code>を先頭に書く<code>.txt</code>。3.1宣言も受理します。
+              </dd>
+              <dt>主な用途</dt>
+              <dd>既存作品・体験会教材の修正、汎用SB3への台本読込、従来素材の継続利用。</dd>
+              <dt>4.0を選ぶ場合</dt>
+              <dd>YAML project、複数source、preview／buildの一体化で新規制作したい場合。</dd>
+            </dl>
+            <a class="version-banner__primary" href="3.2/">DSL 3.2のドキュメントへ</a>
+          </div>
+        </section>
 
-          <section
-            class="dsl-version-banner dsl-version-banner--40"
-            aria-labelledby="dsl-version-40-title"
-          >
-            <div class="dsl-version-banner__label">
-              <span class="dsl-version-banner__status">新規制作を開始</span>
-              <strong class="dsl-version-banner__version" aria-hidden="true">4.0</strong>
-            </div>
-            <div class="dsl-version-banner__body">
-              <h3 id="dsl-version-40-title">YAML projectと4.0 toolchainで新しく作る</h3>
-              <p class="dsl-version-banner__recommendation">
-                新しい作品をproject単位で制作し、Schema検証からpreview、配布用buildまでを一貫した手順で扱う方にはDSL
-                4.0をおすすめします。
-              </p>
-              <dl class="dsl-version-banner__criteria">
-                <dt>対象と形式</dt>
-                <dd>
-                  TMPose紙芝居4.0系列と、<code>kamishibai: '4.0'</code
-                  >を宣言するYAML。新規sourceは<code>.k4.yml</code>を推奨します。
-                </dd>
-                <dt>主な利用場面</dt>
-                <dd>
-                  新規project、Source Graphによる台本分割、Web／CLI preview、自己完結SB3 build。
-                </dd>
-                <dt>互換性</dt>
-                <dd>
-                  JSON
-                  Schemaと意味検証を前提とする別系列です。3.2のTXT台本をそのまま読み込む形式ではありません。
-                </dd>
-                <dt>3.2を選ぶ基準</dt>
-                <dd>既存のTXT台本や3.2.xアプリ・教材を、移行せず安定して保守したい場合。</dd>
-              </dl>
-              <nav class="dsl-version-banner__links" aria-label="DSL 4.0の主要文書">
-                <a class="dsl-version-banner__link" href="#dsl-40-documents">4.0文書の一覧へ</a>
-                <a class="dsl-version-banner__link" href="dsl-author-guides/dsl-4.0-author-guide/"
-                  >台本作成ガイド</a
-                >
-                <a
-                  class="dsl-version-banner__link"
-                  href="dsl-author-guides/dsl-4.0-schema-reference/"
-                  >Schemaリファレンス</a
-                >
-              </nav>
-            </div>
-          </section>
-        </div>
-      </section>
-
-      <section aria-labelledby="dsl-32-documents">
-        <h2 id="dsl-32-documents">紙芝居DSL 3.2 公式ドキュメント</h2>
-        <div class="cards">
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">✍️</span>紙芝居DSL 3.2
-              ファイル作成マニュアル
-            </h3>
-            <p class="audience">DSL 3.2の作品を作る方</p>
+        <section class="version-banner version-banner--40" aria-labelledby="version-40-title">
+          <div class="version-banner__label">
+            <span class="version-banner__status">新規制作を開始</span>
+            <strong class="version-banner__version" aria-hidden="true">4.0</strong>
+          </div>
+          <div class="version-banner__body">
+            <h2 id="version-40-title">YAML projectと4.0 toolchainで新しく作る</h2>
             <p>
-              3.1／3.2宣言の互換性、3.2台本の設計、旧Text Assetの互換期間、SVG
-              Textへの移行を含む作成・テスト手順を説明します。
+              Schema検証からpreview、配布用buildまでを一貫したprojectとして扱う場合はDSL
+              4.0へ進みます。
             </p>
-            <div class="actions">
-              <a class="button" href="dsl-author-guides/dsl-manual/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/dsl-author-guides/dsl-manual/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">📚</span>紙芝居DSL 3.2 コマンドリファレンス
-            </h3>
-            <p class="audience">DSL 3.2の台本文法を調べる方</p>
-            <p>
-              過去リリースから引き継いだ手書きMarkdownで、3.2.xが受理する3.1／3.2宣言、
-              コマンド、アクション、Text Asset互換仕様、注意事項を保守しています。
-            </p>
-            <div class="actions">
-              <a class="button" href="dsl-author-guides/command-reference/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/dsl-author-guides/command-reference/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">🕰️</span>紙芝居DSL 2.0から3.2への変更履歴
-            </h3>
-            <p class="audience">2.0から3.2へ移行する方</p>
-            <p>
-              2.0から3.1の累積差分と、3.2.xの宣言互換性、旧Text Asset互換期間、SVG
-              Textへの段階移行をまとめています。
-            </p>
-            <div class="actions">
-              <a class="button" href="dsl-author-guides/history/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/dsl-author-guides/history/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section aria-labelledby="dsl-40-documents">
-        <h2 id="dsl-40-documents">紙芝居DSL 4.0 公式ドキュメント</h2>
-        <div class="cards">
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">🧭</span>紙芝居DSL 4.0 台本作成ガイド
-            </h3>
-            <p class="audience">DSL 4.0の作品を作る方</p>
-            <p>
-              完成したDSL 4.0について、Source Graph、project配置、live reload、camera
-              preview、speech、透明度、分岐、診断を説明します。
-            </p>
-            <div class="actions">
-              <a class="button" href="dsl-author-guides/dsl-4.0-author-guide/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/dsl-author-guides/dsl-4.0-author-guide/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">🔎</span>紙芝居DSL 4.0 Schemaリファレンス
-            </h3>
-            <p class="audience">DSL 4.0のSchemaを確認する方</p>
-            <p>
-              完成commitの規範JSON Schemaから、camera preview、speech、think、moveTo easing、
-              setTransparencyを含むfield、asset、設定、scene、actionの型・必須性・既定値・制約を生成しています。
-            </p>
-            <div class="actions">
-              <a class="button" href="dsl-author-guides/dsl-4.0-schema-reference/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/dsl-author-guides/dsl-4.0-schema-reference/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section aria-labelledby="developer-documents">
-        <h2 id="developer-documents">開発者向けドキュメント</h2>
-        <div class="cards">
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">🎭</span>TMPose紙芝居 3.2
-              アプリ・教材・ツールチェインガイド
-            </h3>
-            <p class="audience">DSL 3.2のアプリ、教材、ツールチェインを把握する方</p>
-            <p>
-              DSL 3.2系列のアプリ、浦島太郎、体験会教材、台本、sb3-toolchainを
-              図解付き・全8ページで紹介します。
-            </p>
-            <div class="actions">
-              <a class="button" href="user-guides/application-materials-guide/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/user-guides/application-materials-guide/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">🎬</span>TMPose紙芝居 4.0
-              アプリ・教材・ツールチェインガイド
-            </h3>
-            <p class="audience">DSL 4.0のアプリ、教材、ツールチェインを把握する方</p>
-            <p>
-              DSL 4.0系列のproject、Source Graph、体験教材の構成、YAML台本、preview、buildを
-              図解付き・全8ページで紹介します。
-            </p>
-            <div class="actions">
-              <a class="button" href="developer-guides/application-materials-guide-4.0/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/developer-guides/application-materials-guide-4.0/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">🛠️</span>紙芝居アプリ
-              ソフトウェアメンテナンスガイド
-            </h3>
-            <p class="audience">ソフトウェア開発者</p>
-            <p>
-              成果物とビルダーの利用、アプリ本体、SB3、ドキュメントの変更、検証、公開手順を案内します。
-            </p>
-            <div class="actions">
-              <a class="button" href="developer-guides/developer-guide/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/developer-guides/developer-guide/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3><span class="card-icon" aria-hidden="true">🧩</span>紙芝居アプリ内部仕様書</h3>
-            <p class="audience">アプリの実装を調査・変更する方</p>
-            <p>
-              現行の汎用アプリSB3におけるtarget、変数、block、message、呼出し関係、状態遷移を記録します。
-            </p>
-            <div class="actions">
-              <a class="button" href="developer-guides/internal-specification/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/developer-guides/internal-specification/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3><span class="card-icon" aria-hidden="true">🔌</span>TMPose紙芝居 機能拡張ガイド</h3>
-            <p class="audience">アプリの依存機能を調査・変更する方</p>
-            <p>15個の依存機能拡張を、一覧と図解付き・1拡張1ページの全16ページで紹介します。</p>
-            <div class="actions">
-              <a class="button" href="developer-guides/extension-guide/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/developer-guides/extension-guide/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">🩺</span>DSL 3.1 台本診断・安全停止
-              設計レビュー
-            </h3>
-            <p class="audience">台本診断と安全停止を保守する方</p>
-            <p>
-              DSL
-              3.1の限定preflight、診断データモデル、機能拡張との境界、安全停止の設計判断を記録します。
-            </p>
-            <div class="actions">
-              <a class="button" href="developer-guides/dsl-3.1-diagnostics-design/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/developer-guides/dsl-3.1-diagnostics-design/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3><span class="card-icon" aria-hidden="true">🔒</span>依存関係監査記録</h3>
-            <p class="audience">依存更新とsecurity overrideを保守する方</p>
-            <p>
-              2026年8月に実施したアプリ本体の依存更新、脆弱性監査、overrideの理由と解除条件を記録します。
-            </p>
-            <div class="actions">
-              <a class="button" href="developer-guides/dependency-audit/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/developer-guides/dependency-audit/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3><span class="card-icon" aria-hidden="true">✅</span>DSL 3.1 release smoke</h3>
-            <p class="audience">リリース候補をブラウザで検証する方</p>
-            <p>
-              Scratch VMテストでは確認できないEditor、カメラ、TMPose、Packagerのrelease
-              smoke手順をまとめます。
-            </p>
-            <div class="actions">
-              <a class="button" href="developer-guides/release-smoke/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/developer-guides/release-smoke/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section aria-labelledby="workshop-documents">
-        <h2 id="workshop-documents">体験会資料</h2>
-        <div class="cards">
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">🤖</span>親子AIプログラミング体験会
-              2026年8月1日版
-            </h3>
-            <p class="audience">体験会の参加者</p>
-            <p>
-              画像づくりAI、ポーズ認識AI、紙芝居プログラミングを組み合わせる体験会教材です。この資料だけ、小学3年生までの配当漢字を基準にふりがなを追加しています。
-            </p>
-            <div class="actions">
-              <a class="button" href="workshops/2026-08-01/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/2026-08-01/publication.json&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-              <a class="button secondary" href="workshops/2026-08-01/tmpose-kamishibai-20260801.pdf"
-                >PDF</a
-              >
-            </div>
-          </article>
-          <article>
-            <h3>
-              <span class="card-icon" aria-hidden="true">🧰</span
-              >親子AIプログラミング体験会スタッフ向け資料2026年8月1日版
-            </h3>
-            <p class="audience">体験会のスタッフ・運営者</p>
-            <p>
-              必要機材、会場見取り図、事前準備、タイムテーブル、トラブル対応をまとめています。ふりがなの自動追加は行っていません。
-            </p>
-            <div class="actions">
-              <a class="button" href="workshops/2026-08-01/staff/">HTML</a>
-              <a
-                class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/2026-08-01/staff/index.html&amp;bookMode=true"
-                target="_blank"
-                rel="noopener"
-                >Vivliostyle Viewer</a
-              >
-              <a
-                class="button secondary"
-                href="workshops/2026-08-01/staff/tmpose-kamishibai-staff-20260801.pdf"
-                >PDF</a
-              >
-            </div>
-          </article>
-        </div>
-      </section>
+            <dl class="version-banner__criteria">
+              <dt>台本形式</dt>
+              <dd>
+                <code>kamishibai: '4.0'</code
+                >を宣言するYAML。新規sourceは<code>.k4.yml</code>を推奨します。
+              </dd>
+              <dt>主な用途</dt>
+              <dd>
+                新規project、Source Graphによる台本分割、Web／CLI preview、自己完結SB3 build。
+              </dd>
+              <dt>3.2を選ぶ場合</dt>
+              <dd>既存のTXT台本や3.2.xアプリ・教材を、移行せず安定して保守したい場合。</dd>
+            </dl>
+            <a class="version-banner__primary" href="4.0/">DSL 4.0のドキュメントへ</a>
+          </div>
+        </section>
+      </div>
     </main>
   </body>
 </html>

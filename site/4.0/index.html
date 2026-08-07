@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="紙芝居DSL 4.0の台本作者向け、開発者向け公式ドキュメント" />
+    <title>紙芝居DSL 4.0 ドキュメント | TMPose紙芝居</title>
+    <link rel="icon" type="image/png" sizes="256x256" href="../favicon.png" />
+    <link rel="stylesheet" href="../site-shell.css" />
+    <link rel="stylesheet" href="../document-index.css" />
+    <script type="module" src="../site-shell.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">本文へ移動</a>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="https://kubohiroya.github.io/tmpose-kamishibai/">
+          <img class="site-brand__symbol" src="../favicon.png" width="40" height="40" alt="" />
+          <span>TMPose紙芝居</span>
+        </a>
+        <nav class="site-nav" aria-label="サイトナビゲーション">
+          <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/"
+            >トップ</a
+          >
+          <a
+            class="site-nav__link"
+            href="https://kubohiroya.github.io/tmpose-kamishibai-docs/"
+            aria-current="page"
+            >ドキュメント</a
+          >
+          <a
+            class="site-nav__link"
+            href="https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/"
+            >ワークショップ</a
+          >
+          <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/"
+            >サンプル</a
+          >
+          <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/downloads/"
+            >ダウンロード</a
+          >
+        </nav>
+        <a
+          class="site-repository"
+          href="https://github.com/kubohiroya/tmpose-kamishibai-docs"
+          target="_blank"
+          rel="noopener"
+          aria-label="tmpose-kamishibai-docsをGitHubで開く"
+          title="tmpose-kamishibai-docsをGitHubで開く"
+        >
+          <svg class="site-repository__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"
+            />
+          </svg>
+        </a>
+      </div>
+    </header>
+    <main id="main-content" class="version-page" tabindex="-1">
+      <nav class="version-switch" aria-label="ドキュメントの版">
+        <a href="../">版選択へ戻る</a>
+        <a href="../3.2/">DSL 3.2へ切り替える</a>
+        <a href="./" aria-current="page">DSL 4.0</a>
+      </nav>
+      <header class="page-intro">
+        <p class="page-kicker">新規制作</p>
+        <h1>紙芝居DSL 4.0 ドキュメント</h1>
+        <p class="version-summary">
+          YAML project、Source Graph、preview／build
+          toolchainで新しく制作するための専用ページです。このページ以下の出版物はすべて<code>/4.0/</code>に保存されます。
+        </p>
+      </header>
+      <section aria-labelledby="dsl-documents">
+        <h2 id="dsl-documents">紙芝居DSL 4.0 公式ドキュメント</h2>
+        <div class="cards">
+          <article>
+            <h3><span aria-hidden="true">🧭</span> 紙芝居DSL 4.0 台本作成ガイド</h3>
+            <p class="audience">DSL 4.0の作品を作る方</p>
+            <p>
+              Source Graph、project配置、live reload、camera
+              preview、speech、透明度、分岐、診断を説明します。
+            </p>
+            <div class="actions">
+              <a class="button" href="dsl-author-guides/dsl-4.0-author-guide/">HTML</a>
+              <a
+                class="button secondary"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/dsl-author-guides/dsl-4.0-author-guide/publication.json&amp;bookMode=true"
+                target="_blank"
+                rel="noopener"
+                >Vivliostyle Viewer</a
+              >
+            </div>
+          </article>
+          <article>
+            <h3><span aria-hidden="true">🔎</span> 紙芝居DSL 4.0 Schemaリファレンス</h3>
+            <p class="audience">DSL 4.0のSchemaを確認する方</p>
+            <p>
+              完成commitの規範JSON
+              Schemaから、field、asset、設定、scene、actionの型と制約を生成しています。
+            </p>
+            <div class="actions">
+              <a class="button" href="dsl-author-guides/dsl-4.0-schema-reference/">HTML</a>
+              <a
+                class="button secondary"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/dsl-author-guides/dsl-4.0-schema-reference/publication.json&amp;bookMode=true"
+                target="_blank"
+                rel="noopener"
+                >Vivliostyle Viewer</a
+              >
+            </div>
+          </article>
+        </div>
+      </section>
+      <section aria-labelledby="developer-documents">
+        <h2 id="developer-documents">開発者向けドキュメント</h2>
+        <div class="cards">
+          <article>
+            <h3>
+              <span aria-hidden="true">🎬</span> TMPose紙芝居 4.0 アプリ・教材・ツールチェインガイド
+            </h3>
+            <p class="audience">DSL 4.0のアプリ、教材、ツールチェインを把握する方</p>
+            <p>
+              DSL 4.0系列のproject、Source Graph、YAML台本、preview、buildを全8ページで紹介します。
+            </p>
+            <div class="actions">
+              <a class="button" href="developer-guides/application-materials-guide-4.0/">HTML</a>
+              <a
+                class="button secondary"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/developer-guides/application-materials-guide-4.0/publication.json&amp;bookMode=true"
+                target="_blank"
+                rel="noopener"
+                >Vivliostyle Viewer</a
+              >
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
