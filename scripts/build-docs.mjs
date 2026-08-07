@@ -13,6 +13,7 @@ import {
 } from '../docs/config.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
 import {collectSourceInputs, isBuildCurrent} from './build-freshness.mjs';
+import {writeLegacyVersionNotices} from './legacy-version-notices.mjs';
 import {organizePublicationAssets} from './publication-assets.mjs';
 import {installSiteAppBars} from './site-appbar.mjs';
 
@@ -286,8 +287,12 @@ async function buildDocuments(grade, force) {
       documentationConfig.standaloneArticleHtmlFilename,
     );
     const manifestPath = path.join(publicationDirectory, 'publication.json');
-    const legacyPdfPath = path.join(pdfRoot, document.outputDirectory, pdfFilename);
-    const legacyPublishedPdfPath = path.join(distRoot, document.outputDirectory, pdfFilename);
+    const obsoletePdfPaths = [
+      path.join(pdfRoot, document.outputDirectory, pdfFilename),
+      path.join(distRoot, document.outputDirectory, pdfFilename),
+      path.join(pdfRoot, document.legacyOutputDirectory, pdfFilename),
+      path.join(distRoot, document.legacyOutputDirectory, pdfFilename),
+    ];
     const sourcePath = path.join(docsRoot, document.sourceDirectory, document.sourceFilename);
     const inputs = [
       ...commonPublicationInputs,
@@ -296,10 +301,7 @@ async function buildDocuments(grade, force) {
       ...(await collectSourceInputs([sourcePath])),
     ];
     const expectedBuildInfo = document.addFurigana === true ? {learnedThroughGrade: grade} : {};
-    await Promise.all([
-      rm(legacyPdfPath, {force: true}),
-      rm(legacyPublishedPdfPath, {force: true}),
-    ]);
+    await Promise.all(obsoletePdfPaths.map((pdfPath) => rm(pdfPath, {force: true})));
     if (
       !(await shouldBuildPublication({
         force,
@@ -493,10 +495,25 @@ export async function buildDocs({force = false} = {}) {
     ]);
   }
   await mkdir(distRoot, {recursive: true});
+  await Promise.all([
+    mkdir(path.join(distRoot, '3.2'), {recursive: true}),
+    mkdir(path.join(distRoot, '4.0'), {recursive: true}),
+    mkdir(path.join(distRoot, 'workshops'), {recursive: true}),
+  ]);
   await writeFile(path.join(distRoot, '.nojekyll'), '');
   await Promise.all([
     copyFile(path.join(projectRoot, 'site/index.html'), path.join(distRoot, 'index.html')),
+    copyFile(path.join(projectRoot, 'site/3.2/index.html'), path.join(distRoot, '3.2/index.html')),
+    copyFile(path.join(projectRoot, 'site/4.0/index.html'), path.join(distRoot, '4.0/index.html')),
+    copyFile(
+      path.join(projectRoot, 'site/workshops/index.html'),
+      path.join(distRoot, 'workshops/index.html'),
+    ),
     copyFile(path.join(projectRoot, 'site/favicon.png'), path.join(distRoot, 'favicon.png')),
+    copyFile(
+      path.join(projectRoot, 'site/document-index.css'),
+      path.join(distRoot, 'document-index.css'),
+    ),
     copyFile(path.join(projectRoot, 'site/site-shell.css'), path.join(distRoot, 'site-shell.css')),
     copyFile(path.join(projectRoot, 'site/site-shell.js'), path.join(distRoot, 'site-shell.js')),
   ]);
@@ -515,6 +532,8 @@ export async function buildDocs({force = false} = {}) {
       `${assetResult.publicationSpecificAssetCount} publication-specific; ` +
       `saved ${assetResult.sharedAssetSavings} bytes versus per-publication copies.`,
   );
+  const legacyNotices = await writeLegacyVersionNotices(distRoot);
+  console.log(`Generated ${legacyNotices.length} legacy URL notice publication(s).`);
   const appBarResult = await installSiteAppBars(distRoot, distRoot);
   console.log(
     `Installed the shared AppBar in ${appBarResult.installedCount} of ` +
@@ -525,6 +544,7 @@ export async function buildDocs({force = false} = {}) {
     buildInfo({
       publicationKind: 'documentation-site',
       documentCount: documentationConfig.documents.length + 2,
+      legacyNoticeCount: legacyNotices.length,
     }),
   );
   const publicationCount = documentationConfig.documents.length + 2;

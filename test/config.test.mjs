@@ -4,7 +4,12 @@ import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
 
-import {documentationConfig, documentCollections} from '../docs/config.mjs';
+import {
+  documentationConfig,
+  documentCollections,
+  staffDocumentConfig,
+  workshopDocumentConfig,
+} from '../docs/config.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
@@ -60,13 +65,14 @@ test('pins the merged 3.2.0 source contract', () => {
   assert.equal(sourceSnapshot.extensions.length, 16);
 });
 
-test('keeps the developer guide source classification without breaking its public URL', () => {
+test('keeps the developer guide source classification and records its legacy URL', () => {
   const document = documentationConfig.documents.find(
     ({sourceFilename}) => sourceFilename === 'application-materials-guide.md',
   );
   assert.equal(document?.collectionId, 'developer-guides');
   assert.equal(document?.sourceDirectory, 'developer-guides');
-  assert.equal(document?.outputDirectory, 'user-guides');
+  assert.equal(document?.legacyOutputDirectory, 'user-guides');
+  assert.equal(document?.outputDirectory, '3.2/user-guides');
 });
 
 test('publishes DSL 3.2 and 4.0 as parallel dedicated collections', () => {
@@ -76,4 +82,16 @@ test('publishes DSL 3.2 and 4.0 as parallel dedicated collections', () => {
   assert.ok(dsl40?.documents.every(({title}) => title.includes('4.0')));
   assert.equal(dsl32?.documents[0].title, '紙芝居DSL 3.2 ファイル作成マニュアル');
   assert.equal(dsl40?.documents[0].title, '紙芝居DSL 4.0 台本作成ガイド');
+});
+
+test('places every version-specific document below an explicit version root', () => {
+  for (const document of documentationConfig.documents) {
+    assert.match(document.outputDirectory, /^(?:3\.2|4\.0)\//u);
+    assert.ok(['3.2', '4.0'].includes(document.version));
+    assert.doesNotMatch(document.legacyOutputDirectory, /^(?:3\.2|4\.0)\//u);
+  }
+  assert.equal(workshopDocumentConfig.versionFamily, '3.2系');
+  assert.equal(staffDocumentConfig.versionFamily, '3.2系');
+  assert.equal(workshopDocumentConfig.outputDirectory, 'workshops/2026-08-01');
+  assert.equal(staffDocumentConfig.outputDirectory, 'workshops/2026-08-01/staff');
 });

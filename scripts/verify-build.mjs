@@ -6,6 +6,7 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 import {documentationConfig, staffDocumentConfig, workshopDocumentConfig} from '../docs/config.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
 import {referencedLocalAssets} from './build-freshness.mjs';
+import {legacyPublicationEntries} from './legacy-version-notices.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const distRoot = path.join(projectRoot, 'dist');
@@ -13,6 +14,7 @@ const pdfRoot = path.join(projectRoot, 'output/pdf');
 const documentFontPath = path.join(projectRoot, 'docs/fonts/NotoSansJP-VF.ttf');
 const publishedFontPath = path.join(distRoot, 'assets/fonts/NotoSansJP-VF.ttf');
 const faviconPath = path.join(distRoot, 'favicon.png');
+const documentIndexCssPath = path.join(distRoot, 'document-index.css');
 const siteShellCssPath = path.join(distRoot, 'site-shell.css');
 const siteShellScriptPath = path.join(distRoot, 'site-shell.js');
 const require = createRequire(import.meta.url);
@@ -131,6 +133,7 @@ async function verifySiteAppBars() {
     for (const destination of [
       'https://kubohiroya.github.io/tmpose-kamishibai/',
       'https://kubohiroya.github.io/tmpose-kamishibai-docs/',
+      'https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/',
       'https://kubohiroya.github.io/tmpose-kamishibai-samples/',
       'https://kubohiroya.github.io/tmpose-kamishibai/downloads/',
       'https://github.com/kubohiroya/tmpose-kamishibai-docs',
@@ -182,43 +185,86 @@ async function verifyDocument(document) {
 }
 
 async function verifyIndex() {
-  const index = await readFile(path.join(distRoot, 'index.html'), 'utf8');
+  const [index, dsl32Index, dsl40Index, workshopIndex] = await Promise.all([
+    readFile(path.join(distRoot, 'index.html'), 'utf8'),
+    readFile(path.join(distRoot, '3.2/index.html'), 'utf8'),
+    readFile(path.join(distRoot, '4.0/index.html'), 'utf8'),
+    readFile(path.join(distRoot, 'workshops/index.html'), 'utf8'),
+  ]);
   assert(
     !index.includes('/tmpose-kamishibai/docs/'),
     'The index still links to the old Pages path.',
   );
   assert(!index.includes('general/'), 'The index still uses the old general directory.');
+  assert(index.includes('3.2／4.0 共通コンテンツ'), 'The common-content section is missing.');
+  assert(index.includes('href="3.2/"'), 'The DSL 3.2 banner destination is missing.');
+  assert(index.includes('href="4.0/"'), 'The DSL 4.0 banner destination is missing.');
+  assert(!index.includes('publication.json'), 'The root must not list version-specific documents.');
 
   for (const document of documentationConfig.documents) {
     const basename = document.sourceFilename.replace(/\.md$/u, '');
+    const versionIndex = document.version === '3.2' ? dsl32Index : dsl40Index;
+    const otherVersionIndex = document.version === '3.2' ? dsl40Index : dsl32Index;
     assert(
-      index.includes(`href="${document.outputDirectory}/${basename}/"`),
-      `${basename} HTML link is missing.`,
+      versionIndex.includes(`href="${document.legacyOutputDirectory}/${basename}/"`),
+      `${basename} HTML link is missing from its DSL ${document.version} top.`,
     );
     assert(
-      !index.includes(`href="${document.outputDirectory}/${basename}.pdf"`),
+      !versionIndex.includes(`href="${document.legacyOutputDirectory}/${basename}.pdf"`),
       `${basename} PDF link must not be published.`,
     );
     assert(
-      index.includes(
+      versionIndex.includes(
         `tmpose-kamishibai-docs/${document.outputDirectory}/${basename}/publication.json`,
       ),
       `${basename} Viewer link is missing.`,
     );
+    assert(
+      !otherVersionIndex.includes(`href="${document.legacyOutputDirectory}/${basename}/"`),
+      `${basename} appears on the other version top.`,
+    );
+    assert(!index.includes(`${basename}/`), `${basename} appears on the root selector.`);
+  }
+
+  assert(workshopIndex.includes('DSL 4.2系'), 'The DSL 4.2 workshop group is missing.');
+  assert(
+    workshopIndex.includes('現在公開中の資料はありません'),
+    'The unpublished DSL 4.2 workshop state is missing.',
+  );
+  assert(workshopIndex.includes('DSL 3.2系'), 'The DSL 3.2 workshop group is missing.');
+  assert(workshopIndex.includes('datetime="2026-08-01"'), 'The workshop date is missing.');
+  for (const destination of [
+    '2026-08-01/',
+    '2026-08-01/staff/',
+    '2026-08-01/tmpose-kamishibai-20260801.pdf',
+    '2026-08-01/staff/tmpose-kamishibai-staff-20260801.pdf',
+  ]) {
+    assert(workshopIndex.includes(`href="${destination}"`), `${destination} is missing.`);
+  }
+
+  for (const [indexPath, cssHref] of [
+    ['index.html', 'document-index.css'],
+    ['3.2/index.html', '../document-index.css'],
+    ['4.0/index.html', '../document-index.css'],
+    ['workshops/index.html', '../document-index.css'],
+  ]) {
+    const source = await readFile(path.join(distRoot, indexPath), 'utf8');
+    assert(source.includes(`href="${cssHref}"`), `${indexPath} is missing document-index.css.`);
+    await access(documentIndexCssPath);
   }
 }
 
 async function verifyVersionedPublications() {
   for (const [outputDirectory, basename, title] of [
-    ['dsl-author-guides', 'command-reference', '紙芝居DSL 3.2 コマンドリファレンス'],
-    ['dsl-author-guides', 'dsl-4.0-schema-reference', '紙芝居DSL 4.0 Schemaリファレンス'],
+    ['3.2/dsl-author-guides', 'command-reference', '紙芝居DSL 3.2 コマンドリファレンス'],
+    ['4.0/dsl-author-guides', 'dsl-4.0-schema-reference', '紙芝居DSL 4.0 Schemaリファレンス'],
     [
-      'user-guides',
+      '3.2/user-guides',
       'application-materials-guide',
       'TMPose紙芝居 3.2 アプリ・教材・ツールチェインガイド',
     ],
     [
-      'developer-guides',
+      '4.0/developer-guides',
       'application-materials-guide-4.0',
       'TMPose紙芝居 4.0 アプリ・教材・ツールチェインガイド',
     ],
@@ -234,6 +280,38 @@ async function verifyVersionedPublications() {
     assert(
       publication.readingOrder?.some(({url}) => url === 'document.html'),
       `${basename} publication does not expose document.html to Vivliostyle Viewer.`,
+    );
+  }
+}
+
+async function verifyLegacyNotices() {
+  const entries = legacyPublicationEntries();
+  assert(entries.length === documentationConfig.documents.length, 'Legacy notice count differs.');
+
+  for (const entry of entries) {
+    const directory = path.join(distRoot, entry.legacyDirectory);
+    const [index, document, publicationSource] = await Promise.all([
+      readFile(path.join(directory, 'index.html'), 'utf8'),
+      readFile(path.join(directory, 'document.html'), 'utf8'),
+      readFile(path.join(directory, 'publication.json'), 'utf8'),
+    ]);
+    const targetUrl = `https://kubohiroya.github.io/tmpose-kamishibai-docs/${entry.targetDirectory}/`;
+    for (const notice of [index, document]) {
+      assert(notice.includes(targetUrl), `${entry.legacyDirectory} omits its new URL.`);
+      assert(
+        notice.includes('旧URLから自動転送は行いません'),
+        `${entry.legacyDirectory} omits its notice.`,
+      );
+      assert(!/http-equiv=["']refresh/iu.test(notice), `${entry.legacyDirectory} auto-redirects.`);
+      assert(
+        !/location\.(?:assign|replace)|location\.href/iu.test(notice),
+        `${entry.legacyDirectory} redirects with JavaScript.`,
+      );
+    }
+    const publication = JSON.parse(publicationSource);
+    assert(
+      publication.readingOrder?.some(({url}) => url === 'document.html'),
+      `${entry.legacyDirectory} Viewer manifest does not display its notice.`,
     );
   }
 }
@@ -293,6 +371,7 @@ async function verifyWorkshop() {
 export async function verifyBuild() {
   await verifyIndex();
   await verifyVersionedPublications();
+  await verifyLegacyNotices();
   const [documentFont, publishedFont] = await Promise.all([
     readFile(documentFontPath),
     readFile(publishedFontPath),
@@ -312,6 +391,10 @@ export async function verifyBuild() {
   assert(
     buildInfo.documentCount === documentationConfig.documents.length + 2,
     'Build document count differs.',
+  );
+  assert(
+    buildInfo.legacyNoticeCount === documentationConfig.documents.length,
+    'Build legacy notice count differs.',
   );
   const htmlFiles = await findHtmlFiles(distRoot);
   assert(htmlFiles.length > 0, 'The generated site has no HTML files.');

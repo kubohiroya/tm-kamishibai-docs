@@ -1,6 +1,7 @@
 export const documentCollections = [
   {
     id: 'user-guides',
+    version: '3.2',
     title: '一般向けドキュメント',
     documents: [
       {
@@ -26,6 +27,7 @@ export const documentCollections = [
   },
   {
     id: 'dsl-3.2-guides',
+    version: '3.2',
     title: '紙芝居DSL 3.2 公式ドキュメント',
     documents: [
       {
@@ -59,6 +61,7 @@ export const documentCollections = [
   },
   {
     id: 'dsl-4.0-guides',
+    version: '4.0',
     title: '紙芝居DSL 4.0 公式ドキュメント',
     documents: [
       {
@@ -83,6 +86,7 @@ export const documentCollections = [
   },
   {
     id: 'developer-guides',
+    version: '3.2',
     title: '開発者向けドキュメント',
     documents: [
       {
@@ -95,6 +99,7 @@ export const documentCollections = [
       },
       {
         sourceFilename: 'application-materials-guide-4.0.md',
+        version: '4.0',
         title: 'TMPose紙芝居 4.0 アプリ・教材・ツールチェインガイド',
         audience: 'DSL 4.0のアプリ、教材、ツールチェインを把握する方',
         description:
@@ -154,19 +159,27 @@ export const documentationConfig = {
   standaloneTocHtmlFilename: 'index.html',
   collections: documentCollections,
   documents: documentCollections.flatMap((collection) =>
-    collection.documents.map((document) => ({
-      ...document,
-      collectionId: collection.id,
-      sourceDirectory: document.sourceDirectory ?? collection.id,
-      outputDirectory: document.outputDirectory ?? collection.id,
-    })),
+    collection.documents.map((document) => {
+      const version = document.version ?? collection.version;
+      const legacyOutputDirectory = document.outputDirectory ?? collection.id;
+      return {
+        ...document,
+        version,
+        collectionId: collection.id,
+        sourceDirectory: document.sourceDirectory ?? collection.id,
+        legacyOutputDirectory,
+        outputDirectory: `${version}/${legacyOutputDirectory}`,
+      };
+    }),
   ),
 };
 
 export const workshopDocumentConfig = {
+  versionFamily: '3.2系',
   title: 'AIを使って「紙芝居の物語に参加する仕組み」を作ろう！',
   author: 'Hiroya Kubo',
   sourceDirectory: 'workshops/2026-08-01',
+  legacyOutputDirectory: 'workshops/2026-08-01',
   outputDirectory: 'workshops/2026-08-01',
   learnedThroughGrade: 3,
   coverFilename: 'tmpose-kamishibai-cover-20260801.md',
@@ -185,9 +198,11 @@ export const workshopDocumentConfig = {
 };
 
 export const staffDocumentConfig = {
+  versionFamily: '3.2系',
   title: '親子AIプログラミング体験会スタッフ向け資料2026年8月1日版',
   author: 'Hiroya Kubo',
   sourceDirectory: 'workshops/2026-08-01',
+  legacyOutputDirectory: 'workshops/2026-08-01/staff',
   outputDirectory: 'workshops/2026-08-01/staff',
   sourceFilename: 'tmpose-kamishibai-staff-20260801.md',
   htmlFilename: 'index.html',
