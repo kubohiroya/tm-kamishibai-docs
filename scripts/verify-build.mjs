@@ -252,6 +252,21 @@ async function verifyIndex() {
     workshopIndex.includes('datetime="2026-08-02"'),
     'The coverage publication date is missing.',
   );
+  const normalizedWorkshopIndex = workshopIndex.replace(/\s+/gu, ' ');
+  const cucEventPosition = normalizedWorkshopIndex.indexOf(
+    '[実施済み] 親子AIプログラミング体験会(千葉商科大学イベント)',
+  );
+  const participantMaterialPosition =
+    normalizedWorkshopIndex.indexOf('「親子AIプログラミング体験会」参加者向け資料');
+  assert(cucEventPosition >= 0, 'The completed CUC event entry is missing.');
+  assert(
+    participantMaterialPosition > cucEventPosition,
+    'The participant material must follow the completed CUC event entry.',
+  );
+  assert(
+    workshopIndex.includes('href="https://www.cuc.ac.jp/event/2026/ai_programming0801.html"'),
+    'The CUC event link is missing.',
+  );
   for (const destination of [
     '2026-08-01/',
     '2026-08-01/staff/',
