@@ -58,6 +58,23 @@ test('explains camera privacy immediately after the version banners', () => {
   );
 });
 
+test('styles camera privacy guidance independently from DSL version banners', () => {
+  const version40Styles = documentIndexCss.match(/\.version-banner--40\s*\{([^}]*)\}/u)?.[1];
+  const privacyStyles = documentIndexCss.match(/\.camera-privacy\s*\{([^}]*)\}/u)?.[1];
+  const version40Accent = version40Styles?.match(/--version-accent:\s*(#[0-9a-f]{6})/u)?.[1];
+  const version40Tint = version40Styles?.match(/--version-tint:\s*(#[0-9a-f]{6})/u)?.[1];
+  const privacyAccent = privacyStyles?.match(/--privacy-accent:\s*(#[0-9a-f]{6})/u)?.[1];
+  const privacyTint = privacyStyles?.match(/--privacy-tint:\s*(#[0-9a-f]{6})/u)?.[1];
+
+  assert.ok(version40Accent);
+  assert.ok(version40Tint);
+  assert.ok(privacyAccent);
+  assert.ok(privacyTint);
+  assert.notEqual(privacyAccent, version40Accent);
+  assert.notEqual(privacyTint, version40Tint);
+  assert.match(privacyStyles, /background:[^;]*var\(--privacy-tint\)/u);
+});
+
 test('publishes each document only from its version-specific top page', () => {
   for (const document of documentationConfig.documents) {
     const basename = document.sourceFilename.replace(/\.md$/u, '');
