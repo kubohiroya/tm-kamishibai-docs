@@ -15,6 +15,10 @@ const applicationGuide = readFileSync(
   new URL('../docs/developer-guides/application-materials-guide.md', import.meta.url),
   'utf8',
 );
+const applicationGuide4 = readFileSync(
+  new URL('../docs/developer-guides/application-materials-guide-4.0.md', import.meta.url),
+  'utf8',
+);
 const commandReference = readFileSync(
   new URL('../docs/dsl-author-guides/command-reference.md', import.meta.url),
   'utf8',
@@ -83,6 +87,7 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
 
 test('keeps the DSL 3.x reference hand-authored', () => {
   assert.match(commandReference, /過去リリースから引き継いだ手書きMarkdownを正本/u);
+  assert.match(commandReference, /DSL 3\.2専用リファレンス/u);
   assert.match(commandReference, /HTML版とVivliostyle Viewer版/u);
   assert.doesNotMatch(commandReference, /DSL 4\.0/u);
 });
@@ -215,20 +220,27 @@ test('keeps the extension guide as an index, bundle explanation, and sixteen two
   assert.match(theme, /@page extension-guide\s*\{[\s\S]*size:\s*A4;/u);
 });
 
-test('keeps the application guide in the requested eight-page allocation', () => {
-  assert.deepEqual(
-    [...applicationGuide.matchAll(/<p class="application-page-label">([1-8]) \/ 8/gmu)].map(
-      ([, number]) => Number(number),
-    ),
-    [1, 2, 3, 4, 5, 6, 7, 8],
-  );
+test('keeps both versioned application guides in the requested eight-page allocation', () => {
+  for (const guide of [applicationGuide, applicationGuide4]) {
+    assert.deepEqual(
+      [...guide.matchAll(/<p class="application-page-label">([1-8]) \/ 8/gmu)].map(([, number]) =>
+        Number(number),
+      ),
+      [1, 2, 3, 4, 5, 6, 7, 8],
+    );
+    assert.doesNotMatch(
+      guide,
+      /<code>[^<]*\\n[^<]*<\/code>/gu,
+      'DSL examples must use actual line breaks instead of escaped newline text.',
+    );
+  }
   assert.match(applicationGuide, /ポーズをとろう！/u);
   assert.match(applicationGuide, /kamishibai=3\.2/u);
-  assert.doesNotMatch(
-    applicationGuide,
-    /<code>[^<]*\\n[^<]*<\/code>/gu,
-    'DSL examples must use actual line breaks instead of escaped newline text.',
-  );
+  assert.doesNotMatch(applicationGuide, /kamishibai: '4\.0'/u);
   assert.match(applicationGuide, /b3f4b9aa3ed3ede363700be815fe522f6a47df0b/u);
+  assert.match(applicationGuide4, /kamishibai: '4\.0'/u);
+  assert.match(applicationGuide4, /Source Graph/u);
+  assert.match(applicationGuide4, /build-dsl4/u);
+  assert.doesNotMatch(applicationGuide4, /kamishibai=3\.2/u);
   assert.match(theme, /@page application-guide\s*\{[\s\S]*size:\s*A4;/u);
 });

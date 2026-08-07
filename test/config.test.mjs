@@ -11,15 +11,11 @@ const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 
 const expectedCollections = {
   'user-guides': ['executive-summary-adult.md', 'executive-summary-kids.md', 'user-guide.md'],
-  'dsl-author-guides': [
-    'dsl-manual.md',
-    'dsl-4.0-author-guide.md',
-    'dsl-4.0-schema-reference.md',
-    'command-reference.md',
-    'history.md',
-  ],
+  'dsl-3.2-guides': ['dsl-manual.md', 'command-reference.md', 'history.md'],
+  'dsl-4.0-guides': ['dsl-4.0-author-guide.md', 'dsl-4.0-schema-reference.md'],
   'developer-guides': [
     'application-materials-guide.md',
+    'application-materials-guide-4.0.md',
     'developer-guide.md',
     'internal-specification.md',
     'extension-guide.md',
@@ -39,7 +35,7 @@ test('organizes every migrated document into one reader-oriented collection', ()
     ),
     expectedCollections,
   );
-  assert.equal(documentationConfig.documents.length, 15);
+  assert.equal(documentationConfig.documents.length, 16);
   assert(!existsSync(path.join(projectRoot, 'docs/general')));
 
   for (const document of documentationConfig.documents) {
@@ -71,4 +67,13 @@ test('keeps the developer guide source classification without breaking its publi
   assert.equal(document?.collectionId, 'developer-guides');
   assert.equal(document?.sourceDirectory, 'developer-guides');
   assert.equal(document?.outputDirectory, 'user-guides');
+});
+
+test('publishes DSL 3.2 and 4.0 as parallel dedicated collections', () => {
+  const dsl32 = documentCollections.find(({id}) => id === 'dsl-3.2-guides');
+  const dsl40 = documentCollections.find(({id}) => id === 'dsl-4.0-guides');
+  assert.ok(dsl32?.documents.every(({title}) => !title.includes('4.0')));
+  assert.ok(dsl40?.documents.every(({title}) => title.includes('4.0')));
+  assert.equal(dsl32?.documents[0].title, '紙芝居DSL 3.2 ファイル作成マニュアル');
+  assert.equal(dsl40?.documents[0].title, '紙芝居DSL 4.0 台本作成ガイド');
 });

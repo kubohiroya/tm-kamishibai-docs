@@ -1,4 +1,4 @@
-# 紙芝居DSLファイル作成マニュアル
+# 紙芝居DSL 3.2 ファイル作成マニュアル
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 

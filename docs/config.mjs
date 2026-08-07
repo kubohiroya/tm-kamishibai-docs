@@ -25,18 +25,46 @@ export const documentCollections = [
     ],
   },
   {
-    id: 'dsl-author-guides',
-    title: '紙芝居DSL作成者向けドキュメント',
+    id: 'dsl-3.2-guides',
+    title: '紙芝居DSL 3.2 公式ドキュメント',
     documents: [
       {
         sourceFilename: 'dsl-manual.md',
-        title: '紙芝居DSLファイル作成マニュアル',
-        audience: '作品を作る方',
+        sourceDirectory: 'dsl-author-guides',
+        outputDirectory: 'dsl-author-guides',
+        title: '紙芝居DSL 3.2 ファイル作成マニュアル',
+        audience: 'DSL 3.2の作品を作る方',
         description:
           '3.1／3.2宣言の互換性、3.2台本の設計、旧Text Assetの互換期間、SVG Textへの移行を含む作成・テスト手順を説明します。',
       },
       {
+        sourceFilename: 'command-reference.md',
+        sourceDirectory: 'dsl-author-guides',
+        outputDirectory: 'dsl-author-guides',
+        title: '紙芝居DSL 3.2 コマンドリファレンス',
+        audience: 'DSL 3.2の台本文法を調べる方',
+        description:
+          '過去リリースから引き継いだ手書きMarkdownで、3.2.xが受理する3.1／3.2宣言、コマンド、アクション、Text Asset互換仕様、注意事項を保守しています。',
+      },
+      {
+        sourceFilename: 'history.md',
+        sourceDirectory: 'dsl-author-guides',
+        outputDirectory: 'dsl-author-guides',
+        title: '紙芝居DSL 2.0から3.2への変更履歴',
+        audience: '2.0から移行する方',
+        description:
+          '2.0から3.1の累積差分と、3.2.xの宣言互換性、旧Text Asset互換期間、SVG Textへの段階移行をまとめています。',
+      },
+    ],
+  },
+  {
+    id: 'dsl-4.0-guides',
+    title: '紙芝居DSL 4.0 公式ドキュメント',
+    documents: [
+      {
         sourceFilename: 'dsl-4.0-author-guide.md',
+        sourceDirectory: 'dsl-author-guides',
+        outputDirectory: 'dsl-author-guides',
         title: '紙芝居DSL 4.0 台本作成ガイド',
         audience: 'DSL 4.0の作品を作る方',
         description:
@@ -44,24 +72,12 @@ export const documentCollections = [
       },
       {
         sourceFilename: 'dsl-4.0-schema-reference.md',
+        sourceDirectory: 'dsl-author-guides',
+        outputDirectory: 'dsl-author-guides',
         title: '紙芝居DSL 4.0 Schemaリファレンス',
         audience: 'DSL 4.0のSchemaを確認する方',
         description:
           '完成commitの規範JSON Schemaから、camera preview、speech、think、moveTo easing、setTransparencyを含む型と制約を生成しています。',
-      },
-      {
-        sourceFilename: 'command-reference.md',
-        title: '紙芝居DSL コマンドリファレンス',
-        audience: '台本文法を調べる方',
-        description:
-          '3.2.xが受理する3.1／3.2宣言、コマンド、アクション、Text Asset互換仕様、注意事項を一覧化しています。',
-      },
-      {
-        sourceFilename: 'history.md',
-        title: '紙芝居DSL 2.0から3.2への変更履歴',
-        audience: '2.0から移行する方',
-        description:
-          '2.0から3.1の累積差分と、3.2.xの宣言互換性、旧Text Asset互換期間、SVG Textへの段階移行をまとめています。',
       },
     ],
   },
@@ -72,10 +88,17 @@ export const documentCollections = [
       {
         sourceFilename: 'application-materials-guide.md',
         outputDirectory: 'user-guides',
-        title: 'TMPose紙芝居 アプリ・教材・ツールチェインガイド',
-        audience: 'アプリと教材の全体像を把握する方',
+        title: 'TMPose紙芝居 3.2 アプリ・教材・ツールチェインガイド',
+        audience: 'DSL 3.2のアプリ、教材、ツールチェインを把握する方',
         description:
-          'アプリ概要、浦島太郎、体験会教材、DSL 3.2、sb3-toolchainを図解付き・全8ページで紹介します。',
+          'DSL 3.2系列のアプリ、浦島太郎、体験会教材、台本、sb3-toolchainを図解付き・全8ページで紹介します。',
+      },
+      {
+        sourceFilename: 'application-materials-guide-4.0.md',
+        title: 'TMPose紙芝居 4.0 アプリ・教材・ツールチェインガイド',
+        audience: 'DSL 4.0のアプリ、教材、ツールチェインを把握する方',
+        description:
+          'DSL 4.0系列のproject、Source Graph、体験教材の構成、YAML台本、preview、buildを図解付き・全8ページで紹介します。',
       },
       {
         sourceFilename: 'developer-guide.md',

@@ -1,4 +1,4 @@
-# 紙芝居DSL コマンドリファレンス
+# 紙芝居DSL 3.2 コマンドリファレンス
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
@@ -8,8 +8,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 tmpose-kamishibai 3.2.xは3.1宣言と3.2宣言をどちらも受理します。既存の3.1台本は宣言を変更せずに実行でき、新規台本には3.2を推奨します。3.1宣言で旧Text Assetを使った場合もdeprecated警告は出ます。
 
-この文書は過去リリースから引き継いだ手書きMarkdownを正本とし、最新のドキュメントリポジトリで
-保守します。HTML版とVivliostyle Viewer版は、この同じMarkdownから提供します。
+この文書は過去リリースから引き継いだ手書きMarkdownを正本とし、DSL 3.2専用リファレンスとして
+最新のドキュメントリポジトリで保守します。HTML版とVivliostyle Viewer版を同じ内容から提供します。
 
 ## DSL 3.2のText Asset互換性
 

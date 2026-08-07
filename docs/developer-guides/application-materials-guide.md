@@ -1,8 +1,8 @@
-# TMPose紙芝居 アプリ・教材・ツールチェインガイド
+# TMPose紙芝居 3.2 アプリ・教材・ツールチェインガイド
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-<p class="application-guide-kicker">アプリ、物語、体験会教材、DSL、SB3開発を8ページでつなぐ</p>
+<p class="application-guide-kicker">DSL 3.2のアプリ、物語、体験会教材、台本、SB3開発を8ページでつなぐ</p>
 
 <p class="application-page-label">1 / 8　アプリ概要</p>
 
@@ -65,7 +65,7 @@ action=scene:dragon-palace</code></pre><p>scene、pose名、信頼度、遷移�
 
 <p class="application-callout"><strong>演出の要点:</strong> 一つのposeを長く待つ場面では、promptや効果音で「今何をすればよいか」を伝えます。key・touch入力も併設できるため、会場条件に合わせた代替操作を用意できます。</p>
 
-<p class="application-source">出典: <a href="https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.txt">浦島太郎 台本</a>、<a href="../dsl-author-guides/dsl-manual.md">紙芝居DSLファイル作成マニュアル</a></p>
+<p class="application-source">出典: <a href="https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.txt">浦島太郎 台本</a>、<a href="../dsl-author-guides/dsl-manual.md">紙芝居DSL 3.2 ファイル作成マニュアル</a></p>
 
 ## 体験会教材が結ぶ三つの技術 {#workshop-concepts .application-sheet .unnumbered}
 
