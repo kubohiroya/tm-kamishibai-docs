@@ -146,6 +146,83 @@ main {
   outline-offset: 4px;
 }
 
+.camera-privacy {
+  margin-top: 2rem;
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px solid #a9cec7;
+  border-left: 8px solid #17635f;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #edf9f6, var(--site-paper) 76%);
+  box-shadow: 0 5px 18px rgb(23 99 95 / 8%);
+}
+
+.camera-privacy__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.camera-privacy__icon {
+  flex: 0 0 auto;
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.camera-privacy__eyebrow {
+  margin: 0 0 0.2rem;
+  color: #17635f;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.camera-privacy h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  line-height: 1.4;
+}
+
+.camera-privacy__intro {
+  max-width: 82ch;
+  margin: 1rem 0 1.35rem;
+  line-height: 1.8;
+}
+
+.camera-privacy__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.camera-privacy__grid section {
+  padding: 20px;
+  border: 1px solid rgb(23 99 95 / 22%);
+  border-radius: 9px;
+  background: rgb(255 255 255 / 72%);
+}
+
+.camera-privacy__grid h3 {
+  margin: 0 0 0.75rem;
+  color: #17635f;
+  font-size: 1.1rem;
+}
+
+.camera-privacy__grid ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  line-height: 1.75;
+}
+
+.camera-privacy__grid li + li {
+  margin-top: 0.75rem;
+}
+
+.camera-privacy a {
+  color: #17635f;
+  font-weight: 700;
+  text-underline-offset: 0.2em;
+}
+
 .version-page .page-intro {
   max-width: none;
 }
@@ -379,5 +456,14 @@ main {
 
   .version-banner__criteria dd + dt {
     margin-top: 0.55rem;
+  }
+
+  .camera-privacy {
+    padding: 20px;
+    border-left-width: 6px;
+  }
+
+  .camera-privacy__grid {
+    grid-template-columns: 1fr;
   }
 }
