@@ -40,17 +40,16 @@ const internalSpecification = readFileSync(
 );
 const theme = readFileSync(new URL('../docs/general-theme.css', import.meta.url), 'utf8');
 
-test('keeps the DSL 4.0 preview guide separate from the production 3.2 manual', () => {
+test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual', () => {
   assert.match(dslManual, /対象アプリ: tmpose-kamishibai 3\.2\.x/u);
-  assert.match(dsl4AuthorGuide, /DSL 4\.0は開発中/u);
+  assert.match(dsl4AuthorGuide, /DSL 4\.0実装完成版/u);
+  assert.match(dsl4AuthorGuide, /Schemaはruntime実装から生成するものではありません/u);
   assert.match(dsl4AuthorGuide, /kamishibai: '4\.0'/u);
   assert.match(dsl4AuthorGuide, /\.kamishibai\.yaml/u);
-  assert.match(dsl4AuthorGuide, /一つのファイルへ混在させたり/u);
   assert.match(dsl4AuthorGuide, /K4-SCHEMA-UNKNOWN-KEY/u);
-  assert.match(dsl4AuthorGuide, /DSL 3\.2から移行するときの考え方/u);
   assert.match(dsl4AuthorGuide, /紙芝居DSL 4\.0 Schemaリファレンス/u);
   assert.match(dsl4AuthorGuide, /camera previewの表示と操作UI/u);
-  assert.match(dsl4AuthorGuide, /path.*省略時はroot直下の`story\.kamishibai\.yaml`/u);
+  assert.match(dsl4AuthorGuide, /path.*省略時は後方互換の既定値`story\.kamishibai\.yaml`/u);
   assert.match(dsl4AuthorGuide, /Web Previewで選択するのはYAML fileではなく/u);
   assert.match(dsl4AuthorGuide, /Local assetの追加と内容更新/u);
   assert.match(dsl4AuthorGuide, /一つのtransactionへ束ねるatomicityは保証しません/u);
@@ -58,7 +57,13 @@ test('keeps the DSL 4.0 preview guide separate from the production 3.2 manual', 
   assert.match(dsl4AuthorGuide, /`seconds`だけなら表示開始から指定秒数後/u);
   assert.match(dsl4AuthorGuide, /Unicode grapheme cluster/u);
   assert.match(dsl4AuthorGuide, /`easing`は`linear`、`easeIn`、`easeOut`、`easeInOut`/u);
-  assert.match(dsl4AuthorGuide, /Draft PR #409が未マージ/u);
+  assert.match(dsl4AuthorGuide, /`Actor\.setTransparency`の即時指定/u);
+  assert.match(dsl4AuthorGuide, /`0`は完全不透明/u);
+  assert.match(dsl4AuthorGuide, /台本を複数sourceへ分割する/u);
+  assert.match(dsl4AuthorGuide, /同じnamespaceの同じID/u);
+  assert.match(dsl4AuthorGuide, /`K4-INCLUDE-CYCLE`/u);
+  assert.match(dsl4AuthorGuide, /`--max-total-source-bytes`/u);
+  assert.match(dsl4AuthorGuide, /宣言元を基準に/u);
   assert.doesNotMatch(dsl4AuthorGuide, /file: assets\/ocean\.svg/u);
   assert.doesNotMatch(dsl4AuthorGuide, /file: pose-models\/rescue/u);
   assert.match(
@@ -66,11 +71,20 @@ test('keeps the DSL 4.0 preview guide separate from the production 3.2 manual', 
     /端末固有の物理device IDは台本、StoryDocument、`variables`へ保存しません/u,
   );
   assert.match(dsl4AuthorGuide, /前sceneの値を持ち越しません/u);
-  assert.match(dsl4SchemaReference, /先行公開（DSL 4\.0実装は未リリース）/u);
-  assert.match(dsl4SchemaReference, /現行の公開アプリtmpose-kamishibai 3\.2\.x/u);
-  assert.match(dsl4SchemaReference, /Schema固定commit: \[`5f1c1d0`\]/u);
-  assert.match(dsl4SchemaReference, /トップレベル12 field、action 18種類、Annotation 70項目/u);
+  assert.match(dsl4SchemaReference, /DSL 4\.0実装完成版/u);
+  assert.match(dsl4SchemaReference, /権威関係と配布状態/u);
+  assert.match(dsl4SchemaReference, /Schemaはruntime実装から生成しません/u);
+  assert.match(dsl4SchemaReference, /Schema固定commit: \[`7945781`\]/u);
+  assert.match(dsl4SchemaReference, /トップレベル12 field、action 19種類、Annotation 71項目/u);
   assert.doesNotMatch(dslManual, /kamishibai: '4\.0'/u);
+  assert.doesNotMatch(dsl4AuthorGuide, /DSL 3\.[12]|kamishibai=3\.[12]/u);
+  assert.doesNotMatch(dsl4SchemaReference, /DSL 3\.[12]|kamishibai=3\.[12]/u);
+});
+
+test('keeps the DSL 3.x reference hand-authored', () => {
+  assert.match(commandReference, /過去リリースから引き継いだ手書きMarkdownを正本/u);
+  assert.match(commandReference, /HTML版とVivliostyle Viewer版/u);
+  assert.doesNotMatch(commandReference, /DSL 4\.0/u);
 });
 
 test('keeps the DSL 4.0 complete example valid against the pinned Schema', () => {

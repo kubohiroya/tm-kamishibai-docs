@@ -3,19 +3,19 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象: DSL 3.2からの移行準備、DSL 4.0台本の先行試作、構造・制約の確認を行う方\
+対象: DSL 4.0台本の作成、構造・制約の確認を行う方\
 対象仕様: `kamishibai: '4.0'`\
-文書状態: **先行公開（DSL 4.0実装は未リリース）**\
-Schema固定commit: [`5f1c1d0`](https://github.com/kubohiroya/tmpose-kamishibai/commit/5f1c1d08871a057dfff8ff802cfacce12dcd10df)\
-Schema SHA-256: `c353b8ce6e906463bcb45b50db634b7d30d7075ee061a96b6ef380c514525ca8`
+文書状態: **DSL 4.0実装完成版**\
+Schema固定commit: [`7945781`](https://github.com/kubohiroya/tmpose-kamishibai/commit/79457815f5c89b181b1a879a079a4d6a72d405ed)\
+Schema SHA-256: `e36c1130a4e1983728106b351795e2e605e4a665b4b92ca17acad539e9d8fee7`
 
-> **重要:** このリファレンスは移行の調査、台本の別ファイルでの試作、レビューに使用できますが、
-> 現行の公開アプリtmpose-kamishibai 3.2.xではDSL 4.0台本を実行できません。
-> 上映用の3.2台本を維持し、4.0用YAMLへ置き換えるのは対応アプリのリリース後にしてください。
+> **権威関係と配布状態:** 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、
+> 適合実装・testを固定しています。Schemaはruntime実装から生成しません。公開アプリ、配布artifact、
+> feature flagがDSL 4.0を有効にしているかは利用するreleaseごとに確認してください。
 
 ## このリファレンスについて
 
-この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/5f1c1d08871a057dfff8ff802cfacce12dcd10df/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
+この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
 注意事項、例はAnnotationで管理します。Schemaと生成物が異なる場合はSchemaを優先します。
 
@@ -23,14 +23,14 @@ Schema SHA-256: `c353b8ce6e906463bcb45b50db634b7d30d7075ee061a96b6ef380c514525ca
 
 - 上流repository: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai)
 - Schema path: `schema/dsl-4.schema.json`
-- 上流commit日時: `2026-08-07T16:21:35+09:00`
-- 掲載範囲: トップレベル12 field、action 18種類、Annotation 70項目
+- 上流commit日時: `2026-08-08T00:51:31+09:00`
+- 掲載範囲: トップレベル12 field、action 19種類、Annotation 71項目
 - 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>`
 - 差分確認: `pnpm docs:dsl4:check`
 
 表中の「必須」は、そのobjectまたは形式を選んだ場合の必須性です。`stableId`などの任意fieldは、
 再読み込みや診断位置の安定化に必要かを作品ごとに判断してください。例は各Schema断片を機械検証しており、
-アセットやシーン間の参照整合性は、将来のpreview環境でも別途確認する必要があります。
+アセットやシーン間の参照整合性は、source frontendまたはpreview／buildでも別途確認する必要があります。
 
 ## トップレベル構造
 
@@ -266,7 +266,7 @@ Schema位置: `#/properties/scenes`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
+| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
 
 `scenes` fieldの値:
 
@@ -1038,7 +1038,7 @@ Schema位置: `#/$defs/actions`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 各項目 | 任意件数 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`） | — |
+| 各項目 | 任意件数 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`） | — |
 
 Schemaで検証できる値の例:
 
@@ -1057,7 +1057,7 @@ Schema位置: `#/$defs/longScene`
 | --- | --- | --- | --- |
 | `poseModel` | 任意 | 文字列（`id`）（`assetId`） | — |
 | `posePreview` | 任意 | object（`scenePosePreview`） | 未知field不可 |
-| `actions` | 必須 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
+| `actions` | 必須 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
 
 - `posePreview`はそのsceneだけの非stickyな上書きです。次のsceneに指定がなければstory既定へ戻ります。
 
@@ -1079,7 +1079,7 @@ Schema位置: `#/$defs/scene`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 形式1 | いずれか一つ | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
+| 形式1 | いずれか一つ | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
 | 形式2 | いずれか一つ | object（`longScene`） | 未知field不可 |
 
 Schemaで検証できる値の例:
@@ -1096,7 +1096,7 @@ Schema位置: `#/$defs/scenes`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
+| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
 
 Schemaで検証できる値の例:
 
@@ -1384,6 +1384,37 @@ Hero.show:
   scale: 30
 ```
 
+### `Actor.setTransparency`
+
+Scratch／TurboWarpの幽霊効果と同じ0〜100の値でactorの透明度を即時設定するか、指定秒数で線形に変化させます。
+
+Schema位置: `#/$defs/setTransparencyAction`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.setTransparency$` | 1件以上 | 数値 または object または object（`setTransparencyArgs`） | — |
+
+引数の詳細:
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| 形式1 | いずれか一つ | 数値 | 0以上、100以下 |
+| 形式2 | いずれか一つ | object | 未知field不可 |
+| 形式3 | いずれか一つ | object | 未知field不可 |
+
+- `0`は完全不透明、`100`は完全透明です。値を反転または換算しません。
+- `background: false`または省略時は完了まで待ち、`true`では開始直後に次actionへ進みます。
+
+Schemaで検証できる値の例:
+
+```yaml
+Hero.setTransparency:
+  from: 0
+  to: 50
+  seconds: 1
+  background: true
+```
+
 ### `Actor.moveTo`
 
 指定秒数でactorを座標へ移動します。任意のeasingでlinear、ease-in、ease-out、ease-in-outを選べます。
@@ -1570,7 +1601,7 @@ Schema位置: `#/$defs/customActorAction`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.(?!(?:show\|moveTo\|say\|think\|setSkin\|setText\|pose)$)[\p{L}_][\p{L}\p{N}_-]*$` | 1件以上 | object（`customActorActionArgs`） | 未知field不可 |
+| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.(?!(?:show\|setTransparency\|moveTo\|say\|think\|setSkin\|setText\|pose)$)[\p{L}_][\p{L}\p{N}_-]*$` | 1件以上 | object（`customActorActionArgs`） | 未知field不可 |
 
 引数の詳細:
 
@@ -1592,13 +1623,11 @@ Hero.wave:
     reverse: false
 ```
 
-## 移行準備での使い方
+## 台本作成での使い方
 
-1. 現行の3.2台本と上映環境を変更せず保管する
-2. 4.0用の`.kamishibai.yaml`を別ファイルとして作る
+1. projectに4.0用の`.k4.yml`を作る
+2. 利用するpreview／build／公開アプリがDSL 4.0を有効にしていることを確認する
 3. 本リファレンスでfield、型、必須性、core actionの引数を確認する
-4. 旧Text Asset、3.2だけのaction、外部assetの扱いを移行課題として一覧化する
-5. Schema検証と参照検証を通しても、対応アプリのリリースまでは3.2を上映用の正本にする
+4. Schema検証、参照検証、previewを通してから4.0の成果物をbuildする
 
-移行全体の判断と作例は[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)、現行アプリで実行できる
-構文は[紙芝居DSLファイル作成マニュアル](dsl-manual.md)を参照してください。
+作例とprojectの構成は[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)を参照してください。

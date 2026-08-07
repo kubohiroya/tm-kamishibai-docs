@@ -208,6 +208,26 @@ async function verifyIndex() {
   }
 }
 
+async function verifyDslReferencePublications() {
+  for (const [basename, title] of [
+    ['command-reference', '紙芝居DSL コマンドリファレンス'],
+    ['dsl-4.0-schema-reference', '紙芝居DSL 4.0 Schemaリファレンス'],
+  ]) {
+    const publicationDirectory = path.join(distRoot, 'dsl-author-guides', basename);
+    const [article, publicationSource] = await Promise.all([
+      readFile(path.join(publicationDirectory, 'document.html'), 'utf8'),
+      readFile(path.join(publicationDirectory, 'publication.json'), 'utf8'),
+    ]);
+    const publication = JSON.parse(publicationSource);
+    assert(article.includes(title), `${basename} HTML does not contain its title.`);
+    assert(publication.name === title, `${basename} publication title differs.`);
+    assert(
+      publication.readingOrder?.some(({url}) => url === 'document.html'),
+      `${basename} publication does not expose document.html to Vivliostyle Viewer.`,
+    );
+  }
+}
+
 async function verifyWorkshop() {
   const workshopDirectory = path.join(distRoot, workshopDocumentConfig.outputDirectory);
   const workshopPdf = path.join(workshopDirectory, workshopDocumentConfig.pdfFilename);
@@ -262,6 +282,7 @@ async function verifyWorkshop() {
 
 export async function verifyBuild() {
   await verifyIndex();
+  await verifyDslReferencePublications();
   const [documentFont, publishedFont] = await Promise.all([
     readFile(documentFontPath),
     readFile(publishedFontPath),
