@@ -26,11 +26,13 @@
 | ディレクトリ              | 対象読者                                |
 | ------------------------- | --------------------------------------- |
 | `docs/user-guides/`       | 一般利用者、保護者、教員、体験参加者    |
+| `docs/tutorials/`         | DSL 4.0を順番に遊ぶ人・作る人           |
 | `docs/dsl-author-guides/` | 紙芝居DSLで作品を作成・移行する人       |
 | `docs/developer-guides/`  | アプリ、SB3、機能拡張を保守・開発する人 |
 | `docs/workshops/`         | 体験会の参加者、スタッフ、運営者        |
 
 具体的なファイル対応、依存境界、実施記録は[MIGRATION.md](MIGRATION.md)を参照してください。
+`docs/tutorials/`はDSL 4.0リリース前のdraftであり、現時点では公開文書一覧とAppBarへ登録しません。
 
 ## 開発
 

@@ -21,7 +21,7 @@
           "order": 20,
           "title": "`assets` — asset登録",
           "summary": "背景、音、costume、ポーズモデル、app shell UI用画像へ安定したIDを割り当てます。実体の指定方法はasset種別を参照してください。",
-          "example": "Beach: backdrop\nHeroIdle: costume:Hero\nCameraMenuButton:\n  kind: image\n  file: ui/select-camera.svg\n  loading: eager",
+          "example": "Beach: backdrop\nHeroIdle: costume:Hero\nCameraMenuButton:\n  kind: image\n  file: select-camera.svg\n  loading: eager",
           "exampleContext": "`assets` fieldの値:"
         },
         {
@@ -129,7 +129,7 @@
           "order": 30,
           "title": "名前付き背景",
           "summary": "背景をproject内の名前、project内相対file、または固定remote sourceから読み込みます。",
-          "example": "kind: backdrop\nfile: assets/beach.svg\nloading: eager\nretention: story"
+          "example": "kind: backdrop\nfile: beach.svg\nloading: eager\nretention: story"
         },
         {
           "pointer": "#/$defs/namedSound",
@@ -143,7 +143,7 @@
           "order": 50,
           "title": "名前付きcostume",
           "summary": "costumeではtarget actorを必ず指定します。参照側actorとの一致も意味検証の対象です。",
-          "example": "kind: costume\ntarget: Hero\nfile: assets/hero-happy.svg"
+          "example": "kind: costume\ntarget: Hero\nfile: hero-happy.svg"
         },
         {
           "pointer": "#/$defs/namedPoseModel",
@@ -157,7 +157,7 @@
           "order": 70,
           "title": "名前付きUI画像",
           "summary": "app shellが表示するpreview control iconを、project内相対fileまたは固定remote sourceとして登録します。",
-          "example": "kind: image\nfile: ui/select-camera.svg\nloading: eager",
+          "example": "kind: image\nfile: select-camera.svg\nloading: eager",
           "notes": [
             "camera preview controlから参照する画像は、preview開始時に必要なため`loading: eager`にします。"
           ]
@@ -330,7 +330,7 @@
           "order": 20,
           "title": "安全な相対file path",
           "summary": "絶対path、Windows drive path、URL scheme、backslash、NULを許可しないproject内相対pathです。",
-          "example": "assets/hero.svg"
+          "example": "hero.svg"
         },
         {
           "pointer": "#/$defs/loadingPolicy",

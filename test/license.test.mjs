@@ -22,11 +22,17 @@ async function markdownFiles(directory) {
 }
 
 test('marks reader-oriented documents as CC BY-SA 4.0', async () => {
-  for (const document of documentationConfig.documents) {
-    const source = await readFile(
+  const documentPaths = [
+    ...documentationConfig.documents.map((document) =>
       path.join(projectRoot, 'docs', document.sourceDirectory, document.sourceFilename),
-      'utf8',
-    );
+    ),
+    ...['README.md', 'play.md', 'create.md'].map((filename) =>
+      path.join(projectRoot, 'docs/tutorials', filename),
+    ),
+  ];
+
+  for (const documentPath of documentPaths) {
+    const source = await readFile(documentPath, 'utf8');
     assert.match(source, copyrightNotice);
     assert.match(source, /CC BY-SA 4\.0/u);
   }
@@ -60,6 +66,7 @@ test('declares the repository as multi-licensed without a residual MPL category'
 
   assert.match(rootNotice, /単一のライセンスは適用されません/u);
   assert.match(licenseMap, /`scripts\/\*\*`/u);
+  assert.match(licenseMap, /`docs\/tutorials\/\*\*`/u);
   assert.match(licenseMap, /`docs\/developer-guides\/\*\*`/u);
   assert.match(licenseMap, /`sources\/dsl4\/annotations\.ja\.json`/u);
   assert.match(licenseMap, /`sources\/dsl4\/dsl-4\.schema\.json`/u);

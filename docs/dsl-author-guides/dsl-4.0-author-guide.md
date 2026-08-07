@@ -5,14 +5,14 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: 台本作者、教材作成者、授業設計者、DSL 3.2からの移行を検討する開発者\
 対象仕様: `kamishibai: '4.0'`\
 文書状態: DSL 4.0の実装基準に基づく先行ガイド\
-調査基準: tmpose-kamishibai `813f369`とcamera preview操作UI候補（Issue #388）、2026年8月7日
+調査基準: tmpose-kamishibai `813f369`とIssue #388、#390、#391の実装候補、2026年8月7日
 
 > **重要:** DSL 4.0は開発中です。現行の公開アプリtmpose-kamishibai 3.2.xへ、
 > この文書のYAML台本を読み込ませることはできません。実際に作品を制作・上映する場合は、
 > 既存の[紙芝居DSLファイル作成マニュアル](dsl-manual.md)と
 > [紙芝居DSL コマンドリファレンス](command-reference.md)を使用してください。
 
-このガイド本文は上記の公開済みcommitと、まだ上流へcommitされていないIssue #388の実装候補を
+このガイド本文は上記の公開済みcommitと、まだ上流へcommitされていないIssue #388、#390、#391の実装候補を
 調査基準としています。移行候補で使うfield、型、必須性、既定値、action引数を確認するときは、
 実装候補を固定したSchemaから生成した
 [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)を併用してください。Schemaリファレンスも
@@ -27,7 +27,10 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 [JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/813f369af1fe1f9e7e0be9d93553644800287a1d/schema/dsl-4.schema.json)です。
 camera preview操作UIとその一時状態の所有境界は
 [Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)で先行しています。この候補と
-公開済み正本が異なる場合は、mergeされるまでは公開済み正本を優先してください。
+公開済み正本が異なる場合は、mergeされるまでは公開済み正本を優先してください。project directory選択と
+YAML live reloadは[Issue #390](https://github.com/kubohiroya/tmpose-kamishibai/issues/390)、local assetの
+追加・内容更新のlive reloadは
+[Issue #391](https://github.com/kubohiroya/tmpose-kamishibai/issues/391)で仕様化しています。
 
 ## DSL 4.0で変わること
 
@@ -119,6 +122,50 @@ scenes:
 `kamishibai`と`scenes`だけがトップレベルの必須項目です。`scenes`には一つ以上のシーンが必要です。
 通常実行は、`scenes`へ最初に書いたシーンから始まり、明示的な遷移がなければ記述順に次のシーンへ
 進みます。
+
+## Projectのfileを配置する
+
+一般作者向けの最小構成では、YAML、画像、音声をproject root直下へ置けます。pose modelだけは複数fileを
+一つのbundleとして扱うため、model単位のdirectoryにまとめます。
+
+```text
+tutorial-story/
+├── project.source.json
+├── story.kamishibai.yaml
+├── ocean.svg
+├── hero-happy.svg
+├── opening.mp3
+└── rescue-pose/
+    ├── model.json
+    ├── metadata.json
+    └── weights.bin
+```
+
+`assets/`、`images/`、`sounds/`、`pose-models/`等の分類directoryは必須ではありません。作品が大きく
+なった場合に任意で使用できますが、YAMLの`file`は常にproject rootを基準にします。YAML自身もroot直下に
+置くため、`file: ocean.svg`はYAMLから見てもproject rootから見ても同じfileを示します。
+
+Web Previewで選択するのはYAML fileではなく`tutorial-story/`に当たるproject root directoryです。
+Web Previewはroot直下の`project.source.json`を読み、次の規則でYAMLを一つに決定します。
+
+- `path`省略時はroot直下の`story.kamishibai.yaml`を使用する
+- 別名を指定する場合も、root直下の`.kamishibai.yaml` basenameだけを使用する
+- `stories/main.kamishibai.yaml`のようにdirectoryを含むpathは使用しない
+- directory内の`*.kamishibai.yaml`を走査して推測しない
+- manifestが不正な場合は既定値へfallbackせず、診断を表示する
+
+最小の`project.source.json`は次のとおりです。
+
+```json
+{
+  "formatVersion": 1,
+  "mode": "external",
+  "sourceId": "main"
+}
+```
+
+別名を使う場合だけ、たとえば`"path": "opening.kamishibai.yaml"`を追加します。`build-dsl4`は
+`--source-manifest`でこのmanifestを指定し、`validate-dsl4 --input`は検証するYAMLを直接指定します。
 
 ## ファイル全体の構造
 
@@ -271,7 +318,7 @@ assets:
 assets:
   Ocean:
     kind: backdrop
-    file: assets/ocean.svg
+    file: ocean.svg
     loading: lazy
 
   HeroHappy:
@@ -286,12 +333,12 @@ assets:
 
   救助Pose:
     kind: poseModel
-    file: pose-models/rescue
+    file: rescue-pose
     loading: lazy
 
   CameraMenuButton:
     kind: image
-    file: ui/select-camera.svg
+    file: select-camera.svg
     loading: eager
 ```
 
@@ -301,9 +348,9 @@ camera preview control icon用であり、Scratch spriteやcostumeを追加す�
 
 `file`はproject rootを基準にした安全なPOSIX相対pathです。次の値は使用できません。
 
-- `/assets/ocean.svg`のような絶対path
-- `C:\assets\ocean.svg`のようなWindows絶対pathやバックスラッシュ
-- `./assets/ocean.svg`、`../assets/ocean.svg`のような`.`または`..` segment
+- `/ocean.svg`のような絶対path
+- `C:\ocean.svg`のようなWindows絶対pathやバックスラッシュ
+- `./ocean.svg`、`../ocean.svg`のような`.`または`..` segment
 - `https://example.com/ocean.svg`のようなURI
 
 基準仕様では、builderがfileのbyte列を成果物へ埋め込み、実行環境からのネットワーク取得を不要にします。
@@ -757,6 +804,60 @@ Actor actionは`ActorID.command`をキーにします。
 `stableId`は名前付きmappingにだけ指定できます。`wait: 1`のようなscalar短形式へ追加することは
 できません。
 
+## Web Previewで変更をlive reloadする
+
+Issue #390のWeb Previewでは、対応browserで「プロジェクトを開く」を押し、project rootをread-onlyで
+選択します。Web Previewに組込みeditorはなく、YAMLとassetは任意の外部editorで変更します。選択した
+directory handleはsession中だけ保持し、YAML、manifest、SB3、user設定へ保存しません。
+
+最初の正常なYAMLはreload選択を挟まず先頭から開始します。その後に`story.kamishibai.yaml`を保存すると、
+Web Previewはpollingで変更を検出し、書込み途中ではない安定したsnapshotをparse／validateします。正常な
+candidateだけが次の再開位置の選択へ進みます。
+
+1. 先頭から
+2. 現在のsceneから
+3. 現在のactionから
+
+現在のactionから再開できるかは、actionが一意でreplay-safeかなどの条件で決まります。`stableId`は
+変更前後の同じactionを特定しやすくしますが、すべてのactionへ付ける必要はありません。YAMLが不正、
+missing、unstableの場合は現在実行中のimmutable snapshotを置き換えず、診断を表示して次の保存を待ちます。
+pageがbackgroundの場合はbrowserのtimer制限により検出が遅れることがあります。
+
+### Local assetの追加と内容更新
+
+Issue #391の候補仕様では、`backdrop`、`costume`、`sound`、`poseModel`について次をlive reload対象に
+します。
+
+- 既存asset ID、kind、pathを維持したままfile内容だけを更新する
+- 新しい一意なasset IDとlocal file／pose model bundleを追加し、同じcandidate YAMLから参照する
+
+新しいfileを先に置いても、YAMLを先に保存してもかまいません。両方が揃ってstableになり、source、
+asset graph、file内容、参照関係の検証がすべて成功した場合だけ、一つのimmutable candidateとして
+transactionalにcommitします。途中のfile、pose model bundleの一部、検証に失敗したassetだけを部分反映
+しません。未参照fileは無視し、project root全体を再帰走査せず、activeまたはcandidate YAMLが宣言した
+exact pathだけを読みます。
+
+次の変更は同じlive reloadへ混ぜず、full rebuildの対象です。
+
+- 既存asset IDの削除／rename
+- 既存assetのkind／path変更
+- 既存pose modelのbundle構成変更
+- base SB3、app shell、extension、builder設定、control profileの変更
+
+### TurboWarp Editor内のproject asset
+
+`HeroHappy: costume:Hero`のような短形式や、`name`を使うassetはlocal fileではなく、base SB3内の
+project assetを参照します。同一TurboWarp Editor／同一VMで既存costumeを編集した場合は、同じrenderer
+skinの更新として実行中表示へ即時反映されることがあります。これはWeb Previewのtransactional asset
+candidateではなく、reload dialog、safe boundary、rollbackの対象にもなりません。
+
+costumeの削除後の同名追加、import、renameによる自動再bindは保証しません。別Editor／別VMで保存した
+base SB3も実行中VMへ自動反映されず、full rebuildが必要です。YAML保存と同時期にproject costumeを編集しても、
+両者を一つのtransactionへ束ねるatomicityは保証しません。
+
+production用にbuildした自己完結SB3には、directory handle、poll timer、candidate、reload dialog状態を
+含めません。watchとlive reloadはdevelopment previewだけの機能です。
+
 ## 総合サンプル
 
 次の例は、アセット、表紙、SVG Text、変数、keymap、分岐、入力、ポーズ認識を一つの台本へまとめた
@@ -769,7 +870,7 @@ assets:
   Beach: backdrop
   Ocean:
     kind: backdrop
-    file: assets/ocean.svg
+    file: ocean.svg
     loading: lazy
   HeroIdle: costume:Hero
   HeroHappy: costume:Hero
@@ -780,19 +881,19 @@ assets:
   Success: sound
   ShowMirroredButton:
     kind: image
-    file: ui/show-mirrored.svg
+    file: show-mirrored.svg
     loading: eager
   ShowUnmirroredButton:
     kind: image
-    file: ui/show-unmirrored.svg
+    file: show-unmirrored.svg
     loading: eager
   CameraMenuButton:
     kind: image
-    file: ui/select-camera.svg
+    file: select-camera.svg
     loading: eager
   救助Pose:
     kind: poseModel
-    file: pose-models/rescue
+    file: rescue-pose
     loading: lazy
 
 actors:

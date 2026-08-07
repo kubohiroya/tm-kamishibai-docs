@@ -2,7 +2,7 @@
 
 Copyright © 2026 Hiroya Kubo.
 
-個別に異なる表示がある場合を除き、`docs/user-guides/`、
+個別に異なる表示がある場合を除き、`docs/user-guides/`、`docs/tutorials/`、
 `docs/dsl-author-guides/`、`docs/developer-guides/`以下の文書と`docs/images/`の共有図版は
 [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
 （CC BY-SA 4.0）で提供します。

@@ -50,6 +50,12 @@ test('keeps the DSL 4.0 preview guide separate from the production 3.2 manual', 
   assert.match(dsl4AuthorGuide, /DSL 3\.2から移行するときの考え方/u);
   assert.match(dsl4AuthorGuide, /紙芝居DSL 4\.0 Schemaリファレンス/u);
   assert.match(dsl4AuthorGuide, /camera previewの表示と操作UI/u);
+  assert.match(dsl4AuthorGuide, /path.*省略時はroot直下の`story\.kamishibai\.yaml`/u);
+  assert.match(dsl4AuthorGuide, /Web Previewで選択するのはYAML fileではなく/u);
+  assert.match(dsl4AuthorGuide, /Local assetの追加と内容更新/u);
+  assert.match(dsl4AuthorGuide, /一つのtransactionへ束ねるatomicityは保証しません/u);
+  assert.doesNotMatch(dsl4AuthorGuide, /file: assets\/ocean\.svg/u);
+  assert.doesNotMatch(dsl4AuthorGuide, /file: pose-models\/rescue/u);
   assert.match(
     dsl4AuthorGuide,
     /端末固有の物理device IDは台本、StoryDocument、`variables`へ保存しません/u,

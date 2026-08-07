@@ -69,7 +69,7 @@ Beach: backdrop
 HeroIdle: costume:Hero
 CameraMenuButton:
   kind: image
-  file: ui/select-camera.svg
+  file: select-camera.svg
   loading: eager
 ```
 
@@ -319,7 +319,7 @@ Schemaで検証できる値の例:
 
 ```yaml
 kind: backdrop
-file: assets/beach.svg
+file: beach.svg
 loading: eager
 retention: story
 ```
@@ -370,7 +370,7 @@ Schemaで検証できる値の例:
 ```yaml
 kind: costume
 target: Hero
-file: assets/hero-happy.svg
+file: hero-happy.svg
 ```
 
 ### 名前付きポーズモデル
@@ -421,7 +421,7 @@ Schemaで検証できる値の例:
 
 ```yaml
 kind: image
-file: ui/select-camera.svg
+file: select-camera.svg
 loading: eager
 ```
 
@@ -837,7 +837,7 @@ Schema位置: `#/$defs/filePath`
 Schemaで検証できる値の例:
 
 ```yaml
-assets/hero.svg
+hero.svg
 ```
 
 ### 読み込みpolicy
