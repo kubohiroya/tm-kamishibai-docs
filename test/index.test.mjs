@@ -32,7 +32,7 @@ test('publishes each document in its reader-oriented directory', () => {
 
 test('offers PDFs only for workshop publications', () => {
   const actionGroups = [...index.matchAll(/<div class="actions">([\s\S]*?)<\/div>/gu)];
-  assert.equal(actionGroups.length, 16);
+  assert.equal(actionGroups.length, documentationConfig.documents.length + 2);
   for (const [, actions] of actionGroups.slice(0, documentationConfig.documents.length)) {
     assert.deepEqual(
       [...actions.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a\s*>/gu)].map(([, label]) =>

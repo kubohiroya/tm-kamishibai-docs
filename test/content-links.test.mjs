@@ -22,6 +22,9 @@ test('resolves local links and images in every Markdown source', () => {
     ...documentationConfig.documents.map((document) =>
       path.join(projectRoot, 'docs', document.sourceDirectory, document.sourceFilename),
     ),
+    ...['README.md', 'play.md', 'create.md'].map((filename) =>
+      path.join(projectRoot, 'docs/tutorials', filename),
+    ),
     ...[workshopDocumentConfig.coverFilename, workshopDocumentConfig.sourceFilename].map(
       (filename) =>
         path.join(projectRoot, 'docs', workshopDocumentConfig.sourceDirectory, filename),

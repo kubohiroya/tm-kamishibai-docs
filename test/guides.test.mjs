@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import test from 'node:test';
 
+import Ajv2020 from 'ajv/dist/2020.js';
+import {parse} from 'yaml';
+
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
 
 const extensionGuide = readFileSync(
@@ -24,6 +27,13 @@ const dsl4AuthorGuide = readFileSync(
   new URL('../docs/dsl-author-guides/dsl-4.0-author-guide.md', import.meta.url),
   'utf8',
 );
+const dsl4SchemaReference = readFileSync(
+  new URL('../docs/dsl-author-guides/dsl-4.0-schema-reference.md', import.meta.url),
+  'utf8',
+);
+const dsl4Schema = JSON.parse(
+  readFileSync(new URL('../sources/dsl4/dsl-4.schema.json', import.meta.url), 'utf8'),
+);
 const internalSpecification = readFileSync(
   new URL('../docs/developer-guides/internal-specification.md', import.meta.url),
   'utf8',
@@ -38,7 +48,38 @@ test('keeps the DSL 4.0 preview guide separate from the production 3.2 manual', 
   assert.match(dsl4AuthorGuide, /一つのファイルへ混在させたり/u);
   assert.match(dsl4AuthorGuide, /K4-SCHEMA-UNKNOWN-KEY/u);
   assert.match(dsl4AuthorGuide, /DSL 3\.2から移行するときの考え方/u);
+  assert.match(dsl4AuthorGuide, /紙芝居DSL 4\.0 Schemaリファレンス/u);
+  assert.match(dsl4AuthorGuide, /camera previewの表示と操作UI/u);
+  assert.match(dsl4AuthorGuide, /path.*省略時はroot直下の`story\.kamishibai\.yaml`/u);
+  assert.match(dsl4AuthorGuide, /Web Previewで選択するのはYAML fileではなく/u);
+  assert.match(dsl4AuthorGuide, /Local assetの追加と内容更新/u);
+  assert.match(dsl4AuthorGuide, /一つのtransactionへ束ねるatomicityは保証しません/u);
+  assert.match(dsl4AuthorGuide, /Actor\.say`と`Actor\.think/u);
+  assert.match(dsl4AuthorGuide, /`seconds`だけなら表示開始から指定秒数後/u);
+  assert.match(dsl4AuthorGuide, /Unicode grapheme cluster/u);
+  assert.match(dsl4AuthorGuide, /`easing`は`linear`、`easeIn`、`easeOut`、`easeInOut`/u);
+  assert.match(dsl4AuthorGuide, /Draft PR #409が未マージ/u);
+  assert.doesNotMatch(dsl4AuthorGuide, /file: assets\/ocean\.svg/u);
+  assert.doesNotMatch(dsl4AuthorGuide, /file: pose-models\/rescue/u);
+  assert.match(
+    dsl4AuthorGuide,
+    /端末固有の物理device IDは台本、StoryDocument、`variables`へ保存しません/u,
+  );
+  assert.match(dsl4AuthorGuide, /前sceneの値を持ち越しません/u);
+  assert.match(dsl4SchemaReference, /先行公開（DSL 4\.0実装は未リリース）/u);
+  assert.match(dsl4SchemaReference, /現行の公開アプリtmpose-kamishibai 3\.2\.x/u);
+  assert.match(dsl4SchemaReference, /Schema固定commit: \[`5f1c1d0`\]/u);
+  assert.match(dsl4SchemaReference, /トップレベル12 field、action 18種類、Annotation 70項目/u);
   assert.doesNotMatch(dslManual, /kamishibai: '4\.0'/u);
+});
+
+test('keeps the DSL 4.0 complete example valid against the pinned Schema', () => {
+  const completeExampleSection = dsl4AuthorGuide.slice(dsl4AuthorGuide.indexOf('## 総合サンプル'));
+  const source = completeExampleSection.match(/```yaml\n([\s\S]*?)\n```/u)?.[1];
+  assert.ok(source, 'The DSL 4.0 complete example must exist.');
+  const AjvConstructor = /** @type {any} */ (Ajv2020);
+  const validate = new AjvConstructor({allErrors: true, strict: false}).compile(dsl4Schema);
+  assert.equal(validate(parse(source)), true, JSON.stringify(validate.errors));
 });
 
 test('documents named SVG Text styles for say and think actions', () => {

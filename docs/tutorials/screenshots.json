@@ -1,0 +1,361 @@
+{
+  "formatVersion": 1,
+  "status": "blocked-until-dsl4-release",
+  "targetDslVersion": "4.0",
+  "capturePolicy": {
+    "fileRoot": "docs/images/tutorials/dsl4",
+    "format": "png",
+    "sourceTextPresentation": "copyable-code-block",
+    "cameraSubject": "consenting-adult",
+    "recordForEachCapture": [
+      "application version",
+      "source commit",
+      "sample artifact integrity",
+      "browser version",
+      "viewport",
+      "device pixel ratio"
+    ]
+  },
+  "gates": [
+    {
+      "id": "dsl4-release",
+      "ready": false,
+      "description": "DSL 4.0の公開versionと対象commitが固定されている",
+      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/266"]
+    },
+    {
+      "id": "tutorial-sample",
+      "ready": false,
+      "description": "最小作品、starter、Web版、SB3、公開URL、integrityが固定されている",
+      "dependencies": ["kubohiroya/tmpose-kamishibai-samples: follow-up issue required"]
+    },
+    {
+      "id": "app-shell",
+      "ready": false,
+      "description": "Standard Web playerとapp shellの配置、状態、文言が固定されている",
+      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/265"]
+    },
+    {
+      "id": "preview-flow",
+      "ready": false,
+      "description": "development preview、reload選択、診断UIが固定されている",
+      "dependencies": [
+        "https://github.com/kubohiroya/tmpose-kamishibai/issues/258",
+        "https://github.com/kubohiroya/tmpose-kamishibai/issues/266",
+        "https://github.com/kubohiroya/tmpose-kamishibai/issues/390",
+        "https://github.com/kubohiroya/tmpose-kamishibai/issues/391"
+      ]
+    },
+    {
+      "id": "pose-feedback",
+      "ready": false,
+      "description": "ポーズ認識度、チャージ、状態feedbackの正式表示が固定されている",
+      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/383"]
+    },
+    {
+      "id": "camera-controls",
+      "ready": false,
+      "description": "camera preview、mirroring、camera選択UIの採用範囲が固定されている",
+      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/388"]
+    },
+    {
+      "id": "cli-contract",
+      "ready": false,
+      "description": "validate、preview、buildの正式CLIとresource limitが固定されている",
+      "dependencies": [
+        "https://github.com/kubohiroya/tmpose-kamishibai/issues/258",
+        "https://github.com/kubohiroya/tmpose-kamishibai/issues/266"
+      ]
+    },
+    {
+      "id": "capture-environment",
+      "ready": false,
+      "description": "撮影同意、背景、個人情報除去、browser、viewport、DPRが固定されている",
+      "dependencies": []
+    }
+  ],
+  "captures": [
+    {
+      "id": "P-01",
+      "tutorial": "play",
+      "step": 1,
+      "required": true,
+      "status": "blocked",
+      "surface": "sample story detail",
+      "description": "サンプル作品詳細とWeb版を開く導線",
+      "filename": "docs/images/tutorials/dsl4/play/tutorial-play-01-sample-page.png",
+      "captionDraft": "チュートリアル用作品の詳細ページからWeb版を開きます。",
+      "altDraft": "チュートリアル用作品の詳細とWeb版を開く導線が表示されたサンプルサイト",
+      "gates": ["dsl4-release", "tutorial-sample"]
+    },
+    {
+      "id": "P-02",
+      "tutorial": "play",
+      "step": 2,
+      "required": true,
+      "status": "blocked",
+      "surface": "Standard app shell title",
+      "description": "DSL 4.0 app shellのタイトル画面",
+      "filename": "docs/images/tutorials/dsl4/play/tutorial-play-02-title.png",
+      "captionDraft": "タイトル画面から紙芝居を開始します。",
+      "altDraft": "紙芝居のタイトルと開始操作が表示されたDSL 4.0 app shell",
+      "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
+    },
+    {
+      "id": "P-03",
+      "tutorial": "play",
+      "step": 2,
+      "required": true,
+      "status": "blocked",
+      "surface": "Standard app shell loading",
+      "description": "Loading画面と進捗",
+      "filename": "docs/images/tutorials/dsl4/play/tutorial-play-03-loading.png",
+      "captionDraft": "台本とアセットの準備が終わるまでLoading画面で待ちます。",
+      "altDraft": "台本とアセットの準備状況を示すLoading画面",
+      "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
+    },
+    {
+      "id": "P-04",
+      "tutorial": "play",
+      "step": 3,
+      "required": true,
+      "status": "blocked",
+      "surface": "browser permission",
+      "description": "ブラウザのカメラ許可ダイアログ",
+      "filename": "docs/images/tutorials/dsl4/play/tutorial-play-04-camera-permission.png",
+      "captionDraft": "ポーズ認識を使うため、現在のsiteへcamera利用を許可します。",
+      "altDraft": "紙芝居siteによるcamera利用の許可を求めるbrowser dialog",
+      "gates": ["dsl4-release", "tutorial-sample", "capture-environment"]
+    },
+    {
+      "id": "P-05",
+      "tutorial": "play",
+      "step": 4,
+      "required": true,
+      "status": "blocked",
+      "surface": "pose recognition",
+      "description": "カメラ映像、ポーズ案内、認識度、チャージ",
+      "filename": "docs/images/tutorials/dsl4/play/tutorial-play-05-pose-progress.png",
+      "captionDraft": "案内されたポーズを取り、認識度とチャージを確認します。",
+      "altDraft": "camera previewの横に現在のポーズ、認識度、チャージが表示された認識画面",
+      "gates": [
+        "dsl4-release",
+        "tutorial-sample",
+        "app-shell",
+        "pose-feedback",
+        "capture-environment"
+      ]
+    },
+    {
+      "id": "P-06",
+      "tutorial": "play",
+      "step": 4,
+      "required": true,
+      "status": "blocked",
+      "surface": "pose completion",
+      "description": "ポーズ成立時のfeedback",
+      "filename": "docs/images/tutorials/dsl4/play/tutorial-play-06-pose-complete.png",
+      "captionDraft": "ポーズが成立すると成功feedbackが表示され、物語が進みます。",
+      "altDraft": "ポーズ成立を示すfeedbackが表示された紙芝居画面",
+      "gates": ["dsl4-release", "tutorial-sample", "app-shell", "pose-feedback"]
+    },
+    {
+      "id": "P-07",
+      "tutorial": "play",
+      "step": 5,
+      "required": true,
+      "status": "blocked",
+      "surface": "Standard app shell finished",
+      "description": "終了画面と再実行またはタイトル復帰",
+      "filename": "docs/images/tutorials/dsl4/play/tutorial-play-07-finished.png",
+      "captionDraft": "終了後はもう一度遊ぶか、タイトルへ戻ります。",
+      "altDraft": "紙芝居の終了状態と再実行およびタイトル復帰の操作",
+      "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
+    },
+    {
+      "id": "P-08",
+      "tutorial": "play",
+      "step": 6,
+      "required": false,
+      "conditional": "Standard app shellがcamera選択またはmirroring controlを提供する場合",
+      "status": "blocked",
+      "surface": "camera controls",
+      "description": "camera選択と左右反転UI",
+      "filename": "docs/images/tutorials/dsl4/play/tutorial-play-08-camera-controls.png",
+      "captionDraft": "必要に応じてcameraとpreviewの左右反転を変更します。",
+      "altDraft": "camera previewの周囲にcamera選択と左右反転のcontrolが表示された画面",
+      "gates": ["dsl4-release", "tutorial-sample", "camera-controls", "capture-environment"]
+    },
+    {
+      "id": "C-01",
+      "tutorial": "create",
+      "step": 2,
+      "required": true,
+      "status": "blocked",
+      "surface": "text editor",
+      "description": "starterを開いたeditorとファイルツリー",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-01-starter-project.png",
+      "captionDraft": "starterを開き、root直下の台本、アセット、pose model bundleを確認します。",
+      "altDraft": "story.kamishibai.yaml、画像、音声、rescue-pose directoryがroot直下に並ぶstarterのファイルツリー",
+      "gates": ["dsl4-release", "tutorial-sample", "capture-environment"]
+    },
+    {
+      "id": "C-02",
+      "tutorial": "create",
+      "step": 3,
+      "required": true,
+      "status": "blocked",
+      "surface": "Web Preview project open",
+      "description": "Web Previewのプロジェクトを開く導線",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-02-project-open.png",
+      "captionDraft": "Web Previewで「プロジェクトを開く」を押します。",
+      "altDraft": "project directoryを開くbuttonが表示されたWeb Preview",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
+    },
+    {
+      "id": "C-03",
+      "tutorial": "create",
+      "step": 3,
+      "required": true,
+      "status": "blocked",
+      "surface": "browser directory picker",
+      "description": "tutorial用project rootを選ぶfolder選択画面",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-03-directory-picker.png",
+      "captionDraft": "YAML fileではなく、starterのproject root directoryを選びます。",
+      "altDraft": "tutorial-story project root directoryを選択しているbrowserのdirectory picker",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "capture-environment"]
+    },
+    {
+      "id": "C-04",
+      "tutorial": "create",
+      "step": 3,
+      "required": true,
+      "status": "blocked",
+      "surface": "development preview",
+      "description": "projectをwatchして最初のsourceを実行するWeb Preview",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-04-first-preview.png",
+      "captionDraft": "正常なstarterをwatchし、最初のsourceを先頭から実行します。",
+      "altDraft": "starterのproject rootをwatchして先頭から実行しているWeb Preview",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
+    },
+    {
+      "id": "C-05",
+      "tutorial": "create",
+      "step": 4,
+      "required": true,
+      "status": "blocked",
+      "surface": "development reload dialog",
+      "description": "YAML保存後のreload選択dialog",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-05-reload-dialog.png",
+      "captionDraft": "変更後のsourceをどの位置から再開するか選びます。",
+      "altDraft": "先頭、現在のscene、現在のactionからの再開候補を示すreload dialog",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
+    },
+    {
+      "id": "C-06",
+      "tutorial": "create",
+      "step": 4,
+      "required": true,
+      "status": "blocked",
+      "surface": "development preview",
+      "description": "セリフ変更が反映されたpreview",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-06-updated-dialogue.png",
+      "captionDraft": "YAMLで変更したセリフがpreviewへ反映されたことを確認します。",
+      "altDraft": "変更後のセリフをアクターが表示しているdevelopment preview",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
+    },
+    {
+      "id": "C-07",
+      "tutorial": "create",
+      "step": 5,
+      "required": true,
+      "status": "blocked",
+      "surface": "text editor file tree",
+      "description": "projectへcopyした新しい背景とcostumeのfile",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-07-added-files.png",
+      "captionDraft": "addition kitの背景とcostumeをproject rootへcopyします。",
+      "altDraft": "新しい背景とcostumeのfileがroot直下へ追加されたstarterのファイルツリー",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "capture-environment"]
+    },
+    {
+      "id": "C-08",
+      "tutorial": "create",
+      "step": 5,
+      "required": true,
+      "status": "blocked",
+      "surface": "development asset reload dialog",
+      "description": "sourceと新規追加assetのcandidate差分と再開位置",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-08-asset-reload-dialog.png",
+      "captionDraft": "追加asset ID、kind、影響sceneを確認し、再開位置を選びます。",
+      "altDraft": "新規追加assetのID、kind、影響sceneと再開位置を示すreload dialog",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
+    },
+    {
+      "id": "C-09",
+      "tutorial": "create",
+      "step": 5,
+      "required": true,
+      "status": "blocked",
+      "surface": "development preview",
+      "description": "新しい背景、アクター、sceneを追加した結果",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-09-backdrop-actor.png",
+      "captionDraft": "新しい背景、アクター、sceneの表示をpreviewで確認します。",
+      "altDraft": "新しいasset fileとYAML entryから追加した背景とアクターが表示されたdevelopment preview",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
+    },
+    {
+      "id": "C-10",
+      "tutorial": "create",
+      "step": 6,
+      "required": true,
+      "status": "reuse",
+      "surface": "pose recognition",
+      "description": "ポーズsceneのpreview",
+      "reuseOf": "P-05",
+      "captionDraft": "同梱済みpose modelを使うsceneをpreviewします。",
+      "altDraft": "同梱済みpose modelを使用しているポーズ認識scene",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "pose-feedback"]
+    },
+    {
+      "id": "C-11",
+      "tutorial": "create",
+      "step": 7,
+      "required": true,
+      "status": "blocked",
+      "surface": "development diagnostics",
+      "description": "source位置と修正候補を含む診断画面",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-11-diagnostic.png",
+      "captionDraft": "診断code、source位置、説明、修正候補から台本を直します。",
+      "altDraft": "台本のファイル名、行、列、該当箇所、修正候補を表示した診断画面",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "cli-contract"]
+    },
+    {
+      "id": "C-12",
+      "tutorial": "create",
+      "step": 9,
+      "required": true,
+      "status": "blocked",
+      "surface": "TurboWarp editor",
+      "description": "build済みSB3を通常のTurboWarp editorで開いた画面",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-12-built-sb3.png",
+      "captionDraft": "自己完結SB3を通常のTurboWarp editorで開いて再生します。",
+      "altDraft": "build済みの自己完結SB3を開いた通常のTurboWarp editor",
+      "gates": ["dsl4-release", "tutorial-sample", "app-shell", "cli-contract"]
+    },
+    {
+      "id": "C-13",
+      "tutorial": "create",
+      "step": 1,
+      "required": false,
+      "conditional": "P-02、P-05、P-07だけでは完成状態を説明できない場合",
+      "status": "blocked",
+      "surface": "production Web player",
+      "description": "production相当の完成画面",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-13-production-result.png",
+      "reuseCandidates": ["P-02", "P-05", "P-07"],
+      "captionDraft": "このチュートリアルで完成させる紙芝居です。",
+      "altDraft": "チュートリアルで完成させる紙芝居のproduction画面",
+      "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
+    }
+  ]
+}

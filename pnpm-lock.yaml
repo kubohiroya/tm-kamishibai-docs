@@ -12,7 +12,10 @@ importers:
         version: 26.1.2
       '@vivliostyle/cli':
         specifier: 11.1.0
-        version: 11.1.0(supports-color@7.2.0)(typescript@7.0.2)(vite@8.2.0(@types/node@26.1.2))
+        version: 11.1.0(supports-color@7.2.0)(typescript@7.0.2)(vite@8.2.0(@types/node@26.1.2)(yaml@2.8.1))
+      ajv:
+        specifier: 8.18.0
+        version: 8.18.0
       eslint:
         specifier: 10.8.0
         version: 10.8.0(supports-color@7.2.0)
@@ -28,6 +31,9 @@ importers:
       typescript:
         specifier: 7.0.2
         version: 7.0.2
+      yaml:
+        specifier: 2.8.1
+        version: 2.8.1
 
 packages:
   '@asamuzakjp/css-color@3.2.0':
@@ -261,6 +267,7 @@ packages:
     resolution:
       {
         gitHosted: true,
+        integrity: sha512-aSCo+qh1xHTTbVhipS6gTGEBfob/exno8ODoMg3BglrCmOo+ECe+KG4Lr2J+cYr5O+zhDQhGjZiRfNI6+RJYWA==,
         tarball: https://codeload.github.com/kubohiroya/rubygana/tar.gz/649cba1138f73f71f514711716e9a61a858ba712,
       }
     version: 0.9.0
@@ -4935,6 +4942,14 @@ packages:
       }
     engines: {node: '>=18'}
 
+  yaml@2.8.1:
+    resolution:
+      {
+        integrity: sha512-lcYcMxX2PO9XMGvAJkJ3OsNMw+/7FKes7/hgerGUYWIoWu5j/+YQqcZr5JnPZWzOsEBgMbSbiSTn/dv/69Mkpw==,
+      }
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
   yargs-parser@18.1.3:
     resolution:
       {
@@ -5560,7 +5575,7 @@ snapshots:
 
   '@ungap/structured-clone@1.3.3': {}
 
-  '@vivliostyle/cli@11.1.0(supports-color@7.2.0)(typescript@7.0.2)(vite@8.2.0(@types/node@26.1.2))':
+  '@vivliostyle/cli@11.1.0(supports-color@7.2.0)(typescript@7.0.2)(vite@8.2.0(@types/node@26.1.2)(yaml@2.8.1))':
     dependencies:
       '@babel/code-frame': 7.26.2
       '@bluwy/giget-core': 0.1.3
@@ -5615,7 +5630,7 @@ snapshots:
       uuid: 14.0.0
       valibot: 1.2.0(typescript@7.0.2)
       vfile: 4.2.1
-      vite: 8.2.0(@types/node@26.1.2)
+      vite: 8.2.0(@types/node@26.1.2)(yaml@2.8.1)
       w3c-xmlserializer: 5.0.0
       whatwg-mimetype: 4.0.0
       yocto-spinner: 1.2.1
@@ -7931,7 +7946,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@8.2.0(@types/node@26.1.2):
+  vite@8.2.0(@types/node@26.1.2)(yaml@2.8.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.5
@@ -7941,6 +7956,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 26.1.2
       fsevents: 2.3.3
+      yaml: 2.8.1
 
   w3c-xmlserializer@5.0.0:
     dependencies:
@@ -8018,6 +8034,8 @@ snapshots:
   yallist@4.0.0: {}
 
   yallist@5.0.0: {}
+
+  yaml@2.8.1: {}
 
   yargs-parser@18.1.3:
     dependencies:

@@ -15,15 +15,18 @@ Copyright © 2026 Hiroya Kubo.
 - `README.md`
 - `MIGRATION.md`
 - `docs/user-guides/**`
+- `docs/tutorials/**`
 - `docs/dsl-author-guides/**`
 - `docs/developer-guides/**`
 - `docs/images/**`（`docs/LICENSE.md`で個別に扱う第三者図版と実画面キャプチャを除く）
-- `sources/**`
+- `sources/tmpose-kamishibai.json`
+- `sources/dsl4/annotations.ja.json`
 
 これらから生成される次の公開用HTML、PDF、画像および付随データにも、生成元と同じ
 CC BY-SA 4.0を適用します。
 
 - `dist/user-guides/**`
+- `dist/tutorials/**`
 - `dist/dsl-author-guides/**`
 - `dist/developer-guides/**`
 - `output/pdf/user-guides/**`
@@ -60,12 +63,20 @@ CC BY-SA 4.0を適用します。
 - `docs/vivliostyle.*.config.mjs`
 - `docs/*.css`
 - `scripts/**`
+- `sources/dsl4/source-lock.json`
 - `site/**`
 - `test/**`
 
 `dist/index.html`、`dist/site-shell.css`、`dist/site-shell.js`、`dist/favicon.png`および
 `dist/build-info.json`は、それぞれ対応するMPL-2.0対象ファイルから生成または複製される
 ため、MPL-2.0を適用します。
+
+## MPL-2.0の上流Schema snapshot
+
+`sources/dsl4/dsl-4.schema.json`は、`kubohiroya/tmpose-kamishibai`から固定したMPL-2.0の
+Schema snapshotです。上流repository、commit、SHA-256、source URLは
+`sources/dsl4/source-lock.json`に記録します。日本語Annotationと、両者から生成した
+`docs/dsl-author-guides/dsl-4.0-schema-reference.md`は前記のCC BY-SA 4.0区分です。
 
 ## 生成物、中間ファイル、第三者の素材
 

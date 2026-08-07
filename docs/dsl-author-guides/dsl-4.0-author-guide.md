@@ -5,21 +5,32 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: 台本作者、教材作成者、授業設計者、DSL 3.2からの移行を検討する開発者\
 対象仕様: `kamishibai: '4.0'`\
 文書状態: DSL 4.0の実装基準に基づく先行ガイド\
-調査基準: tmpose-kamishibai `371f2fb`、2026年8月6日
+調査基準: tmpose-kamishibai `5f1c1d0`とIssue #390、#391の実装候補、2026年8月7日
 
 > **重要:** DSL 4.0は開発中です。現行の公開アプリtmpose-kamishibai 3.2.xへ、
 > この文書のYAML台本を読み込ませることはできません。実際に作品を制作・上映する場合は、
 > 既存の[紙芝居DSLファイル作成マニュアル](dsl-manual.md)と
 > [紙芝居DSL コマンドリファレンス](command-reference.md)を使用してください。
 
+このガイド本文は上記の公開済みcommitと、Issue #390、#391の実装候補を調査基準としています。
+移行候補で使うfield、型、必須性、既定値、action引数を確認するときは、公開済みcommitのSchemaを固定して生成した
+[紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)を併用してください。Schemaリファレンスも
+実装のリリースを意味せず、4.0用YAMLへ上映環境を切り替える判断には使用できません。
+
 この文書は、確定済みのDSL 4.0表層仕様を、台本作者が読める形で説明します。既存の3.1／3.2向け文書を
 置き換えるものではありません。4.0のアプリ統合と配布ツールが完成するまでは、仕様の確認、台本設計、
 試作、レビューに使用してください。
 
-仕様の正本は、tmpose-kamishibaiリポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/371f2fb6595735dcaba72d55b871ea6ba63d6078/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/371f2fb6595735dcaba72d55b871ea6ba63d6078/schema/dsl-4.schema.json)です。
-このガイドと正本が異なる場合は、正本を優先します。
+公開済み仕様の正本は、tmpose-kamishibaiリポジトリの
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/5f1c1d08871a057dfff8ff802cfacce12dcd10df/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/5f1c1d08871a057dfff8ff802cfacce12dcd10df/schema/dsl-4.schema.json)です。
+camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)、advanced speechと
+`speechStyles`は[Issue #396](https://github.com/kubohiroya/tmpose-kamishibai/issues/396)、
+`Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tmpose-kamishibai/issues/398)から
+上記commitまでにmergeされています。project directory選択と
+YAML live reloadは[Issue #390](https://github.com/kubohiroya/tmpose-kamishibai/issues/390)、local assetの
+追加・内容更新のlive reloadは
+[Issue #391](https://github.com/kubohiroya/tmpose-kamishibai/issues/391)で仕様化しています。
 
 ## DSL 4.0で変わること
 
@@ -60,13 +71,19 @@ action=Hero:show:HeroHappy:0,-60,30
 
 ## 現在の利用範囲
 
-2026年8月6日の調査基準では、次の実装がtmpose-kamishibaiの`main`へ入っています。
+2026年8月7日の調査基準では、次の実装がtmpose-kamishibaiの`main`へ入っています。
 
 - 制限付きYAMLの解析、JSON Schema検証、参照関係の意味検証
 - 行・列とStory Pathを保持するSource Map、`K4-*`診断
 - 検証後の台本をimmutableな`StoryDocument`へ正規化するsource frontend
 - action実行、分岐、シーン遷移、停止を扱うpure runtime controller
 - control profileの解決、キー入力adapter、時系列history reducer、runtime navigation control
+- camera previewのstory既定、scene固有の非stickyな左右反転指定、任意の操作UI
+- `Actor.say`／`Actor.think`の入力待ち、文字送り、開始音／文字音、名前付き`speechStyles`
+- `Actor.moveTo`の`linear`、`easeIn`、`easeOut`、`easeInOut`
+
+Issue #406の`Actor.setTransparency`はDraft PR #409が未マージで`main`と競合しているため、今回固定した
+Schemaには含めません。merge後のSchemaを次回同期するまでは、先行台本へ記述しないでください。
 
 一方、公開アプリで4.0作品を開いて上映するために必要なbuilder、TurboWarpとの実動作接続、
 アプリUI、配布artifact、既定OFFの機能フラグを含むend-to-end統合は完了していません。
@@ -108,6 +125,50 @@ scenes:
 通常実行は、`scenes`へ最初に書いたシーンから始まり、明示的な遷移がなければ記述順に次のシーンへ
 進みます。
 
+## Projectのfileを配置する
+
+一般作者向けの最小構成では、YAML、画像、音声をproject root直下へ置けます。pose modelだけは複数fileを
+一つのbundleとして扱うため、model単位のdirectoryにまとめます。
+
+```text
+tutorial-story/
+├── project.source.json
+├── story.kamishibai.yaml
+├── ocean.svg
+├── hero-happy.svg
+├── opening.mp3
+└── rescue-pose/
+    ├── model.json
+    ├── metadata.json
+    └── weights.bin
+```
+
+`assets/`、`images/`、`sounds/`、`pose-models/`等の分類directoryは必須ではありません。作品が大きく
+なった場合に任意で使用できますが、YAMLの`file`は常にproject rootを基準にします。YAML自身もroot直下に
+置くため、`file: ocean.svg`はYAMLから見てもproject rootから見ても同じfileを示します。
+
+Web Previewで選択するのはYAML fileではなく`tutorial-story/`に当たるproject root directoryです。
+Web Previewはroot直下の`project.source.json`を読み、次の規則でYAMLを一つに決定します。
+
+- `path`省略時はroot直下の`story.kamishibai.yaml`を使用する
+- 別名を指定する場合も、root直下の`.kamishibai.yaml` basenameだけを使用する
+- `stories/main.kamishibai.yaml`のようにdirectoryを含むpathは使用しない
+- directory内の`*.kamishibai.yaml`を走査して推測しない
+- manifestが不正な場合は既定値へfallbackせず、診断を表示する
+
+最小の`project.source.json`は次のとおりです。
+
+```json
+{
+  "formatVersion": 1,
+  "mode": "external",
+  "sourceId": "main"
+}
+```
+
+別名を使う場合だけ、たとえば`"path": "opening.kamishibai.yaml"`を追加します。`build-dsl4`は
+`--source-manifest`でこのmanifestを指定し、`validate-dsl4 --input`は検証するYAMLを直接指定します。
+
 ## ファイル全体の構造
 
 トップレベルで使用できるキーは次のものだけです。表にないキーは警告ではなくエラーになります。
@@ -115,13 +176,14 @@ scenes:
 | キー              | 必須 | 役割                                           |
 | ----------------- | ---- | ---------------------------------------------- |
 | `kamishibai`      | 必須 | 文字列`'4.0'`を指定する                        |
-| `assets`          | 任意 | 背景、コスチューム、音、ポーズモデルを登録する |
+| `assets`          | 任意 | 背景、音、costume、ポーズモデル、UI画像を登録する |
 | `actors`          | 任意 | アクターと初期コスチュームを対応付ける         |
 | `cover`           | 任意 | 表紙の背景とBGMを指定する                      |
 | `textStyles`      | 任意 | SVG Textの名前付きスタイルを定義する           |
+| `speechStyles`    | 任意 | say／thinkの名前付き文字送りstyleを定義する    |
 | `variables`       | 任意 | 物語で使う変数の初期値を定義する               |
 | `loading`         | 任意 | 読み込み中の背景とコスチューム列を指定する     |
-| `poseRecognition` | 任意 | ポーズ認識中と認識成立時の音を指定する         |
+| `poseRecognition` | 任意 | ポーズ認識、preview表示、任意の操作UIを設定する |
 | `controls`        | 任意 | 実行環境ごとの操作キーを定義する               |
 | `branches`        | 任意 | 順序付きの条件分岐を登録する                   |
 | `scenes`          | 必須 | 一つ以上のシーンとアクションを記述する         |
@@ -259,7 +321,7 @@ assets:
 assets:
   Ocean:
     kind: backdrop
-    file: assets/ocean.svg
+    file: ocean.svg
     loading: lazy
 
   HeroHappy:
@@ -274,18 +336,24 @@ assets:
 
   救助Pose:
     kind: poseModel
-    file: pose-models/rescue
+    file: rescue-pose
     loading: lazy
+
+  CameraMenuButton:
+    kind: image
+    file: select-camera.svg
+    loading: eager
 ```
 
-`kind`に指定できる値は`backdrop`、`costume`、`sound`、`poseModel`です。`costume`には`target`が
-必須です。`poseModel`には`file`が必須で、`name`は使用できません。
+`kind`に指定できる値は`backdrop`、`costume`、`sound`、`poseModel`、`image`です。`costume`には
+`target`が必須です。`poseModel`と`image`には`name`を使用できません。`image`はapp shellが表示する
+camera preview control icon用であり、Scratch spriteやcostumeを追加する機能ではありません。
 
 `file`はproject rootを基準にした安全なPOSIX相対pathです。次の値は使用できません。
 
-- `/assets/ocean.svg`のような絶対path
-- `C:\assets\ocean.svg`のようなWindows絶対pathやバックスラッシュ
-- `./assets/ocean.svg`、`../assets/ocean.svg`のような`.`または`..` segment
+- `/ocean.svg`のような絶対path
+- `C:\ocean.svg`のようなWindows絶対pathやバックスラッシュ
+- `./ocean.svg`、`../ocean.svg`のような`.`または`..` segment
 - `https://example.com/ocean.svg`のようなURI
 
 基準仕様では、builderがfileのbyte列を成果物へ埋め込み、実行環境からのネットワーク取得を不要にします。
@@ -302,6 +370,8 @@ assets:
 
 `lazy`でもアセット自体は配布成果物へ埋め込みます。scene開始時に準備が終わっていない場合は
 Loading表示で待ち、準備に失敗した場合はそのsceneのアクションを開始せず診断を表示する設計です。
+camera preview controlから参照する`image`はpreview開始時に必要なため、`loading: eager`だけを使用します。
+`lazy`のcontrol画像参照は意味検証でエラーになります。
 
 ## アクターを登録する
 
@@ -321,7 +391,7 @@ actors:
 初期コスチュームは`costume`アセットであり、その`target`がアクターIDと一致している必要があります。
 アクションでは`Hero.show`、`Turtle.say`のように、アクターIDと命令を`.`でつなぎます。
 
-## 表紙、Loading、ポーズ認識音を設定する
+## 表紙、Loading、ポーズ認識とcamera previewを設定する
 
 ### 表紙
 
@@ -360,6 +430,58 @@ poseRecognition:
 `poseRecognition`を記述する場合は、認識待機中の`idleSound`と、認識成立時の`chargeSound`を
 どちらも指定します。参照先は音アセットでなければなりません。
 
+### camera previewの表示と操作UI
+
+story全体の左右反転既定と、必要な操作UIを`poseRecognition.preview`へ記述します。
+
+```yaml
+assets:
+  ShowMirroredButton:
+    kind: image
+    file: ui/show-mirrored.svg
+    loading: eager
+  ShowUnmirroredButton:
+    kind: image
+    file: ui/show-unmirrored.svg
+    loading: eager
+  CameraMenuButton:
+    kind: image
+    file: ui/select-camera.svg
+    loading: eager
+
+poseRecognition:
+  idleSound: ClockTicking
+  chargeSound: Success
+  preview:
+    mirroring: mirrored
+    controls:
+      mirroring:
+        position: top-center
+        opacity: 0.8
+        assets:
+          showMirrored: ShowMirroredButton
+          showUnmirrored: ShowUnmirroredButton
+      cameraMenu:
+        position: bottom-center
+        opacity: 0.8
+        buttonAsset: CameraMenuButton
+```
+
+`mirroring`は`mirrored`または`unmirrored`で、省略時は従来表示と同じ`mirrored`です。これはpreview
+canvasの見た目だけを変更し、認識へ渡すframe、pose confidence、sequence／selection判定を変更しません。
+
+`controls`には左右反転buttonとcamera選択menuの一方または両方を記述します。配置は
+`top-center`、`bottom-center`、`left-center`、`right-center`と四隅の8 anchor、`opacity`は0〜1です。
+同じanchorでは左右反転button、camera menuの順に並びます。controlを省略した場合はUIを生成せず、
+暗黙の標準iconも補いません。buttonには台本画像とは別にlocale対応の名前、focus表示、keyboard操作を
+app shellが提供します。
+
+camera menuは開くたびに利用可能な入力を列挙します。`default`、`front`、`back`と検出済みcameraを
+選べますが、端末固有の物理device IDは台本、StoryDocument、`variables`へ保存しません。opaqueなIDと
+UIの選択状態はapp shellがsession内だけで保持し、camera切替失敗時は以前のcameraと表示へ戻します。
+起動時固定・既定OFFの`dsl4CameraPreviewControls`がOFFならcontrol画像、DOM、listener、上流camera APIへ
+接続しません。
+
 ## SVG Textを設定する
 
 DSL 4.0の標準テキスト表現はSVG Textです。最初に`textStyles`で名前付きスタイルを定義します。
@@ -395,6 +517,30 @@ textStyles:
 `asset=NAME,text`、`text=`、`textStyle=`、`action=text:...`に相当する旧Text Asset構文は、
 4.0 core schemaにありません。3.2では互換機能として動作しますが、4.0へは持ち込まないでください。
 
+## Speech styleを設定する
+
+`Actor.say`と`Actor.think`で同じ文字送り演出を再利用するときは、トップレベルの`speechStyles`へ
+名前付きstyleを定義します。
+
+```yaml
+speechStyles:
+  novel:
+    characterIntervalSeconds: 0.05
+    characterSound: Typewriter
+    noSoundCharacters: '「」'
+    restCharacters: '、。…'
+    restCharacterIntervalSeconds: 0.5
+```
+
+`characterIntervalSeconds`は必須で、Unicode grapheme cluster一つを表示してから次を表示するまでの秒数です。
+`characterSound`は逐次表示した各文字で鳴らすsound asset、`noSoundCharacters`は文字音を鳴らさない文字、
+`restCharacters`は無音にしたうえで表示後の間隔を`restCharacterIntervalSeconds`へ置き換える文字です。
+`noSoundCharacters`を使う場合は`characterSound`、`restCharacters`を使う場合は
+`restCharacterIntervalSeconds`も指定します。
+
+styleには本文、完了条件、吹き出し開始時の音声を含めません。`text`、`seconds`、`waitFor`、
+`startSound`はセリフごとにactionへ記述します。
+
 ## 変数と条件分岐を設定する
 
 ### 変数
@@ -409,6 +555,9 @@ variables:
 初期値に使用できる型はstring、number、booleanだけです。list、mapping、`null`、式を初期値には
 使用できません。実行中に値を変更する処理はruntimeまたは登録済みactionが担当し、宣言時の型と異なる値へ
 暗黙変換しません。
+
+`variables`は物語の意味を持つ値だけに使います。cameraの物理device ID、preview buttonの選択状態、
+DOM node、listener、Object URLはapp shell所有の一時状態であり、story変数やScratch変数へ写さないでください。
 
 ### 分岐
 
@@ -493,17 +642,21 @@ scenes:
 scenes:
   rescue:
     poseModel: 救助Pose
+    posePreview:
+      mirroring: unmirrored
     actions:
       - stage: Ocean
       - Hero.pose:
-          choices:
+          steps:
             - pose: help
               skin: HeroHelp
               sound: Success
 ```
 
-長形式では`actions`が必須です。`poseModel`とアクションを同じ階層へ混在させず、アクションは必ず
-`actions`のlistへ入れます。短形式と長形式は、検証後に同じ内部の`SceneNode`へ正規化されます。
+長形式では`actions`が必須です。`poseModel`、`posePreview`とアクションを同じ階層へ混在させず、
+アクションは必ず`actions`のlistへ入れます。`posePreview.mirroring`はそのsceneだけの上書きです。次に入る
+sceneへ指定がなければstory既定へ戻り、前sceneの値を持ち越しません。短形式と長形式は、検証後に同じ
+内部の`SceneNode`へ正規化されます。
 
 ## Global action
 
@@ -585,14 +738,14 @@ Global actionはアクター名を付けずに記述します。
 
 Actor actionは`ActorID.command`をキーにします。
 
-| action          | 必須引数                  | 役割                                         |
-| --------------- | ------------------------- | -------------------------------------------- |
-| `Actor.show`    | `skin`、`x`、`y`、`scale` | コスチューム、位置、倍率を指定して表示する   |
-| `Actor.moveTo`  | `x`、`y`、`seconds`       | 指定位置へ移動する                           |
-| `Actor.say`     | `text`、`seconds`         | 指定時間セリフを表示する                     |
-| `Actor.setSkin` | コスチュームID            | コスチュームを変更する                       |
-| `Actor.setText` | `text`、`style`           | SVG Textを更新する                           |
-| `Actor.pose`    | `choices`                 | ポーズ認識結果に応じてコスチュームと音を選ぶ |
+| action                    | 必須引数                                  | 役割                                         |
+| ------------------------- | ----------------------------------------- | -------------------------------------------- |
+| `Actor.show`              | `skin`、`x`、`y`、`scale`                 | コスチューム、位置、倍率を指定して表示する   |
+| `Actor.moveTo`            | `x`、`y`、`seconds`                       | 任意のeasingで指定位置へ移動する              |
+| `Actor.say`／`Actor.think` | `text`と、`seconds`／`waitFor`の一方以上 | セリフまたは思考を表示する                   |
+| `Actor.setSkin`           | コスチュームID                            | コスチュームを変更する                       |
+| `Actor.setText`           | `text`、`style`                           | SVG Textを更新する                           |
+| `Actor.pose`              | `steps`                                   | ポーズを順に認識してcostumeと音を適用する    |
 
 ### 表示する
 
@@ -614,17 +767,40 @@ Actor actionは`ActorID.command`をキーにします。
     x: 40
     y: -57
     seconds: 1.5
+    easing: easeInOut
 ```
 
-`seconds`は0以上です。
+`seconds`は0以上です。`easing`は`linear`、`easeIn`、`easeOut`、`easeInOut`から選び、省略時は
+`linear`です。XとYへ同じ補間率を使い、0秒、完了、skip時は指定した終点へ確定します。
 
-### セリフを表示する
+### セリフと思考を表示する
 
 ```yaml
 - Hero.say:
     text: 助けに行こう
-    seconds: 2
+    seconds: 8
+    waitFor: advance
+    style: novel
+    startSound: HeroGreetingVoice
+- Hero.think:
+    text: どうしよう……
+    waitFor: advance
+    characterIntervalSeconds: 0.1
+    characterSound: Typewriter
 ```
+
+`seconds`だけなら表示開始から指定秒数後、`waitFor: advance`だけならprimary pointer／tapまたは有効な
+任意キーの入力後に完了します。両方を指定すると、入力とtimeoutのうち先に成立した方で完了します。
+speech開始に使った同じ入力、interactive UI、IME composition、modifier shortcut、key repeatは
+advanceとして再利用しません。
+
+`style`には`speechStyles`のIDを指定します。styleを指定したactionでは、
+`characterIntervalSeconds`、`characterSound`、`noSoundCharacters`、`restCharacters`、
+`restCharacterIntervalSeconds`をinline指定できません。styleを使わない既存のinline形式は引き続き使えます。
+
+`startSound`は吹き出し表示開始時に1回再生し、speech完了、入力、timeout、cancelで停止します。
+文字送り途中に入力またはtimeoutした場合は、残り全文を文字音と文字別休止なしで即時表示して完了します。
+`Actor.say`と`Actor.think`は同じlifecycleを使い、吹き出しの種類だけが異なります。
 
 ### コスチュームを変える
 
@@ -652,7 +828,7 @@ Actor actionは`ActorID.command`をキーにします。
 
 ```yaml
 - Hero.pose:
-    choices:
+    steps:
       - pose: help
         skin: HeroHelp
         sound: Success
@@ -661,7 +837,7 @@ Actor actionは`ActorID.command`をキーにします。
         sound: Success
 ```
 
-`choices`は一つ以上必要です。各項目は、認識する`pose`、認識後に表示する`skin`、再生する`sound`を
+`steps`は一つ以上必要です。各項目は、順に認識する`pose`、認識後に表示する`skin`、再生する`sound`を
 一組として持ちます。シーン側の長形式で`poseModel`も指定してください。
 
 ## stableIdを付ける
@@ -678,9 +854,63 @@ Actor actionは`ActorID.command`をキーにします。
 `stableId`は名前付きmappingにだけ指定できます。`wait: 1`のようなscalar短形式へ追加することは
 できません。
 
+## Web Previewで変更をlive reloadする
+
+Issue #390のWeb Previewでは、対応browserで「プロジェクトを開く」を押し、project rootをread-onlyで
+選択します。Web Previewに組込みeditorはなく、YAMLとassetは任意の外部editorで変更します。選択した
+directory handleはsession中だけ保持し、YAML、manifest、SB3、user設定へ保存しません。
+
+最初の正常なYAMLはreload選択を挟まず先頭から開始します。その後に`story.kamishibai.yaml`を保存すると、
+Web Previewはpollingで変更を検出し、書込み途中ではない安定したsnapshotをparse／validateします。正常な
+candidateだけが次の再開位置の選択へ進みます。
+
+1. 先頭から
+2. 現在のsceneから
+3. 現在のactionから
+
+現在のactionから再開できるかは、actionが一意でreplay-safeかなどの条件で決まります。`stableId`は
+変更前後の同じactionを特定しやすくしますが、すべてのactionへ付ける必要はありません。YAMLが不正、
+missing、unstableの場合は現在実行中のimmutable snapshotを置き換えず、診断を表示して次の保存を待ちます。
+pageがbackgroundの場合はbrowserのtimer制限により検出が遅れることがあります。
+
+### Local assetの追加と内容更新
+
+Issue #391の候補仕様では、`backdrop`、`costume`、`sound`、`poseModel`について次をlive reload対象に
+します。
+
+- 既存asset ID、kind、pathを維持したままfile内容だけを更新する
+- 新しい一意なasset IDとlocal file／pose model bundleを追加し、同じcandidate YAMLから参照する
+
+新しいfileを先に置いても、YAMLを先に保存してもかまいません。両方が揃ってstableになり、source、
+asset graph、file内容、参照関係の検証がすべて成功した場合だけ、一つのimmutable candidateとして
+transactionalにcommitします。途中のfile、pose model bundleの一部、検証に失敗したassetだけを部分反映
+しません。未参照fileは無視し、project root全体を再帰走査せず、activeまたはcandidate YAMLが宣言した
+exact pathだけを読みます。
+
+次の変更は同じlive reloadへ混ぜず、full rebuildの対象です。
+
+- 既存asset IDの削除／rename
+- 既存assetのkind／path変更
+- 既存pose modelのbundle構成変更
+- base SB3、app shell、extension、builder設定、control profileの変更
+
+### TurboWarp Editor内のproject asset
+
+`HeroHappy: costume:Hero`のような短形式や、`name`を使うassetはlocal fileではなく、base SB3内の
+project assetを参照します。同一TurboWarp Editor／同一VMで既存costumeを編集した場合は、同じrenderer
+skinの更新として実行中表示へ即時反映されることがあります。これはWeb Previewのtransactional asset
+candidateではなく、reload dialog、safe boundary、rollbackの対象にもなりません。
+
+costumeの削除後の同名追加、import、renameによる自動再bindは保証しません。別Editor／別VMで保存した
+base SB3も実行中VMへ自動反映されず、full rebuildが必要です。YAML保存と同時期にproject costumeを編集しても、
+両者を一つのtransactionへ束ねるatomicityは保証しません。
+
+production用にbuildした自己完結SB3には、directory handle、poll timer、candidate、reload dialog状態を
+含めません。watchとlive reloadはdevelopment previewだけの機能です。
+
 ## 総合サンプル
 
-次の例は、アセット、表紙、SVG Text、変数、keymap、分岐、入力、ポーズ認識を一つの台本へまとめた
+次の例は、アセット、表紙、SVG Text、speech style、変数、keymap、分岐、入力、ポーズ認識を一つの台本へまとめた
 ものです。構文確認用であり、現行3.2.xアプリでは実行できません。
 
 ```yaml
@@ -690,7 +920,7 @@ assets:
   Beach: backdrop
   Ocean:
     kind: backdrop
-    file: assets/ocean.svg
+    file: ocean.svg
     loading: lazy
   HeroIdle: costume:Hero
   HeroHappy: costume:Hero
@@ -699,9 +929,24 @@ assets:
   OpeningSound: sound
   ClockTicking: sound
   Success: sound
+  Typewriter: sound
+  HeroGreetingVoice: sound
+  HeroThinkingVoice: sound
+  ShowMirroredButton:
+    kind: image
+    file: show-mirrored.svg
+    loading: eager
+  ShowUnmirroredButton:
+    kind: image
+    file: show-unmirrored.svg
+    loading: eager
+  CameraMenuButton:
+    kind: image
+    file: select-camera.svg
+    loading: eager
   救助Pose:
     kind: poseModel
-    file: pose-models/rescue
+    file: rescue-pose
     loading: lazy
 
 actors:
@@ -721,6 +966,14 @@ textStyles:
     align: center
     direction: up
 
+speechStyles:
+  novel:
+    characterIntervalSeconds: 0.05
+    characterSound: Typewriter
+    noSoundCharacters: '「」'
+    restCharacters: '、。…'
+    restCharacterIntervalSeconds: 0.5
+
 variables:
   score: 1
   takeSeaRoute: false
@@ -728,6 +981,19 @@ variables:
 poseRecognition:
   idleSound: ClockTicking
   chargeSound: Success
+  preview:
+    mirroring: mirrored
+    controls:
+      mirroring:
+        position: top-center
+        opacity: 0.8
+        assets:
+          showMirrored: ShowMirroredButton
+          showUnmirrored: ShowUnmirroredButton
+      cameraMenu:
+        position: bottom-center
+        opacity: 0.8
+        buttonAsset: CameraMenuButton
 
 controls:
   keymaps:
@@ -764,18 +1030,23 @@ scenes:
         scale: 30
     - Hero.say:
         text: 助けに行こう
-        seconds: 2
+        seconds: 8
+        waitFor: advance
+        style: novel
+        startSound: HeroGreetingVoice
     - keyInputToChangeScene:
         Digit1: rescue
         Digit2: ending
 
   rescue:
     poseModel: 救助Pose
+    posePreview:
+      mirroring: unmirrored
     actions:
       - stage: Ocean
       - Hero.setSkin: HeroHelp
       - Hero.pose:
-          choices:
+          steps:
             - pose: help
               skin: HeroHelp
               sound: Success
@@ -789,9 +1060,11 @@ scenes:
         x: 40
         y: -57
         seconds: 1.5
-    - Hero.say:
-        text: 海路で帰ろう
-        seconds: 2
+        easing: easeInOut
+    - Hero.think:
+        text: 海路で帰ろう……
+        waitFor: advance
+        startSound: HeroThinkingVoice
     - transition:
         effect: fadeOut
         seconds: 0.5
@@ -842,7 +1115,7 @@ scenes:
 
 ### 移行時に個別判断が必要な機能
 
-2026年8月6日の4.0 core schemaには、3.2のすべての命令が揃っているわけではありません。
+2026年8月7日の4.0 core schema候補には、3.2のすべての命令が揃っているわけではありません。
 特に次の機能は、同名の4.0 core actionとして受理されません。
 
 - 旧Text Asset関連の`asset=...,text`、`text`、`textStyle`、`action=text`
@@ -909,6 +1182,7 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 
 ## 関連資料
 
+- [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
 - [紙芝居DSLファイル作成マニュアル](dsl-manual.md): 現行3.1／3.2作品の作成手順
 - [紙芝居DSL コマンドリファレンス](command-reference.md): 現行3.1／3.2の詳細な命令一覧
 - [紙芝居DSL 2.0から3.2への変更履歴](history.md): 現行DSL系列の移行履歴
