@@ -50,10 +50,29 @@ pnpm check
 移設元の固定情報と機能拡張一覧は
 [`sources/tmpose-kamishibai.json`](sources/tmpose-kamishibai.json)で管理します。
 
-### DSL 4.0 Schemaリファレンス
+### DSLリファレンスの保守と出版
+
+DSL 3系とDSL 4.0では、リファレンスの正本と保守方法を分けます。
+
+- DSL 3系（現行実装が受理する宣言は3.1／3.2）: 過去リリースから引き継いだ手書きMarkdown
+  [`docs/dsl-author-guides/command-reference.md`](docs/dsl-author-guides/command-reference.md)を、
+  このリポジトリで引き続き保守します。
+- DSL 4.0: 上流JSON Schemaの固定snapshot、source lock、日本語Annotationから
+  [`docs/dsl-author-guides/dsl-4.0-schema-reference.md`](docs/dsl-author-guides/dsl-4.0-schema-reference.md)を
+  決定的に生成します。
+
+どちらのMarkdownも`pnpm build`で同じVivliostyle Web Publication工程へ入力し、通常のHTML版
+（各公開ディレクトリの`document.html`）とVivliostyle Viewer版（`publication.json`）を同時に
+用意します。DSL 3系をJSON Schemaへ置き換えたり、DSL 4.0と同じ生成方式へ擬似的に統一したりは
+しません。
+
+### DSL 4.0 Schemaリファレンスの生成
 
 DSL 4.0のリファレンスは、上流JSON Schemaの固定snapshot、source lock、日本語Annotationから
-決定的に生成します。通常のbuildはnetworkへ接続せず、固定snapshotだけを読みます。
+決定的に生成します。現在は、規範JSON Schema、表層仕様、適合実装・testを含むDSL 4.0完成commitを
+同一revisionとして固定します。Schemaはruntime実装から生成しません。通常のbuildはnetworkへ接続せず、
+固定snapshotだけを読みます。Schema外でcompose前に処理するSource Graph／`include`の作者向け契約は、
+固定した表層仕様と適合実装・testを根拠に台本作成ガイドで管理します。
 
 ```bash
 pnpm docs:dsl4:check

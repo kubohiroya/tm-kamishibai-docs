@@ -366,10 +366,10 @@ export function renderReferenceDocument({schema, annotations, lock}) {
   const sourceCommitDate = candidateSnapshot ? lock.baseCommitDate : lock.commitDate;
   const sourceCommitUrl = `https://github.com/${lock.repository}/commit/${sourceCommit}`;
   const snapshotLabel = candidateSnapshot
-    ? `Schema candidate: [\`${sourceCommit.slice(0, 7)}\`をbaseにした実装候補](${lock.candidateIssueUrl})`
+    ? `Schema candidate: [\`${sourceCommit.slice(0, 7)}\`をbaseにした規範Schema候補](${lock.candidateIssueUrl})`
     : `Schema固定commit: [\`${sourceCommit.slice(0, 7)}\`](${sourceCommitUrl})`;
   const snapshotDescription = candidateSnapshot
-    ? `[Issue #${lock.candidateIssue}](${lock.candidateIssueUrl})の作業ツリー実装候補から固定したDSL 4.0 JSON Schema snapshot`
+    ? `[Issue #${lock.candidateIssue}](${lock.candidateIssueUrl})の作業ツリーから固定したDSL 4.0規範JSON Schema候補snapshot`
     : `固定snapshotの[DSL 4.0 JSON Schema](${lock.schemaUrl})`;
   const updateCommand = candidateSnapshot
     ? `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai-camera-preview-controls --commit <base-commit> --working-tree --issue ${lock.candidateIssue}`
@@ -380,15 +380,15 @@ export function renderReferenceDocument({schema, annotations, lock}) {
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象: DSL 3.2からの移行準備、DSL 4.0台本の先行試作、構造・制約の確認を行う方\\
+対象: DSL 4.0台本の作成、構造・制約の確認を行う方\\
 対象仕様: \`kamishibai: '4.0'\`\\
-文書状態: **先行公開（DSL 4.0実装は未リリース）**\\
+文書状態: **DSL 4.0実装完成版**\\
 ${snapshotLabel}\\
 Schema SHA-256: \`${lock.schemaSha256}\`
 
-> **重要:** このリファレンスは移行の調査、台本の別ファイルでの試作、レビューに使用できますが、
-> 現行の公開アプリtmpose-kamishibai 3.2.xではDSL 4.0台本を実行できません。
-> 上映用の3.2台本を維持し、4.0用YAMLへ置き換えるのは対応アプリのリリース後にしてください。
+> **権威関係と配布状態:** 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、
+> 適合実装・testを固定しています。Schemaはruntime実装から生成しません。公開アプリ、配布artifact、
+> feature flagがDSL 4.0を有効にしているかは利用するreleaseごとに確認してください。
 
 ## このリファレンスについて
 
@@ -407,19 +407,17 @@ ${candidateSnapshot ? `> **候補snapshot:** このSchemaには、上流\`${sour
 
 表中の「必須」は、そのobjectまたは形式を選んだ場合の必須性です。\`stableId\`などの任意fieldは、
 再読み込みや診断位置の安定化に必要かを作品ごとに判断してください。例は各Schema断片を機械検証しており、
-アセットやシーン間の参照整合性は、将来のpreview環境でも別途確認する必要があります。
+アセットやシーン間の参照整合性は、source frontendまたはpreview／buildでも別途確認する必要があります。
 
 ${sections}
 
-## 移行準備での使い方
+## 台本作成での使い方
 
-1. 現行の3.2台本と上映環境を変更せず保管する
-2. 4.0用の\`.kamishibai.yaml\`を別ファイルとして作る
+1. projectに4.0用の\`.k4.yml\`を作る
+2. 利用するpreview／build／公開アプリがDSL 4.0を有効にしていることを確認する
 3. 本リファレンスでfield、型、必須性、core actionの引数を確認する
-4. 旧Text Asset、3.2だけのaction、外部assetの扱いを移行課題として一覧化する
-5. Schema検証と参照検証を通しても、対応アプリのリリースまでは3.2を上映用の正本にする
+4. Schema検証、参照検証、previewを通してから4.0の成果物をbuildする
 
-移行全体の判断と作例は[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)、現行アプリで実行できる
-構文は[紙芝居DSLファイル作成マニュアル](dsl-manual.md)を参照してください。
+作例とprojectの構成は[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)を参照してください。
 `;
 }

@@ -2,48 +2,42 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象: 台本作者、教材作成者、授業設計者、DSL 3.2からの移行を検討する開発者\
+対象: DSL 4.0の台本作者、教材作成者、授業設計者、開発者\
 対象仕様: `kamishibai: '4.0'`\
-文書状態: DSL 4.0の実装基準に基づく先行ガイド\
-調査基準: tmpose-kamishibai `5f1c1d0`とIssue #390、#391の実装候補、2026年8月7日
+文書状態: DSL 4.0実装完成版の台本作成ガイド\
+調査基準: tmpose-kamishibai `7945781`、2026年8月8日
 
-> **重要:** DSL 4.0は開発中です。現行の公開アプリtmpose-kamishibai 3.2.xへ、
-> この文書のYAML台本を読み込ませることはできません。実際に作品を制作・上映する場合は、
-> 既存の[紙芝居DSLファイル作成マニュアル](dsl-manual.md)と
-> [紙芝居DSL コマンドリファレンス](command-reference.md)を使用してください。
+> **配布状態との区別:** DSL 4.0の実装は完成していますが、公開アプリ、配布artifact、feature flagで
+> DSL 4.0が有効かは利用するreleaseごとに確認してください。
 
-このガイド本文は上記の公開済みcommitと、Issue #390、#391の実装候補を調査基準としています。
-移行候補で使うfield、型、必須性、既定値、action引数を確認するときは、公開済みcommitのSchemaを固定して生成した
-[紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)を併用してください。Schemaリファレンスも
-実装のリリースを意味せず、4.0用YAMLへ上映環境を切り替える判断には使用できません。
+このガイドと[紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)は、上記の完成commitを
+調査基準としています。field、型、必須性、既定値、action引数はSchemaリファレンスで確認し、
+Source Graph、preview、build、runtimeの利用可否は対象releaseの機能一覧とfeature flagで確認してください。
 
-この文書は、確定済みのDSL 4.0表層仕様を、台本作者が読める形で説明します。既存の3.1／3.2向け文書を
-置き換えるものではありません。4.0のアプリ統合と配布ツールが完成するまでは、仕様の確認、台本設計、
-試作、レビューに使用してください。
+この完成commitでは、規範JSON Schema、表層仕様、適合実装・testを同一revisionとして固定しています。
+Schemaはruntime実装から生成するものではありません。
 
-公開済み仕様の正本は、tmpose-kamishibaiリポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/5f1c1d08871a057dfff8ff802cfacce12dcd10df/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/5f1c1d08871a057dfff8ff802cfacce12dcd10df/schema/dsl-4.schema.json)です。
+この文書は、完成したDSL 4.0表層仕様と作者向けtoolchainを、台本作者が読める形で説明します。
+
+仕様の正本は、tmpose-kamishibaiリポジトリの
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/schema/dsl-4.schema.json)です。
 camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)、advanced speechと
 `speechStyles`は[Issue #396](https://github.com/kubohiroya/tmpose-kamishibai/issues/396)、
-`Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tmpose-kamishibai/issues/398)から
+`Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tmpose-kamishibai/issues/398)、
+`Actor.setTransparency`は[Issue #406](https://github.com/kubohiroya/tmpose-kamishibai/issues/406)、
+Source Graphと`include`は[Issue #417](https://github.com/kubohiroya/tmpose-kamishibai/issues/417)から
 上記commitまでにmergeされています。project directory選択と
 YAML live reloadは[Issue #390](https://github.com/kubohiroya/tmpose-kamishibai/issues/390)、local assetの
 追加・内容更新のlive reloadは
-[Issue #391](https://github.com/kubohiroya/tmpose-kamishibai/issues/391)で仕様化しています。
+[Issue #391](https://github.com/kubohiroya/tmpose-kamishibai/issues/391)で実装されています。
 
-## DSL 4.0で変わること
+## DSL 4.0の記法
 
-DSL 4.0では、1行を`=`、`:`、`,`で分割する3.2までの独自形式から、YAML 1.2へ移行します。
-引数には名前が付き、背景、位置、時間などの意味を台本から読み取りやすくなります。
-
-```text
-# DSL 3.2
-action=Hero:show:HeroHappy:0,-60,30
-```
+DSL 4.0は制限付きYAML 1.2で記述します。引数には名前が付き、背景、位置、時間などの意味を
+台本から読み取れます。一つのaction itemには命令を一つだけ書きます。
 
 ```yaml
-# DSL 4.0
 - Hero.show:
     skin: HeroHappy
     x: 0
@@ -51,27 +45,12 @@ action=Hero:show:HeroHappy:0,-60,30
     scale: 30
 ```
 
-主な違いは次のとおりです。
+標準のsource suffixは`.k4.yml`、version宣言は`kamishibai: '4.0'`です。sceneは`scenes` mapping、
+actionは1キーのYAML mapping、複数引数は`x`、`y`、`seconds`などの名前付きfieldで表します。
 
-| 項目         | DSL 3.2                       | DSL 4.0                                             |
-| ------------ | ----------------------------- | --------------------------------------------------- |
-| ファイル形式 | 独自の行形式                  | 制限付きYAML 1.2                                    |
-| 推奨拡張子   | `.txt`                        | `.kamishibai.yaml`                                  |
-| バージョン   | `kamishibai=3.2`              | `kamishibai: '4.0'`                                 |
-| シーン       | `---`と`sceneLabel`           | `scenes`内の名前付きmapping                         |
-| アクション   | `action=対象:命令:値`         | 1キーだけを持つYAML mapping                         |
-| 複数引数     | 順番で意味を決定              | `x`、`y`、`seconds`などの名前付き引数               |
-| ポーズモデル | シーン内の`TMPoseURL`         | `poseModel`アセットをシーンから参照                 |
-| テキスト     | SVG Textと旧Text Asset        | `textStyles`と`Actor.setText`。旧Text Assetは対象外 |
-| 外部アセット | 実行時にHTTP(S) URLを取得可能 | 基準仕様ではproject内の相対fileを成果物へ埋め込む   |
-| 診断         | `K32-*`                       | Source Map付きの`K4-*`                              |
+## 実装完成範囲
 
-3.2台本と4.0台本は別の構文です。一つのファイルへ混在させたり、先頭のバージョンだけを
-`4.0`へ書き換えたりしないでください。
-
-## 現在の利用範囲
-
-2026年8月7日の調査基準では、次の実装がtmpose-kamishibaiの`main`へ入っています。
+2026年8月8日の調査基準では、次の実装がtmpose-kamishibaiの`main`へ入っています。
 
 - 制限付きYAMLの解析、JSON Schema検証、参照関係の意味検証
 - 行・列とStory Pathを保持するSource Map、`K4-*`診断
@@ -81,18 +60,18 @@ action=Hero:show:HeroHappy:0,-60,30
 - camera previewのstory既定、scene固有の非stickyな左右反転指定、任意の操作UI
 - `Actor.say`／`Actor.think`の入力待ち、文字送り、開始音／文字音、名前付き`speechStyles`
 - `Actor.moveTo`の`linear`、`easeIn`、`easeOut`、`easeInOut`
+- `Actor.setTransparency`の即時指定、foreground／backgroundの線形変化
+- 複数sourceを決定的にcomposeするSource Graph、宣言元相対asset解決、自己完結SB3 packaging
+- Web／CLI previewのtransactional reload、Source Map、packaging後のsource origin復元
+- navigation入力と作品内input actionを一つのsemantic consumerへ限定する入力arbitration
 
-Issue #406の`Actor.setTransparency`はDraft PR #409が未マージで`main`と競合しているため、今回固定した
-Schemaには含めません。merge後のSchemaを次回同期するまでは、先行台本へ記述しないでください。
-
-一方、公開アプリで4.0作品を開いて上映するために必要なbuilder、TurboWarpとの実動作接続、
-アプリUI、配布artifact、既定OFFの機能フラグを含むend-to-end統合は完了していません。
-このため、この文書では構文を「使用できる」と断定せず、「4.0の実装基準として受理する」という意味で
-説明します。
+builder、TurboWarp runtime surface、browser／CLI previewを含むend-to-end実装は完成しています。
+ただし、完成した機能の一部は起動時固定・既定OFFのfeature flagで段階導入されます。実装完成は、
+すべての公開releaseで自動的に有効になることを意味しません。
 
 ## 最小台本
 
-ファイルをUTF-8で保存し、拡張子を`.kamishibai.yaml`にします。
+ファイルをUTF-8で保存します。新規projectでは短い`.k4.yml`を推奨します。
 
 ```yaml
 kamishibai: '4.0'
@@ -133,45 +112,108 @@ scenes:
 ```text
 tutorial-story/
 ├── project.source.json
-├── story.kamishibai.yaml
+├── story.k4.yml
 ├── ocean.svg
 ├── hero-happy.svg
 ├── opening.mp3
-└── rescue-pose/
-    ├── model.json
-    ├── metadata.json
-    └── weights.bin
+├── rescue-pose/
+│   ├── model.json
+│   ├── metadata.json
+│   └── weights.bin
+└── chapters/
+    ├── rescue.k4.yml
+    └── rescue-background.svg
 ```
 
 `assets/`、`images/`、`sounds/`、`pose-models/`等の分類directoryは必須ではありません。作品が大きく
-なった場合に任意で使用できますが、YAMLの`file`は常にproject rootを基準にします。YAML自身もroot直下に
-置くため、`file: ocean.svg`はYAMLから見てもproject rootから見ても同じfileを示します。
+なった場合に任意で使用できます。単一sourceまたはrootの`story.k4.yml`で宣言した`file: ocean.svg`は
+project rootの`ocean.svg`を示します。included sourceで宣言したassetは、そのsourceのdirectoryを基準に
+解決します。
 
 Web Previewで選択するのはYAML fileではなく`tutorial-story/`に当たるproject root directoryです。
 Web Previewはroot直下の`project.source.json`を読み、次の規則でYAMLを一つに決定します。
 
-- `path`省略時はroot直下の`story.kamishibai.yaml`を使用する
-- 別名を指定する場合も、root直下の`.kamishibai.yaml` basenameだけを使用する
-- `stories/main.kamishibai.yaml`のようにdirectoryを含むpathは使用しない
-- directory内の`*.kamishibai.yaml`を走査して推測しない
+- 新規projectはroot直下の`story.k4.yml`を`path`へ明示する
+- `path`省略時は後方互換の既定値`story.kamishibai.yaml`を使用する
+- 別名を指定する場合も、root直下の正式suffixを持つbasenameだけを使用する
+- `stories/main.k4.yml`のようにdirectoryを含むentry pathは使用しない
+- directory内のDSL sourceを走査して推測しない
 - manifestが不正な場合は既定値へfallbackせず、診断を表示する
 
-最小の`project.source.json`は次のとおりです。
+新規projectの`project.source.json`は次のようにentry sourceを明示します。
 
 ```json
 {
   "formatVersion": 1,
   "mode": "external",
-  "sourceId": "main"
+  "sourceId": "main",
+  "path": "story.k4.yml"
 }
 ```
 
-別名を使う場合だけ、たとえば`"path": "opening.kamishibai.yaml"`を追加します。`build-dsl4`は
-`--source-manifest`でこのmanifestを指定し、`validate-dsl4 --input`は検証するYAMLを直接指定します。
+正式に受理するsuffixは`.k4.yml`、`.k4.yaml`、`.kamishibai.yml`、`.kamishibai.yaml`です。短い
+`.k4.yml`を新規sourceの推奨表記とし、長いsuffixは既存projectとの互換性のため維持します。
+`build-dsl4`は`--source-manifest`でこのmanifestを指定し、`validate-dsl4 --input`は検証するYAMLを
+直接指定します。
+
+## 台本を複数sourceへ分割する
+
+`dsl4SourceIncludes`を起動時に明示ONにすると、entry sourceの`include`から到達する複数sourceを
+一つのSource Graphとしてcomposeできます。`include`は一件の文字列またはlistで指定します。
+
+```yaml
+# story.k4.yml
+include:
+  - chapters/rescue.k4.yml
+
+kamishibai: '4.0'
+assets:
+  Ocean:
+    kind: backdrop
+    file: ocean.svg
+scenes:
+  opening:
+    - goto: rescue
+```
+
+```yaml
+# chapters/rescue.k4.yml
+assets:
+  RescueBackground:
+    kind: backdrop
+    file: rescue-background.svg
+scenes:
+  rescue:
+    - stage: RescueBackground
+```
+
+`chapters/rescue.k4.yml`の`file: rescue-background.svg`は、宣言元を基準に
+`chapters/rescue-background.svg`へ解決されます。絶対path、URL、backslash、project root外へのescapeと
+root外symlinkは、sourceまたはassetのbyte列を読む前に拒否されます。
+
+Source Graphには次の規則があります。
+
+- `kamishibai`はentry sourceだけに書き、included sourceへ重ねて宣言しない
+- 同じnamespaceの同じIDは、内容が同じでも複数sourceへ宣言しない
+- `cover`、`loading`、`poseRecognition`、`controls`などの単一設定はgraph全体で一度だけ宣言する
+- root優先、include順による後勝ち、shadowingはなく、全宣言を確定してから参照を解決する
+- include cycleは経路付き`K4-INCLUDE-CYCLE`で停止する
+- 一つのsource、source件数、graph合計byte数、compose後byte数、include depthに有限上限を設ける
+
+`include`はSchema検証の前に処理するSource Graph directiveで、compose後の台本から取り除かれます。
+全sourceと参照するlocal assetを二回安定取得し、同じgeneration identityになった場合だけpreviewへstageします。
+途中保存、sourceだけ新しい状態、assetだけ新しい状態は実行中のgenerationを置き換えません。build成果物は
+composed source、宣言元の論理source ID／range、local assetを保持する自己完結SB3で、端末の絶対pathや
+browser file handleを保存しません。
+
+CLI previewでSource Graphを使う場合は`--enable-source-includes`を指定し、`--max-source-bytes`、
+`--max-source-files`、`--max-total-source-bytes`、`--max-include-depth`とasset上限を有限値で指定します。
+feature flagがOFFの場合は単一source経路を維持します。
 
 ## ファイル全体の構造
 
-トップレベルで使用できるキーは次のものだけです。表にないキーは警告ではなくエラーになります。
+compose後の台本で使用できるトップレベルキーは次のものだけです。表にないキーは警告ではなくエラーに
+なります。`include`は前節のSource Graph処理だけが受理し、JSON Schemaのトップレベルfieldではありません。
 
 | キー              | 必須 | 役割                                           |
 | ----------------- | ---- | ---------------------------------------------- |
@@ -349,7 +391,8 @@ assets:
 `target`が必須です。`poseModel`と`image`には`name`を使用できません。`image`はapp shellが表示する
 camera preview control icon用であり、Scratch spriteやcostumeを追加する機能ではありません。
 
-`file`はproject rootを基準にした安全なPOSIX相対pathです。次の値は使用できません。
+`file`は宣言を書いたsourceのdirectoryを基準に解決する、安全なPOSIX相対pathです。root直下のentry
+sourceではproject root基準になります。次の値は使用できません。
 
 - `/ocean.svg`のような絶対path
 - `C:\ocean.svg`のようなWindows絶対pathやバックスラッシュ
@@ -357,8 +400,7 @@ camera preview control icon用であり、Scratch spriteやcostumeを追加す�
 - `https://example.com/ocean.svg`のようなURI
 
 基準仕様では、builderがfileのbyte列を成果物へ埋め込み、実行環境からのネットワーク取得を不要にします。
-現行の3.2台本で外部URLを使っている場合は、そのURLをそのまま4.0へ移さず、アセットをproject内へ
-配置する必要があります。
+Source Graphでは正規化後pathとsymlink実体の両方がproject root内であることをbyte列の読込前に確認します。
 
 ### eagerとlazy
 
@@ -514,8 +556,7 @@ textStyles:
     style: title
 ```
 
-`asset=NAME,text`、`text=`、`textStyle=`、`action=text:...`に相当する旧Text Asset構文は、
-4.0 core schemaにありません。3.2では互換機能として動作しますが、4.0へは持ち込まないでください。
+行形式のText Asset commandは4.0 core schemaにありません。`textStyles`と`Actor.setText`を使用してください。
 
 ## Speech styleを設定する
 
@@ -582,8 +623,7 @@ branches:
 - branch: rescueResult
 ```
 
-条件式の評価器と利用できる演算の最終的な製品契約は、4.0の実動作統合で確定します。3.2の式がそのまま
-すべて利用できるとは仮定しないでください。
+条件式の評価器と利用できる演算は、利用するreleaseのDSL 4.0機能一覧で確認してください。
 
 ## 操作キーを設定する
 
@@ -741,6 +781,7 @@ Actor actionは`ActorID.command`をキーにします。
 | action                    | 必須引数                                  | 役割                                         |
 | ------------------------- | ----------------------------------------- | -------------------------------------------- |
 | `Actor.show`              | `skin`、`x`、`y`、`scale`                 | コスチューム、位置、倍率を指定して表示する   |
+| `Actor.setTransparency`   | 0〜100または`from`、`to`、`seconds`       | 幽霊効果を即時設定または線形に変化させる     |
 | `Actor.moveTo`            | `x`、`y`、`seconds`                       | 任意のeasingで指定位置へ移動する              |
 | `Actor.say`／`Actor.think` | `text`と、`seconds`／`waitFor`の一方以上 | セリフまたは思考を表示する                   |
 | `Actor.setSkin`           | コスチュームID                            | コスチュームを変更する                       |
@@ -759,6 +800,37 @@ Actor actionは`ActorID.command`をキーにします。
 
 `scale`は0より大きい数値です。`skin`は、そのアクターを`target`とするコスチュームアセットを
 指定します。
+
+### 透明度を変える
+
+即時設定では0〜100の数値を直接指定できます。
+
+```yaml
+- Hero.setTransparency: 50
+```
+
+`0`は完全不透明、`50`はScratch／TurboWarpの「幽霊の効果を50にする」、`100`は完全透明です。
+値の反転や換算は行いません。`stableId`を付ける場合は名前付きの`transparency`形式を使います。
+
+```yaml
+- Hero.setTransparency:
+    stableId: heroHalfTransparent
+    transparency: 50
+```
+
+`from`、`to`、`seconds`を指定すると、透明度を線形に変化させます。
+
+```yaml
+- Hero.setTransparency:
+    from: 0
+    to: 50
+    seconds: 1
+    background: true
+```
+
+`background`を省略するか`false`にすると完了まで待ち、`true`では`from`を同期適用した直後に
+次actionへ進みます。途中でskip、停止、再開始、破棄された場合や、同じactorへ次の透明度変化を始める場合は、
+先の変化を`to`へ確定してtimerを回収します。
 
 ### 移動する
 
@@ -860,7 +932,7 @@ Issue #390のWeb Previewでは、対応browserで「プロジェクトを開く�
 選択します。Web Previewに組込みeditorはなく、YAMLとassetは任意の外部editorで変更します。選択した
 directory handleはsession中だけ保持し、YAML、manifest、SB3、user設定へ保存しません。
 
-最初の正常なYAMLはreload選択を挟まず先頭から開始します。その後に`story.kamishibai.yaml`を保存すると、
+最初の正常なYAMLはreload選択を挟まず先頭から開始します。その後に`story.k4.yml`を保存すると、
 Web Previewはpollingで変更を検出し、書込み途中ではない安定したsnapshotをparse／validateします。正常な
 candidateだけが次の再開位置の選択へ進みます。
 
@@ -910,8 +982,8 @@ production用にbuildした自己完結SB3には、directory handle、poll timer
 
 ## 総合サンプル
 
-次の例は、アセット、表紙、SVG Text、speech style、変数、keymap、分岐、入力、ポーズ認識を一つの台本へまとめた
-ものです。構文確認用であり、現行3.2.xアプリでは実行できません。
+次の例は、アセット、表紙、SVG Text、speech style、変数、keymap、分岐、入力、ポーズ認識を一つの台本へ
+まとめたものです。利用するreleaseでDSL 4.0と必要なfeature flagを有効にして実行します。
 
 ```yaml
 kamishibai: '4.0'
@@ -1028,6 +1100,10 @@ scenes:
         x: 0
         y: -60
         scale: 30
+    - Hero.setTransparency:
+        from: 100
+        to: 0
+        seconds: 0.5
     - Hero.say:
         text: 助けに行こう
         seconds: 8
@@ -1077,67 +1153,6 @@ scenes:
         style: title
 ```
 
-## DSL 3.2から移行するときの考え方
-
-4.0は3.2の宣言だけを置き換えるminor updateではありません。元の3.2台本を残し、別の
-`.kamishibai.yaml`を作成して、シーン単位で移してください。
-
-### 基本構造の対応
-
-```text
-kamishibai=3.2
-asset=Beach,backdrop
-asset=HeroIdle,costume:Hero
-actor=Hero,HeroIdle
----
-sceneLabel=opening
-action=stage:Beach
-action=Hero:say:こんにちは:2
-```
-
-```yaml
-kamishibai: '4.0'
-
-assets:
-  Beach: backdrop
-  HeroIdle: costume:Hero
-
-actors:
-  Hero: HeroIdle
-
-scenes:
-  opening:
-    - stage: Beach
-    - Hero.say:
-        text: こんにちは
-        seconds: 2
-```
-
-### 移行時に個別判断が必要な機能
-
-2026年8月7日の4.0 core schema候補には、3.2のすべての命令が揃っているわけではありません。
-特に次の機能は、同名の4.0 core actionとして受理されません。
-
-- 旧Text Asset関連の`asset=...,text`、`text`、`textStyle`、`action=text`
-- `hide`、`think`、`setScale`、`setPosition`、`setLayer`
-- `loop`、`sequence`
-- `*`を対象にする一括Actor action
-- 外部HTTP(S) URLを実行時に読むアセット
-
-これらを黙って削除したり、似たアクションへ意味を変えて置換したりしないでください。SVG Text、シーン構成、
-ローカルアセット、将来のcustom actionなどで代替できるかを作品ごとに判断します。
-
-### 推奨する移行手順
-
-1. 元の3.2台本を変更せず保管する
-2. アセット、アクター、シーン、分岐の一覧を作る
-3. 外部URLのアセットをproject内へ配置する
-4. 4.0の`assets`、`actors`、`scenes`を別ファイルへ作る
-5. 旧Text Assetを`textStyles`と`Actor.setText`へ再設計する
-6. core schemaにない3.2 actionを一覧化し、代替方法が決まるまで移行完了にしない
-7. schema検証と参照検証を通し、将来のpreview環境で演出を確認する
-8. 4.0の配布経路が完成するまで、上映用の3.2台本を維持する
-
 ## 診断と安全停止
 
 DSL 4.0のsource frontendは、YAMLを読み込んだあと、構造と参照関係の検証が成功するまでアセット準備や
@@ -1158,34 +1173,38 @@ DSL 4.0のsource frontendは、YAMLを読み込んだあと、構造と参照関
 | `K4-STABLE-ID-001`            | `stableId`が文書内で重複している             |
 | `K4-KEY-UNSUPPORTED`          | 対応外のキーやmodifierを指定した             |
 | `K4-KEY-001`                  | navigation keymapと作品内キー入力が衝突した  |
+| `K4-INCLUDE-CYCLE`            | include graphに循環がある                     |
+| `K4-INCLUDE-LIMIT-001`        | source件数、合計byte数、include深度の上限超過 |
+| `K4-SOURCE-SIZE-001`          | source一件のbyte数が上限を超えた              |
+| `K4-DECLARATION-DUPLICATE`    | Source Graph内で同じ宣言が重複した            |
 
 runtime接続後は、action、scene、branch、port、戻り値などの実行時エラーにも`K4-RUNTIME-*`診断を
 使用します。入力byte数、YAML node数、nesting深度、scalar長、シーン数、アクション数、アセット数、
-診断数には安全上の上限を設ける設計ですが、具体値は実装時のbenchmarkで決定します。
+診断数には安全上の有限上限があります。Source Graphの各上限はpreview／buildのCLI引数とhost設定で明示し、
+一件のsourceとgraph合計／compose後sourceを別の責務として検証します。
 
 ## 作成時のチェックリスト
 
-- [ ] ファイルをUTF-8の`.kamishibai.yaml`として保存した
+- [ ] ファイルをUTF-8で保存し、新規sourceでは`.k4.yml`を使用した
 - [ ] 先頭が`kamishibai: '4.0'`になっている
 - [ ] トップレベルとactionに未知のキーがない
 - [ ] インデントに空白を使い、一つのaction itemへ命令を一つだけ書いた
 - [ ] IDが文字または`_`で始まり、Unicode NFCになっている
 - [ ] 背景、音、コスチューム、ポーズモデルの`kind`が参照箇所と一致している
 - [ ] コスチュームの`target`が使用するアクターと一致している
-- [ ] `file`がproject内の安全な相対pathになっている
+- [ ] `file`が宣言元sourceからproject内へ解決できる安全な相対pathになっている
+- [ ] `include`にcycle、root外path、同じnamespaceの重複宣言がない
 - [ ] すべてのシーン、分岐、スタイル、アセット参照が定義済みである
 - [ ] 各分岐の最後に一つだけ`else`がある
 - [ ] `stableId`が文書全体で重複していない
 - [ ] navigation用キーと作品内の遷移キーが衝突していない
-- [ ] 3.2だけの構文やactionを混在させていない
-- [ ] 4.0のend-to-end配布が未完成であることを関係者と共有した
+- [ ] YAML以外の行形式commandを混在させていない
+- [ ] 利用するreleaseでDSL 4.0と必要なfeature flagが有効であることを確認した
 
 ## 関連資料
 
 - [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
-- [紙芝居DSLファイル作成マニュアル](dsl-manual.md): 現行3.1／3.2作品の作成手順
-- [紙芝居DSL コマンドリファレンス](command-reference.md): 現行3.1／3.2の詳細な命令一覧
-- [紙芝居DSL 2.0から3.2への変更履歴](history.md): 現行DSL系列の移行履歴
-- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/371f2fb6595735dcaba72d55b871ea6ba63d6078/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
-- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/371f2fb6595735dcaba72d55b871ea6ba63d6078/schema/dsl-4.schema.json): 機械可読な構造仕様
-- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/371f2fb6595735dcaba72d55b871ea6ba63d6078/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例
+- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
+- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/schema/dsl-4.schema.json): 機械可読な構造仕様
+- [DSL 4.0 Source Graph Preview](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
+- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例

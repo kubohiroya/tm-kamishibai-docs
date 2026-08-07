@@ -8,6 +8,9 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 tmpose-kamishibai 3.2.xは3.1宣言と3.2宣言をどちらも受理します。既存の3.1台本は宣言を変更せずに実行でき、新規台本には3.2を推奨します。3.1宣言で旧Text Assetを使った場合もdeprecated警告は出ます。
 
+この文書は過去リリースから引き継いだ手書きMarkdownを正本とし、最新のドキュメントリポジトリで
+保守します。HTML版とVivliostyle Viewer版は、この同じMarkdownから提供します。
+
 ## DSL 3.2のText Asset互換性
 
 DSL 3.2では、旧Text Asset構文をdeprecatedな互換機能として維持します。次の構文は警告の対象ですが、no-opではなく、登録・表示・スタイル設定・更新を実行します。

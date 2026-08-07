@@ -3,6 +3,8 @@ import {createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
 import test from 'node:test';
 
+import Ajv2020 from 'ajv/dist/2020.js';
+
 import {renderReferenceDocument, validateReferenceInputs} from '../scripts/dsl4-reference.mjs';
 
 const schemaSource = readFileSync(new URL('../sources/dsl4/dsl-4.schema.json', import.meta.url));
@@ -23,7 +25,7 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
   assert.equal(actualHash, lock.schemaSha256);
   assert.equal(lock.repository, 'kubohiroya/tmpose-kamishibai');
   assert.equal(lock.sourceKind, 'commit');
-  assert.equal(lock.commit, '5f1c1d08871a057dfff8ff802cfacce12dcd10df');
+  assert.equal(lock.commit, '79457815f5c89b181b1a879a079a4d6a72d405ed');
   assert.equal(
     lock.schemaUrl,
     `https://github.com/kubohiroya/tmpose-kamishibai/blob/${lock.commit}/schema/dsl-4.schema.json`,
@@ -34,10 +36,33 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
 
 test('covers every top-level field and every Schema action with validated annotations', () => {
   assert.deepEqual(validateReferenceInputs({schema, annotations}), {
-    actionCount: 18,
-    annotationCount: 70,
+    actionCount: 19,
+    annotationCount: 71,
     topLevelFieldCount: 12,
   });
+});
+
+test('validates every documented Actor.setTransparency form', () => {
+  const AjvConstructor = /** @type {any} */ (Ajv2020);
+  const ajv = new AjvConstructor({allErrors: true, strict: true});
+  ajv.addSchema(schema);
+  const validate = ajv.compile({$ref: `${schema.$id}#/$defs/setTransparencyAction`});
+  const examples = [
+    {'Hero.setTransparency': 50},
+    {'Hero.setTransparency': {stableId: 'hero-half', transparency: 50}},
+    {
+      'Hero.setTransparency': {
+        stableId: 'hero-fade-in',
+        from: 100,
+        to: 0,
+        seconds: 0.5,
+        background: true,
+      },
+    },
+  ];
+  for (const example of examples) {
+    assert.equal(validate(example), true, JSON.stringify(validate.errors));
+  }
 });
 
 test('generates the checked-in reference byte-for-byte deterministically', () => {
@@ -53,6 +78,9 @@ test('generates the checked-in reference byte-for-byte deterministically', () =>
   assert.match(generated, /`speechStyles` — speech style/u);
   assert.match(generated, /`Actor\.think`/u);
   assert.match(generated, /`easeInOut`/u);
+  assert.match(generated, /`Actor\.setTransparency`/u);
+  assert.match(generated, /`0`は完全不透明、`100`は完全透明/u);
+  assert.doesNotMatch(generated, /DSL 3\.[12]|kamishibai=3\.[12]/u);
 });
 
 test('rejects missing, extra, and ambiguously ordered annotations', () => {

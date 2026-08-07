@@ -536,6 +536,17 @@
           "example": "Hero.show:\n  skin: HeroHappy\n  x: 0\n  y: -60\n  scale: 30"
         },
         {
+          "pointer": "#/$defs/setTransparencyAction",
+          "order": 15,
+          "title": "`Actor.setTransparency`",
+          "summary": "Scratch／TurboWarpの幽霊効果と同じ0〜100の値でactorの透明度を即時設定するか、指定秒数で線形に変化させます。",
+          "example": "Hero.setTransparency:\n  from: 0\n  to: 50\n  seconds: 1\n  background: true",
+          "notes": [
+            "`0`は完全不透明、`100`は完全透明です。値を反転または換算しません。",
+            "`background: false`または省略時は完了まで待ち、`true`では開始直後に次actionへ進みます。"
+          ]
+        },
+        {
           "pointer": "#/$defs/moveToAction",
           "order": 20,
           "title": "`Actor.moveTo`",
