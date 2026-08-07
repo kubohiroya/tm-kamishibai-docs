@@ -25,6 +25,7 @@ test('keeps only version banners on the site root', () => {
   assert.doesNotMatch(rootIndex, /publication\.json/u);
   assert.match(rootIndex, /href="3\.2\/">DSL 3\.2のドキュメントへ/u);
   assert.match(rootIndex, /href="4\.0\/">DSL 4\.0のドキュメントへ/u);
+  assert.ok(rootIndex.indexOf('version-banner--40') < rootIndex.indexOf('version-banner--32'));
 
   for (const document of documentationConfig.documents) {
     const basename = document.sourceFilename.replace(/\.md$/u, '');

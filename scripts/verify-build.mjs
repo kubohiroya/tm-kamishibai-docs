@@ -202,6 +202,10 @@ async function verifyIndex() {
   );
   assert(index.includes('href="3.2/"'), 'The DSL 3.2 banner destination is missing.');
   assert(index.includes('href="4.0/"'), 'The DSL 4.0 banner destination is missing.');
+  assert(
+    index.indexOf('version-banner--40') < index.indexOf('version-banner--32'),
+    'The DSL version banners are not ordered newest first.',
+  );
   assert(!index.includes('publication.json'), 'The root must not list version-specific documents.');
 
   for (const document of documentationConfig.documents) {
