@@ -11,6 +11,7 @@ const workshopIndex = readFileSync(
   new URL('../site/workshops/index.html', import.meta.url),
   'utf8',
 );
+const licensesIndex = readFileSync(new URL('../site/licenses/index.html', import.meta.url), 'utf8');
 const documentIndexCss = readFileSync(
   new URL('../site/document-index.css', import.meta.url),
   'utf8',
@@ -175,7 +176,7 @@ test('lists workshop material chronologically with explicit DSL families', () =>
 });
 
 test('provides the workshop menu in every static AppBar', () => {
-  for (const index of [rootIndex, dsl32Index, dsl40Index, workshopIndex]) {
+  for (const index of [rootIndex, dsl32Index, dsl40Index, workshopIndex, licensesIndex]) {
     assert.match(
       index,
       /href="https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-docs\/workshops\/"/u,
@@ -186,6 +187,31 @@ test('provides the workshop menu in every static AppBar', () => {
     workshopIndex,
     /href="https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-docs\/workshops\/"\s+aria-current="page"/u,
   );
+});
+
+test('provides one rights-aware footer on every static page', () => {
+  for (const index of [rootIndex, dsl32Index, dsl40Index, workshopIndex, licensesIndex]) {
+    assert.equal(
+      (index.match(/<footer class="site-footer" data-site-footer-version="1">/gu) ?? []).length,
+      1,
+    );
+    const footer = index.match(/<footer class="site-footer"[\s\S]*?<\/footer>/u)?.[0] ?? '';
+    assert.match(footer, /© 2026 Hiroya Kubo/u);
+    assert.match(footer, /各文書・作品・素材には個別の利用条件が適用されます。/u);
+    assert.match(
+      footer,
+      /href="https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-docs\/licenses\/"/u,
+    );
+    assert.doesNotMatch(footer, /github\.com/u);
+  }
+  const normalizedLicensesIndex = licensesIndex.replace(/\s+/gu, ' ');
+  assert.match(
+    normalizedLicensesIndex,
+    /Creative Commons Attribution-ShareAlike 4\.0 International/u,
+  );
+  assert.match(normalizedLicensesIndex, /All rights reserved\./u);
+  assert.match(licensesIndex, /Urashima-walk-1/u);
+  assert.match(licensesIndex, /Mozilla Public License 2\.0/u);
 });
 
 function linkLabels(actions) {
