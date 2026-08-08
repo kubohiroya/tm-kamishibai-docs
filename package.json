@@ -16,7 +16,7 @@
     "docs:dsl4:generate": "node scripts/generate-dsl4-reference.mjs",
     "docs:dsl4:sync": "node scripts/sync-dsl4-schema.mjs",
     "lint": "eslint .",
-    "format": "prettier --check \"**/*.{js,mjs,cjs,json,yaml,yml}\" \".github/**/*.{yaml,yml}\" \"*.md\" \"docs/{developer-guides/{application-materials-guide,application-materials-guide-4.0,developer-guide,developer-guide-4.0,internal-specification,extension-guide,dsl-3.1-diagnostics-design,dependency-audit,release-smoke},tutorials/*,LICENSE}.md\" \"site/**/*.{html,css}\"",
+    "format": "prettier --check \"**/*.{js,mjs,cjs,json,yaml,yml}\" \".github/**/*.{yaml,yml}\" \"*.md\" \"docs/{developer-guides/{application-materials-guide,application-materials-guide-4.0,developer-guide,developer-guide-4.0,internal-specification,internal-specification-4.0,extension-guide,dsl-3.1-diagnostics-design,dependency-audit,release-smoke},tutorials/*,LICENSE}.md\" \"site/**/*.{html,css}\"",
     "typecheck": "tsc --project tsconfig.json",
     "test": "node --test test/*.test.mjs",
     "check": "pnpm lint && pnpm format && pnpm typecheck && pnpm test && pnpm build",

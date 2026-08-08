@@ -156,6 +156,14 @@ export const documentCollections = [
           'TMPose紙芝居3.2の汎用アプリSB3におけるtarget、変数、block、message、呼出し関係、状態遷移を記録します。',
       },
       {
+        sourceFilename: 'internal-specification-4.0.md',
+        version: '4.0',
+        title: '紙芝居アプリ 4.0 内部仕様書',
+        audience: 'TMPose紙芝居4.0の実装を調査・変更する方',
+        description:
+          'TMPose紙芝居4.0のsource frontend、Source Graph、StoryDocument、runtime、platform adapter、transaction、状態遷移を記録します。',
+      },
+      {
         sourceFilename: 'extension-guide.md',
         title: 'TMPose紙芝居 3.2 機能拡張ガイド',
         audience: 'TMPose紙芝居3.2の依存機能を調査・変更する方',

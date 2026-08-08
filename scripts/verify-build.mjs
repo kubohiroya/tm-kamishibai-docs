@@ -347,6 +347,7 @@ async function verifyVersionedPublications() {
       'application-materials-guide-4.0',
       'TMPose紙芝居 4.0 アプリ・教材・ツールチェインガイド',
     ],
+    ['4.0/developer-guides', 'internal-specification-4.0', '紙芝居アプリ 4.0 内部仕様書'],
   ]) {
     const publicationDirectory = path.join(distRoot, outputDirectory, basename);
     const [article, publicationSource] = await Promise.all([
