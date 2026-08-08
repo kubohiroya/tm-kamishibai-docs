@@ -27,6 +27,15 @@ export const documentCollections = [
         addFurigana: true,
       },
       {
+        sourceFilename: 'executive-summary-kids-4.0.md',
+        version: '4.0',
+        title: '紙芝居アプリ 4.0 概要説明書 子供向け',
+        audience: '子供・初めての方',
+        description:
+          'TMPose紙芝居4.0で「見る・動く・作る」方法と、カメラ、個人情報、まわりの安全、困ったときの行動をやさしい言葉で説明します。',
+        addFurigana: true,
+      },
+      {
         sourceFilename: 'user-guide.md',
         title: '紙芝居アプリ 3.2 操作説明書',
         audience: 'アプリを使う方',
