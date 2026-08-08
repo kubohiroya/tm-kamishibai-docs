@@ -19,6 +19,7 @@ const expectedCollections = {
     'executive-summary-adult.md',
     'executive-summary-adult-4.0.md',
     'executive-summary-kids.md',
+    'executive-summary-kids-4.0.md',
     'user-guide.md',
   ],
   'dsl-3.2-guides': ['dsl-manual.md', 'command-reference.md', 'history.md'],
@@ -65,7 +66,7 @@ test('organizes every migrated document into one reader-oriented collection', ()
     ),
     expectedCollections,
   );
-  assert.equal(documentationConfig.documents.length, 18);
+  assert.equal(documentationConfig.documents.length, 19);
   assert(!existsSync(path.join(projectRoot, 'docs/general')));
 
   for (const document of documentationConfig.documents) {
