@@ -15,7 +15,7 @@ function renderSiteAppBar(assetBase) {
       <a class="site-nav__link" href="${siteRoot}">トップ</a>
       <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-docs/" aria-current="page">ドキュメント</a>
       <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/">ワークショップ</a>
-      <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/">サンプル</a>
+      <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/">作品</a>
       <a class="site-nav__link" href="${siteRoot}downloads/">ダウンロード</a>
     </nav>
     <a class="site-repository" href="https://github.com/kubohiroya/tmpose-kamishibai-docs" target="_blank" rel="noopener" aria-label="tmpose-kamishibai-docsをGitHubで開く" title="tmpose-kamishibai-docsをGitHubで開く">

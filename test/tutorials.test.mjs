@@ -49,7 +49,7 @@ test('defines the planned five-item AppBar and current-section rules', () => {
       ['home', 'トップ'],
       ['tutorials', 'チュートリアル'],
       ['documents', 'ドキュメント'],
-      ['samples', 'サンプル'],
+      ['samples', '作品'],
       ['downloads', 'ダウンロード'],
     ],
   );
