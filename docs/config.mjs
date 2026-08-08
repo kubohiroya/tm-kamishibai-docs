@@ -76,6 +76,15 @@ export const documentCollections = [
           '完成したDSL 4.0について、Source Graph、project配置、live reload、camera preview、speech、透明度、分岐、診断を説明します。',
       },
       {
+        sourceFilename: 'dsl-3.2-to-4.0-conversion-guide.md',
+        sourceDirectory: 'dsl-author-guides',
+        outputDirectory: 'dsl-author-guides',
+        title: '紙芝居DSL 3.2から4.0への変換ガイド',
+        audience: 'DSL 3.1／3.2の既存作品を4.0へ移行する方',
+        description:
+          'convert-dsl4の実行方法、pose model置換、診断、変換できない入力、検証とrollbackを説明します。',
+      },
+      {
         sourceFilename: 'dsl-4.0-schema-reference.md',
         sourceDirectory: 'dsl-author-guides',
         outputDirectory: 'dsl-author-guides',

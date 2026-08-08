@@ -122,7 +122,11 @@ test('keeps the two version tops independent', () => {
   assert.match(dsl32Index, /<h1>紙芝居DSL 3\.2 ドキュメント<\/h1>/u);
   assert.match(dsl40Index, /<h1>紙芝居DSL 4\.0 ドキュメント<\/h1>/u);
   assert.doesNotMatch(dsl32Index, /kamishibai: '4\.0'|Source Graph/u);
-  assert.doesNotMatch(dsl40Content, /kamishibai=3\.[12]|DSL 3\.[12]/u);
+  assert.match(dsl40Content, /href="dsl-author-guides\/dsl-3\.2-to-4\.0-conversion-guide\/"/u);
+  assert.doesNotMatch(
+    dsl40Content,
+    /href="dsl-author-guides\/(?:dsl-manual|command-reference|history)\/"/u,
+  );
   assert.match(dsl32Index, /href="\.\.\/4\.0\/">DSL 4\.0へ切り替える/u);
   assert.match(dsl40Index, /href="\.\.\/3\.2\/">DSL 3\.2へ切り替える/u);
 });
