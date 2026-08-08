@@ -158,7 +158,7 @@ test('lists workshop material chronologically with explicit DSL families', () =>
   assert.match(workshopIndex, /href="2026-08-01\/"/u);
   assert.match(workshopIndex, /href="2026-08-01\/staff\/"/u);
   assert.match(workshopIndex, /href="https:\/\/www\.chibanippo\.co\.jp\/articles\/1648690"/u);
-  assert.match(workshopIndex, /千葉日報オンライン（有料）/u);
+  assert.match(workshopIndex, /千葉日報オンライン（有料記事）/u);
   assert.match(workshopIndex, /ＡＩプログラミング体験会　千葉商大で親子学ぶ　市川/u);
   assert.match(workshopIndex, /<time datetime="2026-08-02">2026年8月2日<\/time>公開/u);
   const normalizedWorkshopIndex = workshopIndex.replace(/\s+/gu, ' ');

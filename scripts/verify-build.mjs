@@ -290,7 +290,7 @@ async function verifyIndex() {
     'The Chiba Nippo coverage title is missing.',
   );
   assert(
-    workshopIndex.includes('千葉日報オンライン（有料）'),
+    workshopIndex.includes('千葉日報オンライン（有料記事）'),
     'The paid article label is missing.',
   );
   assert(
