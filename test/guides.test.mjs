@@ -146,6 +146,7 @@ test('documents the DSL 3.2 to 4.0 converter as a dedicated migration guide', ()
   assert.match(dsl4ConversionGuide, /--input source\.txt/u);
   assert.match(dsl4ConversionGuide, /--output story\.k4\.yml/u);
   assert.match(dsl4ConversionGuide, /--pose-models pose-models\.json/u);
+  assert.match(dsl4ConversionGuide, /--max-source-bytes 262144/u);
   assert.match(dsl4ConversionGuide, /入力と同じpathは指定できません/u);
   assert.match(dsl4ConversionGuide, /URLとproject内のlocal `poseModel` asset/u);
   assert.match(dsl4ConversionGuide, /poseInputToChangeScene`を生成しません/u);

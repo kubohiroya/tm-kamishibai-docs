@@ -157,7 +157,7 @@ Converted /project/story.k4.yml
 ```bash
 pnpm exec tmpose-kamishibai validate-dsl4 \
   --input story.k4.yml \
-  --max-source-bytes 1048576 \
+  --max-source-bytes 262144 \
   --format pretty
 ```
 
