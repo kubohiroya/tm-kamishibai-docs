@@ -66,7 +66,10 @@ test('organizes every migrated document into one reader-oriented collection', ()
     ),
     expectedCollections,
   );
-  assert.equal(documentationConfig.documents.length, 19);
+  assert.equal(
+    documentationConfig.documents.length,
+    Object.values(expectedCollections).flat().length,
+  );
   assert(!existsSync(path.join(projectRoot, 'docs/general')));
 
   for (const document of documentationConfig.documents) {
