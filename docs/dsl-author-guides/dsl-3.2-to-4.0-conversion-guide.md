@@ -152,7 +152,7 @@ Converted /project/story.k4.yml
 ## 変換後に確認する
 
 生成YAMLをproductionと同じfrontendで検証します。`--max-source-bytes`には作品で許容する有限上限を
-指定してください。
+指定してください。現行実装で指定できる最大値は262144 bytesです。
 
 ```bash
 pnpm exec tmpose-kamishibai validate-dsl4 \
