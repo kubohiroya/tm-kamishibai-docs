@@ -36,6 +36,7 @@ const expectedCollections = {
     'internal-specification.md',
     'internal-specification-4.0.md',
     'extension-guide.md',
+    'extension-guide-4.0.md',
     'dsl-3.1-diagnostics-design.md',
     'dependency-audit.md',
     'release-smoke.md',
@@ -112,6 +113,40 @@ test('publishes the 3.2 and 4.0 internal specifications at separate stable URLs'
   );
   const dsl4 = documentationConfig.documents.find(
     ({sourceFilename}) => sourceFilename === 'internal-specification-4.0.md',
+  );
+
+  assert.deepEqual(
+    {
+      version: legacy?.version,
+      legacyOutputDirectory: legacy?.legacyOutputDirectory,
+      outputDirectory: legacy?.outputDirectory,
+    },
+    {
+      version: '3.2',
+      legacyOutputDirectory: 'developer-guides',
+      outputDirectory: '3.2/developer-guides',
+    },
+  );
+  assert.deepEqual(
+    {
+      version: dsl4?.version,
+      legacyOutputDirectory: dsl4?.legacyOutputDirectory,
+      outputDirectory: dsl4?.outputDirectory,
+    },
+    {
+      version: '4.0',
+      legacyOutputDirectory: 'developer-guides',
+      outputDirectory: '4.0/developer-guides',
+    },
+  );
+});
+
+test('publishes the 3.2 and 4.0 extension guides at separate stable URLs', () => {
+  const legacy = documentationConfig.documents.find(
+    ({sourceFilename}) => sourceFilename === 'extension-guide.md',
+  );
+  const dsl4 = documentationConfig.documents.find(
+    ({sourceFilename}) => sourceFilename === 'extension-guide-4.0.md',
   );
 
   assert.deepEqual(
