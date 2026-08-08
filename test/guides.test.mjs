@@ -31,6 +31,10 @@ const dsl4AuthorGuide = readFileSync(
   new URL('../docs/dsl-author-guides/dsl-4.0-author-guide.md', import.meta.url),
   'utf8',
 );
+const dsl4ConversionGuide = readFileSync(
+  new URL('../docs/dsl-author-guides/dsl-3.2-to-4.0-conversion-guide.md', import.meta.url),
+  'utf8',
+);
 const dsl4SchemaReference = readFileSync(
   new URL('../docs/dsl-author-guides/dsl-4.0-schema-reference.md', import.meta.url),
   'utf8',
@@ -83,6 +87,22 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
   assert.doesNotMatch(dslManual, /kamishibai: '4\.0'/u);
   assert.doesNotMatch(dsl4AuthorGuide, /DSL 3\.[12]|kamishibai=3\.[12]/u);
   assert.doesNotMatch(dsl4SchemaReference, /DSL 3\.[12]|kamishibai=3\.[12]/u);
+});
+
+test('documents the DSL 3.2 to 4.0 converter as a dedicated migration guide', () => {
+  assert.match(dsl4ConversionGuide, /tmpose-kamishibai convert-dsl4/u);
+  assert.match(dsl4ConversionGuide, /--input source\.txt/u);
+  assert.match(dsl4ConversionGuide, /--output story\.k4\.yml/u);
+  assert.match(dsl4ConversionGuide, /--pose-models pose-models\.json/u);
+  assert.match(dsl4ConversionGuide, /入力と同じpathは指定できません/u);
+  assert.match(dsl4ConversionGuide, /URLとproject内のlocal `poseModel` asset/u);
+  assert.match(dsl4ConversionGuide, /poseInputToChangeScene`を生成しません/u);
+  assert.match(dsl4ConversionGuide, /fullConfidenceHoldSeconds = 10 \/ poseCharge/u);
+  assert.match(dsl4ConversionGuide, /`delivery: remote`/u);
+  assert.match(dsl4ConversionGuide, /`integrity`、`contentType`、`size`/u);
+  assert.match(dsl4ConversionGuide, /error時は途中までの\nYAMLを残さず既存出力を維持/u);
+  assert.match(dsl4ConversionGuide, /convertDsl32ToDsl4/u);
+  assert.match(dsl4ConversionGuide, /convertDsl32File/u);
 });
 
 test('keeps the DSL 3.x reference hand-authored', () => {
