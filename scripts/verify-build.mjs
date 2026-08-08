@@ -130,6 +130,12 @@ async function verifySiteAppBars() {
       (html.match(/<header class="site-header">/gu) ?? []).length === 1,
       `${path.relative(distRoot, htmlFile)} must contain one AppBar.`,
     );
+    assert(
+      /<a\b(?=[^>]*class="site-nav__link")(?=[^>]*href="https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-samples\/")[^>]*>\s*作品\s*<\/a\s*>/u.test(
+        html,
+      ),
+      `${path.relative(distRoot, htmlFile)} must label the works-library link as 作品.`,
+    );
     for (const destination of [
       'https://kubohiroya.github.io/tmpose-kamishibai/',
       'https://kubohiroya.github.io/tmpose-kamishibai-docs/',
