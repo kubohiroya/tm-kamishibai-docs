@@ -33,6 +33,7 @@ const expectedCollections = {
     'developer-guide.md',
     'developer-guide-4.0.md',
     'internal-specification.md',
+    'internal-specification-4.0.md',
     'extension-guide.md',
     'dsl-3.1-diagnostics-design.md',
     'dependency-audit.md',
@@ -66,7 +67,7 @@ test('organizes every migrated document into one reader-oriented collection', ()
     ),
     expectedCollections,
   );
-  assert.equal(documentationConfig.documents.length, 19);
+  assert.equal(documentationConfig.documents.length, 20);
   assert(!existsSync(path.join(projectRoot, 'docs/general')));
 
   for (const document of documentationConfig.documents) {
@@ -99,6 +100,40 @@ test('keeps the developer guide source classification and records its legacy URL
   assert.equal(document?.sourceDirectory, 'developer-guides');
   assert.equal(document?.legacyOutputDirectory, 'user-guides');
   assert.equal(document?.outputDirectory, '3.2/user-guides');
+});
+
+test('publishes the 3.2 and 4.0 internal specifications at separate stable URLs', () => {
+  const legacy = documentationConfig.documents.find(
+    ({sourceFilename}) => sourceFilename === 'internal-specification.md',
+  );
+  const dsl4 = documentationConfig.documents.find(
+    ({sourceFilename}) => sourceFilename === 'internal-specification-4.0.md',
+  );
+
+  assert.deepEqual(
+    {
+      version: legacy?.version,
+      legacyOutputDirectory: legacy?.legacyOutputDirectory,
+      outputDirectory: legacy?.outputDirectory,
+    },
+    {
+      version: '3.2',
+      legacyOutputDirectory: 'developer-guides',
+      outputDirectory: '3.2/developer-guides',
+    },
+  );
+  assert.deepEqual(
+    {
+      version: dsl4?.version,
+      legacyOutputDirectory: dsl4?.legacyOutputDirectory,
+      outputDirectory: dsl4?.outputDirectory,
+    },
+    {
+      version: '4.0',
+      legacyOutputDirectory: 'developer-guides',
+      outputDirectory: '4.0/developer-guides',
+    },
+  );
 });
 
 test('publishes DSL 3.2 and 4.0 as parallel dedicated collections', () => {

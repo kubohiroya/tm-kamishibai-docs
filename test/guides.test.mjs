@@ -50,6 +50,10 @@ const internalSpecification = readFileSync(
   new URL('../docs/developer-guides/internal-specification.md', import.meta.url),
   'utf8',
 );
+const internalSpecification4 = readFileSync(
+  new URL('../docs/developer-guides/internal-specification-4.0.md', import.meta.url),
+  'utf8',
+);
 const theme = readFileSync(new URL('../docs/general-theme.css', import.meta.url), 'utf8');
 
 test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual', () => {
@@ -91,6 +95,50 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
   assert.doesNotMatch(dslManual, /kamishibai: '4\.0'/u);
   assert.doesNotMatch(dsl4AuthorGuide, /DSL 3\.[12]|kamishibai=3\.[12]/u);
   assert.doesNotMatch(dsl4SchemaReference, /DSL 3\.[12]|kamishibai=3\.[12]/u);
+});
+
+test('grounds the DSL 4.0 internal specification in the completed implementation', () => {
+  assert.match(internalSpecification4, /79457815f5c89b181b1a879a079a4d6a72d405ed/u);
+  for (const boundary of [
+    'createDsl4SourceFrontend',
+    'createDsl4SourceGraph',
+    'createDsl4SourceGraphFrontend',
+    'createStoryDocument',
+    'createDsl4RuntimeController',
+    'createDsl4ActionInvocationAdapter',
+    'createDsl4TurboWarpRuntimeEnvironment',
+    'createDsl4LiveReloadSession',
+    'createDsl4AssetReloadTransaction',
+  ]) {
+    assert.match(internalSpecification4, new RegExp(`\\b${boundary}\\b`, 'u'), boundary);
+  }
+  for (const event of [
+    'runtime.start',
+    'scene.transition',
+    'action.start',
+    'action.commit',
+    'runtime.fail',
+    'preview.asset.committed',
+  ]) {
+    assert.match(internalSpecification4, new RegExp(event.replaceAll('.', '\\.'), 'u'), event);
+  }
+  for (const flag of [
+    'dsl4Runtime',
+    'dsl4SourceIncludes',
+    'dsl4AppShell',
+    'dsl4WebPreviewAdapter',
+    'dsl4WebPreviewAssetLiveReload',
+    'dsl4CustomActionsEnabled',
+  ]) {
+    assert.match(internalSpecification4, new RegExp(`\\b${flag}\\b`, 'u'), flag);
+  }
+  assert.match(
+    internalSpecification4,
+    /Browser Web Preview[\s\S]*CLI Preview[\s\S]*Production SB3/u,
+  );
+  assert.match(internalSpecification4, /test\/dsl4-architecture\.test\.mjs/u);
+  assert.doesNotMatch(internalSpecification4, /kamishibai=3\.[12]|actionTarget|broadcast message/u);
+  assert.match(internalSpecification, /^# 紙芝居アプリ 3\.2 内部仕様書$/mu);
 });
 
 test('documents the DSL 3.2 to 4.0 converter as a dedicated migration guide', () => {
