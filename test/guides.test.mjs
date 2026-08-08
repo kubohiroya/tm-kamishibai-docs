@@ -11,6 +11,10 @@ const extensionGuide = readFileSync(
   new URL('../docs/developer-guides/extension-guide.md', import.meta.url),
   'utf8',
 );
+const extensionGuide4 = readFileSync(
+  new URL('../docs/developer-guides/extension-guide-4.0.md', import.meta.url),
+  'utf8',
+);
 const applicationGuide = readFileSync(
   new URL('../docs/developer-guides/application-materials-guide.md', import.meta.url),
   'utf8',
@@ -139,6 +143,59 @@ test('grounds the DSL 4.0 internal specification in the completed implementation
   assert.match(internalSpecification4, /test\/dsl4-architecture\.test\.mjs/u);
   assert.doesNotMatch(internalSpecification4, /kamishibai=3\.[12]|actionTarget|broadcast message/u);
   assert.match(internalSpecification, /^# 紙芝居アプリ 3\.2 内部仕様書$/mu);
+});
+
+test('documents DSL 4.0 capabilities and platform integrations from the completed implementation', () => {
+  assert.match(extensionGuide4, /79457815f5c89b181b1a879a079a4d6a72d405ed/u);
+  assert.match(extensionGuide4, /3\.2 機能拡張ガイド/u);
+  assert.match(extensionGuide4, /その文書と公開URLは変更しません/u);
+  assert.match(extensionGuide4, /kubohiroyakamishibairuntime4/u);
+  assert.match(extensionGuide4, /一度だけ`Scratch\.extensions\.register\(\)`/u);
+  assert.match(extensionGuide4, /source-composition/u);
+
+  for (const dependency of [
+    '@kubohiroya/turbowarp-asset-manager@0.7.0',
+    '@kubohiroya/turbowarp-async-input@0.3.0',
+    '@kubohiroya/turbowarp-runtime-expression@0.3.0',
+    '@kubohiroya/turbowarp-svg-text@0.3.0',
+    '@kubohiroya/turbowarp-tmpose@1.6.1',
+  ]) {
+    assert.match(
+      extensionGuide4,
+      new RegExp(dependency.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&'), 'u'),
+    );
+  }
+
+  for (const boundary of [
+    'createDsl4TurboWarpRuntimeEnvironment',
+    'createDsl4ActorActionPort',
+    'createDsl4MediaActionPort',
+    'createDsl4PlatformAssetSession',
+    'createDsl4AssetManagerAdapter',
+    'createDsl4TMPosePlatform',
+    'createDsl4PoseActionPort',
+    'createDsl4CameraPreviewControls',
+    'createDsl4SvgTextPlatform',
+    'createDsl4AsyncInputActionPort',
+    'createDsl4StructuredDataComposition',
+    'createDsl4BrowserPreviewSourceAdapter',
+    'createDsl4PreviewTransportPolicy',
+  ]) {
+    assert.match(extensionGuide4, new RegExp(`\\b${boundary}\\b`, 'u'), boundary);
+  }
+
+  assert.match(extensionGuide4, /Browser Web Preview[\s\S]*CLI Preview[\s\S]*Production SB3/u);
+  assert.match(extensionGuide4, /責務と入出力/u);
+  assert.match(extensionGuide4, /失敗、権限、fallback、bundle/u);
+  assert.match(extensionGuide4, /Scratch\.extensions\.unsandboxed/u);
+  assert.match(extensionGuide4, /remote extension codeは禁止/u);
+  assert.match(extensionGuide4, /すべて`false`/u);
+  assert.match(extensionGuide4, /共通rollback順/u);
+  assert.match(extensionGuide4, /画像、editor capture、外部図版を新規使用しません/u);
+  assert.match(extensionGuide4, /CC BY-SA 4\.0/u);
+  assert.match(extensionGuide4, /MPL-2\.0/u);
+  assert.doesNotMatch(extensionGuide4, /\.\.\/images\/|<img|!\[/u);
+  assert.doesNotMatch(extensionGuide4, /1拡張2ページで図解|全34ページ/u);
 });
 
 test('documents the DSL 3.2 to 4.0 converter as a dedicated migration guide', () => {

@@ -171,6 +171,14 @@ export const documentCollections = [
           'TMPose紙芝居3.2が利用する16個の依存機能拡張を1拡張2ページで図解し、sb3-toolchainによるbundle構成も説明する全34ページのガイドです。',
       },
       {
+        sourceFilename: 'extension-guide-4.0.md',
+        version: '4.0',
+        title: 'TMPose紙芝居 4.0 機能拡張・プラットフォーム統合ガイド',
+        audience: 'TMPose紙芝居4.0のcapability、adapter、外部統合を調査・変更する方',
+        description:
+          'DSL 4.0 Standard Runtimeのsource composition、platform adapter、browser／CLI／Production SB3の能力差、権限、fallback、bundle境界を説明します。',
+      },
+      {
         sourceFilename: 'dsl-3.1-diagnostics-design.md',
         title: 'DSL 3.1 台本診断・安全停止 設計レビュー',
         audience: '台本診断と安全停止を保守する方',
