@@ -1,4 +1,4 @@
-# 紙芝居アプリ 概要説明書 子供向け
+# 紙芝居アプリ 3.2 概要説明書 子供向け
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
@@ -151,11 +151,11 @@ action=Urashima:pose:Urashima-help-1:help:SquishPop
 
 ## もっとくわしく知りたいとき
 
-- `user-guide.md`: アプリの使い方
-- `dsl-manual.md`: 台本の作り方
-- `command-reference.md`: 使える命令の一覧
-- `executive-summary-adult.md`: 大人向けの説明
-- `developer-guide.md`: アプリを開発する人向けの説明
-- `internal-specification.md`: アプリの中のしくみを調べる人向けの説明
-- `history.md`: 紙しばいDSL 2.0から3.1への変わり方
+- `user-guide.md`: 紙しばいアプリ3.2の使い方
+- `dsl-manual.md`: 紙しばいDSL 3.2の台本の作り方
+- `command-reference.md`: 紙しばいDSL 3.2で使える命令の一覧
+- `executive-summary-adult.md`: 紙しばいアプリ3.2の大人向け説明
+- `developer-guide.md`: 紙しばいアプリ3.2を開発する人向けの説明
+- `internal-specification.md`: 紙しばいアプリ3.2の中のしくみを調べる人向けの説明
+- `history.md`: 紙しばいDSL 2.0から3.2への変わり方
 - [サンプルサイト](https://kubohiroya.github.io/tmpose-kamishibai-samples/): Web版や台本を開く

@@ -6,22 +6,24 @@ export const documentCollections = [
     documents: [
       {
         sourceFilename: 'executive-summary-adult.md',
-        title: '紙芝居アプリ 概要説明書 大人向け',
+        title: '紙芝居アプリ 3.2 概要説明書 大人向け',
         audience: '保護者・教員・運営者',
-        description: 'アプリの価値、仕組み、利用場面、教育的な意義を簡潔にまとめています。',
+        description:
+          'TMPose紙芝居3.2の価値、仕組み、利用場面、教育的な意義を簡潔にまとめています。',
       },
       {
         sourceFilename: 'executive-summary-kids.md',
-        title: '紙芝居アプリ 概要説明書 子供向け',
+        title: '紙芝居アプリ 3.2 概要説明書 子供向け',
         audience: '子供・初めての方',
-        description: '紙芝居でできることや安全な使い方を、やさしい言葉で紹介します。',
+        description: 'TMPose紙芝居3.2でできることや安全な使い方を、やさしい言葉で紹介します。',
         addFurigana: true,
       },
       {
         sourceFilename: 'user-guide.md',
-        title: '紙芝居アプリ 操作説明書',
+        title: '紙芝居アプリ 3.2 操作説明書',
         audience: 'アプリを使う方',
-        description: '台本の読み込み、再生、ポーズ認識、本番前の確認方法を説明します。',
+        description:
+          'TMPose紙芝居3.2の台本読み込み、再生、ポーズ認識、本番前の確認方法を説明します。',
       },
     ],
   },
@@ -107,24 +109,24 @@ export const documentCollections = [
       },
       {
         sourceFilename: 'developer-guide.md',
-        title: '紙芝居アプリ ソフトウェアメンテナンスガイド',
-        audience: 'ソフトウェア開発者',
+        title: '紙芝居アプリ 3.2 ソフトウェアメンテナンスガイド',
+        audience: 'TMPose紙芝居3.2を保守するソフトウェア開発者',
         description:
-          '成果物とビルダーの利用、アプリ本体、SB3、ドキュメントの変更、検証、公開手順を案内します。',
+          'TMPose紙芝居3.2の成果物とビルダー、アプリ本体、SB3、ドキュメントの変更、検証、公開手順を案内します。',
       },
       {
         sourceFilename: 'internal-specification.md',
-        title: '紙芝居アプリ内部仕様書',
-        audience: 'アプリの実装を調査・変更する方',
+        title: '紙芝居アプリ 3.2 内部仕様書',
+        audience: 'TMPose紙芝居3.2の実装を調査・変更する方',
         description:
-          '現行の汎用アプリSB3におけるtarget、変数、block、message、呼出し関係、状態遷移を記録します。',
+          'TMPose紙芝居3.2の汎用アプリSB3におけるtarget、変数、block、message、呼出し関係、状態遷移を記録します。',
       },
       {
         sourceFilename: 'extension-guide.md',
-        title: 'TMPose紙芝居 機能拡張ガイド',
-        audience: 'アプリの依存機能を調査・変更する方',
+        title: 'TMPose紙芝居 3.2 機能拡張ガイド',
+        audience: 'TMPose紙芝居3.2の依存機能を調査・変更する方',
         description:
-          '16個の依存機能拡張を1拡張2ページで図解し、sb3-toolchainによるbundle構成も説明する全34ページのガイドです。',
+          'TMPose紙芝居3.2が利用する16個の依存機能拡張を1拡張2ページで図解し、sb3-toolchainによるbundle構成も説明する全34ページのガイドです。',
       },
       {
         sourceFilename: 'dsl-3.1-diagnostics-design.md',
@@ -135,10 +137,10 @@ export const documentCollections = [
       },
       {
         sourceFilename: 'dependency-audit.md',
-        title: '依存関係監査記録',
-        audience: '依存更新とsecurity overrideを保守する方',
+        title: 'TMPose紙芝居 3.2 依存関係監査記録',
+        audience: 'TMPose紙芝居3.2の依存更新とsecurity overrideを保守する方',
         description:
-          '2026年8月に実施したアプリ本体の依存更新、脆弱性監査、overrideの理由と解除条件を記録します。',
+          'TMPose紙芝居3.2について2026年8月に実施した依存更新、脆弱性監査、overrideの理由と解除条件を記録します。',
       },
       {
         sourceFilename: 'release-smoke.md',

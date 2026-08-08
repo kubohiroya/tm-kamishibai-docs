@@ -1,4 +1,4 @@
-# 紙芝居アプリ 操作説明書
+# 紙芝居アプリ 3.2 操作説明書
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
@@ -253,10 +253,10 @@ Loadingの吹き出しは`完了数 / 総数`です。`3 / 10`なら、通常ア
 
 ## 関連ドキュメント
 
-- `dsl-manual.md`: 紙芝居DSLファイルの作り方
-- `command-reference.md`: コマンドとアクションの早見表
-- `executive-summary-adult.md`: 大人向け概要説明
-- `executive-summary-kids.md`: 子供向け概要説明
-- `developer-guide.md`: 成果物とビルダーの利用、開発、検証、公開の手順
-- `internal-specification.md`: 汎用アプリSB3の内部構造、呼出し関係、状態遷移
+- `dsl-manual.md`: 紙芝居DSL 3.2ファイルの作り方
+- `command-reference.md`: 紙芝居DSL 3.2のコマンドとアクションの早見表
+- `executive-summary-adult.md`: 紙芝居アプリ3.2の大人向け概要説明
+- `executive-summary-kids.md`: 紙芝居アプリ3.2の子供向け概要説明
+- `developer-guide.md`: 紙芝居アプリ3.2の成果物、開発、検証、公開の手順
+- `internal-specification.md`: 紙芝居アプリ3.2の内部構造、呼出し関係、状態遷移
 - `history.md`: 紙芝居DSL 2.0から3.2への変更履歴

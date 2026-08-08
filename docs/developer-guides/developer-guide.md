@@ -1,4 +1,4 @@
-# 紙芝居アプリ ソフトウェアメンテナンスガイド
+# 紙芝居アプリ 3.2 ソフトウェアメンテナンスガイド
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
@@ -16,7 +16,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 - 開発時のトラブルシューティング、ライセンス、秘密情報の扱い
 
 汎用アプリSB3のtarget、変数、event、custom block、呼出し関係、状態遷移は
-[紙芝居アプリ内部仕様書](internal-specification.md)を正本とします。台本の書式と
+[紙芝居アプリ 3.2 内部仕様書](internal-specification.md)を正本とします。台本の書式と
 コマンド仕様は[台本DSLマニュアル](../dsl-author-guides/dsl-manual.md)と
 [コマンドリファレンス](../dsl-author-guides/command-reference.md)を参照してください。本書には、
 これらの内部構造やDSL項目を重複して列挙しません。
