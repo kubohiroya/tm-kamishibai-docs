@@ -2,6 +2,7 @@ import {readFile, readdir, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 
 const siteRoot = 'https://kubohiroya.github.io/tmpose-kamishibai/';
+const rightsUrl = 'https://kubohiroya.github.io/tmpose-kamishibai-docs/licenses/';
 
 function renderSiteAppBar(assetBase) {
   return `<a class="skip-link" href="#main-content">本文へ移動</a>
@@ -28,6 +29,22 @@ function renderSiteAppBar(assetBase) {
 <div id="main-content" class="site-content-anchor" tabindex="-1"></div>`;
 }
 
+function renderSiteFooter(assetBase) {
+  return `<footer class="site-footer" data-site-footer-version="1">
+  <div class="site-footer__inner">
+    <a class="site-footer__brand" href="${siteRoot}">
+      <img class="site-footer__symbol" src="${assetBase}favicon.png" width="36" height="36" alt="">
+      <span>TMPose紙芝居</span>
+    </a>
+    <div class="site-footer__legal">
+      <p>© 2026 Hiroya Kubo</p>
+      <p class="site-footer__notice">各文書・作品・素材には個別の利用条件が適用されます。</p>
+      <a class="site-footer__rights" href="${rightsUrl}">ライセンス・権利表示</a>
+    </div>
+  </div>
+</footer>`;
+}
+
 function addBodyClass(bodyTag) {
   const classAttribute = bodyTag.match(/\bclass=(["'])(.*?)\1/iu);
   if (!classAttribute) {
@@ -43,31 +60,47 @@ function addBodyClass(bodyTag) {
 }
 
 export function injectSiteAppBar(source, assetBase) {
-  if (/<header\b[^>]*\bclass=(["'])[^"']*\bsite-header\b[^"']*\1/iu.test(source)) {
-    return source;
-  }
+  const hasAppBar = /<header\b[^>]*\bclass=(["'])[^"']*\bsite-header\b[^"']*\1/iu.test(source);
+  const hasFooter = /<footer\b[^>]*\bclass=(["'])[^"']*\bsite-footer\b[^"']*\1/iu.test(source);
+  if (hasAppBar && hasFooter) return source;
 
-  const assets = [
-    `<link rel="icon" type="image/png" sizes="256x256" href="${assetBase}favicon.png">`,
-    `<link rel="stylesheet" href="${assetBase}site-shell.css">`,
-    `<script type="module" src="${assetBase}site-shell.js"></script>`,
-  ].join('\n  ');
-  let updated = source.replace(/<\/head>/iu, `  ${assets}\n</head>`);
-  if (updated === source) {
-    throw new Error(
-      'Cannot install the site AppBar because the document does not contain </head>.',
+  let updated = source;
+  if (!hasAppBar) {
+    const assets = [
+      `<link rel="icon" type="image/png" sizes="256x256" href="${assetBase}favicon.png">`,
+      `<link rel="stylesheet" href="${assetBase}site-shell.css">`,
+      `<script type="module" src="${assetBase}site-shell.js"></script>`,
+    ].join('\n  ');
+    updated = updated.replace(/<\/head>/iu, `  ${assets}\n</head>`);
+    if (updated === source) {
+      throw new Error(
+        'Cannot install the site AppBar because the document does not contain </head>.',
+      );
+    }
+
+    updated = updated.replace(/<body\b[^>]*>/iu, addBodyClass);
+    const withAppBar = updated.replace(
+      /<body\b[^>]*>/iu,
+      (bodyTag) => `${bodyTag}\n${renderSiteAppBar(assetBase)}`,
     );
+    if (withAppBar === updated) {
+      throw new Error(
+        'Cannot install the site AppBar because the document does not contain <body>.',
+      );
+    }
+    updated = withAppBar;
   }
 
-  updated = updated.replace(/<body\b[^>]*>/iu, addBodyClass);
-  const withAppBar = updated.replace(
-    /<body\b[^>]*>/iu,
-    (bodyTag) => `${bodyTag}\n${renderSiteAppBar(assetBase)}`,
-  );
-  if (withAppBar === updated) {
-    throw new Error('Cannot install the site AppBar because the document does not contain <body>.');
+  if (!hasFooter) {
+    const withFooter = updated.replace(/<\/body>/iu, `${renderSiteFooter(assetBase)}\n</body>`);
+    if (withFooter === updated) {
+      throw new Error(
+        'Cannot install the site footer because the document does not contain </body>.',
+      );
+    }
+    updated = withFooter;
   }
-  return withAppBar;
+  return updated;
 }
 
 async function findHtmlFiles(directory) {

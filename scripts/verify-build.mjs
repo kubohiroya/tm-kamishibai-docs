@@ -131,6 +131,22 @@ async function verifySiteAppBars() {
       `${path.relative(distRoot, htmlFile)} must contain one AppBar.`,
     );
     assert(
+      (html.match(/<footer class="site-footer" data-site-footer-version="1">/gu) ?? []).length ===
+        1,
+      `${path.relative(distRoot, htmlFile)} must contain one site footer.`,
+    );
+    const footer = html.match(/<footer class="site-footer"[\s\S]*?<\/footer>/u)?.[0] ?? '';
+    assert(footer.includes('© 2026 Hiroya Kubo'), 'The site footer is missing its copyright.');
+    assert(
+      footer.includes('各文書・作品・素材には個別の利用条件が適用されます。'),
+      'The site footer is missing its individual-rights notice.',
+    );
+    assert(
+      footer.includes('href="https://kubohiroya.github.io/tmpose-kamishibai-docs/licenses/"'),
+      'The site footer is missing its rights page.',
+    );
+    assert(!footer.includes('github.com'), 'The site footer must not duplicate the GitHub link.');
+    assert(
       /<a\b(?=[^>]*class="site-nav__link")(?=[^>]*href="https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-samples\/")[^>]*>\s*作品\s*<\/a\s*>/u.test(
         html,
       ),
@@ -191,12 +207,31 @@ async function verifyDocument(document) {
 }
 
 async function verifyIndex() {
-  const [index, dsl32Index, dsl40Index, workshopIndex] = await Promise.all([
+  const [index, dsl32Index, dsl40Index, workshopIndex, licensesIndex] = await Promise.all([
     readFile(path.join(distRoot, 'index.html'), 'utf8'),
     readFile(path.join(distRoot, '3.2/index.html'), 'utf8'),
     readFile(path.join(distRoot, '4.0/index.html'), 'utf8'),
     readFile(path.join(distRoot, 'workshops/index.html'), 'utf8'),
+    readFile(path.join(distRoot, 'licenses/index.html'), 'utf8'),
   ]);
+  assert(
+    licensesIndex.includes('<h1>ライセンス・権利表示</h1>'),
+    'The public rights page is missing.',
+  );
+  const normalizedLicensesIndex = licensesIndex.replace(/\s+/gu, ' ');
+  assert(
+    normalizedLicensesIndex.includes('Creative Commons Attribution-ShareAlike 4.0 International'),
+    'The rights page is missing the CC BY-SA 4.0 document terms.',
+  );
+  assert(
+    normalizedLicensesIndex.includes('All rights reserved.'),
+    'The rights page is missing the workshop terms.',
+  );
+  assert(
+    licensesIndex.includes('Urashima-walk-1') &&
+      licensesIndex.includes('Mozilla Public License 2.0'),
+    'The rights page is missing the site-icon provenance.',
+  );
   assert(
     !index.includes('/tmpose-kamishibai/docs/'),
     'The index still links to the old Pages path.',

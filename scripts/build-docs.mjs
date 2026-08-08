@@ -499,6 +499,7 @@ export async function buildDocs({force = false} = {}) {
     mkdir(path.join(distRoot, '3.2'), {recursive: true}),
     mkdir(path.join(distRoot, '4.0'), {recursive: true}),
     mkdir(path.join(distRoot, 'workshops'), {recursive: true}),
+    mkdir(path.join(distRoot, 'licenses'), {recursive: true}),
   ]);
   await writeFile(path.join(distRoot, '.nojekyll'), '');
   await Promise.all([
@@ -508,6 +509,10 @@ export async function buildDocs({force = false} = {}) {
     copyFile(
       path.join(projectRoot, 'site/workshops/index.html'),
       path.join(distRoot, 'workshops/index.html'),
+    ),
+    copyFile(
+      path.join(projectRoot, 'site/licenses/index.html'),
+      path.join(distRoot, 'licenses/index.html'),
     ),
     copyFile(path.join(projectRoot, 'site/favicon.png'), path.join(distRoot, 'favicon.png')),
     copyFile(
