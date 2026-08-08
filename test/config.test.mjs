@@ -31,6 +31,7 @@ const expectedCollections = {
     'application-materials-guide.md',
     'application-materials-guide-4.0.md',
     'developer-guide.md',
+    'developer-guide-4.0.md',
     'internal-specification.md',
     'extension-guide.md',
     'dsl-3.1-diagnostics-design.md',
@@ -65,7 +66,7 @@ test('organizes every migrated document into one reader-oriented collection', ()
     ),
     expectedCollections,
   );
-  assert.equal(documentationConfig.documents.length, 18);
+  assert.equal(documentationConfig.documents.length, 19);
   assert(!existsSync(path.join(projectRoot, 'docs/general')));
 
   for (const document of documentationConfig.documents) {
