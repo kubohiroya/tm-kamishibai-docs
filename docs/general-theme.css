@@ -908,6 +908,7 @@ h2.application-sheet {
 
 .concept-flow__track {
   display: flex;
+  flex-direction: column;
   flex-wrap: nowrap;
   align-items: stretch;
   justify-content: center;
@@ -921,7 +922,8 @@ h2.application-sheet {
 .concept-flow__track span {
   display: flex;
   min-width: 0;
-  flex: 1 1 0;
+  min-height: 3rem;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
   padding: 0.55rem 0.65rem;
@@ -935,9 +937,11 @@ h2.application-sheet {
 .concept-flow__track b {
   display: flex;
   flex: 0 0 auto;
+  align-self: center;
   align-items: center;
   color: var(--accent);
   font-size: 1.2rem;
+  transform: rotate(90deg);
 }
 
 .concept-flow__note {
@@ -948,23 +952,6 @@ h2.application-sheet {
   border-radius: 0 0 0.45rem 0.45rem;
   background: color-mix(in srgb, var(--accent-soft) 55%, var(--paper));
   line-height: 1.55;
-}
-
-@media screen and (max-width: 720px) {
-  .concept-flow__track {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .concept-flow__track span {
-    flex-basis: auto;
-    min-height: 3rem;
-  }
-
-  .concept-flow__track b {
-    align-self: center;
-    transform: rotate(90deg);
-  }
 }
 
 .application-flow {

@@ -17,16 +17,14 @@ const diagramDocuments = [
   'docs/developer-guides/dsl-4.0-diagnostics-design.md',
 ].map(read);
 
-test('keeps concept-flow arrows attached to an ordered horizontal or vertical flow', () => {
+test('keeps concept-flow nodes and arrows in one ordered vertical flow at every width', () => {
   assert.match(theme, /\.concept-flow__track\s*\{[\s\S]*?flex-wrap: nowrap/u);
+  assert.match(theme, /\.concept-flow__track\s*\{[\s\S]*?flex-direction: column/u);
   assert.match(
     theme,
-    /@media screen and \(max-width: 720px\)[\s\S]*?\.concept-flow__track\s*\{[\s\S]*?flex-direction: column/u,
+    /\.concept-flow__track b\s*\{[\s\S]*?align-self: center[\s\S]*?rotate\(90deg\)/u,
   );
-  assert.match(
-    theme,
-    /@media screen and \(max-width: 720px\)[\s\S]*?\.concept-flow__track b\s*\{[\s\S]*?rotate\(90deg\)/u,
-  );
+  assert.doesNotMatch(theme, /@media screen and \(max-width: 720px\)[\s\S]*?\.concept-flow/u);
 });
 
 test('keeps each concept figure together in print with readable compact labels', () => {
@@ -58,6 +56,7 @@ test('documents the renderer policy and source fragment destination', () => {
   );
   assert.match(diagramDocuments[0], /^## 制作のサイクル$/mu);
   assert.match(qaRecord, /Vivliostyle CLI 11\.1\.0/u);
-  assert.match(qaRecord, /320×568pxと1280×800pxの目視確認を追記/u);
+  assert.match(qaRecord, /viewport: 320×568px、1280×800px/u);
+  assert.match(qaRecord, /文字と矢印の重なり、図自体の横overflowはなかった/u);
   assert.match(qaRecord, /raw Mermaidコードは公開しません/u);
 });
