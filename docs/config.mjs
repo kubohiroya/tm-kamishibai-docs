@@ -132,6 +132,14 @@ export const documentCollections = [
           'TMPose紙芝居3.2の成果物とビルダー、アプリ本体、SB3、ドキュメントの変更、検証、公開手順を案内します。',
       },
       {
+        sourceFilename: 'developer-guide-4.0.md',
+        version: '4.0',
+        title: '紙芝居アプリ 4.0 ソフトウェアメンテナンスガイド',
+        audience: 'TMPose紙芝居4.0のsource frontend、runtime、adapterを保守する開発者',
+        description:
+          'DSL 4.0の固定Schema、Source Graph transaction、preview／build adapter、自己完結SB3、検証matrix、releaseとrollbackを案内します。',
+      },
+      {
         sourceFilename: 'internal-specification.md',
         title: '紙芝居アプリ 3.2 内部仕様書',
         audience: 'TMPose紙芝居3.2の実装を調査・変更する方',

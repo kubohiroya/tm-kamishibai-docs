@@ -42,6 +42,10 @@ const dsl4SchemaReference = readFileSync(
 const dsl4Schema = JSON.parse(
   readFileSync(new URL('../sources/dsl4/dsl-4.schema.json', import.meta.url), 'utf8'),
 );
+const developerGuide4 = readFileSync(
+  new URL('../docs/developer-guides/developer-guide-4.0.md', import.meta.url),
+  'utf8',
+);
 const internalSpecification = readFileSync(
   new URL('../docs/developer-guides/internal-specification.md', import.meta.url),
   'utf8',
@@ -110,6 +114,33 @@ test('keeps the DSL 3.x reference hand-authored', () => {
   assert.match(commandReference, /DSL 3\.2専用リファレンス/u);
   assert.match(commandReference, /HTML版とVivliostyle Viewer版/u);
   assert.doesNotMatch(commandReference, /DSL 4\.0/u);
+});
+
+test('publishes a DSL 4.0-only software maintenance contract from the completed implementation', () => {
+  assert.match(developerGuide4, /79457815f5c89b181b1a879a079a4d6a72d405ed/u);
+  assert.match(developerGuide4, /sources\/dsl4\/source-lock\.json/u);
+  assert.match(developerGuide4, /schema\/dsl-4\.schema\.json/u);
+  assert.match(developerGuide4, /src\/dsl4\/source-graph-frontend\.js/u);
+  assert.match(developerGuide4, /src\/dsl4\/live-reload-session\.js/u);
+  assert.match(developerGuide4, /src\/dsl4\/browser-preview-source-adapter\.js/u);
+  assert.match(developerGuide4, /src\/builder\/dsl4-local-preview-host\.js/u);
+  assert.match(developerGuide4, /src\/builder\/dsl4-build-output\.js/u);
+  assert.match(developerGuide4, /pnpm exec tmpose-kamishibai validate-dsl4/u);
+  assert.match(developerGuide4, /pnpm exec tmpose-kamishibai preview-dsl4/u);
+  assert.match(developerGuide4, /pnpm exec tmpose-kamishibai build-dsl4/u);
+  assert.match(developerGuide4, /--enable-source-includes/u);
+  assert.match(developerGuide4, /--max-total-source-bytes/u);
+  assert.match(developerGuide4, /deep-frozen StoryDocument/u);
+  assert.match(developerGuide4, /remote extension codeと\nremote previewは常に禁止/u);
+  assert.match(developerGuide4, /release-sources\/4\.0\.0-dev\/app/u);
+  assert.match(developerGuide4, /kamishibai-4\.0\.sb3/u);
+  assert.match(developerGuide4, /pnpm verify:full/u);
+  assert.match(developerGuide4, /pnpm sb3:dsl4-release:check/u);
+  assert.match(developerGuide4, /npmへ公開済みのversionは上書きせず/u);
+  assert.doesNotMatch(
+    developerGuide4,
+    /build-sb3|source\.txt|assets\.lock\.json|kamishibai=3\.[12]|TXT parser/u,
+  );
 });
 
 test('keeps the DSL 4.0 complete example valid against the pinned Schema', () => {
