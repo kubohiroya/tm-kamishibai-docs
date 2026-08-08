@@ -32,6 +32,7 @@ const expectedCollections = {
     'application-materials-guide.md',
     'application-materials-guide-4.0.md',
     'developer-guide.md',
+    'developer-guide-4.0.md',
     'internal-specification.md',
     'extension-guide.md',
     'dsl-3.1-diagnostics-design.md',
