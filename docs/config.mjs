@@ -12,6 +12,14 @@ export const documentCollections = [
           'TMPose紙芝居3.2の価値、仕組み、利用場面、教育的な意義を簡潔にまとめています。',
       },
       {
+        sourceFilename: 'executive-summary-adult-4.0.md',
+        version: '4.0',
+        title: '紙芝居アプリ 4.0 概要説明書 大人向け',
+        audience: '保護者・教員・教材作成者・運営者',
+        description:
+          'TMPose紙芝居4.0の価値、YAML project、Source Graph、preview・build、camera・pose入力、教育利用を説明します。',
+      },
+      {
         sourceFilename: 'executive-summary-kids.md',
         title: '紙芝居アプリ 3.2 概要説明書 子供向け',
         audience: '子供・初めての方',

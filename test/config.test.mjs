@@ -15,7 +15,12 @@ import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 
 const expectedCollections = {
-  'user-guides': ['executive-summary-adult.md', 'executive-summary-kids.md', 'user-guide.md'],
+  'user-guides': [
+    'executive-summary-adult.md',
+    'executive-summary-adult-4.0.md',
+    'executive-summary-kids.md',
+    'user-guide.md',
+  ],
   'dsl-3.2-guides': ['dsl-manual.md', 'command-reference.md', 'history.md'],
   'dsl-4.0-guides': [
     'dsl-4.0-author-guide.md',
@@ -60,7 +65,7 @@ test('organizes every migrated document into one reader-oriented collection', ()
     ),
     expectedCollections,
   );
-  assert.equal(documentationConfig.documents.length, 17);
+  assert.equal(documentationConfig.documents.length, 18);
   assert(!existsSync(path.join(projectRoot, 'docs/general')));
 
   for (const document of documentationConfig.documents) {
