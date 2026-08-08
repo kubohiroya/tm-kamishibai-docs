@@ -38,6 +38,7 @@ const expectedCollections = {
     'extension-guide.md',
     'extension-guide-4.0.md',
     'dsl-3.1-diagnostics-design.md',
+    'dsl-4.0-diagnostics-design.md',
     'dependency-audit.md',
     'release-smoke.md',
   ],
@@ -154,6 +155,40 @@ test('publishes the 3.2 and 4.0 extension guides at separate stable URLs', () =>
       version: legacy?.version,
       legacyOutputDirectory: legacy?.legacyOutputDirectory,
       outputDirectory: legacy?.outputDirectory,
+    },
+    {
+      version: '3.2',
+      legacyOutputDirectory: 'developer-guides',
+      outputDirectory: '3.2/developer-guides',
+    },
+  );
+  assert.deepEqual(
+    {
+      version: dsl4?.version,
+      legacyOutputDirectory: dsl4?.legacyOutputDirectory,
+      outputDirectory: dsl4?.outputDirectory,
+    },
+    {
+      version: '4.0',
+      legacyOutputDirectory: 'developer-guides',
+      outputDirectory: '4.0/developer-guides',
+    },
+  );
+});
+
+test('publishes the DSL 3.1 and 4.0 diagnostics reviews at separate stable URLs', () => {
+  const dsl31 = documentationConfig.documents.find(
+    ({sourceFilename}) => sourceFilename === 'dsl-3.1-diagnostics-design.md',
+  );
+  const dsl4 = documentationConfig.documents.find(
+    ({sourceFilename}) => sourceFilename === 'dsl-4.0-diagnostics-design.md',
+  );
+
+  assert.deepEqual(
+    {
+      version: dsl31?.version,
+      legacyOutputDirectory: dsl31?.legacyOutputDirectory,
+      outputDirectory: dsl31?.outputDirectory,
     },
     {
       version: '3.2',

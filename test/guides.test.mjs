@@ -58,6 +58,14 @@ const internalSpecification4 = readFileSync(
   new URL('../docs/developer-guides/internal-specification-4.0.md', import.meta.url),
   'utf8',
 );
+const diagnosticsDesign31 = readFileSync(
+  new URL('../docs/developer-guides/dsl-3.1-diagnostics-design.md', import.meta.url),
+  'utf8',
+);
+const diagnosticsDesign4 = readFileSync(
+  new URL('../docs/developer-guides/dsl-4.0-diagnostics-design.md', import.meta.url),
+  'utf8',
+);
 const theme = readFileSync(new URL('../docs/general-theme.css', import.meta.url), 'utf8');
 
 test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual', () => {
@@ -196,6 +204,64 @@ test('documents DSL 4.0 capabilities and platform integrations from the complete
   assert.match(extensionGuide4, /MPL-2\.0/u);
   assert.doesNotMatch(extensionGuide4, /\.\.\/images\/|<img|!\[/u);
   assert.doesNotMatch(extensionGuide4, /1拡張2ページで図解|全34ページ/u);
+});
+
+test('reviews DSL 4.0 diagnostics and safe stopping from the completed implementation', () => {
+  assert.match(diagnosticsDesign4, /79457815f5c89b181b1a879a079a4d6a72d405ed/u);
+  for (const boundary of [
+    'createDsl4SourceFrontend',
+    'normalizeDsl4DiagnosticSequence',
+    'createDsl4SourceGraph',
+    'createDsl4SourceGraphFrontend',
+    'createDsl4LiveReloadSession',
+    'createDsl4AssetReloadTransaction',
+    'createDsl4RuntimeController',
+    'createDsl4TurboWarpRuntimeEnvironment',
+    'installBundleTransactionally',
+  ]) {
+    assert.match(diagnosticsDesign4, new RegExp(`\\b${boundary}\\b`, 'u'), boundary);
+  }
+  for (const code of [
+    'K4-YAML-001',
+    'K4-SCHEMA-001',
+    'K4-REF-001',
+    'K4-INCLUDE-CYCLE',
+    'K4-ASSET-PREPARE-001',
+    'K4-ASSET-ROLLBACK-001',
+    'K4-RUNTIME-ACTION-001',
+    'K4-RELOAD-QUIESCE-TIMEOUT',
+    'K4-HOST-PORT-MISSING',
+  ]) {
+    assert.match(diagnosticsDesign4, new RegExp(`\\b${code}\\b`, 'u'), code);
+  }
+  assert.match(diagnosticsDesign4, /sourceId[\s\S]*range[\s\S]*storyPath[\s\S]*related/u);
+  assert.match(diagnosticsDesign4, /AJVの`instancePath`[\s\S]*JSON Pointer/u);
+  assert.match(
+    diagnosticsDesign4,
+    /`stableId`、`sceneId`、`actionIndex`[\s\S]*canonical diagnosticのfieldではありません/u,
+  );
+  assert.match(diagnosticsDesign4, /`Error\.cause`と`AggregateError\.errors`は内部調査/u);
+  assert.match(diagnosticsDesign4, /invalid candidateを捨て、current sessionを継続/u);
+  assert.match(diagnosticsDesign4, /next startが失敗[\s\S]*自動rollbackで復活させず/u);
+  assert.match(
+    diagnosticsDesign4,
+    /generic `runtime-controller\.fail\(\)`は任意のplatform `Error\.message`を自動redactせず/u,
+  );
+  assert.match(
+    diagnosticsDesign4,
+    /Browser Web Preview[\s\S]*CLI Preview[\s\S]*Production SB3 runtime/u,
+  );
+  assert.match(diagnosticsDesign4, /test\/dsl4-diagnostic-sequence-policy\.test\.mjs/u);
+  assert.match(diagnosticsDesign4, /test\/dsl4-preview-source-generation-wire\.test\.mjs/u);
+
+  const currentDsl4Contract = diagnosticsDesign4.slice(
+    diagnosticsDesign4.indexOf('## レビュー結論'),
+  );
+  assert.doesNotMatch(
+    currentDsl4Contract,
+    /K31-|dsl31Contract|featureDetailedScriptErrors|runtime\.stopAll\(\)/u,
+  );
+  assert.match(diagnosticsDesign31, /^# DSL 3\.1 台本診断・安全停止 設計レビュー$/mu);
 });
 
 test('documents the DSL 3.2 to 4.0 converter as a dedicated migration guide', () => {

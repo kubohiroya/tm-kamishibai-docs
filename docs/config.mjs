@@ -186,6 +186,14 @@ export const documentCollections = [
           'DSL 3.1の限定preflight、診断データモデル、機能拡張との境界、安全停止の設計判断を記録します。',
       },
       {
+        sourceFilename: 'dsl-4.0-diagnostics-design.md',
+        version: '4.0',
+        title: 'DSL 4.0 台本診断・安全停止 設計レビュー',
+        audience: 'DSL 4.0の診断、transaction、安全停止を実装・レビューする方',
+        description:
+          'DSL 4.0のparse、Schema、semantic、include、asset transaction、runtime、platform診断と、invalid candidate、副作用禁止、cleanup、表示surfaceを記録します。',
+      },
+      {
         sourceFilename: 'dependency-audit.md',
         title: 'TMPose紙芝居 3.2 依存関係監査記録',
         audience: 'TMPose紙芝居3.2の依存更新とsecurity overrideを保守する方',
