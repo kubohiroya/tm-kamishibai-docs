@@ -5,11 +5,12 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 対象: DSL 4.0台本の作成、構造・制約の確認を行う方\
 対象仕様: `kamishibai: '4.0'`\
-文書状態: **DSL 4.0実装完成版**\
+文書状態: **固定実装基準を説明するSchemaリファレンス（正式リリースの操作資料ではない）**\
 Schema固定commit: [`283daad`](https://github.com/kubohiroya/tmpose-kamishibai/commit/283daadeffa5d11ab4510daa66f60168277dafea)\
 Schema SHA-256: `f519c033c68be61d71cc5dcba20a8434e23255ec0279fc0dc2d6408e7f014d7e`
 
-> **権威関係と配布状態:** 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、
+> **権威関係と配布状態:** 2026年8月8日時点で`v4.0.0`は正式リリースされていません。
+> 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、
 > 適合実装・testを固定しています。Schemaはruntime実装から生成しません。公開アプリ、配布artifact、
 > feature flagがDSL 4.0を有効にしているかは利用するreleaseごとに確認してください。
 
