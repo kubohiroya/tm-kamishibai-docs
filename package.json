@@ -4,6 +4,11 @@
   "private": true,
   "description": "Documentation source and GitHub Pages build for TMPose Kamishibai",
   "type": "module",
+  "exports": {
+    "./site-navigation": "./scripts/site-navigation.mjs",
+    "./navigation-contract.json": "./docs/tutorials/navigation-contract.json",
+    "./site-shell.css": "./site/site-shell.css"
+  },
   "license": "SEE LICENSE IN LICENSES.md",
   "packageManager": "pnpm@11.18.0",
   "engines": {

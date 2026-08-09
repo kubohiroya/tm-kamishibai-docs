@@ -83,18 +83,17 @@ docs/images/tutorials/dsl4/create/
 
 ## AppBar
 
-[navigation-contract.json](navigation-contract.json)を5項目AppBarの計画上の正本とします。
+[navigation-contract.json](navigation-contract.json)を5項目AppBarの正本とします。契約とレンダラーは
+`@kubohiroya/tmpose-kamishibai-docs`のバージョン付きビルド依存として提供し、他の2リポジトリは
+同じ契約スナップショットをビルド時に検証します。
 
 ```text
-トップ → チュートリアル → ドキュメント → サンプル → ダウンロード
+トップ → ドキュメント → ワークショップ → 作品 → ダウンロード
 ```
 
-`/tutorials/`と配下では「チュートリアル」、それ以外のドキュメントサイトでは
-「ドキュメント」だけを現在地にします。AppBarは3リポジトリに分散しているため、公開時は
-契約に列挙した変更箇所を小粒PRで同期します。
-
-本Issueでは既存4項目AppBarを変更しません。リンク先、本文、サンプルが完成してから公開導線を
-追加します。
+`/workshops/`と配下では「ワークショップ」、それ以外のドキュメントサイトでは「ドキュメント」だけを
+現在地にします。各サイトは実行時に外部HTMLやJavaScriptを取得せず、静的生成物へナビゲーションを
+埋め込みます。
 
 ## Capture gate
 
