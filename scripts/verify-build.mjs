@@ -4,6 +4,7 @@ import path from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 
 import {documentationConfig, staffDocumentConfig, workshopDocumentConfig} from '../docs/config.mjs';
+import {NAVIGATION_CONTRACT} from './site-navigation.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
 import {referencedLocalAssets} from './build-freshness.mjs';
 import {legacyPublicationEntries} from './legacy-version-notices.mjs';
@@ -131,6 +132,10 @@ async function verifySiteAppBars() {
       `${path.relative(distRoot, htmlFile)} must contain one AppBar.`,
     );
     assert(
+      html.includes(`data-navigation-contract-version="${NAVIGATION_CONTRACT.contractVersion}"`),
+      `${path.relative(distRoot, htmlFile)} must use the active navigation contract.`,
+    );
+    assert(
       (html.match(/<footer class="site-footer" data-site-footer-version="1">/gu) ?? []).length ===
         1,
       `${path.relative(distRoot, htmlFile)} must contain one site footer.`,
@@ -153,12 +158,8 @@ async function verifySiteAppBars() {
       `${path.relative(distRoot, htmlFile)} must label the works-library link as 作品.`,
     );
     for (const destination of [
-      'https://kubohiroya.github.io/tmpose-kamishibai/',
-      'https://kubohiroya.github.io/tmpose-kamishibai-docs/',
-      'https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/',
-      'https://kubohiroya.github.io/tmpose-kamishibai-samples/',
-      'https://kubohiroya.github.io/tmpose-kamishibai/downloads/',
-      'https://github.com/kubohiroya/tmpose-kamishibai-docs',
+      ...NAVIGATION_CONTRACT.items.map(({href}) => href),
+      NAVIGATION_CONTRACT.siteSettings['tmpose-kamishibai-docs'].repository,
     ]) {
       assert(
         html.includes(`href="${destination}"`),

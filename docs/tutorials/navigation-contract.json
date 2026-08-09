@@ -1,6 +1,21 @@
 {
   "formatVersion": 1,
-  "status": "planned-after-dsl4-release",
+  "contractVersion": "1.0.0",
+  "status": "active",
+  "siteSettings": {
+    "tmpose-kamishibai": {
+      "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+      "repositoryLabel": "tmpose-kamishibai"
+    },
+    "tmpose-kamishibai-docs": {
+      "repository": "https://github.com/kubohiroya/tmpose-kamishibai-docs",
+      "repositoryLabel": "tmpose-kamishibai-docs"
+    },
+    "tmpose-kamishibai-samples": {
+      "repository": "https://github.com/kubohiroya/tmpose-kamishibai-samples",
+      "repositoryLabel": "tmpose-kamishibai-samples"
+    }
+  },
   "items": [
     {
       "id": "home",
@@ -8,14 +23,14 @@
       "href": "https://kubohiroya.github.io/tmpose-kamishibai/"
     },
     {
-      "id": "tutorials",
-      "label": "チュートリアル",
-      "href": "https://kubohiroya.github.io/tmpose-kamishibai-docs/tutorials/"
-    },
-    {
       "id": "documents",
       "label": "ドキュメント",
       "href": "https://kubohiroya.github.io/tmpose-kamishibai-docs/"
+    },
+    {
+      "id": "workshops",
+      "label": "ワークショップ",
+      "href": "https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/"
     },
     {
       "id": "samples",
@@ -36,13 +51,18 @@
     },
     {
       "site": "tmpose-kamishibai",
+      "pathPrefix": "/tmpose-kamishibai/docs/",
+      "current": "documents"
+    },
+    {
+      "site": "tmpose-kamishibai",
       "pathPrefix": "/tmpose-kamishibai/",
       "current": "home"
     },
     {
       "site": "tmpose-kamishibai-docs",
-      "pathPrefix": "/tmpose-kamishibai-docs/tutorials/",
-      "current": "tutorials"
+      "pathPrefix": "/tmpose-kamishibai-docs/workshops/",
+      "current": "workshops"
     },
     {
       "site": "tmpose-kamishibai-docs",
@@ -62,7 +82,11 @@
         "site/index.html",
         "site/downloads/index.html",
         "site/docs/index.html",
-        "test/site-navigation.test.mjs"
+        "scripts/site-navigation.mjs",
+        "site/contracts/navigation-contract.json",
+        "site/site-shell.css",
+        "test/site-navigation.test.mjs",
+        ".github/workflows/navigation-contract.yml"
       ]
     },
     {
@@ -70,13 +94,23 @@
       "paths": [
         "site/index.html",
         "scripts/site-appbar.mjs",
+        "scripts/site-navigation.mjs",
+        "site/site-shell.css",
+        "package.json",
         "scripts/verify-build.mjs",
         "test/index.test.mjs"
       ]
     },
     {
       "repository": "kubohiroya/tmpose-kamishibai-samples",
-      "paths": ["scripts/build-site.mjs", "scripts/verify-site.mjs"]
+      "paths": [
+        "scripts/build-site.mjs",
+        "scripts/site-navigation.mjs",
+        "site/contracts/navigation-contract.json",
+        "site/site-shell.css",
+        "scripts/verify-site.mjs",
+        ".github/workflows/navigation-contract.yml"
+      ]
     }
   ],
   "qualityChecks": [
@@ -87,8 +121,7 @@
     "all five destinations resolve before publication"
   ],
   "publicationGate": [
-    "tutorial landing and both tutorial pages are published",
-    "tutorial starter and Web player are published",
+    "all five destinations resolve before publication",
     "DSL 4.0 release version is fixed",
     "cross-repository navigation changes are ready to deploy"
   ]

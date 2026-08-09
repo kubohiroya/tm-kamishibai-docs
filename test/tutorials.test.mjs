@@ -25,48 +25,46 @@ function screenshotMarkers(source) {
   return [...source.matchAll(/<!-- screenshot:([PC]-\d{2}) -->/gu)].map((match) => match[1]);
 }
 
-test('keeps pre-release tutorial drafts outside the public document collections', () => {
-  assert.equal(navigationContract.status, 'planned-after-dsl4-release');
+test('keeps the active navigation contract separate from tutorial drafts', () => {
+  assert.equal(navigationContract.status, 'active');
   assert.equal(screenshotManifest.status, 'blocked-until-dsl4-release');
   assert(
     documentationConfig.documents.every((document) => document.sourceDirectory !== 'tutorials'),
   );
 
   const publicIndex = readFileSync(path.join(projectRoot, 'site/index.html'), 'utf8');
-  const appBarSource = readFileSync(path.join(projectRoot, 'scripts/site-appbar.mjs'), 'utf8');
-  for (const source of [publicIndex, appBarSource]) {
-    const normalized = source.replace(/\s+/gu, ' ');
-    assert(!normalized.includes('>チュートリアル</a>'));
-    assert(!normalized.includes('href="tutorials/"'));
-  }
+  assert.match(publicIndex, /ワークショップ<\/a/iu);
+  assert.doesNotMatch(publicIndex, /チュートリアル<\/a/iu);
 });
 
-test('defines the planned five-item AppBar and current-section rules', () => {
+test('defines the active five-item AppBar and current-section rules', () => {
   assert.equal(navigationContract.formatVersion, 1);
   assert.deepEqual(
     navigationContract.items.map(({id, label}) => [id, label]),
     [
       ['home', 'トップ'],
-      ['tutorials', 'チュートリアル'],
       ['documents', 'ドキュメント'],
+      ['workshops', 'ワークショップ'],
       ['samples', '作品'],
       ['downloads', 'ダウンロード'],
     ],
   );
-  assert.equal(
-    navigationContract.items.find(({id}) => id === 'tutorials').href,
-    'https://kubohiroya.github.io/tmpose-kamishibai-docs/tutorials/',
-  );
+  assert.equal(navigationContract.contractVersion, '1.0.0');
+  assert.deepEqual(Object.keys(navigationContract.siteSettings).sort(), [
+    'tmpose-kamishibai',
+    'tmpose-kamishibai-docs',
+    'tmpose-kamishibai-samples',
+  ]);
 
   const itemIds = new Set(navigationContract.items.map(({id}) => id));
   for (const rule of navigationContract.currentSectionRules) assert(itemIds.has(rule.current));
-  const tutorialRuleIndex = navigationContract.currentSectionRules.findIndex(
-    ({current}) => current === 'tutorials',
+  const workshopRuleIndex = navigationContract.currentSectionRules.findIndex(
+    ({site, current}) => site === 'tmpose-kamishibai-docs' && current === 'workshops',
   );
   const documentRuleIndex = navigationContract.currentSectionRules.findIndex(
-    ({current}) => current === 'documents',
+    ({site, current}) => site === 'tmpose-kamishibai-docs' && current === 'documents',
   );
-  assert(tutorialRuleIndex >= 0 && tutorialRuleIndex < documentRuleIndex);
+  assert(workshopRuleIndex >= 0 && workshopRuleIndex < documentRuleIndex);
 
   assert.deepEqual(navigationContract.changeLocations.map(({repository}) => repository).sort(), [
     'kubohiroya/tmpose-kamishibai',
