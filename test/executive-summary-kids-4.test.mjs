@@ -72,7 +72,7 @@ test('does not mix DSL 3.x TXT syntax or delivery steps into the DSL 4.0 child s
   }
 });
 
-test('keeps a valid heading outline and stays image-free while capture gates are blocked', () => {
+test('keeps a valid heading outline and stays capture-image-free while gates are blocked', () => {
   const headings = [...dsl4Summary.matchAll(/^(#{1,6})\s+.+$/gmu)].map(
     ([, markers]) => markers.length,
   );
@@ -82,5 +82,6 @@ test('keeps a valid heading outline and stays image-free while capture gates are
   for (let index = 1; index < headings.length; index += 1) {
     assert.ok(headings[index] <= headings[index - 1] + 1, 'heading levels must not be skipped');
   }
-  assert.doesNotMatch(dsl4Summary, /!\[[^\]]*\]\([^)]*\)|<img\b|<figure\b/iu);
+  assert.doesNotMatch(dsl4Summary, /!\[[^\]]*\]\([^)]*\)|<img\b/iu);
+  assert.match(dsl4Summary, /<figure class="concept-flow">/u);
 });
