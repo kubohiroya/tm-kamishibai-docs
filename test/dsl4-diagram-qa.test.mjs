@@ -10,6 +10,7 @@ const qaRecord = read('DSL4-DIAGRAM-QA.md');
 const dsl4Index = read('site/4.0/index.html');
 const diagramDocuments = [
   'docs/user-guides/executive-summary-adult-4.0.md',
+  'docs/user-guides/executive-summary-kids-4.0.md',
   'docs/dsl-author-guides/dsl-4.0-author-guide.md',
   'docs/dsl-author-guides/dsl-3.2-to-4.0-conversion-guide.md',
   'docs/developer-guides/internal-specification-4.0.md',
