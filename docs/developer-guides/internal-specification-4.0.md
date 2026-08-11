@@ -72,6 +72,18 @@ portを介して外側のadapterへ依頼します。
 
 <figure class="concept-flow"><figcaption>sourceからplatform adapterまでの依存方向</figcaption><div class="concept-flow__track"><span>Project source</span><b aria-hidden="true">→</b><span>Source Graph</span><b aria-hidden="true">→</b><span>Source frontend<br>parse・Schema・semantic</span><b aria-hidden="true">→</b><span>StoryDocument<br>immutable IR</span><b aria-hidden="true">→</b><span>Runtime controller</span><b aria-hidden="true">→</b><span>Port contract</span><b aria-hidden="true">→</b><span>Platform adapter<br>TurboWarp・asset・pose・DOM</span></div><p class="concept-flow__note">source frontend、runtime、adapterの各層は、失敗を共通の診断surfaceへ投影します。</p></figure>
 
+### 固定実装の呼出し経路 {#implementation-call-path}
+
+前図を実装のexportとcomposition rootまで具体化すると、固定commit`8ea06bf`では次の経路になります。
+この追跡は、同commitから生成した浦島太郎Web成果物を実行し、タイトル、シーン、ポーズfeedbackまで
+観測した結果と突き合わせています。
+
+<figure class="concept-flow dsl4-implementation-map"><figcaption>固定実装をsourceから実画面まで追う主要呼出し経路</figcaption><div class="concept-flow__track"><span><code>createDsl4SourceGraph</code><small>source-graph.js<br>entryとincludeを有限探索</small></span><b aria-hidden="true">→</b><span><code>createDsl4SourceGraphFrontend.parse</code><small>source-graph-frontend.js<br>合成後にsingle-source frontendへ委譲</small></span><b aria-hidden="true">→</b><span><code>createDsl4SourceFrontend.parse</code><small>source-frontend.js<br>YAML・Schema・semantic・Action Registry</small></span><b aria-hidden="true">→</b><span><code>createStoryDocument</code><small>story-document.js<br>正規化してdeep-freeze</small></span><b aria-hidden="true">→</b><span><code>createDsl4RuntimeStartup</code><small>runtime-startup.js<br>componentを検証しsessionを所有</small></span><b aria-hidden="true">→</b><span><code>createDsl4RuntimeController.dispatch</code><small>runtime-controller.js<br>sceneとactionを順にportへ渡す</small></span><b aria-hidden="true">→</b><span><code>createDsl4TurboWarpRuntimeEnvironment</code><small>turbowarp-runtime-host.js<br>portとlifecycleを構成</small></span></div><div class="dsl4-implementation-map__ports"><section><strong>アセットとLoading</strong><code>platform-asset-session.js</code><span>Asset Manager、背景、音、ポーズモデルをprepare・release</span></section><section><strong>表示と発話</strong><code>media-action-port.js</code><code>actor-action-port.js</code><span>Stage、Actor、Bubble、SVG Textへ反映</span></section><section><strong>入力とポーズ</strong><code>async-input-action-port.js</code><code>pose-action-port.js</code><span>キー、タッチ、TMPose、カメラ、feedbackへ接続</span></section></div><p class="concept-flow__note">runtime coreは<code>stage</code>、<code>say</code>、<code>pose</code>等のcommand名でportを呼びます。TurboWarp VM、DOM、cameraをcoreから直接参照しないため、同じ<code>StoryDocument</code>をpreviewと配布成果物で共有できます。</p></figure>
+
+実画面では、`stage`とActor系portの結果が背景・浦島太郎・亀として現れ、`say`が吹き出し、
+`pose`がTMPose compositionとpose feedbackへ分岐します。呼出し経路と画面の対応、および固定した
+成果物hashは[DSL 4.0 実装ビジュアル記録](../../DSL4-IMPLEMENTATION-VISUALS.md)を参照してください。
+
 ### 正本の順序
 
 1. 作者向け構造の正本は`schema/dsl-4.schema.json`です。

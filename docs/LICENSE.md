@@ -52,6 +52,25 @@ SVG text actorの使用例を同一範囲で撮影した画面キャプチャで
 block実装には、それぞれの権利者によるライセンスまたは利用条件が適用されます。
 この文書のCC BY-SA 4.0表示は、それら第三者要素を別途再許諾するものではありません。
 
+## DSL 4.0実装スナップショット
+
+次の3図版は、2026年8月12日に固定した浦島太郎DSL 4.0 Web成果物をローカルで実行し、
+1280×720のブラウザー表示から説明対象を切り出した画面キャプチャです。
+
+- `images/dsl4-implementation-title.jpg`
+- `images/dsl4-implementation-scene.jpg`
+- `images/dsl4-implementation-pose-feedback.jpg`
+
+runtimeは`kubohiroya/tmpose-kamishibai@8ea06bfd100b106f559cb25a280fab5570e42919`、サンプルと
+Web成果物は`kubohiroya/tmpose-kamishibai-samples@dc9f6626de9ef85ca71312402fd139082922b867`を
+基準にしています。入力・出力hash、Packager version、撮影条件と各画像hashは
+[`DSL4-IMPLEMENTATION-VISUALS.md`](../DSL4-IMPLEMENTATION-VISUALS.md)に記録しています。
+
+キャプチャ内のTMPose紙芝居ランタイム、UI、浦島太郎の台本・背景・Actor画像は、引用元の
+Mozilla Public License 2.0（MPL-2.0）の適用範囲を保持します。図版としての選択、切り出し、
+captionには本書のCC BY-SA 4.0を適用しますが、キャプチャ内のMPL-2.0対象要素を別途再許諾する
+ものではありません。
+
 ## Noto Sans JP
 
 `fonts/NotoSansJP-VF.ttf`は、
