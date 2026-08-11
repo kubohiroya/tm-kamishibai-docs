@@ -53,6 +53,8 @@ DSL 4.0の固定実装、正式リリース、公開画面、文書状態の区�
 [DSL 4.0 文書・公開状態の表記基準](DSL4-PUBLICATION-STATUS.md)で管理します。
 概念図の通常HTML、狭幅、印刷、フラグメントの確認結果は
 [DSL 4.0 概念図・フラグメントQA記録](DSL4-DIAGRAM-QA.md)へ記録します。
+固定成果物から再現したDSL 4.0実画面と、sourceからplatform portまでの実装追跡は
+[DSL 4.0 実装ビジュアル記録](DSL4-IMPLEMENTATION-VISUALS.md)で管理します。
 
 ## 開発
 
