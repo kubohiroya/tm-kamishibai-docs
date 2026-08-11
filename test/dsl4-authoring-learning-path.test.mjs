@@ -29,8 +29,12 @@ test('defines tutorial scope, canonical sample ownership, and release stages', (
 
 test('keeps the create tutorial minimal and separate from 3.x migration', () => {
   assert.match(createTutorial, /## このチュートリアルと作者ガイドの違い/u);
-  assert.match(createTutorial, /成果物は変更したYAMLから検証済みの自己完結SB3を再生/u);
+  assert.match(createTutorial, /成果物は、変更したYAMLから\s*作った検証済みの自己完結SB3/u);
   assert.match(createTutorial, /全action、Source Graph、分岐、custom action/u);
   assert.match(createTutorial, /DSL 3\.1／3\.2のTXT／SB3操作や変換は扱いません/u);
   assert.match(createTutorial, /正式starter、sample、UI、commandが固定される前/u);
+  assert(
+    createTutorial.indexOf('## 完了チェック') <
+      createTutorial.indexOf('## このチュートリアルと作者ガイドの違い'),
+  );
 });

@@ -2,67 +2,60 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-文書状態: DSL 4.0リリース前draft。正式CLIと公開starterは未確定です。\
+文書状態: DSL 4.0リリース前draft。スターター配布先と完成版の出力手順は未確定です。\
 対象: 初めて紙芝居DSL 4.0を書く人\
 対象仕様: `kamishibai: '4.0'`\
 想定時間: 60〜90分
 
-このチュートリアルでは、「紙芝居を遊ぶ」で使用した最小作品のstarterを変更し、preview、診断修正、
-検証、buildを経て自己完結SB3を作ります。通常の台本作者はTurboWarpのコード領域を開かず、Scratch
-ブロックを追加しません。
+入口: [紙芝居チュートリアル](index.md)
 
-## このチュートリアルと作者ガイドの違い
+> このページは公開前の準備版です。スターター（ひな形）の配布先とプレビューを開く方法は、正式公開時に更新します。
 
-ここで扱うのは、最初の作品を完成させるための一つの学習経路だけです。対象読者は初めてDSL 4.0を書く方、
-前提は大人向け概要と固定starter、成果物は変更したYAMLから検証済みの自己完結SB3を再生することです。
-作者ガイドを最初から読み直す必要はありません。
+このチュートリアルでは、「紙芝居を遊ぶ」で使用した作品のひな形を少しずつ変更します。変更は
+Webブラウザーで確かめ、最後に一つのSB3ファイルとして出力します。Scratchのブロックは追加しません。
 
-次の項目は本チュートリアルの完了後に、必要な節だけ作者ガイドまたはSchemaリファレンスへ移ります。
+## 最初のゴール
 
-| チュートリアルで行うこと                    | 次に調べる資料                                   |
-| ------------------------------------------- | ------------------------------------------------ |
-| YAMLの最小変更、asset・actor・scene追加     | 作者ガイドの各記述節、Schemaリファレンス         |
-| previewの診断修正と安全なcandidate反映      | 作者ガイド「診断と安全停止」、開発者向け診断設計 |
-| 同梱pose modelを使うscene                   | 作者ガイド「ポーズ認識とcamera preview」         |
-| 全action、Source Graph、分岐、custom action | 作者ガイドの該当節。最初の作品では扱わない       |
+最初の目標は、スターターのセリフを一行だけ変え、プレビューで変更を確かめることです。背景、登場人物、
+ポーズは、その成功を確認してから一つずつ追加します。ここではまだ編集せず、Step 1から順番に進めます。
 
-DSL 3.1／3.2のTXT／SB3操作や変換は扱いません。移行が必要な場合は、別の変換ガイドを使います。
-正式starter、sample、UI、commandが固定される前は、本文の例を配布物の正本とみなしません。
+## 用意するもの
 
-## 完了するとできること
+- 配布されたチュートリアル用スターター
+- 文字を編集できるエディター
+- 新しいWebブラウザー
+- プレビューで使うカメラと、全身を映せる少しの空間
 
-- DSL 4.0 projectの台本とアセットを見分けられる
-- YAMLのセリフを変更し、新しいasset、アクター、sceneを追加できる
-- development previewへ変更を反映できる
-- 診断が示すsource位置から台本を修正できる
-- 検証済みの台本とアセットから自己完結SB3を生成できる
+Scratchのブロックは追加しません。最後に作品を検証して出力するときだけ、表示されたコマンドを
+コピーして使います。
 
-## 初版で扱わないこと
+## 全体の流れ
 
-- Teachable Machineでのポーズモデル作成
-- DSL 3.1／3.2台本の変換
-- 複雑な分岐、custom action、Action Context
-- Web公開やGitHub Pagesへのdeploy
-- runtime、標準template、機能拡張の開発
-- 宣言済みassetのfile内容差し替え、削除／rename／kind／path変更
-- base SB3やTurboWarp project構造のlive reload
-
-これらは基本チュートリアルの完了後に、作成ガイド、Schemaリファレンス、開発者向け資料で扱います。
+| Step | やること                      | 画面で確かめること                 |
+| ---: | ----------------------------- | ---------------------------------- |
+|    1 | 完成作品を遊ぶ                | 物語の始まり、ポーズ、終わり       |
+|    2 | スターターを開く              | 編集する台本ファイル               |
+|    3 | Web Previewで作品を開く       | 変更を待っている状態               |
+|    4 | セリフを一行変える            | 新しいセリフ                       |
+|    5 | 背景、登場人物、場面を加える  | 新しい場面                         |
+|    6 | 同梱されたポーズ場面を加える  | ポーズの案内と進み具合             |
+|    7 | わざと一つ間違えてから直す    | エラーの場所と、修正後に消えること |
+|    8 | 台本と素材を検証してSB3を作る | 完成したSB3                        |
+|    9 | 完成したSB3を再生する         | 最後まで遊べること                 |
 
 ## 1. 完成作品を確認する
 
 最初に[紙芝居を遊ぶ](play.md)を行い、作成する作品の開始、ポーズ認識、終了を確認します。完成状態を
 先に知ることで、以後の変更が画面のどこへ反映されたか比較できます。
 
-production相当の完成画面は「遊ぶ」の画像を再利用し、同じ状態を重複撮影しません。新しい画像が
-必要になった場合だけ`C-13`として取得します。
+<!-- capture-note: 完成画面は「遊ぶ」の画像を再利用し、必要な場合だけC-13を取得する。 -->
 
 <!-- screenshot:C-13 -->
 
-## 2. Starterを開く
+## 2. スターターを開く
 
-正式リリース時に、固定versionのstarter取得先、展開方法、必要なtoolchainを記載します。starterは
-少なくとも次の構造を持つものとします。
+正式リリース後は、ここからチュートリアル用スターターをダウンロードします。ZIPファイルを展開し、
+`tutorial-story`フォルダーを開きます。中には次のファイルがあります。
 
 ```text
 tutorial-story/
@@ -71,53 +64,55 @@ tutorial-story/
 ├── beach.svg
 ├── turtle.svg
 ├── opening.mp3
-└── rescue-pose/
-    ├── model.json
-    ├── metadata.json
-    └── weights.bin
+├── rescue-pose/
+│   ├── model.json
+│   ├── metadata.json
+│   └── weights.bin
+└── addition-kit/
+    ├── new-beach.svg
+    ├── friend.svg
+    ├── add-background-and-actor.yml.txt
+    └── add-pose-scene.yml.txt
 ```
 
-作者が最初に編集する正本はroot直下の`story.kamishibai.yaml`です。`project.source.json`の`path`を
-省略するとこの既定名を使用します。別名もroot直下の`.kamishibai.yaml` basenameだけを指定でき、
-`stories/`等のdirectoryへ台本を置く構成は使用しません。
-
-画像と音声はroot直下へ置けます。`assets/`、`images/`、`sounds/`、`pose-models/`等は作品が大きい場合に
-任意で使う整理用directoryであり、starterの必須階層ではありません。YAMLの`file`はproject root基準です。
-pose modelはbundleを構成する複数fileだけをmodel単位のdirectoryへまとめます。
+最初に編集するのは`story.kamishibai.yaml`です。`project.source.json`、画像、音声、
+`rescue-pose`フォルダーはそのままにします。`addition-kit`はStep 5以降で使う追加素材と、同じ内容の
+YAML見本です。
 
 <!-- screenshot:C-01 -->
 
-## 3. Web PreviewでProjectを開く
+## 3. Web Previewで作品を開く
 
-対応browserでHTTPSのWeb Previewを開き、「プロジェクトを開く」を押します。この操作はuser gestureから
-read-onlyのdirectory pickerを開きます。
+Web Previewを開き、「プロジェクトを開く」を押します。
 
 <!-- screenshot:C-02 -->
 
-pickerでは`story.kamishibai.yaml`そのものではなく、`project.source.json`とYAMLを含む`tutorial-story/`
-directoryを選択します。Web Previewは選択したroot外を読まず、handleをsession中だけ保持します。
+ファイル選択画面では`story.kamishibai.yaml`ではなく、`tutorial-story`フォルダーそのものを選びます。
 
 <!-- screenshot:C-03 -->
 
-`project.source.json`を検証し、最初のsourceが正常ならreload選択dialogを挟まず先頭から開始します。
-watch状態になり、外部editorの保存を待っていることを確認します。
+作品のタイトル画面が表示され、変更を待っていることを確認します。
 
 <!-- screenshot:C-04 -->
 
-最初のsourceが不正または見つからない場合はruntimeを開始せず、preview shellが診断を表示して変更を
-待ちます。この状態は後の診断stepで扱います。
+エラーが表示された場合は、`tutorial-story`フォルダーを選んだか確認します。まだ台本は変更しません。
 
 ## 4. セリフを変更する
 
-台本の基本構造を確認します。次の例は構造説明用であり、正式starterのsourceをrelease時に正本として
-同期します。
+`story.kamishibai.yaml`をエディターで開きます。最初の台本は次の形です。`beach.svg`と`turtle.svg`は、
+`file`で指定したローカル素材です。
 
 ```yaml
 kamishibai: '4.0'
 
 assets:
-  Beach: backdrop
-  TurtleIdle: costume:Turtle
+  Beach:
+    kind: backdrop
+    file: beach.svg
+  TurtleIdle:
+    kind: costume
+    target: Turtle
+    file: turtle.svg
 
 actors:
   Turtle: TurtleIdle
@@ -130,120 +125,218 @@ scenes:
         seconds: 2
 ```
 
-最初の変更では`text`だけを書き換えます。保存後のsourceが正常なら、previewは変更前の実行を安全な
-位置で止め、reload status buttonへ最終reload時刻を表示します。buttonを開いた第1段階では、先頭、
-現在のscene、現在のactionから再開位置を選びます。actionから安全に再開できない場合は、scene、先頭の
-順でfallbackし、選択した位置と実際の再開位置を区別して示します。
+`text`の右側だけを次のように変更し、保存します。行の先頭にある空白と、`text`や`seconds`の位置は
+変えません。
 
-第2段階では、今回だけreload、reloadして次回設定も保存、reloadせず次回設定だけ保存、cancelの適用範囲を
-選びます。第1段階の選択だけではreloadせず、cancel、close、Escapeでも再開設定を変更しません。
+```yaml
+- Turtle.say:
+    text: こんにちは！
+    seconds: 2
+```
 
-同じUIでstatus buttonの優先表示位置を、上下左右の中央を含む外周8方向から選べます。camera control等と
-重なる場合は最も近い空き位置へ移動し、衝突がなくなると優先位置へ戻ります。
+Web Previewへ戻ると、更新状態ボタンに保存時刻が表示されます。そのボタンを押し、「先頭から」を選び、
+次の画面で「今回だけ更新」を選びます。
 
 <!-- screenshot:C-05 -->
 
-初回は先頭からの再開を選び、変更したセリフが表示されることを確認します。
+変更したセリフが「こんにちは！」になったことを確認します。ここまでできれば、最初の編集は成功です。
 
 <!-- screenshot:C-06 -->
 
-## 5. Asset、アクター、Sceneを追加する
+## 5. 背景、登場人物、場面を追加する
 
-次に、addition kitの新しい背景とcostumeをproject rootへcopyし、そのasset IDを使用するsceneを追加します。
-fileを先に置いても、YAMLを先に保存してもかまいません。Web Previewは両方が揃ってstableになるまで現在の
-作品を継続します。一度に複数の概念を加えず、次の順に確認します。
+次は、`addition-kit`の追加素材を使います。一度に一種類ずつ追加します。
 
-1. `new-beach.svg`をproject rootへcopyする
-2. addition kitのcostume fileもproject rootへcopyする
+1. `addition-kit/new-beach.svg`と`addition-kit/friend.svg`を`tutorial-story`直下へコピーする
+2. `assets`全体を次の形にして、新しい背景と登場人物の画像を追加する
+
+```yaml
+assets:
+  Beach:
+    kind: backdrop
+    file: beach.svg
+  TurtleIdle:
+    kind: costume
+    target: Turtle
+    file: turtle.svg
+  NewBeach:
+    kind: backdrop
+    file: new-beach.svg
+  FriendIdle:
+    kind: costume
+    target: Friend
+    file: friend.svg
+```
 
 <!-- screenshot:C-07 -->
 
-3. `assets`へ新しい背景IDと`file: new-beach.svg`を追加する
-4. 新しいcostume ID、`target`、fileを追加する
-5. `actors`へアクターと初期costumeの対応を追加する
-6. `scenes`で新しい背景とアクターを参照する
-7. セリフまたは待機を追加して保存する
+3. `actors`全体を次の形にして、新しい登場人物を追加する
 
-追加file、YAML entry、参照のすべてが正常な場合だけtransactionalに反映します。途中のfileや不正な
-candidateを部分適用せず、未参照fileは無視します。宣言済みassetの内容差し替え、削除、rename、kind／path
-変更はこの基本チュートリアルに混ぜません。アセットfile、ID、actionの正確な例は正式starterから引用し、
-文書と配布物の内容を二重管理しません。
+```yaml
+actors:
+  Turtle: TurtleIdle
+  Friend: FriendIdle
+```
 
-sourceと追加assetが一candidateとして検証されると、追加asset ID、kind、影響sceneと再開位置をdialogで
-確認できます。
+4. `scenes`全体を次の形にして、新しい場面とセリフを追加して保存する
+
+```yaml
+scenes:
+  opening:
+    - stage: Beach
+    - Turtle.say:
+        text: こんにちは！
+        seconds: 2
+  meeting:
+    - stage: NewBeach
+    - Friend.show:
+        skin: FriendIdle
+        x: 0
+        y: -60
+        scale: 30
+    - Friend.say:
+        text: こんにちは、カメさん！
+        seconds: 2
+```
+
+同じ抜粋は`addition-kit/add-background-and-actor.yml.txt`でも確認できます。
+
+Web Previewの更新案内で、追加した背景と登場人物の名前を確認します。
 
 <!-- screenshot:C-08 -->
 
-先頭から再開し、新しい背景、アクター、sceneが表示されることを確認します。
+先頭から再開し、新しい背景、登場人物、場面が表示されることを確認します。表示されない場合は、
+ファイル名と台本の`file`が同じか確認します。
 
 <!-- screenshot:C-09 -->
 
-## 6. ポーズSceneを追加する
+## 6. ポーズ場面を追加する
 
-starterへ同梱された検証済みpose modelをsceneから参照し、ポーズ成立後に次のsceneへ進む構成を追加します。
-ポーズactionの最終形、feedback mode、navigation policy、camera controlはrelease時のSchemaから引用します。
+スターターに同梱された`rescue-pose`を使う場面を追加します。このモデルには`help`というポーズが
+登録済みです。まず、`assets`全体を次の形にして、モデルと成功音を追加します。
 
-このstepではモデルの学習、remote URLからの取得、Scratch変数やblockによる認識状態の変更は扱いません。
+```yaml
+assets:
+  Beach:
+    kind: backdrop
+    file: beach.svg
+  TurtleIdle:
+    kind: costume
+    target: Turtle
+    file: turtle.svg
+  NewBeach:
+    kind: backdrop
+    file: new-beach.svg
+  FriendIdle:
+    kind: costume
+    target: Friend
+    file: friend.svg
+  RescuePose:
+    kind: poseModel
+    file: rescue-pose
+    loading: lazy
+  RescueSound:
+    kind: sound
+    file: opening.mp3
+```
 
-productionの認識状態は「遊ぶ」の`P-05`を参照します。ここではWeb Preview固有の`C-10`を取得し、
-pose feedbackとcamera controlが表示された状態でも、reload status buttonがcontrolと重ならないことを
-確認します。撮影fixtureでは右上を優先位置とし、右上のcamera controlを避けて上中央へ解決される状態を
-使用します。
+続いて、`scenes`全体を次の形にして、ポーズ場面を追加して保存します。
+
+```yaml
+scenes:
+  opening:
+    - stage: Beach
+    - Turtle.say:
+        text: こんにちは！
+        seconds: 2
+  meeting:
+    - stage: NewBeach
+    - Friend.show:
+        skin: FriendIdle
+        x: 0
+        y: -60
+        scale: 30
+    - Friend.say:
+        text: こんにちは、カメさん！
+        seconds: 2
+  rescue:
+    poseModel: RescuePose
+    actions:
+      - stage: Beach
+      - Turtle.pose:
+          steps:
+            - pose: help
+              skin: TurtleIdle
+              sound: RescueSound
+```
+
+同じ抜粋は`addition-kit/add-pose-scene.yml.txt`でも確認できます。このチュートリアルでは、ポーズモデル
+そのものは作りません。
+
+Web Previewを先頭から更新し、カメラを許可します。見本のポーズ、カメラ映像、進み具合が表示され、
+ポーズを保つと次の場面へ進むことを確認します。
 
 <!-- screenshot:C-10 -->
 
 ## 7. 診断を読んで修正する
 
-未定義のアセット参照など、安全に再現できる誤りをstarterの作業copyへ一件だけ加えます。previewまたは
-検証commandが示す次の情報を確認します。
+エラー表示の読み方も一度だけ練習します。作業中の台本で`- stage: Beach`を
+`- stage: BeachTypo`へ変更して保存します。
 
-- 診断codeとseverity
-- source表示名
-- 行と列
-- Story Pathまたはfield位置
-- 説明と修正候補
+Web Previewが示すファイル名、行、説明を確認します。
 
 <!-- screenshot:C-11 -->
 
-該当箇所を修正して保存し、同じ診断が消え、正常なsnapshotだけが実行へ採用されることを確認します。
-元のstarterは変更せず、作業copyだけでエラーを再現します。
+`BeachTypo`を`Beach`へ戻して保存します。エラーが消え、作品をもう一度更新できれば修正完了です。
 
-## 8. 検証してSB3をBuildする
+## 8. 検証してSB3を作る
 
-正式リリース時に、one-shot validationとproduction buildのcommandを掲載します。commandは画像にせず、
-コピー可能なcode blockとし、少なくとも次を明示します。
+正式リリース時に、台本を検証するコマンドとSB3を作るコマンドを、コピーできる形でここへ掲載します。
+最初に検証を実行し、「エラーなし」と表示されたことを確認してからSB3を作ります。
 
-- 入力YAMLまたはsource manifest
-- project root
-- canonical base template
-- control profile
-- source／assetの有限上限
-- 出力SB3
-
-buildは台本と必要なローカルアセットを埋め込んだ自己完結SB3を生成します。失敗時に既存出力を壊さず、
-成功時だけ出力が置き換わることを正式toolchainの契約へ合わせて説明します。
+完了後、出力先に新しいSB3ファイルがあることを確認します。エラーが出た場合は、表示されたファイル名と
+行を直してから、もう一度検証します。
 
 ## 9. 完成したSB3を再生する
 
-build済みSB3を通常のTurboWarp editorで開きます。production artifactにはdevelopment previewのwatch、
-reload candidate、session token、dialog状態を保存しません。
+完成したSB3をTurboWarpで開き、緑の旗を押します。
 
 <!-- screenshot:C-12 -->
 
-タイトルから開始し、「遊ぶ」と同じ順序で最後まで再生します。台本sourceを変更しただけの標準作品では、
-作者がScratchブロックを追加していないことも確認します。
+タイトルから開始し、「遊ぶ」と同じ順序で最後まで再生します。変更したセリフ、新しい背景、登場人物、
+ポーズ場面がすべて表示されれば完成です。
 
 ## 完了チェック
 
-- [ ] starterの編集対象を見分けられた
-- [ ] Web PreviewでYAMLではなくproject root directoryを選択した
-- [ ] YAMLのセリフを変更し、previewへ反映できた
-- [ ] 新しいasset file、YAML entry、アクター、sceneを一candidateとして反映できた
-- [ ] 同梱済みpose modelを使うsceneを確認できた
-- [ ] 診断のsource位置から誤りを修正できた
-- [ ] 台本を検証し、自己完結SB3を生成できた
-- [ ] build済みSB3を最後まで再生できた
+- [ ] スターターで編集する台本ファイルを見つけた
+- [ ] Web Previewで台本ファイルではなく作品フォルダーを選んだ
+- [ ] セリフを一行変更し、プレビューへ反映した
+- [ ] 新しい背景、登場人物、場面を追加した
+- [ ] 同梱されたポーズを使う場面を確認した
+- [ ] エラーが示した行から間違いを修正した
+- [ ] 台本を検証し、SB3を作った
+- [ ] 完成したSB3を最後まで再生した
 - [ ] Scratchブロックを追加しなかった
+
+## このチュートリアルと作者ガイドの違い
+
+ここで扱うのは、最初の作品を完成させるための一つの学習経路だけです。成果物は、変更したYAMLから
+作った検証済みの自己完結SB3です。作者ガイドを最初から読み直す必要はありません。
+
+全action、Source Graph、分岐、custom actionなど、作品を発展させるときに必要な内容は
+[紙芝居DSL 4.0 台本作成ガイド](../dsl-author-guides/dsl-4.0-author-guide.md)または
+[DSL 4.0 Schemaリファレンス](../dsl-author-guides/dsl-4.0-schema-reference.md)で調べます。
+
+DSL 3.1／3.2のTXT／SB3操作や変換は扱いません。移行が必要な場合は、別の変換ガイドを使います。
+正式starter、sample、UI、commandが固定される前は、本文の例を配布物の正本とみなしません。
+
+## 初版で扱わないこと
+
+- Teachable Machineでのポーズモデル作成
+- DSL 3.1／3.2台本の変換
+- 複雑な分岐と独自action
+- Web公開やGitHub Pagesへの公開
+- 紙芝居アプリ本体や機能拡張の開発
 
 ## 次に読む
 
