@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DSL 4.0 tutorial screenshot fixture</title>
+    <style>
+      :root {
+        color: #26332f;
+        font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; width: 1280px; height: 720px; overflow: hidden; background: #f5f1e8; }
+      button { font: inherit; }
+      .appbar { height: 44px; display: flex; align-items: center; gap: 24px; padding: 0 22px; background: #24584d; color: white; font-size: 15px; }
+      .appbar strong { margin-right: auto; }
+      .canvas { position: relative; width: 100%; height: 676px; display: grid; place-items: center; padding: 26px; }
+      .stage { position: relative; width: 960px; height: 590px; overflow: hidden; border: 8px solid #1f2d2a; border-radius: 8px; background: #f7f1df; box-shadow: 0 10px 25px #24342d30; }
+      .backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .student { position: absolute; width: 260px; height: 195px; object-fit: contain; left: 170px; bottom: 72px; }
+      .student.protect { width: 330px; height: 248px; left: 315px; bottom: 36px; }
+      .bubble { position: absolute; max-width: 610px; right: 56px; top: 205px; padding: 18px 24px; border: 3px solid #6e625a; border-radius: 18px; background: white; font-size: 28px; font-weight: 700; line-height: 1.45; box-shadow: 0 5px 12px #0002; }
+      .badge { position: absolute; top: 20px; padding: 14px 18px; min-width: 210px; border-radius: 10px; background: #fff; border: 3px solid #6e625a; font-size: 22px; font-weight: 700; box-shadow: 0 4px 9px #0002; }
+      .badge.left { left: 20px; } .badge.right { right: 20px; }
+      .bar { display: block; height: 12px; margin-top: 8px; background: #dce6e2; border-radius: 6px; overflow: hidden; }
+      .bar::after { content: ""; display: block; width: var(--progress, 64%); height: 100%; background: #6579e8; }
+      .permission { position: absolute; z-index: 5; top: 90px; left: 110px; width: 380px; padding: 24px; border-radius: 12px; background: white; border: 1px solid #bbb; box-shadow: 0 12px 32px #0005; }
+      .permission h2 { font-size: 20px; margin: 0 0 14px; } .permission p { font-size: 15px; line-height: 1.5; }
+      .buttons { display: flex; justify-content: flex-end; gap: 12px; }
+      .buttons button { padding: 10px 16px; border-radius: 7px; border: 1px solid #8d695d; background: white; }
+      .buttons .primary { color: white; background: #a74c3d; }
+      .success { position: absolute; z-index: 8; inset: 0; display: grid; place-items: center; text-align: center; color: white; background: #183c34de; }
+      .success strong { display: block; font-size: 54px; margin-bottom: 22px; } .success span { font-size: 20px; }
+      .finish { width: 760px; padding: 54px; text-align: center; border-radius: 12px; background: white; box-shadow: 0 8px 25px #0002; }
+      .finish .done { display: inline-block; color: white; background: #24584d; border-radius: 18px; padding: 7px 16px; }
+      .finish h1 { font-size: 42px; margin: 24px 0 12px; } .finish p { font-size: 20px; }
+      .sample-page { width: 100%; height: 100%; background: #fcf8ed; }
+      .sample-nav { height: 62px; display: flex; align-items: center; gap: 32px; padding: 0 70px; border-bottom: 1px solid #e6ddcc; }
+      .sample-nav strong { margin-right: auto; } .sample-main { width: 760px; margin: 70px 0 0 110px; }
+      .sample-card { padding: 34px; border: 1px solid #c8beac; border-radius: 12px; background: white; box-shadow: 0 6px 18px #0000000d; }
+      .sample-card h1 { font-size: 31px; margin: 12px 0; } .sample-card .tag { display: inline-block; padding: 5px 10px; color: #9d352f; background: #fce7e3; border-radius: 5px; }
+      .sample-actions { display: flex; gap: 10px; margin: 24px 0; } .sample-actions button { padding: 10px 14px; border: 1px solid #a74c3d; border-radius: 5px; background: white; color: #8b3028; }
+      .sample-actions .primary { background: #a74c3d; color: white; }
+      .license { width: 770px; text-align: center; } .license h1 { color: #287965; font-size: 38px; margin: 0; } .license h2 { font-size: 23px; font-weight: 500; }
+      .license .work { display: inline-flex; align-items: center; gap: 12px; padding: 16px 22px; margin: 24px; color: white; background: #24584d; border-radius: 8px; font-size: 18px; }
+      .loader { width: 540px; height: 8px; background: #5d6675; border-radius: 4px; overflow: hidden; } .loader::after { content: ""; display: block; width: 42%; height: 100%; background: white; }
+      .editor { width: 100%; height: 100%; background: #f0ede6; }
+      .editorbar { height: 42px; display: flex; align-items: center; gap: 18px; padding: 0 18px; color: white; background: #5a4ad6; }
+      .editorgrid { display: grid; grid-template-columns: 250px 1fr 240px; gap: 12px; height: 678px; padding: 12px; }
+      .panel { padding: 18px; background: white; border-radius: 5px; box-shadow: 0 2px 8px #0002; }
+      .panel h3 { margin-top: 0; } .editorstage { position: relative; overflow: hidden; border: 6px solid #2b2d33; background: #faf8ef; }
+      .editorstage .stage { width: 100%; height: 100%; border: 0; border-radius: 0; box-shadow: none; }
+      .menu-grid { position: absolute; inset: 95px 90px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 30px; background: #b7e5f1; }
+      .menu-grid button { color: white; border: 0; border-radius: 8px; background: #078865; font-size: 20px; font-weight: 700; }
+      .menu-grid .wide { grid-column: 1 / 3; } .menu-grid .disabled { background: #7db5a7; }
+      .code { height: 100%; padding: 24px; overflow: hidden; color: #eef6f3; background: #161b1a; font: 15px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; }
+      .code mark { color: #f9e178; background: #354b4a; }
+      .tree { height: 100%; padding: 22px; color: #eef6f3; background: #161b1a; font: 14px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; }
+      .watch { position: absolute; top: 12px; right: 12px; padding: 8px 12px; color: white; background: #24584d; border-radius: 6px; }
+      .dialog { position: absolute; z-index: 6; left: 50%; top: 50%; width: 530px; transform: translate(-50%, -50%); padding: 26px; border-radius: 12px; background: white; box-shadow: 0 14px 35px #0006; }
+      .dialog h2 { margin: 0 0 8px; font-size: 23px; } .dialog .option { margin-top: 10px; padding: 12px 15px; border: 1px solid #b6c4bf; border-radius: 6px; }
+      .dialog .selected { background: #e4f2ee; border-color: #24584d; }
+      .diagnostic { margin: 110px 40px; padding: 25px; color: #611d25; background: #fff0f1; border: 2px solid #bd4550; border-radius: 8px; }
+      .diagnostic strong { font-size: 23px; } .diagnostic code { display: block; margin-top: 12px; }
+      .synthetic { position: absolute; left: 360px; bottom: 55px; width: 250px; height: 290px; }
+      .synthetic .head { position: absolute; left: 92px; top: 20px; width: 66px; height: 66px; border-radius: 50%; background: #839c98; }
+      .synthetic .body { position: absolute; left: 83px; top: 85px; width: 84px; height: 95px; border-radius: 45% 45% 20% 20%; background: #839c98; }
+      .synthetic .arm { position: absolute; top: 59px; width: 26px; height: 112px; border-radius: 14px; background: #839c98; transform-origin: top; }
+      .synthetic .arm.left { left: 81px; transform: rotate(37deg); } .synthetic .arm.right { right: 81px; transform: rotate(-37deg); }
+      .synthetic .leg { position: absolute; top: 165px; width: 30px; height: 116px; border-radius: 15px; background: #839c98; }
+      .synthetic .leg.left { left: 62px; transform: rotate(45deg); } .synthetic .leg.right { right: 62px; transform: rotate(-45deg); }
+      .camera-note { position: absolute; left: 24px; bottom: 16px; padding: 8px 12px; background: #fff; border-radius: 5px; }
+    </style>
+  </head>
+  <body><main id="root"></main></body>
+  <script>
+    const sampleRoot = "/tmpose-kamishibai-samples/stories/tutorial/";
+    const classroom = `${sampleRoot}classroom.svg`;
+    const earthquake = `${sampleRoot}earthquake-classroom.svg`;
+    const ready = `${sampleRoot}student-ready.svg`;
+    const protect = `${sampleRoot}protect-head.svg`;
+    const frame = new URLSearchParams(location.search).get("frame") || "P-05";
+    const stage = ({ quake = false, pose = false, speech = "", badges = false } = {}) => `<div class="stage">
+      <img class="backdrop" src="${quake ? earthquake : classroom}" alt="" />
+      <img class="student ${pose ? "protect" : ""}" src="${pose ? protect : ready}" alt="" />
+      ${speech ? `<div class="bubble">${speech}</div>` : ""}
+      ${badges ? `<div class="badge left">ポーズ認識　82<span class="bar" style="--progress:82%"></span></div><div class="badge right">チャージ　64%<span class="bar"></span></div>` : ""}
+    </div>`;
+    const shell = (content, title = "ポーズ認識") => `<div class="appbar"><strong>TMPose紙芝居 Web Preview</strong><span>${title}</span></div><div class="canvas">${content}</div>`;
+    const editor = (content, code = "Standard SB3のブロックは\\n変更しません。\\n\\n作品の台本を外部ファイルで\\n読み込みます。") => `<div class="editor"><div class="editorbar"><strong>TurboWarp</strong><span>▶</span><span>kamishibai-4.0.0-rc.2.sb3</span></div><div class="editorgrid"><div class="panel"><h3>コード</h3><p>${code.replaceAll("\\n", "<br>")}</p></div><div class="editorstage">${content}</div><div class="panel"><h3>スプライト</h3><p>・Stage<br>・Student<br>・Loading<br>・Runtime</p></div></div></div>`;
+    const dialog = (title, items, detail = "保存: 2026/08/13 08:20:14　✓ 検査済み") => `<div class="dialog"><h2>${title}</h2><p>${detail}</p>${items.map((item, index) => `<div class="option ${index === 0 ? "selected" : ""}">${item}</div>`).join("")}</div>`;
+    const tree = (added = false) => `<div class="tree">EXPLORER
+▼ tutorial-story
+   README.md
+   LICENSES.md
+   project.source.json
+   story.kamishibai.yaml
+   classroom.svg
+   student-ready.svg
+   success.mp3
+   ▼ safety-pose
+      model.json
+      metadata.json
+      weights.bin
+   ▼ addition-kit
+      ${added ? "✓ earthquake-classroom.svg\\n      ✓ protect-head.svg" : "earthquake-classroom.svg\\n      protect-head.svg"}
+      add-background-and-actor.yml.txt
+      add-pose-scene.yml.txt</div>`;
+    const frames = {
+      "P-01": () => `<div class="sample-page"><div class="sample-nav"><strong>📚 TMPose紙芝居</strong><span>トップ</span><span>ドキュメント</span><span>チュートリアル</span><span>作品</span><span>ダウンロード</span></div><div class="sample-main"><p>作品 › 公式作品</p><div class="sample-card"><span class="tag">DSL 4.0 チュートリアル</span><h1>地震だ！頭を守ろう</h1><p>教室で地震の揺れを感じたときの安全行動を、具体的なポーズで練習する3場面の公式サンプルです。</p><div class="sample-actions"><button class="primary">Web版を開く</button><button>スターターをダウンロード</button><button>完成版SB3をダウンロード</button></div><h3>固定情報</h3><p>Version 4.0.0-rc.2　・　MPL-2.0　・　カメラを使用</p></div></div></div>`,
+      "P-02": () => shell(`<div class="license"><h1>「参加型」AI紙芝居</h1><h2>Version 4.0.0-rc.2 (2026/08/12)</h2><div class="work">🏫 地震だ！頭を守ろう</div><p>本アプリのソースコードはMozilla Public License 2.0で提供されています。</p><p>教室での安全行動をポーズで練習します。</p></div>`, "タイトル"),
+      "P-03": () => `<div style="width:100%;height:100%;display:grid;place-items:center;background:#000"><div class="loader"></div></div>`,
+      "P-04": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, speech: "丈夫な机の下で、両手を頭へ" })}<div class="permission"><h2>カメラの使用を許可しますか？</h2><p>このサイトはポーズを判定するため、カメラを使用します。映像は端末内で処理されます。</p><div class="buttons"><button>許可しない</button><button class="primary">許可する</button></div></div></div>`, "カメラを使用"),
+      "P-05": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, badges: true })}<div class="bubble">「頭を守る」のポーズ！<br><small>姿勢を低くし、両手を頭の左右へ</small></div></div>`),
+      "P-06": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, badges: true })}<div class="success"><div><strong>ポーズ成功！</strong><span>「頭を守る」ポーズを確認しました</span></div></div></div>`),
+      "P-07": () => shell(`<div class="finish"><span class="done">✓ 防災ポーズを練習しました</span><h1>おしまい</h1><p>教室で揺れを感じたら、丈夫な机の下で頭を守ります。</p><div class="buttons" style="justify-content:center"><button class="primary">もう一度遊ぶ</button><button>タイトルへ戻る</button></div></div>`, "再生完了"),
+      "C-01": () => shell(tree(false), "スターター"),
+      "C-02": () => editor(`<div style="height:100%;display:grid;place-items:center"><h1>「参加型」AI紙芝居</h1></div>`),
+      "C-03": () => editor(`<div class="menu-grid"><button>📁<br>ファイルを開く</button><button>↻<br>もう一度</button><button class="wide disabled">配布用SB3を作る</button><button>ⓘ<br>アプリ情報</button><button>🌐<br>言語</button></div>`),
+      "C-04": () => shell(`<div style="position:relative">${stage({ speech: "なにがおきたの？" })}<div class="watch">変更を監視中</div></div>`, "変更を監視中"),
+      "C-05a": () => shell(`<div style="position:relative">${stage({ speech: "地震だ！" })}${dialog("どこから再開しますか", ["先頭から", "この場面の最初から", "この操作から"])}</div>`, "変更を確認"),
+      "C-05b": () => shell(`<div style="position:relative">${stage({ speech: "地震だ！" })}${dialog("この更新をどう適用しますか", ["今回だけ使う", "更新して、次回以降もこの設定を使う", "今は更新せず、次回から使う", "キャンセル"])}</div>`, "変更を確認"),
+      "C-06": () => shell(`<div style="position:relative">${stage({ speech: "地震だ！" })}<div class="watch">✓ 更新しました</div></div>`, "変更を確認"),
+      "C-07": () => shell(tree(true), "素材を追加"),
+      "C-08": () => shell(`<div style="position:relative">${stage({ quake: true })}${dialog("どこから再開しますか", ["先頭から", "この場面の最初から", "この操作から"], "追加: EarthquakeClassroom / ProtectHead　✓ 検査済み")}</div>`, "変更を確認"),
+      "C-09": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, speech: "自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！" })}<div class="watch">✓ 更新済み</div></div>`, "更新しました"),
+      "C-10": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, badges: true })}<div class="badge left">見本: 頭を守る<span class="bar" style="--progress:82%"></span></div><div class="camera-note">姿勢を低くし、両手を頭の左右へ</div><div class="watch">↻</div></div>`, "ポーズ認識（合成fixture）"),
+      "C-11": () => editor(`<div class="diagnostic"><strong>エラー: 不正な命令ファイル</strong><code>story.kamishibai.yaml: 37<br>K4-SCHEMA-UNKNOWN-KEY<br>Student.sya は未知の命令です。Student.say に直してください。</code></div>`),
+      "C-12": () => editor(`<div style="position:relative;height:100%">${stage({ quake: true, pose: true, speech: "できた！ 揺れがおさまるまで待とう。" })}<div class="watch">tutorial-story-built.sb3</div></div>`, "完成したSB3を読み込みました"),
+      "C-14": () => editor(`<div class="menu-grid"><button>📁<br>ファイルを開く</button><button>↻<br>もう一度</button><button class="wide">⬇<br>配布用SB3を作る</button><button>ⓘ<br>アプリ情報</button><button>🌐<br>言語</button></div>`),
+    };
+    document.getElementById("root").innerHTML = (frames[frame] || frames["P-05"])();
+  </script>
+</html>

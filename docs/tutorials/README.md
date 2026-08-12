@@ -82,10 +82,11 @@ Source Graph、複雑な分岐、custom action、runtimeやextensionの開発は
 - assetと生成物のversion、integrity、licenseを固定できる
 - 初めての人が変更する範囲と、配布側が用意する範囲を分離できる
 - root直下の`story.kamishibai.yaml`、画像、音声と、model単位のpose bundle directoryで構成できる
-- `addition-kit`に追加背景、追加登場人物、背景・登場人物・ポーズ場面のYAML抜粋を同梱できる
+- `addition-kit`に追加背景、追加見本、背景・見本・ポーズ場面のYAML抜粋を同梱できる
 
-浦島太郎全編を直接教材にせず、「カメを助ける」程度の独立した小さな作品を想定します。
-Teachable Machineでのモデル作成は初版の対象外とし、検証済みモデルをstarterへ同梱します。
+浦島太郎全編を直接教材にせず、教室で「地震だ！」と気づき、自分の身を守るために丈夫な机の下へ入り、
+両手で頭を守る独立した小さな作品を使用します。Teachable Machineでのモデル作成は初版の対象外とし、
+浦島太郎最終場面の「ひざまずいて両手で頭を抱える」姿勢と身体形状が一致する検証済みモデルをstarterへ同梱します。
 
 ## スクリーンショット
 
@@ -103,8 +104,8 @@ overlay、pose feedback、camera controlを含む公開RCの固定実装を
 で確認しています。さらに本体#555のbrowser distribution buildを公開プレリリース`4.0.0-rc.2`へ反映し、
 `browser-authoring` gateを`published`、`ready: true`として追跡します。
 
-浦島太郎、my-urashima、チュートリアル用最小作品の4.0 Web版、SB3、integrityはsamples PR #97と
-Pages deploy run `31586410478`で公開済みです。
+浦島太郎、my-urashima、チュートリアル用最小作品の4.0 Web版、SB3、integrityはsamples PR #103と
+Pages deploy run `31649836275`で公開済みです。
 公開surfaceは[操作説明書のmachine-readable manifest](../../sources/dsl4/user-guide-4.0-public-surfaces.json)へ
 固定しています。チュートリアル用starterとaddition kitも同じrelease入力から生成され、実ファイルの
 sizeとSHA-256を公開manifestと照合しました。`tutorial-sample` gateは`published`、`ready: true`です。
@@ -123,7 +124,8 @@ reload overlayは上流の
 [fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json)
 を正本にします。作者用の開始、directory open、診断、build menuは、本体の
 `test/fixtures/dsl4/browser-authoring-menu.html`から実際のmenu／error indicator moduleを読み込んで撮影します。
-1280 × 720 CSS px、DPR 1、`ja-JP`、reduced motionとし、人物や実カメラ映像、local source pathを
+Chromium系のCodex In-app Browserを1280 × 720 CSS px、DPR 1、`ja-JP`、reduced motionとし、
+実人物や実カメラ映像、local source pathを
 画像へ含めません。
 
 ### 開発者向けの固定実装追試
@@ -170,7 +172,7 @@ docs/images/tutorials/dsl4/create/
 - camera preview、mirroring、camera選択UIの採用範囲
 - 作者用メニューの「配布用SB3を作る」、保存状態、CLI fallback
 - viewport、device pixel ratio、browser version
-- 人物と実カメラを使わない合成fixture、背景、個人情報除去方針
+- 実人物と実カメラを使わない合成fixture、背景、個人情報除去方針
 
 ## 公開手順
 

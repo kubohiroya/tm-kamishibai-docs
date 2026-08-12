@@ -34,18 +34,18 @@
   },
   "sampleBaseline": {
     "repository": "kubohiroya/tmpose-kamishibai-samples",
-    "commit": "19d0670f4afd95d1b6cbbde4ef575e8e18800a3a",
-    "pullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/101",
+    "commit": "aea5d71e84794f4f25af294f05c09199071cde85",
+    "pullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/103",
     "pullRequestState": "merged",
-    "publicationCommit": "19d0670f4afd95d1b6cbbde4ef575e8e18800a3a",
-    "pagesDeploymentRun": 31615900357,
+    "publicationCommit": "aea5d71e84794f4f25af294f05c09199071cde85",
+    "pagesDeploymentRun": 31649836275,
     "status": "tutorial-sample-published",
     "story": "stories/tutorial",
-    "sourceSha256": "c786674254aff5854f2af6d77b49a53009176bdb3c6e07896e06d7e9ced5adf2",
-    "sb3Sha256": "ed5d78fc8f81338d124edccd9aef1808631947bf5bc71a084bfe64d15086d5cc",
-    "webSha256": "d885428d11c7478844f63d19809fe0d91155ec8d6d2415a0b8587ffa1a641e10",
-    "starterSha256": "e4e584815453b2a3298c2ae2ee41842a69c390d33cc20d6aa712e24058e891b1",
-    "additionKitSha256": "053209f45b5b45e8d2655151b9ef81ee9b11791d77546e9437e210d4422dbe68",
+    "sourceSha256": "4016c237438c942222ea4c7c1bbfabef83184e489e913b06260c93a491b09c59",
+    "sb3Sha256": "419cb4db90923658f4754610cd462e0caadd790636d7c688923529016b932292",
+    "webSha256": "2be5c37c83cdde01a7a35f4339290b7b2d59b45cb3d9ddbb64bc6d2fda3541b0",
+    "starterSha256": "1f13af3451a6afdb3bcf19f9e398759542610da8748500c93626b853b4616186",
+    "additionKitSha256": "0036fa2ec9721873427af27d7d4fa545f8c4f174368229d22cfe9aab568799d9",
     "license": "MPL-2.0",
     "publicSurfaceManifest": "../../sources/dsl4/user-guide-4.0-public-surfaces.json",
     "publicSamples": {
@@ -71,8 +71,8 @@
         "starterUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
         "additionKitUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
         "manifestUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json",
-        "sb3Sha256": "ed5d78fc8f81338d124edccd9aef1808631947bf5bc71a084bfe64d15086d5cc",
-        "webSha256": "d885428d11c7478844f63d19809fe0d91155ec8d6d2415a0b8587ffa1a641e10"
+        "sb3Sha256": "419cb4db90923658f4754610cd462e0caadd790636d7c688923529016b932292",
+        "webSha256": "2be5c37c83cdde01a7a35f4339290b7b2d59b45cb3d9ddbb64bc6d2fda3541b0"
       }
     },
     "walkthrough": "../developer-guides/dsl4-implementation-walkthrough.md",
@@ -89,14 +89,14 @@
     "reducedMotion": true,
     "sourcePathsVisible": false,
     "cameraPermissionRequired": false,
-    "capturedAt": "2026-08-12T19:42:31+09:00",
-    "browser": "Google Chrome 151.0.7922.137",
+    "capturedAt": "2026-08-13T08:11:40+09:00",
+    "browser": "Codex In-app Browser (Chromium)",
     "provenance": {
       "publishedSurface": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
-      "runtimeCommit": "0e7e23f59a323f088408f42ba0dc41f6b6c9feef",
-      "sampleCommit": "d2f37b95f552a39126533bbe1d623e71d52797f9",
-      "fixtureSource": "test/fixtures/dsl4/preview-reload-overlay-screenshot.json",
-      "browserAuthoringFixture": "test/fixtures/dsl4/browser-authoring-menu.html",
+      "runtimeCommit": "9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014",
+      "sampleCommit": "aea5d71e84794f4f25af294f05c09199071cde85",
+      "fixtureSource": "scripts/fixtures/tutorial-screenshot.html",
+      "browserAuthoringFixture": "scripts/fixtures/tutorial-screenshot.html",
       "privacy": "no real person, camera frame, local source path, or account data is included"
     },
     "recordForEachCapture": [
@@ -109,27 +109,27 @@
     ]
   },
   "captureArtifacts": {
-    "P-01": "sha256:74f5f36629a14f564cd8a153cc05a60bb4325dc6cb0e5765b68223ecb6a5eec8",
-    "P-02": "sha256:a7147cc5e50efc419281ee220dc831280b09ffd585e68660d0aa078f4a5e2677",
-    "P-03": "sha256:6d4893ee71e80b645d4638ccbc1e06238058cf28d4ea264af91526d2e174babe",
-    "P-04": "sha256:3564ecef179eca7dbe2e33e946dabca852efda4a9388608d52653c23e51a090e",
-    "P-05": "sha256:02221ebfd720b5f540bc41efb78b60c1b12e64bd79e04712b8fd0d9d5d430fdc",
-    "P-06": "sha256:48ac14c487f951c5a423b25a2a7f6faf421d2744e3fb27c89db64558ed2512d5",
-    "P-07": "sha256:35635b3d879958705b975134c5afe6b5baaa900bb82d498780ef396ce0dd1dd4",
-    "C-01": "sha256:263ba5c60b96e4373a6daa9ff7f9cf424bfc739cd3f7fdfac07f7d80e7d09b87",
-    "C-02": "sha256:07a6a4e5ca1723b7f3b31cd0b2849202721fea0214211c562dad3dd4fce46308",
-    "C-03": "sha256:f4d6673eba11034aec634b890af5b4bf34b70bf86106e771e85d7251b3de374c",
-    "C-04": "sha256:f68977d398367b073976851cd49a8b0e83fa14f994a55bfe1c30c3b67a84e6ca",
-    "C-05-position": "sha256:f404765682721088c08e7286e53b00a630a4310db1430419d82098c28873e784",
-    "C-05-scope": "sha256:7095e3fcc81d4c88e28cccef13ecb839db40fe4c52b2e87870557a8bc9b91c9d",
-    "C-06": "sha256:ac9809a0afb708780a5038d201cb2c38edaef2aafd092728d5c3a281ce9c8555",
-    "C-07": "sha256:4aec22aa56a9f55ca128fff643be147002fdb3aff423f74646d3dd267763944e",
-    "C-08": "sha256:fe5b534c784308dcecda707abd01fa92b6699b694336f8635f8d5e369e2e0601",
-    "C-09": "sha256:16d97b4d49f1cb0b955c759a4cef0a840aac7b29b67b04d544f74fafa8918e94",
-    "C-10": "sha256:0ff84d54320ba26f75858dfc2850dec7b489dcef0d2a49c8be8bf75a2cf9d97f",
-    "C-11": "sha256:b48521a5c4e1003323d11990d8daa7502a2f27b45e60c2cde9e3a5acc04015b4",
-    "C-12": "sha256:e79c0c9ac67bd8bce9d6805e5bce63c6d7656791984728bef301dd6a99d0ddf5",
-    "C-14": "sha256:2efd54b3eac00f35c39bb3c67a7347a356cea9c621d2545e6dcca2085227944a"
+    "P-01": "sha256:d94cafb0151932645ba74156c1a1c08b5ba0b2a9c9cfbad19baeab09dba3d078",
+    "P-02": "sha256:968fc04abf2c42c40c5e6a6748caf4fb5c6b73a900a84274336a8b95a0fc51ca",
+    "P-03": "sha256:ed5a638b142ca34406cc5e266c7657c70d56990d28855c4426f6baa944391786",
+    "P-04": "sha256:98dfca33b4834914ba8ef750ad5b2fe5d6eb4c39faf6516ca67ca62fa765dafb",
+    "P-05": "sha256:c9a74c00678fced5b9bf09c8a83481d25303efb2849e2b515cb5952372eca07e",
+    "P-06": "sha256:d0a1ec758b4a137794323344542f5bd4fb78fd55803315511fb2073cc799a85e",
+    "P-07": "sha256:bcdfeb86c89fad636269925c554202794ca78dcd4817c201d0a04cc5b746a1c7",
+    "C-01": "sha256:96d00ee461fa7ad67afe84b3cca9371429581b3da82d75eb2c0e78c78ea17c49",
+    "C-02": "sha256:89a8b2741d06fae5159de44c6fd2318f555aa1c9dc7eec8f922cc75bf3196b60",
+    "C-03": "sha256:d45f88cbf2fc061ccd3f95cd6e9774286d2d1e0fbe34f649499e6629c47465da",
+    "C-04": "sha256:afe00c94248e16d05166ed6ae878304383cdfef6662db570d224b0c19b453410",
+    "C-05-position": "sha256:da70c3bb1419f5cf6ff8504ee82438316f7050d02b961d0399491c41ebf25801",
+    "C-05-scope": "sha256:1f5415d515128dd2198e4ddb8211ade5bf8c630ad572266c9b5522de084908b4",
+    "C-06": "sha256:fa2c67f81301fe345add906a033c5ab15591d5753d92a2fad2530a98ed65c6e8",
+    "C-07": "sha256:4be1cd3227d315791496d95c4d7d907d17b14deb7b8ff9863dc0d5a39c35572a",
+    "C-08": "sha256:2544416aec75cf8148498ae6966bef1d01b7159ef584c9c64eb01d9ec755eba0",
+    "C-09": "sha256:4d84ee567b0779ba82384fe75d81c0364a02c8ab6b3afcb68720529fd643f766",
+    "C-10": "sha256:b61db2f0275715db6c6f0a97889bb443e07e6ee9fb76cd10721636b4910fbc94",
+    "C-11": "sha256:d421f826270b2a0fee2fbfa5e2cd50e3f72db2dbbdd23afa134831d94a13c4be",
+    "C-12": "sha256:da9cfd80629c61f17d5b34bc674fd1e05217b9b70f35de8953d9d759fb202f8a",
+    "C-14": "sha256:4aed273e5d5ca49a0f1a2024f6e0c578b4d4d8aa9abda07f0ae3968b3441001f"
   },
   "gates": [
     {
@@ -153,12 +153,13 @@
       "description": "最小チュートリアル作品、starter、addition kit、Web版、SB3が4.0.0-rc.2の同じ入力から公開され、実artifactのsize、integrity、licenseがmanifestと照合されている",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/100"
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/100",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/102"
       ],
       "evidence": [
         "../../sources/dsl4/user-guide-4.0-public-surfaces.json",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/101",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/actions/runs/31615900357",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/103",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/actions/runs/31649836275",
         "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
         "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json"
       ],
@@ -266,7 +267,7 @@
       "id": "capture-environment",
       "ready": true,
       "progressStatus": "published",
-      "description": "Chrome、1280×720、DPR 1、ja-JP、reduced motionを固定し、人物と実カメラを使わない合成fixtureで個人情報を除去している",
+      "description": "Chromium系のCodex In-app Browser、1280×720、DPR 1、ja-JP、reduced motionを固定し、実人物と実カメラを使わない合成fixtureで個人情報を除去している",
       "dependencies": [],
       "evidence": [
         "https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json",
@@ -288,11 +289,11 @@
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-01-sample-page.png",
       "captionDraft": "チュートリアル用作品の詳細ページからWeb版を開きます。",
       "altDraft": "チュートリアル用作品の詳細とWeb版を開く導線が表示されたサンプルサイト",
-      "capturedAt": "2026-08-13T01:18:23+09:00",
+      "capturedAt": "2026-08-13T08:11:40+09:00",
       "captureProvenance": {
-        "sampleCommit": "19d0670f4afd95d1b6cbbde4ef575e8e18800a3a",
-        "pagesDeploymentRun": 31615900357,
-        "browser": "Google Chrome 151.0.7922.137"
+        "sampleCommit": "aea5d71e84794f4f25af294f05c09199071cde85",
+        "pagesDeploymentRun": 31649836275,
+        "browser": "Codex In-app Browser (Chromium)"
       },
       "gates": ["dsl4-release", "tutorial-sample"]
     },
@@ -307,12 +308,12 @@
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-02-title.png",
       "captionDraft": "versionとlicenseを確認し、閉じる操作から紙芝居を開始します。",
       "altDraft": "Version 4.0.0-rc.2とlicenseおよび閉じる操作が表示されたDSL 4.0 app shell",
-      "capturedAt": "2026-08-13T01:18:23+09:00",
+      "capturedAt": "2026-08-13T08:11:40+09:00",
       "captureProvenance": {
         "runtimeCommit": "9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014",
-        "sampleCommit": "19d0670f4afd95d1b6cbbde4ef575e8e18800a3a",
-        "pagesDeploymentRun": 31615900357,
-        "browser": "Google Chrome 151.0.7922.137"
+        "sampleCommit": "aea5d71e84794f4f25af294f05c09199071cde85",
+        "pagesDeploymentRun": 31649836275,
+        "browser": "Codex In-app Browser (Chromium)"
       },
       "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
     },
@@ -349,10 +350,10 @@
       "required": true,
       "status": "captured",
       "surface": "pose recognition",
-      "description": "カメラ映像、ポーズ案内、認識度、チャージ",
+      "description": "机の下で頭を守る具体的な見本、ポーズ案内、認識度、チャージ",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-05-pose-progress.png",
-      "captionDraft": "案内されたポーズを取り、認識度とチャージを確認します。",
-      "altDraft": "camera previewの横に現在のポーズ、認識度、チャージが表示された認識画面",
+      "captionDraft": "姿勢を低くし、両手を頭の左右へ当てる見本に合わせます。",
+      "altDraft": "机の下で両手を頭の左右へ当てる見本と、頭を守るポーズの認識度およびチャージが表示された画面",
       "gates": [
         "dsl4-release",
         "tutorial-sample",
@@ -370,8 +371,8 @@
       "surface": "pose completion",
       "description": "ポーズ成立時のfeedback",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-06-pose-complete.png",
-      "captionDraft": "ポーズが成立すると成功feedbackが表示され、物語が進みます。",
-      "altDraft": "ポーズ成立を示すfeedbackが表示された紙芝居画面",
+      "captionDraft": "頭を守るポーズが成立すると成功feedbackが表示され、物語が進みます。",
+      "altDraft": "頭を守るポーズの成立を示すfeedbackが表示された教室の紙芝居画面",
       "gates": ["dsl4-release", "tutorial-sample", "app-shell", "pose-feedback"]
     },
     {
@@ -383,8 +384,8 @@
       "surface": "Standard app shell finished",
       "description": "終了画面と再実行またはタイトル復帰",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-07-finished.png",
-      "captionDraft": "終了後はもう一度遊ぶか、タイトルへ戻ります。",
-      "altDraft": "紙芝居の終了状態と再実行およびタイトル復帰の操作",
+      "captionDraft": "防災ポーズの練習後は、もう一度遊ぶかタイトルへ戻ります。",
+      "altDraft": "教室で頭を守る練習の終了状態と、再実行およびタイトル復帰の操作",
       "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
     },
     {
@@ -412,7 +413,7 @@
       "description": "starterを開いたeditorとファイルツリー",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-01-starter-project.png",
       "captionDraft": "スターターを開き、編集する台本と後で使う追加素材を確認します。",
-      "altDraft": "story.kamishibai.yaml、画像、音声、rescue-pose、addition-kitが並ぶスターターのファイルツリー",
+      "altDraft": "story.kamishibai.yaml、教室、人物、音声、safety-pose、addition-kitが並ぶスターターのファイルツリー",
       "gates": ["dsl4-release", "tutorial-sample", "capture-environment"]
     },
     {
@@ -519,7 +520,7 @@
       "description": "projectへcopyした新しい背景とcostumeのfile",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-07-added-files.png",
       "captionDraft": "追加素材の背景と登場人物の画像を作品フォルダーへコピーします。",
-      "altDraft": "new-beach.svgとfriend.svgを作品フォルダー直下へ追加したファイルツリー",
+      "altDraft": "earthquake-classroom.svgとprotect-head.svgを作品フォルダー直下へ追加したファイルツリー",
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "capture-environment"]
     },
     {
@@ -531,8 +532,8 @@
       "surface": "development asset reload dialog",
       "description": "sourceと新規追加assetのcandidate差分と再開位置",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-08-asset-reload-dialog.png",
-      "captionDraft": "追加した背景と登場人物を確認し、「先頭から」を選びます。",
-      "altDraft": "新しい背景と登場人物の名前を確認して、先頭からの更新を選ぶ画面",
+      "captionDraft": "追加した揺れている教室と頭を守る見本を確認し、「先頭から」を選びます。",
+      "altDraft": "EarthquakeClassroomとProtectHeadの名前を確認して、先頭からの更新を選ぶ画面",
       "captureNotes": [
         "candidate差分としてasset ID、kind、影響scene、再開位置を表示する",
         "sourceと新規assetが同じgenerationとして検証済みのfixtureを使う"
@@ -546,10 +547,10 @@
       "required": true,
       "status": "captured",
       "surface": "development preview",
-      "description": "新しい背景、アクター、sceneを追加した結果",
+      "description": "揺れている教室、頭を守る見本、instruction sceneを追加した結果",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-09-backdrop-actor.png",
-      "captionDraft": "新しい背景、登場人物、場面が表示されたことを確認します。",
-      "altDraft": "追加した背景の前に新しい登場人物とセリフが表示されたプレビュー",
+      "captionDraft": "具体的な安全行動の指示が表示されたことを確認します。",
+      "altDraft": "揺れている教室に、丈夫な机の下で両手を頭へ当てる指示と見本が表示されたプレビュー",
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
     },
     {
@@ -562,8 +563,8 @@
       "description": "ポーズsceneでcamera controlとreload status buttonが重ならないlocal preview",
       "sourceFixtureFrame": "camera-control-collision",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-10-pose-preview-controls.png",
-      "captionDraft": "見本のポーズ、カメラ映像、進み具合を確認します。",
-      "altDraft": "ポーズ認識中のlocal previewに、見本のポーズ、カメラ映像、進み具合が表示された画面",
+      "captionDraft": "机の下で頭を守る見本、カメラ映像、進み具合を確認します。",
+      "altDraft": "ポーズ認識中のlocal previewに、机の下で両手を頭の左右へ当てる見本、カメラ映像、進み具合が表示された画面",
       "captureNotes": [
         "camera-control-collision fixtureで右上のcamera controlを登録する",
         "reload status buttonが右上を避けて上中央へ解決され、controlと重ならないことを確認する"
