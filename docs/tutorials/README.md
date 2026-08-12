@@ -5,6 +5,11 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 文書状態: DSL 4.0リリース前draft\
 関連Issue: [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31) / [実装追従 #34](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/34)
 
+読者向け入口: [紙芝居チュートリアル](index.md)
+
+このREADMEは、チュートリアルを公開する人のための管理メモです。初めて紙芝居を遊ぶ人や台本を作る人は、
+上の読者向け入口から始めてください。
+
 このディレクトリは、DSL 4.0の正式リリース後に公開するチュートリアルの本文骨格、
 スクリーンショット台帳、サイト共通AppBar契約を保持します。リリース前に確定できない
 画面名、コマンド、サンプルURLを現行仕様として断定せず、正式リリース時に固定された
@@ -14,11 +19,11 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 ## 公開時の情報設計
 
-| URL                  | 役割                           | source draft                           |
-| -------------------- | ------------------------------ | -------------------------------------- |
-| `/tutorials/`        | 二つのチュートリアルを選ぶ入口 | この文書を基に公開用landing pageを作成 |
-| `/tutorials/play/`   | 紙芝居を遊ぶ                   | [play.md](play.md)                     |
-| `/tutorials/create/` | 紙芝居を作る                   | [create.md](create.md)                 |
+| URL                  | 役割                           | source draft           |
+| -------------------- | ------------------------------ | ---------------------- |
+| `/tutorials/`        | 二つのチュートリアルを選ぶ入口 | [index.md](index.md)   |
+| `/tutorials/play/`   | 紙芝居を遊ぶ                   | [play.md](play.md)     |
+| `/tutorials/create/` | 紙芝居を作る                   | [create.md](create.md) |
 
 初版のチュートリアルはWeb操作を正本とし、PDFを公開しません。詳細な仕様、全field、全action、
 移行、開発者向け手順は既存ドキュメントへリンクし、チュートリアルへ重複掲載しません。
@@ -72,6 +77,7 @@ starter version、artifact URL、integrity、licenseを台帳へ記録し、本�
 - assetと生成物のversion、integrity、licenseを固定できる
 - 初めての人が変更する範囲と、配布側が用意する範囲を分離できる
 - root直下の`story.kamishibai.yaml`、画像、音声と、model単位のpose bundle directoryで構成できる
+- `addition-kit`に追加背景、追加登場人物、背景・登場人物・ポーズ場面のYAML抜粋を同梱できる
 
 浦島太郎全編を直接教材にせず、「カメを助ける」程度の独立した小さな作品を想定します。
 Teachable Machineでのモデル作成は初版の対象外とし、検証済みモデルをstarterへ同梱します。
@@ -86,10 +92,10 @@ YAML、command、terminal出力は画像化せず、コピー可能なcode block
 
 ### 実装追跡
 
-2026-08-07時点では、上流のWeb Preview live reload、transactional asset live reload、共通reload
-overlay、pose feedback、camera controlが
-[`e1696f6`](https://github.com/kubohiroya/tmpose-kamishibai/commit/e1696f64f414baa3b80c1be2fdad32164efe1bec)
-までに実装されています。`screenshots.json`の`progressStatus`は、この上流実装の有無と残作業を
+2026-08-12時点では、上流のWeb Preview live reload、transactional asset live reload、共通reload
+overlay、pose feedback、camera controlを含む固定実装を
+[`8ea06bf`](https://github.com/kubohiroya/tmpose-kamishibai/commit/8ea06bfd100b106f559cb25a280fab5570e42919)
+で確認しています。`screenshots.json`の`progressStatus`は、この上流実装の有無と残作業を
 `implemented`、`partial`、`blocked`で区別します。`implemented`でも、公開version、starter、最終UI、
 撮影環境が揃うまでは`ready: false`を維持します。
 
@@ -98,6 +104,17 @@ reload overlayは上流の
 [fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/test/fixtures/dsl4/preview-reload-overlay-screenshot.json)
 を正本にします。1280 × 720 CSS px、DPR 1、`ja-JP`、reduced motionで、同じfixtureをWeb Previewと
 CLI browser previewに使用します。local source pathは画像へ表示しません。
+
+### 開発者向けの固定実装追試
+
+正式releaseと公開starterが揃う前に実装を確認する開発者・文書メンテナーは、
+[DSL 4.0固定実装のローカル追試](../developer-guides/dsl4-implementation-walkthrough.md)を使用します。runtime `8ea06bf`と
+sample `dc9f662`から浦島太郎Web成果物を生成し、タイトル、上演、ポーズfeedback、YAML validation、
+SHA-256を一続きで確認できます。
+
+この追試で参照する3画像は#101の実装スナップショットです。`P-01`〜`P-08`／`C-01`〜`C-13`を
+割り当てず、正式チュートリアルの画像として再利用しません。固定commitの追試経路も
+`docs/config.mjs`へ登録せず、公開AppBarからリンクしません。
 
 想定する保存先は次のとおりです。
 

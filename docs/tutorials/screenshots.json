@@ -4,12 +4,24 @@
   "targetDslVersion": "4.0",
   "implementationBaseline": {
     "repository": "kubohiroya/tmpose-kamishibai",
-    "commit": "e1696f64f414baa3b80c1be2fdad32164efe1bec",
-    "reviewedAt": "2026-08-07",
+    "commit": "8ea06bfd100b106f559cb25a280fab5570e42919",
+    "reviewedAt": "2026-08-12",
     "screenshotContract": {
       "design": "https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff",
       "fixture": "https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
     }
+  },
+  "sampleBaseline": {
+    "repository": "kubohiroya/tmpose-kamishibai-samples",
+    "commit": "dc9f6626de9ef85ca71312402fd139082922b867",
+    "pullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91",
+    "status": "draft-implementation-evidence",
+    "story": "stories/urashima",
+    "sourceSha256": "9ff92d07fb6851ddb07cc6f13d20fc9023b2c90605d2533fec89cb9fdbb1faa2",
+    "sb3Sha256": "a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a",
+    "webSha256": "6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1",
+    "walkthrough": "../developer-guides/dsl4-implementation-walkthrough.md",
+    "formalCaptureReuse": false
   },
   "capturePolicy": {
     "fileRoot": "docs/images/tutorials/dsl4",
@@ -43,10 +55,17 @@
     {
       "id": "tutorial-sample",
       "ready": false,
-      "progressStatus": "blocked",
-      "description": "最小作品、starter、Web版、SB3、公開URL、integrityが固定されている",
-      "dependencies": ["kubohiroya/tmpose-kamishibai-samples: follow-up issue required"],
-      "remaining": ["sample repositoryでstarter、Web版、SB3、integrityを公開する"]
+      "progressStatus": "partial",
+      "description": "固定commitの浦島太郎実装追試用Web版、SB3、integrityは存在するが、正式starterと公開URLは未固定",
+      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91"],
+      "evidence": [
+        "https://github.com/kubohiroya/tmpose-kamishibai-docs/blob/main/DSL4-IMPLEMENTATION-VISUALS.md",
+        "../developer-guides/dsl4-implementation-walkthrough.md"
+      ],
+      "remaining": [
+        "最小チュートリアル作品とstarterを固定する",
+        "sample PRをmergeし、Web版、SB3、integrityを正式公開URLへ固定する"
+      ]
     },
     {
       "id": "app-shell",
@@ -58,7 +77,8 @@
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/336"
       ],
       "evidence": [
-        "https://github.com/kubohiroya/tmpose-kamishibai/commit/e1696f64f414baa3b80c1be2fdad32164efe1bec"
+        "https://github.com/kubohiroya/tmpose-kamishibai/commit/8ea06bfd100b106f559cb25a280fab5570e42919",
+        "../developer-guides/dsl4-implementation-walkthrough.md"
       ],
       "remaining": ["release版の最終配置、文言、download導線を固定する"]
     },
@@ -91,7 +111,8 @@
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/413"
       ],
       "evidence": [
-        "https://github.com/kubohiroya/tmpose-kamishibai/commit/e1696f64f414baa3b80c1be2fdad32164efe1bec"
+        "https://github.com/kubohiroya/tmpose-kamishibai/commit/8ea06bfd100b106f559cb25a280fab5570e42919",
+        "../developer-guides/dsl4-implementation-walkthrough.md"
       ],
       "remaining": ["release版sampleの表示文言と状態遷移を固定する"]
     },
@@ -117,9 +138,10 @@
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/266"
       ],
       "evidence": [
-        "https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
+        "https://github.com/kubohiroya/tmpose-kamishibai/blob/8ea06bfd100b106f559cb25a280fab5570e42919/src/builder/cli.js",
+        "../developer-guides/dsl4-implementation-walkthrough.md"
       ],
-      "remaining": ["validate、preview、buildのrelease CLIとresource limitを固定する"]
+      "remaining": ["npm release後のCLI versionと正式starter向けpreview、build引数を固定する"]
     },
     {
       "id": "capture-environment",
@@ -254,8 +276,8 @@
       "surface": "text editor",
       "description": "starterを開いたeditorとファイルツリー",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-01-starter-project.png",
-      "captionDraft": "starterを開き、root直下の台本、アセット、pose model bundleを確認します。",
-      "altDraft": "story.kamishibai.yaml、画像、音声、rescue-pose directoryがroot直下に並ぶstarterのファイルツリー",
+      "captionDraft": "スターターを開き、編集する台本と後で使う追加素材を確認します。",
+      "altDraft": "story.kamishibai.yaml、画像、音声、rescue-pose、addition-kitが並ぶスターターのファイルツリー",
       "gates": ["dsl4-release", "tutorial-sample", "capture-environment"]
     },
     {
@@ -268,7 +290,7 @@
       "description": "Web Previewのプロジェクトを開く導線",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-02-project-open.png",
       "captionDraft": "Web Previewで「プロジェクトを開く」を押します。",
-      "altDraft": "project directoryを開くbuttonが表示されたWeb Preview",
+      "altDraft": "作品フォルダーを開く「プロジェクトを開く」ボタンが表示されたWeb Preview",
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
     },
     {
@@ -280,8 +302,8 @@
       "surface": "browser directory picker",
       "description": "tutorial用project rootを選ぶfolder選択画面",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-03-directory-picker.png",
-      "captionDraft": "YAML fileではなく、starterのproject root directoryを選びます。",
-      "altDraft": "tutorial-story project root directoryを選択しているbrowserのdirectory picker",
+      "captionDraft": "台本ファイルではなく、tutorial-storyフォルダーそのものを選びます。",
+      "altDraft": "ファイル選択画面でtutorial-storyフォルダーを選んでいるところ",
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "capture-environment"]
     },
     {
@@ -294,8 +316,8 @@
       "description": "projectをwatchして最初のsourceを実行するWeb Preview",
       "sourceFixtureFrame": "watching-top-right",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-04-first-preview.png",
-      "captionDraft": "正常なstarterをwatchし、最初のsourceを先頭から実行します。",
-      "altDraft": "starterのproject rootをwatchして先頭から実行しているWeb Preview",
+      "captionDraft": "作品のタイトル画面が表示され、台本の変更を待っていることを確認します。",
+      "altDraft": "スターターを開き、作品のタイトル画面を表示したWeb Preview",
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
     },
     {
@@ -311,15 +333,23 @@
           "id": "position",
           "sourceFixtureFrame": "dialog-position-selector",
           "filename": "docs/images/tutorials/dsl4/create/tutorial-create-05a-reload-position.png",
-          "captionDraft": "最終reload時刻を確認し、先頭、現在のscene、現在のactionから再開位置を選びます。",
-          "altDraft": "最終reload時刻、3種類の再開位置、8方向の表示位置を示すreload dialogの第1段階"
+          "captionDraft": "更新状態ボタンを開き、「先頭から」を選びます。",
+          "altDraft": "保存時刻が表示された更新状態ボタンから、先頭からの再開を選ぶ画面",
+          "captureNotes": [
+            "dialog-position-selector fixtureでstory、scene、actionの3候補を表示する",
+            "8方向anchorの選択肢と最終reload時刻がfixture契約どおりであることを確認する"
+          ]
         },
         {
           "id": "scope",
           "sourceFixtureFrame": "dialog-scope-selector",
           "filename": "docs/images/tutorials/dsl4/create/tutorial-create-05b-reload-scope.png",
-          "captionDraft": "今回だけreload、reloadして設定保存、次回設定だけ保存、cancelから適用範囲を選びます。",
-          "altDraft": "再開位置に現在のsceneを選び、4種類の適用範囲を示すreload dialogの第2段階"
+          "captionDraft": "次の画面で「今回だけ更新」を選びます。",
+          "altDraft": "選んだ再開位置を今回だけ使って作品を更新する画面",
+          "captureNotes": [
+            "dialog-scope-selector fixtureでreload-once、reload-and-save、save-next、cancelを表示する",
+            "選択済み再開位置と適用範囲の組み合わせがfixture契約どおりであることを確認する"
+          ]
         }
       ],
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
@@ -334,8 +364,8 @@
       "description": "セリフ変更が反映されたpreview",
       "sourceFixtureFrame": "reloaded-action",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-06-updated-dialogue.png",
-      "captionDraft": "YAMLで変更したセリフがpreviewへ反映されたことを確認します。",
-      "altDraft": "変更後のセリフをアクターが表示しているdevelopment preview",
+      "captionDraft": "台本で変更したセリフがプレビューへ反映されたことを確認します。",
+      "altDraft": "変更後のセリフを登場人物が表示しているプレビュー",
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
     },
     {
@@ -347,8 +377,8 @@
       "surface": "text editor file tree",
       "description": "projectへcopyした新しい背景とcostumeのfile",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-07-added-files.png",
-      "captionDraft": "addition kitの背景とcostumeをproject rootへcopyします。",
-      "altDraft": "新しい背景とcostumeのfileがroot直下へ追加されたstarterのファイルツリー",
+      "captionDraft": "追加素材の背景と登場人物の画像を作品フォルダーへコピーします。",
+      "altDraft": "new-beach.svgとfriend.svgを作品フォルダー直下へ追加したファイルツリー",
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "capture-environment"]
     },
     {
@@ -360,8 +390,12 @@
       "surface": "development asset reload dialog",
       "description": "sourceと新規追加assetのcandidate差分と再開位置",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-08-asset-reload-dialog.png",
-      "captionDraft": "追加asset ID、kind、影響sceneを確認し、再開位置を選びます。",
-      "altDraft": "新規追加assetのID、kind、影響sceneと再開位置を示すreload dialog",
+      "captionDraft": "追加した背景と登場人物を確認し、「先頭から」を選びます。",
+      "altDraft": "新しい背景と登場人物の名前を確認して、先頭からの更新を選ぶ画面",
+      "captureNotes": [
+        "candidate差分としてasset ID、kind、影響scene、再開位置を表示する",
+        "sourceと新規assetが同じgenerationとして検証済みのfixtureを使う"
+      ],
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
     },
     {
@@ -373,8 +407,8 @@
       "surface": "development preview",
       "description": "新しい背景、アクター、sceneを追加した結果",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-09-backdrop-actor.png",
-      "captionDraft": "新しい背景、アクター、sceneの表示をpreviewで確認します。",
-      "altDraft": "新しいasset fileとYAML entryから追加した背景とアクターが表示されたdevelopment preview",
+      "captionDraft": "新しい背景、登場人物、場面が表示されたことを確認します。",
+      "altDraft": "追加した背景の前に新しい登場人物とセリフが表示されたプレビュー",
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
     },
     {
@@ -387,8 +421,12 @@
       "description": "ポーズsceneでcamera controlとreload status buttonが重ならないWeb Preview",
       "sourceFixtureFrame": "camera-control-collision",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-10-pose-preview-controls.png",
-      "captionDraft": "reload status buttonがcamera controlを避け、選択した表示位置に最も近い空き位置へ移動することを確認します。",
-      "altDraft": "ポーズ認識中のWeb Previewで右上のcamera controlを避け、reload status buttonが上中央へ配置された画面",
+      "captionDraft": "見本のポーズ、カメラ映像、進み具合を確認します。",
+      "altDraft": "ポーズ認識中のWeb Previewに、見本のポーズ、カメラ映像、進み具合が表示された画面",
+      "captureNotes": [
+        "camera-control-collision fixtureで右上のcamera controlを登録する",
+        "reload status buttonが右上を避けて上中央へ解決され、controlと重ならないことを確認する"
+      ],
       "gates": [
         "dsl4-release",
         "tutorial-sample",
@@ -408,8 +446,8 @@
       "description": "source位置と修正候補を含む診断画面",
       "sourceFixtureFrame": "diagnostic-last-known-good",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-11-diagnostic.png",
-      "captionDraft": "診断code、source位置、説明、修正候補から台本を直します。",
-      "altDraft": "台本のファイル名、行、列、該当箇所、修正候補を表示した診断画面",
+      "captionDraft": "表示されたファイル名、行、説明から台本を直します。",
+      "altDraft": "台本のファイル名、間違いのある行、修正方法を表示したエラー画面",
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "cli-contract"]
     },
     {
@@ -421,8 +459,8 @@
       "surface": "TurboWarp editor",
       "description": "build済みSB3を通常のTurboWarp editorで開いた画面",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-12-built-sb3.png",
-      "captionDraft": "自己完結SB3を通常のTurboWarp editorで開いて再生します。",
-      "altDraft": "build済みの自己完結SB3を開いた通常のTurboWarp editor",
+      "captionDraft": "完成したSB3をTurboWarpで開き、緑の旗から再生します。",
+      "altDraft": "完成した紙芝居のSB3をTurboWarpで開いた画面",
       "gates": ["dsl4-release", "tutorial-sample", "app-shell", "cli-contract"]
     },
     {
