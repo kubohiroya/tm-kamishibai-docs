@@ -7,18 +7,19 @@ DSL 4.0の実装、リリース、公開画面、文書の状態を混同しな�
 | 状態         | 意味                                                               |
 | ------------ | ------------------------------------------------------------------ |
 | 実装基準     | 固定コミットとスキーマで、実装内容を調査・検証した基準             |
-| リリース候補 | 未公開、または公開前の検証中で、正式版として固定されていない候補   |
+| リリース候補 | `next`等で先行公開され、安定版としては固定されていない候補         |
 | 正式リリース | タグ、リリースノート、配布物、完全性情報が固定されたバージョン     |
 | 公開画面     | 読者が実際に利用できるプレイヤー、サンプル、ダウンロード、CLI      |
 | 文書状態     | 固定実装を説明する資料か、正式リリースの操作を説明する資料かの区別 |
 
 ## 2026年8月12日の確認結果
 
-- DSL 4.0文書の主な実装基準は`tmpose-kamishibai`のコミット`79457815f5c89b181b1a879a079a4d6a72d405ed`
+- DSL 4.0文書の公開実装基準は`tmpose-kamishibai`のコミット`0e7e23f59a323f088408f42ba0dc41f6b6c9feef`
+- `v4.0.0-rc.1`はnpmの`next`、GitHub prerelease、PagesのSB3として公開済み
 - GitHub Releasesで公開済みの最新正式リリースは`v3.2.3`
 - `v4.0.0`の正式リリースは未公開
-- 公開作品ページの4.0サンプルとWeb版は利用可能で、タイトル表示、読み込み、上演開始、実カメラ・実ポーズまで確認済み
-- 正式版のダウンロードとCLIが利用可能だとは保証しない
+- 公開作品ページの4.0サンプル、Web版、チュートリアル用スターター、addition kitは利用可能
+- `4.0.0-rc.1`のCLIは利用可能だが、安定版`4.0.0`との同一性は保証しない
 
 確認元: [tmpose-kamishibai Releases](https://github.com/kubohiroya/tmpose-kamishibai/releases)
 
@@ -38,7 +39,7 @@ checksumなどの追跡情報は`sources/dsl4/user-guide-4.0-public-surfaces.jso
   Schema、surface、制約と正式公開状態を分ける
   [紙芝居DSL 4.0 リリース履歴](docs/dsl-author-guides/dsl-4.0-history.md)
 
-## 正式公開時に更新する情報
+## 安定版4.0.0の公開時に更新する情報
 
 - annotated `v4.0.0` tagとrelease commit
 - GitHub Release URL、公開日、release asset URL／size／SHA-256／provenance

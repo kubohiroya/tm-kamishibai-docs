@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
@@ -51,11 +52,34 @@ function yamlBlocksBetween(source, startHeading, endHeading) {
   );
 }
 
-test('keeps the active navigation contract separate from tutorial drafts', () => {
+test('registers the tutorial publications without changing the active AppBar contract', () => {
   assert.equal(navigationContract.status, 'active');
-  assert.equal(screenshotManifest.status, 'blocked-until-publication-gates-ready');
-  assert(
-    documentationConfig.documents.every((document) => document.sourceDirectory !== 'tutorials'),
+  assert.equal(screenshotManifest.status, 'ready-for-publication');
+  assert.deepEqual(
+    documentationConfig.documents
+      .filter(({sourceDirectory}) => sourceDirectory === 'tutorials')
+      .map(({sourceFilename, publicationOutputDirectory, listedOnVersionTop}) => ({
+        sourceFilename,
+        publicationOutputDirectory,
+        listedOnVersionTop,
+      })),
+    [
+      {
+        sourceFilename: 'index.md',
+        publicationOutputDirectory: '4.0/tutorials',
+        listedOnVersionTop: true,
+      },
+      {
+        sourceFilename: 'play.md',
+        publicationOutputDirectory: '4.0/tutorials/play',
+        listedOnVersionTop: false,
+      },
+      {
+        sourceFilename: 'create.md',
+        publicationOutputDirectory: '4.0/tutorials/create',
+        listedOnVersionTop: false,
+      },
+    ],
   );
 
   const publicIndex = readFileSync(path.join(projectRoot, 'site/index.html'), 'utf8');
@@ -102,7 +126,7 @@ test('defines the active five-item AppBar and current-section rules', () => {
 
 test('fixes the versioned tutorial publication plan without adding an AppBar item', () => {
   assert.equal(publicationPlan.formatVersion, 1);
-  assert.equal(publicationPlan.status, 'blocked-until-gates-ready');
+  assert.equal(publicationPlan.status, 'ready-for-publication');
   assert.equal(publicationPlan.targetDslVersion, '4.0');
   assert.deepEqual(publicationPlan.listing, {
     source: 'site/4.0/index.html',
@@ -180,21 +204,18 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   });
   assert.equal(
     screenshotManifest.implementationBaseline.commit,
-    '8ea06bfd100b106f559cb25a280fab5570e42919',
+    '0e7e23f59a323f088408f42ba0dc41f6b6c9feef',
   );
   assert.equal(
     screenshotManifest.sampleBaseline.commit,
-    'dc9f6626de9ef85ca71312402fd139082922b867',
+    'd2f37b95f552a39126533bbe1d623e71d52797f9',
   );
   assert.equal(screenshotManifest.sampleBaseline.pullRequestState, 'merged');
   assert.equal(
     screenshotManifest.sampleBaseline.publicationCommit,
     publicSurfaces.samples.publicationCommit,
   );
-  assert.equal(
-    screenshotManifest.sampleBaseline.status,
-    'public-4.0-samples-available-tutorial-starter-pending',
-  );
+  assert.equal(screenshotManifest.sampleBaseline.status, 'tutorial-sample-published');
   assert.deepEqual(screenshotManifest.sampleBaseline.publicSamples, {
     urashima: {
       detailUrl: publicSurfaces.samples.urashima.detailUrl,
@@ -210,16 +231,27 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
       sb3Sha256: publicSurfaces.samples.myUrashima.sb3.sha256,
       webSha256: publicSurfaces.samples.myUrashima.web.sha256,
     },
+    tutorial: {
+      detailUrl: publicSurfaces.samples.tutorial.detailUrl,
+      webUrl: publicSurfaces.samples.tutorial.webUrl,
+      yamlUrl: publicSurfaces.samples.tutorial.yamlUrl,
+      sb3Url: publicSurfaces.samples.tutorial.sb3Url,
+      starterUrl: publicSurfaces.samples.tutorial.starterUrl,
+      additionKitUrl: publicSurfaces.samples.tutorial.additionKitUrl,
+      manifestUrl: publicSurfaces.samples.tutorial.manifestUrl,
+      sb3Sha256: publicSurfaces.samples.tutorial.sb3.sha256,
+      webSha256: publicSurfaces.samples.tutorial.web.sha256,
+    },
   });
   assert.equal(
     screenshotManifest.sampleBaseline.sb3Sha256,
-    publicSurfaces.samples.urashima.sb3.sha256,
+    publicSurfaces.samples.tutorial.sb3.sha256,
   );
   assert.equal(
     screenshotManifest.sampleBaseline.webSha256,
-    publicSurfaces.samples.urashima.web.sha256,
+    publicSurfaces.samples.tutorial.web.sha256,
   );
-  assert.equal(screenshotManifest.sampleBaseline.formalCaptureReuse, false);
+  assert.equal(screenshotManifest.sampleBaseline.formalCaptureReuse, true);
   assert.equal(
     screenshotManifest.sampleBaseline.walkthrough,
     '../developer-guides/dsl4-implementation-walkthrough.md',
@@ -229,6 +261,11 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(screenshotManifest.capturePolicy.locale, 'ja-JP');
   assert.equal(screenshotManifest.capturePolicy.reducedMotion, true);
   assert.equal(screenshotManifest.capturePolicy.sourcePathsVisible, false);
+  assert.equal(screenshotManifest.capturePolicy.cameraPermissionRequired, false);
+  assert.equal(screenshotManifest.capturePolicy.cameraSubject, 'synthetic-fixture');
+  assert.equal(screenshotManifest.capturePolicy.capturedAt, '2026-08-12T19:42:31+09:00');
+  assert.match(screenshotManifest.capturePolicy.browser, /Google Chrome 151/u);
+  assert.match(screenshotManifest.capturePolicy.provenance.privacy, /no real person/u);
 
   const expectedIds = [
     ...Array.from({length: 8}, (_, index) => `P-${String(index + 1).padStart(2, '0')}`),
@@ -269,7 +306,16 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   const gateIds = new Set(screenshotManifest.gates.map(({id}) => id));
   assert.deepEqual(
     screenshotManifest.gates.filter(({ready}) => ready).map(({id}) => id),
-    ['dsl4-release'],
+    [
+      'dsl4-release',
+      'tutorial-sample',
+      'app-shell',
+      'preview-flow',
+      'pose-feedback',
+      'camera-controls',
+      'cli-contract',
+      'capture-environment',
+    ],
   );
   assert.deepEqual(
     Object.fromEntries(
@@ -277,13 +323,13 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
     ),
     {
       'dsl4-release': 'published',
-      'tutorial-sample': 'partial',
-      'app-shell': 'partial',
-      'preview-flow': 'implemented',
-      'pose-feedback': 'implemented',
-      'camera-controls': 'implemented',
-      'cli-contract': 'partial',
-      'capture-environment': 'partial',
+      'tutorial-sample': 'published',
+      'app-shell': 'published',
+      'preview-flow': 'published',
+      'pose-feedback': 'published',
+      'camera-controls': 'published',
+      'cli-contract': 'published',
+      'capture-environment': 'published',
     },
   );
   for (const gate of screenshotManifest.gates) {
@@ -305,29 +351,27 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.match(releaseGate.description, /4\.0\.0-rc\.1/u);
   assert.equal(releaseGate.remaining.length, 0);
   const tutorialSampleGate = screenshotManifest.gates.find(({id}) => id === 'tutorial-sample');
-  assert.equal(tutorialSampleGate.ready, false);
+  assert.equal(tutorialSampleGate.ready, true);
   assert.deepEqual(tutorialSampleGate.dependencies, [
     'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94',
   ]);
   assert(
     tutorialSampleGate.evidence.includes(
-      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91',
+      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/97',
     ),
   );
-  assert(
-    tutorialSampleGate.evidence.includes(
-      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/93',
-    ),
-  );
-  assert.match(tutorialSampleGate.description, /4\.0 Web版、SB3、integrityは公開済み/u);
-  assert.match(tutorialSampleGate.remaining.join('\n'), /starter、addition kit/u);
-  assert.doesNotMatch(tutorialSampleGate.remaining.join('\n'), /PRをmerge/u);
+  assert.match(tutorialSampleGate.description, /starter、addition kit、Web版、SB3/u);
+  assert.equal(tutorialSampleGate.remaining.length, 0);
 
   for (const capture of screenshotManifest.captures) {
     assert(['play', 'create'].includes(capture.tutorial));
     assert(capture.gates.length > 0);
     assert(capture.gates.every((gate) => gateIds.has(gate)));
-    assert.equal(capture.status, 'blocked');
+    assert(
+      capture.required
+        ? capture.status === 'captured'
+        : ['not-applicable', 'reused'].includes(capture.status),
+    );
     const imageEntries = capture.frames ?? [capture];
     for (const imageEntry of imageEntries) {
       assert(imageEntry.captionDraft.length > 0);
@@ -338,8 +382,20 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
         ),
       );
       assert(imageEntry.filename.endsWith('.png'));
+      if (capture.required) {
+        const bytes = readFileSync(path.join(projectRoot, imageEntry.filename));
+        assert(bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])));
+        assert.equal(bytes.readUInt32BE(16), 1280);
+        assert.equal(bytes.readUInt32BE(20), 720);
+        const artifactId = capture.frames ? `${capture.id}-${imageEntry.id}` : capture.id;
+        assert.equal(
+          `sha256:${createHash('sha256').update(bytes).digest('hex')}`,
+          screenshotManifest.captureArtifacts[artifactId],
+        );
+      }
     }
   }
+  assert.equal(Object.keys(screenshotManifest.captureArtifacts).length, 20);
 
   const fixtureFrames = screenshotManifest.captures.flatMap((capture) =>
     capture.frames
@@ -369,8 +425,8 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert(optionalCaptures.every(({conditional}) => conditional.length > 0));
 });
 
-test('keeps the source drafts reviewable before screenshots exist', () => {
-  assert.match(tutorialSources['README.md'], /DSL 4\.0リリース前draft/u);
+test('keeps the publication candidate reviewable with its fixed captures', () => {
+  assert.match(tutorialSources['README.md'], /公開候補/u);
   assert.match(tutorialSources['README.md'], /\/4\.0\/tutorials\/play\//u);
   assert.match(tutorialSources['README.md'], /\/4\.0\/tutorials\/create\//u);
   assert.match(tutorialSources['README.md'], /4\.0トップには3ページを個別に並べず/u);
@@ -378,21 +434,21 @@ test('keeps the source drafts reviewable before screenshots exist', () => {
   assert.match(tutorialSources['play.md'], /## 完了チェック/u);
   assert.match(tutorialSources['create.md'], /Scratchのブロックは追加しません/u);
   assert.match(tutorialSources['create.md'], /```yaml[\s\S]*kamishibai: '4\.0'/u);
-  assert.match(tutorialSources['create.md'], /tutorial-story`フォルダーそのものを選びます/u);
+  assert.match(tutorialSources['create.md'], /preview-dsl4 --watch/u);
+  assert.match(tutorialSources['create.md'], /validate-dsl4/u);
+  assert.match(tutorialSources['create.md'], /build-dsl4/u);
+  assert.match(tutorialSources['create.md'], /4\.0\.0-rc\.1/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/new-beach\.svg/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/add-pose-scene\.yml\.txt/u);
   assert.match(tutorialSources['create.md'], /file: beach\.svg/u);
   assert.match(tutorialSources['create.md'], /file: turtle\.svg/u);
   assert.match(tutorialSources['create.md'], /file: new-beach\.svg/u);
-  assert.match(
-    tutorialSources['create.md'],
-    /更新状態ボタン[\s\S]*「先頭から」[\s\S]*「今回だけ更新」/u,
-  );
+  assert.match(tutorialSources['create.md'], /更新状態ボタン[\s\S]*再開位置[\s\S]*再開方針/u);
   assert.match(tutorialSources['create.md'], /poseModel: RescuePose/u);
-  assert.match(tutorialSources['create.md'], /BeachTypo`を`Beach`へ戻して保存/u);
+  assert.match(tutorialSources['create.md'], /`Turtle\.sya`を`Turtle\.say`へ直/u);
   assert.doesNotMatch(
     tutorialSources['create.md'],
-    /candidate|session token|transactional|Story Path|severity|外周8方向/iu,
+    /candidate|session token|transactional|Story Path|severity|外周8方向|プロジェクトを開く/iu,
   );
   assert.doesNotMatch(tutorialSources['create.md'], /├── assets\/[\s\S]*└── pose-models\//u);
 });
@@ -413,15 +469,16 @@ test('routes general users and script authors before implementation details', ()
   assert.match(tutorialSources['play.md'], /## 最初にやること/u);
   assert.match(tutorialSources['play.md'], /台本やコマンドを入力する必要はありません/u);
 
-  assert.match(tutorialSources['create.md'], /\[紙芝居チュートリアル\]\(index\.md\)/u);
+  assert.match(tutorialSources['create.md'], /\[TMPose紙芝居 4\.0 チュートリアル\]\(index\.md\)/u);
   assert.match(tutorialSources['create.md'], /## 最初のゴール/u);
   assert.match(tutorialSources['create.md'], /ここではまだ編集せず、Step 1から順番に進めます/u);
   assert.match(tutorialSources['create.md'], /text: 助けて！/u);
   assert.match(tutorialSources['create.md'], /text: こんにちは！/u);
   assert.match(tutorialSources['create.md'], /Scratchのブロックは追加しません/u);
+  assert.match(tutorialSources['play.md'], /stories\/tutorial\/web-4\.0\//u);
+  assert.match(tutorialSources['create.md'], /tutorial-story-starter-4\.0\.zip/u);
 
-  const previewStep =
-    tutorialSources['create.md'].indexOf('## 3. ブラウザーの確認画面で作品を開く');
+  const previewStep = tutorialSources['create.md'].indexOf('## 3. ローカルプレビューを起動する');
   const editStep = tutorialSources['create.md'].indexOf('## 4. セリフを変更する');
   const changedDialogue = tutorialSources['create.md'].indexOf('text: こんにちは！');
   assert(previewStep >= 0 && previewStep < editStep && editStep < changedDialogue);

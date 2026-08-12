@@ -225,7 +225,7 @@ async function verifySiteAppBars() {
 
 async function verifyDocument(document) {
   const basename = document.sourceFilename.replace(/\.md$/u, '');
-  const publicationDirectory = path.join(distRoot, document.outputDirectory, basename);
+  const publicationDirectory = path.join(distRoot, document.publicationOutputDirectory);
   const indexPath = path.join(publicationDirectory, documentationConfig.standaloneHtmlFilename);
   const articlePath = path.join(
     publicationDirectory,
@@ -330,28 +330,41 @@ async function verifyIndex() {
   assert(!index.includes('publication.json'), 'The root must not list version-specific documents.');
 
   for (const document of documentationConfig.documents) {
-    const basename = document.sourceFilename.replace(/\.md$/u, '');
+    const publicationDirectory = document.publicationOutputDirectory.replace(
+      `${document.version}/`,
+      '',
+    );
     const versionIndex = document.version === '3.2' ? dsl32Index : dsl40Index;
     const otherVersionIndex = document.version === '3.2' ? dsl40Index : dsl32Index;
+    if (document.listedOnVersionTop !== false) {
+      assert(
+        versionIndex.includes(`href="${publicationDirectory}/"`),
+        `${document.sourceFilename} HTML link is missing from its DSL ${document.version} top.`,
+      );
+      assert(
+        versionIndex.includes(
+          `tmpose-kamishibai-docs/${document.publicationOutputDirectory}/publication.json`,
+        ),
+        `${document.sourceFilename} Viewer link is missing.`,
+      );
+    } else {
+      assert(
+        !versionIndex.includes(`href="${publicationDirectory}/"`),
+        `${document.sourceFilename} must not be listed separately on its version top.`,
+      );
+    }
     assert(
-      versionIndex.includes(`href="${document.legacyOutputDirectory}/${basename}/"`),
-      `${basename} HTML link is missing from its DSL ${document.version} top.`,
+      !versionIndex.includes(`href="${publicationDirectory}.pdf"`),
+      `${document.sourceFilename} PDF link must not be published.`,
     );
     assert(
-      !versionIndex.includes(`href="${document.legacyOutputDirectory}/${basename}.pdf"`),
-      `${basename} PDF link must not be published.`,
+      !otherVersionIndex.includes(`href="${publicationDirectory}/"`),
+      `${document.sourceFilename} appears on the other version top.`,
     );
     assert(
-      versionIndex.includes(
-        `tmpose-kamishibai-docs/${document.outputDirectory}/${basename}/publication.json`,
-      ),
-      `${basename} Viewer link is missing.`,
+      !index.includes(`${document.publicationOutputDirectory}/`),
+      `${document.sourceFilename} appears on the root selector.`,
     );
-    assert(
-      !otherVersionIndex.includes(`href="${document.legacyOutputDirectory}/${basename}/"`),
-      `${basename} appears on the other version top.`,
-    );
-    assert(!index.includes(`${basename}/`), `${basename} appears on the root selector.`);
   }
 
   assert(workshopIndex.includes('DSL 4.0系'), 'The DSL 4.0 workshop group is missing.');

@@ -1,8 +1,8 @@
-# DSL 4.0 チュートリアル準備
+# DSL 4.0 チュートリアル公開管理
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-文書状態: DSL 4.0リリース前draft\
+文書状態: 公開済み`4.0.0-rc.1`を対象とする公開候補。全activation gate完了\
 関連Issue: [正式公開 #111](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/111) / [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31) / [実装追従 #34](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/34)
 
 読者向け入口: [紙芝居チュートリアル](index.md)
@@ -10,18 +10,17 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 このREADMEは、チュートリアルを公開する人のための管理メモです。初めて紙芝居を遊ぶ人や台本を作る人は、
 上の読者向け入口から始めてください。
 
-このディレクトリは、DSL 4.0の正式リリース後に公開するチュートリアルの本文骨格、
-スクリーンショット台帳、4.0ドキュメント一覧への公開計画を保持します。リリース前に確定できない
-画面名、コマンド、サンプルURLを現行仕様として断定せず、正式リリース時に固定された
-成果物から補完します。
+このディレクトリは、公開プレリリース`4.0.0-rc.1`を対象とするチュートリアル本文、
+スクリーンショット台帳、4.0ドキュメント一覧への公開計画を保持します。画面名、コマンド、
+サンプルURLは、公開済みのruntimeとsample成果物へ固定します。
 
-このdraftは`docs/config.mjs`へ登録せず、4.0トップのドキュメント一覧からリンクしません。
-公開時もAppBarへ独立した「チュートリアル」項目は追加せず、各ページでは既存の
-「ドキュメント」を現在地にします。
+3ページを`docs/config.mjs`へ登録し、4.0トップのドキュメント一覧には入口だけを
+1項目として置きます。公開時も
+AppBarへ独立した「チュートリアル」項目は追加せず、各ページでは既存の「ドキュメント」を現在地にします。
 
 ## 公開時の情報設計
 
-| URL                      | 役割                           | source draft           |
+| URL                      | 役割                           | source                 |
 | ------------------------ | ------------------------------ | ---------------------- |
 | `/4.0/tutorials/`        | 二つのチュートリアルを選ぶ入口 | [index.md](index.md)   |
 | `/4.0/tutorials/play/`   | 紙芝居を遊ぶ                   | [play.md](play.md)     |
@@ -44,9 +43,9 @@ Source Graph、複雑な分岐、custom action、runtimeやextensionの開発は
 検索可能な詳細資料です。最初から全ページを通読する資料ではなく、チュートリアルの各stepから必要な節へ
 移ります。Schemaリファレンスはさらに狭く、field、型、必須性、制約を検索する資料です。
 
-正式チュートリアルが公開される前は、概要の次に作者ガイドの「記法」「最小台本」「作品フォルダーへファイルを配置する」
-「Web Preview」「診断と安全停止」だけを順に読みます。capture gateが未完了の状態で、未確定の画面名、URL、
-操作画像を現行仕様として公開しません。
+チュートリアルの後は、作者ガイドの「記法」「最小台本」「作品フォルダーへファイルを配置する」
+「Web Preview」「診断と安全停止」へ進みます。画面名、URL、操作画像は公開RCと固定fixtureへ
+対応付けています。
 
 ## サンプルとYAMLの正本
 
@@ -54,9 +53,9 @@ Source Graph、複雑な分岐、custom action、runtimeやextensionの開発は
 `tmpose-kamishibai-samples`を正本とします。この文書リポジトリやチュートリアル本文へ、完全なsample YAMLや
 配布物を複製して保守しません。
 
-チュートリアル内のYAMLは、概念を説明する短い抜粋です。正式公開時には、sample repositoryの固定commit、
-starter version、artifact URL、integrity、licenseを台帳へ記録し、本文の手順と配布物が同じ入力から生成された
-ことを確認します。作者ガイド内の最小例・総合例は構文と契約を説明する例であり、チュートリアルsampleの
+チュートリアル内のYAMLは、概念を説明する短い抜粋です。sample repositoryについて、
+固定commit、starter version、artifact URL、integrity、licenseを台帳へ記録し、本文の手順と配布物が同じ入力から生成されたことを
+確認しています。作者ガイド内の最小例・総合例は構文と契約を説明する例であり、チュートリアルsampleの
 代替正本ではありません。
 
 ## 読者と完了条件
@@ -93,23 +92,21 @@ Teachable Machineでのモデル作成は初版の対象外とし、検証済み
 [screenshots.json](screenshots.json)を画像台帳の正本とします。各画像にはID、対応step、用途、
 想定caption、alt text案、file名、依存するrelease gateを記録します。
 
-YAML、command、terminal出力は画像化せず、コピー可能なcode blockで掲載します。画像は画面操作、
-正常状態、失敗状態を示すために使用します。
+YAMLとcommandはコピー可能なcode blockを正本とします。画像は画面操作、実行時のterminal出力、
+正常状態、失敗状態を示す補助として使用します。
 
 ### 実装追跡
 
-2026-08-12時点では、上流のWeb Preview live reload、transactional asset live reload、共通reload
-overlay、pose feedback、camera controlを含む固定実装を
-[`8ea06bf`](https://github.com/kubohiroya/tmpose-kamishibai/commit/8ea06bfd100b106f559cb25a280fab5570e42919)
-で確認しています。`screenshots.json`の`progressStatus`は、この上流実装の有無と残作業を
-`implemented`、`partial`、`blocked`で区別します。`implemented`でも、公開version、starter、最終UI、
-撮影環境が揃うまでは`ready: false`を維持します。
+2026-08-12時点では、上流のlocal preview live reload、transactional asset live reload、共通reload
+overlay、pose feedback、camera controlを含む公開RCの固定実装を
+[`0e7e23f`](https://github.com/kubohiroya/tmpose-kamishibai/commit/0e7e23f59a323f088408f42ba0dc41f6b6c9feef)
+で確認しています。`screenshots.json`の全gateは`published`、`ready: true`です。
 
-浦島太郎とmy-urashimaの4.0 Web版、SB3、integrityはsamples PR #91／#93とPages deployで公開済みです。
+浦島太郎、my-urashima、チュートリアル用最小作品の4.0 Web版、SB3、integrityはsamples PR #97と
+Pages deploy run `31586410478`で公開済みです。
 公開surfaceは[操作説明書のmachine-readable manifest](../../sources/dsl4/user-guide-4.0-public-surfaces.json)へ
-固定しています。ただし、これらはチュートリアル用の最小作品、starter、addition kitではないため、
-`tutorial-sample` gateは`partial`、正式画像の再利用可否は`false`のまま維持します。残りの成果物は
-[samples #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)で追跡します。
+固定しています。チュートリアル用starterとaddition kitも同じrelease入力から生成され、実ファイルの
+sizeとSHA-256を公開manifestと照合しました。`tutorial-sample` gateは`published`、`ready: true`です。
 
 DSL `4.0.0-rc.1`は公開プレリリースとして固定済みです。annotated `v4.0.0-rc.1` tag、
 [npm `next`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.1)、
@@ -121,21 +118,21 @@ SB3 SHA-256を`2d55ec71cfba272c21c8a560ecc52d0b05a289a842307a1f49cf1063b37890b8`
 チュートリアルの対象releaseとして扱います。
 
 reload overlayは上流の
-[撮影引き継ぎ契約](https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff)と
-[fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/test/fixtures/dsl4/preview-reload-overlay-screenshot.json)
+[撮影引き継ぎ契約](https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff)と
+[fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json)
 を正本にします。1280 × 720 CSS px、DPR 1、`ja-JP`、reduced motionで、同じfixtureをWeb Previewと
-CLI browser previewに使用します。local source pathは画像へ表示しません。
+CLI browser previewに使用します。人物や実カメラ映像を含まない合成fixtureとし、local source pathは
+画像へ表示しません。
 
 ### 開発者向けの固定実装追試
 
-正式releaseと公開starterが揃う前に実装を確認する開発者・文書メンテナーは、
-[DSL 4.0固定実装のローカル追試](../developer-guides/dsl4-implementation-walkthrough.md)を使用します。runtime `8ea06bf`と
-sample `dc9f662`から浦島太郎Web成果物を生成し、タイトル、上演、ポーズfeedback、YAML validation、
+固定実装を追試する開発者・文書メンテナーは、
+[DSL 4.0固定実装のローカル追試](../developer-guides/dsl4-implementation-walkthrough.md)を使用します。runtime `0e7e23f`と
+sample `d2f37b9`からWeb成果物を生成し、タイトル、上演、ポーズfeedback、YAML validation、
 SHA-256を一続きで確認できます。
 
-この追試で参照する2画像は#101の実装スナップショットです。`P-01`〜`P-08`／`C-01`〜`C-13`を
-割り当てず、正式チュートリアルの画像として再利用しません。固定commitの追試経路も
-`docs/config.mjs`へ登録せず、公開AppBarからリンクしません。
+この追試で参照する2画像は#101の実装スナップショットです。チュートリアル画像とはIDと用途を分けます。
+固定commitの追試経路も`docs/config.mjs`へ登録せず、公開AppBarからリンクしません。
 
 想定する保存先は次のとおりです。
 
@@ -158,9 +155,9 @@ docs/images/tutorials/dsl4/create/
 現在地にします。各サイトは実行時に外部HTMLやJavaScriptを取得せず、静的生成物へナビゲーションを
 埋め込みます。チュートリアル公開時もこの5項目と3リポジトリの契約は変更しません。
 
-## Capture gate
+## Capture gate完了記録
 
-画像取得前に、[screenshots.json](screenshots.json)の全gateを確認します。少なくとも次を固定します。
+[screenshots.json](screenshots.json)の全gateを完了し、次の情報を固定しています。
 
 - DSL 4.0の公開versionと対象commit
 - Standard Web playerとapp shellの配置、状態、文言
@@ -171,16 +168,14 @@ docs/images/tutorials/dsl4/create/
 - camera preview、mirroring、camera選択UIの採用範囲
 - `validate`と`build`の正式CLI
 - viewport、device pixel ratio、browser version
-- cameraへ映る人物の同意、背景、個人情報除去方針
+- 人物と実カメラを使わない合成fixture、背景、個人情報除去方針
 
-## リリース後の引き継ぎ
+## 公開手順
 
-1. [samples #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)で最小作品、starter、addition kitを公開する
-2. DSL 4.0の公開versionとcapture条件を台帳へ記録する
-3. 台帳の順に画像を取得し、alt textとcaptionを実画面へ合わせる
-4. draft中のrelease gate注記を正式なUI名、コマンド、URLへ置き換える
-5. `/4.0/tutorials/`、`play/`、`create/`のHTMLを公開し、最初から最後まで追試する
-6. 4.0トップのドキュメント一覧へ1項目を追加し、既存AppBarの「ドキュメント」が現在地になることを確認する
+1. `/4.0/tutorials/`、`play/`、`create/`のHTMLを生成し、最初から最後まで追試する
+2. 4.0トップのドキュメント一覧へ1項目だけ追加されることを確認する
+3. AppBarの項目数を変えず、既存の「ドキュメント」が現在地になることを確認する
+4. Pages公開後に3 URL、画像、公開サンプルへのリンクを確認する
 
 ## 関連資料
 

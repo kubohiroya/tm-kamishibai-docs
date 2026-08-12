@@ -1,7 +1,8 @@
 export const dsl4PublicationStatus = Object.freeze({
-  verifiedOn: '2026-08-08',
-  implementationCommit: '79457815f5c89b181b1a879a079a4d6a72d405ed',
+  verifiedOn: '2026-08-12',
+  implementationCommit: '0e7e23f59a323f088408f42ba0dc41f6b6c9feef',
   latestPublishedRelease: 'v3.2.3',
+  publishedDsl4Prerelease: 'v4.0.0-rc.1',
   officialDsl4Release: null,
 });
 
@@ -137,6 +138,38 @@ export const documentCollections = [
     ],
   },
   {
+    id: 'tutorials',
+    version: '4.0',
+    title: 'TMPose紙芝居 4.0 チュートリアル',
+    documents: [
+      {
+        sourceFilename: 'index.md',
+        publicationBasename: '',
+        listedOnVersionTop: true,
+        title: 'TMPose紙芝居 4.0 チュートリアル',
+        audience: '初めて紙芝居で遊ぶ方・初めてDSL 4.0の作品を作る方',
+        description:
+          '公開サンプルで遊ぶ10〜15分の手順と、スターターから作品を作る60〜90分の手順を、目的に合わせて選べます。',
+      },
+      {
+        sourceFilename: 'play.md',
+        publicationBasename: 'play',
+        listedOnVersionTop: false,
+        title: '紙芝居を遊ぶ',
+        audience: '初めてTMPose紙芝居を再生する方',
+        description: '公開サンプルを開き、ポーズを使って物語を最後まで進める手順を説明します。',
+      },
+      {
+        sourceFilename: 'create.md',
+        publicationBasename: 'create',
+        listedOnVersionTop: false,
+        title: '紙芝居を作る',
+        audience: '初めて紙芝居DSL 4.0を書く方',
+        description: '公開スターターを変更し、プレビュー、検査、ビルドを経て作品を完成させます。',
+      },
+    ],
+  },
+  {
     id: 'developer-guides',
     version: '3.2',
     title: '開発者向けドキュメント',
@@ -254,13 +287,21 @@ export const documentationConfig = {
     collection.documents.map((document) => {
       const version = document.version ?? collection.version;
       const legacyOutputDirectory = document.outputDirectory ?? collection.id;
+      const outputDirectory = `${version}/${legacyOutputDirectory}`;
+      const publicationBasename =
+        document.publicationBasename ?? document.sourceFilename.replace(/\.md$/u, '');
       return {
         ...document,
         version,
         collectionId: collection.id,
         sourceDirectory: document.sourceDirectory ?? collection.id,
         legacyOutputDirectory,
-        outputDirectory: `${version}/${legacyOutputDirectory}`,
+        outputDirectory,
+        publicationBasename,
+        publicationOutputDirectory:
+          publicationBasename === ''
+            ? outputDirectory
+            : `${outputDirectory}/${publicationBasename}`,
       };
     }),
   ),

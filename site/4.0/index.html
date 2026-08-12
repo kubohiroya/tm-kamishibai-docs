@@ -78,14 +78,18 @@
       </header>
       <section class="release-status" aria-labelledby="release-status-title">
         <p class="release-status__eyebrow">2026年8月12日確認</p>
-        <h2 id="release-status-title">4.0のサンプルはブラウザーで試せます</h2>
+        <h2 id="release-status-title">4.0.0-rc.1を公開しています</h2>
         <p>
-          公開作品ページにある4.0のサンプル作品は、現在ブラウザーで利用できます。最初に試す方は、
-          <a href="user-guides/user-guide-4.0/">操作説明書</a>に沿って「浦島太郎」を開いてください。
+          公開プレリリース<code>v4.0.0-rc.1</code>、4.0のサンプル作品、スターター、CLIを利用できます。
+          最初に試す方は、<a href="tutorials/">4.0チュートリアル</a
+          >から「紙芝居で遊ぶ」を選んでください。
         </p>
         <p>
-          4.0正式版のダウンロードはまだ公開準備中です。現在公開中の正式版は
-          <code>v3.2.3</code> です。公開準備の根拠や版ごとの記録が必要な開発・リリース担当者は、
+          <a href="https://kubohiroya.github.io/tmpose-kamishibai/downloads/">4.0.0-rc.1のSB3</a>と
+          <a href="https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.1"
+            >npmパッケージ</a
+          >は検証用のリリース候補です。安定版<code>4.0.0</code>はまだ未公開で、現在の最新安定版は
+          <code>v3.2.3</code>です。版ごとの記録が必要な開発・リリース担当者は、
           <a href="dsl-author-guides/dsl-4.0-history/">リリース履歴</a
           >と、このページ後半の専門文書を参照してください。
         </p>
@@ -108,7 +112,8 @@
               </li>
               <li>概要で、できること、遊ぶ・作る流れ、安全上の注意をつかむ</li>
               <li>
-                <a href="user-guides/user-guide-4.0/">操作説明書</a>で公開作品を最初から最後まで試す
+                <a href="tutorials/">4.0チュートリアル</a
+                >から「紙芝居で遊ぶ」を選び、公開作品を最後まで試す
               </li>
               <li>さらに作る、移行する、保守する場合だけ、目的別の経路へ進む</li>
             </ol>
@@ -122,11 +127,13 @@
                 >を確認する
               </li>
               <li>
-                <a href="dsl-author-guides/dsl-4.0-author-guide/">台本作成ガイド</a
-                >から、必要な節を選んで進める
+                <a href="tutorials/">4.0チュートリアル</a
+                >から「紙芝居を作る」を選び、最初の作品を完成させる
               </li>
               <li>
-                必要な項目だけ<a href="dsl-author-guides/dsl-4.0-schema-reference/"
+                作品を発展させるときに<a href="dsl-author-guides/dsl-4.0-author-guide/"
+                  >台本作成ガイド</a
+                >へ進み、必要な項目だけ<a href="dsl-author-guides/dsl-4.0-schema-reference/"
                   >項目・命令の仕様一覧</a
                 >で確認する
               </li>
@@ -167,6 +174,23 @@
       <section aria-labelledby="user-documents">
         <h2 id="user-documents">一般向けドキュメント</h2>
         <div class="cards">
+          <article>
+            <h3><span aria-hidden="true">🚩</span> TMPose紙芝居 4.0 チュートリアル</h3>
+            <p class="audience">初めて紙芝居で遊ぶ方・初めてDSL 4.0の作品を作る方</p>
+            <p>
+              公開サンプルで遊ぶ10〜15分の手順と、スターターから作品を作る60〜90分の手順を、目的に合わせて選べます。
+            </p>
+            <div class="actions">
+              <a class="button" href="tutorials/">HTML</a>
+              <a
+                class="button secondary"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/tutorials/publication.json&amp;bookMode=true"
+                target="_blank"
+                rel="noopener"
+                >Vivliostyle Viewer</a
+              >
+            </div>
+          </article>
           <article>
             <h3><span aria-hidden="true">🎭</span> 紙芝居アプリ 4.0 概要説明書 大人向け</h3>
             <p class="audience">初めての方・保護者・教員・教材作成者・運営者</p>

@@ -43,6 +43,7 @@ export function createDocumentVivliostyleConfig(sourceFilename) {
         'user-guides/**',
         'dsl-author-guides/**',
         'developer-guides/**',
+        'tutorials/**',
         'workshops/**',
       ],
     },

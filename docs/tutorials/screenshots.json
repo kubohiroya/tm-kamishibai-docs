@@ -1,6 +1,6 @@
 {
   "formatVersion": 2,
-  "status": "blocked-until-publication-gates-ready",
+  "status": "ready-for-publication",
   "targetDslVersion": "4.0",
   "releaseBaseline": {
     "version": "4.0.0-rc.1",
@@ -18,25 +18,28 @@
   },
   "implementationBaseline": {
     "repository": "kubohiroya/tmpose-kamishibai",
-    "commit": "8ea06bfd100b106f559cb25a280fab5570e42919",
+    "commit": "0e7e23f59a323f088408f42ba0dc41f6b6c9feef",
     "reviewedAt": "2026-08-12",
     "screenshotContract": {
-      "design": "https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff",
-      "fixture": "https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
+      "design": "https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff",
+      "fixture": "https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
     }
   },
   "sampleBaseline": {
     "repository": "kubohiroya/tmpose-kamishibai-samples",
-    "commit": "dc9f6626de9ef85ca71312402fd139082922b867",
-    "pullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91",
+    "commit": "d2f37b95f552a39126533bbe1d623e71d52797f9",
+    "pullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/97",
     "pullRequestState": "merged",
-    "publicationCommit": "8ec5a30d5f9927f30fc2f05a476c634a7f79d73c",
-    "publicationFixPullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/93",
-    "status": "public-4.0-samples-available-tutorial-starter-pending",
-    "story": "stories/urashima",
-    "sourceSha256": "9ff92d07fb6851ddb07cc6f13d20fc9023b2c90605d2533fec89cb9fdbb1faa2",
-    "sb3Sha256": "a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a",
-    "webSha256": "6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1",
+    "publicationCommit": "d2f37b95f552a39126533bbe1d623e71d52797f9",
+    "pagesDeploymentRun": 31586410478,
+    "status": "tutorial-sample-published",
+    "story": "stories/tutorial",
+    "sourceSha256": "c786674254aff5854f2af6d77b49a53009176bdb3c6e07896e06d7e9ced5adf2",
+    "sb3Sha256": "165f6d97727dafa34255ed4179746737eccaf089fa85224ceecf73ab57d4cf1f",
+    "webSha256": "57b56c808283d16733837d08b9da9d3a21106e080d6750e2e4770fdde86a6c92",
+    "starterSha256": "e4e584815453b2a3298c2ae2ee41842a69c390d33cc20d6aa712e24058e891b1",
+    "additionKitSha256": "053209f45b5b45e8d2655151b9ef81ee9b11791d77546e9437e210d4422dbe68",
+    "license": "MPL-2.0",
     "publicSurfaceManifest": "../../sources/dsl4/user-guide-4.0-public-surfaces.json",
     "publicSamples": {
       "urashima": {
@@ -44,30 +47,50 @@
         "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/web-4.0/",
         "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.k4.yml",
         "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima-4.0.sb3",
-        "sb3Sha256": "a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a",
-        "webSha256": "6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1"
+        "sb3Sha256": "e223cd7da288144a811824435514cdaaf096fbe42d1a0ab3047bd59f253586b5",
+        "webSha256": "6ce618a1ad93e4075882afd3b106c57d8dbd30238e9f8a7f332e225982e1badb"
       },
       "myUrashima": {
         "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
         "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/web-4.0/",
-        "sb3Sha256": "e4e7fe7d9c525ef2f50a438785879e93e00468b8a9e5bd1677a6ec1a14f8359c",
-        "webSha256": "eeb01e05fdbc8df6d850a8e817d43cfb405b7ca90ab419c5ff18ae01f981f64e"
+        "sb3Sha256": "4c42a3dfda20f5018af26a0bc67263d2ebeb3364f5c9ed0e62a0fa3b20c461c4",
+        "webSha256": "5d5d49ed05d7533e053b37de855131d0973a4e58022c80cdd15d8221c8f86fe2"
+      },
+      "tutorial": {
+        "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
+        "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
+        "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
+        "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-4.0.sb3",
+        "starterUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
+        "additionKitUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
+        "manifestUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json",
+        "sb3Sha256": "165f6d97727dafa34255ed4179746737eccaf089fa85224ceecf73ab57d4cf1f",
+        "webSha256": "57b56c808283d16733837d08b9da9d3a21106e080d6750e2e4770fdde86a6c92"
       }
     },
     "walkthrough": "../developer-guides/dsl4-implementation-walkthrough.md",
-    "formalCaptureReuse": false
+    "formalCaptureReuse": true
   },
   "capturePolicy": {
     "fileRoot": "docs/images/tutorials/dsl4",
     "format": "png",
     "sourceTextPresentation": "copyable-code-block",
-    "cameraSubject": "consenting-adult",
+    "cameraSubject": "synthetic-fixture",
     "viewport": {"width": 1280, "height": 720},
     "deviceScaleFactor": 1,
     "locale": "ja-JP",
     "reducedMotion": true,
-    "acknowledgedAt": "2026-08-07T03:04:05.000Z",
     "sourcePathsVisible": false,
+    "cameraPermissionRequired": false,
+    "capturedAt": "2026-08-12T19:42:31+09:00",
+    "browser": "Google Chrome 151.0.7922.137",
+    "provenance": {
+      "publishedSurface": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
+      "runtimeCommit": "0e7e23f59a323f088408f42ba0dc41f6b6c9feef",
+      "sampleCommit": "d2f37b95f552a39126533bbe1d623e71d52797f9",
+      "fixtureSource": "test/fixtures/dsl4/preview-reload-overlay-screenshot.json",
+      "privacy": "no real person, camera frame, local source path, or account data is included"
+    },
     "recordForEachCapture": [
       "application version",
       "source commit",
@@ -76,6 +99,28 @@
       "viewport",
       "device pixel ratio"
     ]
+  },
+  "captureArtifacts": {
+    "P-01": "sha256:1759f53236abf6f1b85b71a8244634b73df076b4f1a5fb68c78bbfb05283967b",
+    "P-02": "sha256:e9188cfb14996ab03f0e4234092d5eb9c1771f97ed91b4e2089a39c46bd6e01c",
+    "P-03": "sha256:6d4893ee71e80b645d4638ccbc1e06238058cf28d4ea264af91526d2e174babe",
+    "P-04": "sha256:3564ecef179eca7dbe2e33e946dabca852efda4a9388608d52653c23e51a090e",
+    "P-05": "sha256:02221ebfd720b5f540bc41efb78b60c1b12e64bd79e04712b8fd0d9d5d430fdc",
+    "P-06": "sha256:48ac14c487f951c5a423b25a2a7f6faf421d2744e3fb27c89db64558ed2512d5",
+    "P-07": "sha256:35635b3d879958705b975134c5afe6b5baaa900bb82d498780ef396ce0dd1dd4",
+    "C-01": "sha256:263ba5c60b96e4373a6daa9ff7f9cf424bfc739cd3f7fdfac07f7d80e7d09b87",
+    "C-02": "sha256:7ae5acfe455452c61fad90b63201b505be2c87403e52a1900afec705fed179b3",
+    "C-03": "sha256:1985233a2d74a9eaf0a35cb696e97dec84fdba9f9aee644f9c06de08ab50d87d",
+    "C-04": "sha256:f68977d398367b073976851cd49a8b0e83fa14f994a55bfe1c30c3b67a84e6ca",
+    "C-05-position": "sha256:f404765682721088c08e7286e53b00a630a4310db1430419d82098c28873e784",
+    "C-05-scope": "sha256:7095e3fcc81d4c88e28cccef13ecb839db40fe4c52b2e87870557a8bc9b91c9d",
+    "C-06": "sha256:ac9809a0afb708780a5038d201cb2c38edaef2aafd092728d5c3a281ce9c8555",
+    "C-07": "sha256:4aec22aa56a9f55ca128fff643be147002fdb3aff423f74646d3dd267763944e",
+    "C-08": "sha256:fe5b534c784308dcecda707abd01fa92b6699b694336f8635f8d5e369e2e0601",
+    "C-09": "sha256:16d97b4d49f1cb0b955c759a4cef0a840aac7b29b67b04d544f74fafa8918e94",
+    "C-10": "sha256:0ff84d54320ba26f75858dfc2850dec7b489dcef0d2a49c8be8bf75a2cf9d97f",
+    "C-11": "sha256:effa0cd267ef75246d059380358577bac6189548c5eb65c0679bd79d19a613c2",
+    "C-12": "sha256:e79c0c9ac67bd8bce9d6805e5bce63c6d7656791984728bef301dd6a99d0ddf5"
   },
   "gates": [
     {
@@ -94,43 +139,40 @@
     },
     {
       "id": "tutorial-sample",
-      "ready": false,
-      "progressStatus": "partial",
-      "description": "浦島太郎とmy-urashimaの4.0 Web版、SB3、integrityは公開済みだが、最小チュートリアル作品、starter、addition kitは未固定",
+      "ready": true,
+      "progressStatus": "published",
+      "description": "最小チュートリアル作品、starter、addition kit、Web版、SB3が4.0.0-rc.1の同じ入力から公開され、実artifactのsize、integrity、licenseがmanifestと照合されている",
       "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94"],
       "evidence": [
         "../../sources/dsl4/user-guide-4.0-public-surfaces.json",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/93",
-        "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/",
-        "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
-        "https://github.com/kubohiroya/tmpose-kamishibai-docs/blob/main/DSL4-IMPLEMENTATION-VISUALS.md",
-        "../developer-guides/dsl4-implementation-walkthrough.md"
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/97",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/actions/runs/31586410478",
+        "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
+        "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json"
       ],
-      "remaining": [
-        "最小チュートリアル作品、starter、addition kitのURL、integrity、licenseを固定する"
-      ]
+      "remaining": []
     },
     {
       "id": "app-shell",
-      "ready": false,
-      "progressStatus": "partial",
-      "description": "Standard Web playerとapp shellの配置、状態、文言が固定されている",
+      "ready": true,
+      "progressStatus": "published",
+      "description": "4.0.0-rc.1の公開Web版でLoading、版・ライセンス、再生、ポーズfeedbackの配置と文言を確認している",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/265",
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/336"
       ],
       "evidence": [
-        "https://github.com/kubohiroya/tmpose-kamishibai/commit/8ea06bfd100b106f559cb25a280fab5570e42919",
+        "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
+        "https://github.com/kubohiroya/tmpose-kamishibai/commit/0e7e23f59a323f088408f42ba0dc41f6b6c9feef",
         "../developer-guides/dsl4-implementation-walkthrough.md"
       ],
-      "remaining": ["release版の最終配置、文言、download導線を固定する"]
+      "remaining": []
     },
     {
       "id": "preview-flow",
-      "ready": false,
-      "progressStatus": "implemented",
-      "description": "development preview、reload選択、診断UIが固定されている",
+      "ready": true,
+      "progressStatus": "published",
+      "description": "4.0.0-rc.1のCLI local preview、reload選択、診断UIを公開starterと固定fixtureで追試している",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/258",
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/266",
@@ -139,64 +181,70 @@
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/394"
       ],
       "evidence": [
+        "https://github.com/kubohiroya/tmpose-kamishibai/blob/v4.0.0-rc.1/README.md",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/97",
         "https://github.com/kubohiroya/tmpose-kamishibai/commit/3668573",
         "https://github.com/kubohiroya/tmpose-kamishibai/commit/c0921e4",
         "https://github.com/kubohiroya/tmpose-kamishibai/commit/315c5e7"
       ],
-      "remaining": ["release成果物とstarter上で最終UIを追試する"]
+      "remaining": []
     },
     {
       "id": "pose-feedback",
-      "ready": false,
-      "progressStatus": "implemented",
-      "description": "ポーズ認識度、チャージ、状態feedbackの正式表示が固定されている",
+      "ready": true,
+      "progressStatus": "published",
+      "description": "4.0.0-rc.1の公開Web版でポーズ認識度とチャージ表示を確認し、人物を含まないfixtureで状態を固定している",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/383",
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/413"
       ],
       "evidence": [
-        "https://github.com/kubohiroya/tmpose-kamishibai/commit/8ea06bfd100b106f559cb25a280fab5570e42919",
+        "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
+        "https://github.com/kubohiroya/tmpose-kamishibai/commit/0e7e23f59a323f088408f42ba0dc41f6b6c9feef",
         "../developer-guides/dsl4-implementation-walkthrough.md"
       ],
-      "remaining": ["release版sampleの表示文言と状態遷移を固定する"]
+      "remaining": []
     },
     {
       "id": "camera-controls",
-      "ready": false,
-      "progressStatus": "implemented",
-      "description": "camera preview、mirroring、camera選択UIの採用範囲が固定されている",
+      "ready": true,
+      "progressStatus": "published",
+      "description": "4.0.0-rc.1ではcamera previewと明示的なcamera control予約領域を採用し、reload statusとの衝突回避を固定fixtureで確認している",
       "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/388"],
       "evidence": [
         "https://github.com/kubohiroya/tmpose-kamishibai/commit/1af226f",
-        "https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
+        "https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
       ],
-      "remaining": ["release版sampleでcamera controlとの衝突回避を追試する"]
+      "remaining": []
     },
     {
       "id": "cli-contract",
-      "ready": false,
-      "progressStatus": "partial",
-      "description": "validate、preview、buildの正式CLIとresource limitが固定されている",
+      "ready": true,
+      "progressStatus": "published",
+      "description": "4.0.0-rc.1のvalidate-dsl4、preview-dsl4 --watch、build-dsl4と有限resource limitを公開starterで追試している",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/258",
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/266"
       ],
       "evidence": [
-        "https://github.com/kubohiroya/tmpose-kamishibai/blob/8ea06bfd100b106f559cb25a280fab5570e42919/src/builder/cli.js",
-        "../developer-guides/dsl4-implementation-walkthrough.md"
+        "https://github.com/kubohiroya/tmpose-kamishibai/blob/v4.0.0-rc.1/README.md",
+        "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.1",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/97"
       ],
-      "remaining": ["npm release後のCLI versionと正式starter向けpreview、build引数を固定する"]
+      "remaining": []
     },
     {
       "id": "capture-environment",
-      "ready": false,
-      "progressStatus": "partial",
-      "description": "撮影同意、背景、個人情報除去、browser、viewport、DPRが固定されている",
+      "ready": true,
+      "progressStatus": "published",
+      "description": "Chrome、1280×720、DPR 1、ja-JP、reduced motionを固定し、人物と実カメラを使わない合成fixtureで個人情報を除去している",
       "dependencies": [],
       "evidence": [
-        "https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
+        "https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json",
+        "docs/images/tutorials/dsl4/play/",
+        "docs/images/tutorials/dsl4/create/"
       ],
-      "remaining": ["browser version、撮影同意、背景、個人情報除去を記録する"]
+      "remaining": []
     }
   ],
   "captures": [
@@ -205,7 +253,7 @@
       "tutorial": "play",
       "step": 1,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "sample story detail",
       "description": "サンプル作品詳細とWeb版を開く導線",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-01-sample-page.png",
@@ -218,12 +266,12 @@
       "tutorial": "play",
       "step": 2,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "Standard app shell title",
-      "description": "DSL 4.0 app shellのタイトル画面",
+      "description": "DSL 4.0 app shellのversionとlicense画面",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-02-title.png",
-      "captionDraft": "タイトル画面から紙芝居を開始します。",
-      "altDraft": "紙芝居のタイトルと開始操作が表示されたDSL 4.0 app shell",
+      "captionDraft": "versionとlicenseを確認し、閉じる操作から紙芝居を開始します。",
+      "altDraft": "Version 4.0.0-rc.1とlicenseおよび閉じる操作が表示されたDSL 4.0 app shell",
       "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
     },
     {
@@ -231,7 +279,7 @@
       "tutorial": "play",
       "step": 2,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "Standard app shell loading",
       "description": "Loading画面と進捗",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-03-loading.png",
@@ -244,9 +292,9 @@
       "tutorial": "play",
       "step": 3,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "browser permission",
-      "description": "ブラウザのカメラ許可ダイアログ",
+      "description": "ブラウザのカメラ許可操作を示す合成fixture",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-04-camera-permission.png",
       "captionDraft": "ポーズ認識を使うため、現在のsiteへcamera利用を許可します。",
       "altDraft": "紙芝居siteによるcamera利用の許可を求めるbrowser dialog",
@@ -257,7 +305,7 @@
       "tutorial": "play",
       "step": 4,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "pose recognition",
       "description": "カメラ映像、ポーズ案内、認識度、チャージ",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-05-pose-progress.png",
@@ -276,7 +324,7 @@
       "tutorial": "play",
       "step": 4,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "pose completion",
       "description": "ポーズ成立時のfeedback",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-06-pose-complete.png",
@@ -289,7 +337,7 @@
       "tutorial": "play",
       "step": 5,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "Standard app shell finished",
       "description": "終了画面と再実行またはタイトル復帰",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-07-finished.png",
@@ -303,7 +351,8 @@
       "step": 6,
       "required": false,
       "conditional": "Standard app shellがcamera選択またはmirroring controlを提供する場合",
-      "status": "blocked",
+      "status": "not-applicable",
+      "notApplicableReason": "4.0.0-rc.1の公開Web版では利用者向けのcamera選択またはmirroring controlを表示しない",
       "surface": "camera controls",
       "description": "camera選択と左右反転UI",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-08-camera-controls.png",
@@ -316,7 +365,7 @@
       "tutorial": "create",
       "step": 2,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "text editor",
       "description": "starterを開いたeditorとファイルツリー",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-01-starter-project.png",
@@ -329,39 +378,45 @@
       "tutorial": "create",
       "step": 3,
       "required": true,
-      "status": "blocked",
-      "surface": "Web Preview project open",
-      "description": "Web Previewのプロジェクトを開く導線",
+      "status": "captured",
+      "surface": "local preview CLI",
+      "description": "preview-dsl4 --watchの起動命令",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-02-project-open.png",
-      "captionDraft": "Web Previewで「プロジェクトを開く」を押します。",
-      "altDraft": "作品フォルダーを開く「プロジェクトを開く」ボタンが表示されたWeb Preview",
-      "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
+      "captionDraft": "公開スターターとベースSB3を指定してローカルプレビューを起動します。",
+      "altDraft": "preview-dsl4 --watchがブラウザーを開き、台本の監視開始を表示したターミナル",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "cli-contract"]
     },
     {
       "id": "C-03",
       "tutorial": "create",
       "step": 3,
       "required": true,
-      "status": "blocked",
-      "surface": "browser directory picker",
-      "description": "tutorial用project rootを選ぶfolder選択画面",
+      "status": "captured",
+      "surface": "local preview status",
+      "description": "認証済みloopback previewのwatchingとVALID表示",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-03-directory-picker.png",
-      "captionDraft": "台本ファイルではなく、tutorial-storyフォルダーそのものを選びます。",
-      "altDraft": "ファイル選択画面でtutorial-storyフォルダーを選んでいるところ",
-      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "capture-environment"]
+      "captionDraft": "ブラウザーで台本を監視していることと、状態がVALIDであることを確認します。",
+      "altDraft": "DSL 4.0 local previewにstory.kamishibai.yamlの監視中表示とVALID状態が表示された画面",
+      "gates": [
+        "dsl4-release",
+        "tutorial-sample",
+        "preview-flow",
+        "cli-contract",
+        "capture-environment"
+      ]
     },
     {
       "id": "C-04",
       "tutorial": "create",
       "step": 3,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "development preview",
-      "description": "projectをwatchして最初のsourceを実行するWeb Preview",
+      "description": "projectをwatchして最初のsourceを実行するlocal preview",
       "sourceFixtureFrame": "watching-top-right",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-04-first-preview.png",
       "captionDraft": "作品のタイトル画面が表示され、台本の変更を待っていることを確認します。",
-      "altDraft": "スターターを開き、作品のタイトル画面を表示したWeb Preview",
+      "altDraft": "スターターを読み込み、作品のタイトル画面を表示したlocal preview",
       "gates": ["dsl4-release", "tutorial-sample", "preview-flow"]
     },
     {
@@ -369,7 +424,7 @@
       "tutorial": "create",
       "step": 4,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "development reload dialog (two-stage)",
       "description": "YAML保存後の再開位置選択と適用範囲選択を示す2段階reload dialog",
       "frames": [
@@ -403,7 +458,7 @@
       "tutorial": "create",
       "step": 4,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "development preview",
       "description": "セリフ変更が反映されたpreview",
       "sourceFixtureFrame": "reloaded-action",
@@ -417,7 +472,7 @@
       "tutorial": "create",
       "step": 5,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "text editor file tree",
       "description": "projectへcopyした新しい背景とcostumeのfile",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-07-added-files.png",
@@ -430,7 +485,7 @@
       "tutorial": "create",
       "step": 5,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "development asset reload dialog",
       "description": "sourceと新規追加assetのcandidate差分と再開位置",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-08-asset-reload-dialog.png",
@@ -447,7 +502,7 @@
       "tutorial": "create",
       "step": 5,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "development preview",
       "description": "新しい背景、アクター、sceneを追加した結果",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-09-backdrop-actor.png",
@@ -460,13 +515,13 @@
       "tutorial": "create",
       "step": 6,
       "required": true,
-      "status": "blocked",
-      "surface": "Web Preview pose recognition and reload controls",
-      "description": "ポーズsceneでcamera controlとreload status buttonが重ならないWeb Preview",
+      "status": "captured",
+      "surface": "local preview pose recognition and reload controls",
+      "description": "ポーズsceneでcamera controlとreload status buttonが重ならないlocal preview",
       "sourceFixtureFrame": "camera-control-collision",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-10-pose-preview-controls.png",
       "captionDraft": "見本のポーズ、カメラ映像、進み具合を確認します。",
-      "altDraft": "ポーズ認識中のWeb Previewに、見本のポーズ、カメラ映像、進み具合が表示された画面",
+      "altDraft": "ポーズ認識中のlocal previewに、見本のポーズ、カメラ映像、進み具合が表示された画面",
       "captureNotes": [
         "camera-control-collision fixtureで右上のcamera controlを登録する",
         "reload status buttonが右上を避けて上中央へ解決され、controlと重ならないことを確認する"
@@ -485,7 +540,7 @@
       "tutorial": "create",
       "step": 7,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "development diagnostics",
       "description": "source位置と修正候補を含む診断画面",
       "sourceFixtureFrame": "diagnostic-last-known-good",
@@ -499,7 +554,7 @@
       "tutorial": "create",
       "step": 9,
       "required": true,
-      "status": "blocked",
+      "status": "captured",
       "surface": "TurboWarp editor",
       "description": "build済みSB3を通常のTurboWarp editorで開いた画面",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-12-built-sb3.png",
@@ -513,7 +568,8 @@
       "step": 1,
       "required": false,
       "conditional": "P-02、P-05、P-07だけでは完成状態を説明できない場合",
-      "status": "blocked",
+      "status": "reused",
+      "reuseOf": ["P-02", "P-05", "P-07"],
       "surface": "production Web player",
       "description": "production相当の完成画面",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-13-production-result.png",
