@@ -36,14 +36,14 @@ test('distinguishes implementation, release, public surfaces, and document state
 });
 
 test('shows the same release boundary on the 4.0 top and every 4.0 document', () => {
-  assert.match(dsl4Index, /4\.0は公開準備中です/u);
-  assert.match(dsl4Index, /現在公開中の正式版は <code>v3\.2\.3<\/code>/u);
-  assert.match(dsl4Index, /<code>v4\.0\.0<\/code>\s*はまだ正式公開されていない/u);
-  assert.match(dsl4Index, /4\.0の画面、作品、ダウンロードが利用できるとは限りません/u);
+  assert.match(dsl4Index, /4\.0のサンプルはブラウザーで試せます/u);
+  assert.match(dsl4Index, /4\.0正式版のダウンロードはまだ公開準備中/u);
+  assert.match(dsl4Index, /現在公開中の正式版は\s*<code>v3\.2\.3<\/code>/u);
+  assert.match(dsl4Index, /user-guides\/user-guide-4\.0/u);
 
-  assert.equal(dsl4Documents.length, 11);
+  assert.equal(dsl4Documents.length, 12);
   for (const {sourceFilename, source} of dsl4Documents) {
-    if (sourceFilename.startsWith('executive-summary-')) {
+    if (sourceFilename.startsWith('executive-summary-') || sourceFilename === 'user-guide-4.0.md') {
       assert.match(source, /公開前|公開準備中/u);
       assert.doesNotMatch(source, /[a-f0-9]{40}/u);
     } else {
