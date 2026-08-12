@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 確認日: 2026年8月12日\
-対象: `docs/config.mjs`で4.0として公開する11 publication
+対象: `docs/config.mjs`で4.0として公開する12 publication
 
 ## 判定基準
 
@@ -15,8 +15,9 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 短い直線的な流れは、読み上げ順を保てるsemantic HTMLと`.concept-flow`を正本にします。複雑な分岐や
 循環でMermaidが必要な場合は、renderer、印刷、JavaScript無効時の代替表現を同じ変更で導入するまで
-採用しません。正式UIの操作画像は#34、#41、#47のcapture台帳で管理します。固定commitの再現確認を
-目的とする実装スナップショットは#101で別管理し、正式公開画面とは表記・provenanceを分けます。
+採用しません。正式UIの操作画像を追加する場合は#34と#47のcapture台帳を参照します。#41の操作説明書は、
+公開URL、表示文字列、操作順、完全性情報を文章・表で完結させます。固定commitの再現確認を目的とする
+実装スナップショットは#101で別管理し、正式公開画面とは表記・provenanceを分けます。
 
 ## 文書別台帳
 
@@ -26,6 +27,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | `executive-summary-adult-4.0`「仕組みを詳しく知る」「実装スナップショット」                                                                  | projectが何を経て上演され、実画面へどう現れるか            | 既存概念図に加え、固定成果物のタイトル・scene・pose feedbackを収録     | 既存図を維持し、実装と画面の対応を2026-08-12追加           | P1／P2 | semantic HTML、JPEG 3点、caption・alt・provenance           | #101。正式UI captureとは分離                   |
 | [`executive-summary-kids-4.0`](docs/user-guides/executive-summary-kids-4.0.md)「見る」「動く」「作る」「役わり」                             | どの参加方法を選び、何を作るか                             | 比較表、役割表、短い節に分かれている                                   | 文章・表で十分。未確定UI画像を置かない                     | P3     | Markdown表と本文                                            | UI画像は#34・#41                               |
 | `executive-summary-kids-4.0`「カメラ」「安全」「困ったとき」                                                                                 | 問題が起きたとき何を先に止め、誰へ知らせるか               | 安全条件は箇条書き、停止順は番号列だけだった                           | **新規図が必要。2026-08-09実装**                           | **P1** | semantic HTML、caption、本文注記、矢印は`aria-hidden`       | `executive-summary-kids-4.0.md`、release非依存 |
+| [`user-guide-4.0`](docs/user-guides/user-guide-4.0.md)全体                                                                                   | 公開作品をどう開始し、入力し、終了・復旧するか             | 公開URL、画面文字列、番号列、入力・障害・完全性情報の表がある          | 文章・表で十分。正式UI画像を必須としない                   | P1     | Markdown番号列・表、機械可読surface manifest                | #41、公開画面と実機証跡を2026-08-12確認        |
 | [`dsl-4.0-author-guide`](docs/dsl-author-guides/dsl-4.0-author-guide.md)「読み進め方」「最小台本」                                           | 最初の作品をどの順で完成させるか                           | 「台本を段階的に完成させる順序」の既存図がある                         | 既存図で十分                                               | P1     | semantic HTML、caption、診断時の戻り先                      | #88で表示確認済み                              |
 | `dsl-4.0-author-guide`「Project」「複数source」                                                                                              | fileとinclude先assetの基準位置はどこか                     | copy可能なdirectory tree、JSON、YAML例と規則がある                     | 文章・codeで十分。構造を変えずに検索・転記できることを優先 | P2     | text code blockと本文                                       | #87の分冊判断後に再評価                        |
 | `dsl-4.0-author-guide`「全体構造」から「総合サンプル」                                                                                       | field、scene、actionをどう記述するか                       | 小さなYAML例と説明を機能単位で配置                                     | 文章・codeで十分                                           | P2     | copy可能なYAMLと見出し                                      | Schema変更時に再監査                           |
@@ -52,15 +54,15 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 ## P2・P3の扱い
 
 P2とP3は、P1図の公開後に読者から具体的な理解上の問題が確認された場合だけ、対象節単位の子Issueへ分けます。
-正式UIが必要な項目は本台帳で代替図を作らず、#34、#41、#47の再開条件を満たしてからcaptureします。
+正式UI画像が必要になった項目は本台帳で代替図を作らず、#34と#47のcapture条件を満たしてから撮影します。
 
 2026年8月12日の#101では、「実際の動作画面と実moduleのつながりを見たい」という具体的な要望に基づき、
 大人向け概要のP2画面対応と内部仕様書のP2 module対応を再評価しました。ここで追加した画面は
-固定成果物の実装確認であり、#41が扱う正式公開後の操作説明書用captureへ転用しません。
+固定成果物の実装確認であり、#41の公開画面に基づく操作説明書用captureへ転用しません。
 
 ## 再監査条件
 
 - 4.0の規範Schemaまたは固定実装commitを更新したとき
 - #87で台本作成ガイドとチュートリアルを分冊したとき
-- 正式UIとsampleが固定され、#34・#41・#47のcaptureを開始するとき
+- 正式UI画像を#34または#47のcaptureとして追加するとき
 - 読者レビューで、順序、責任分界、安全停止について具体的な誤読が見つかったとき

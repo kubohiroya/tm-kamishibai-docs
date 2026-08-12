@@ -49,6 +49,14 @@ export const documentCollections = [
         description:
           'TMPose紙芝居3.2の台本読み込み、再生、ポーズ認識、本番前の確認方法を説明します。',
       },
+      {
+        sourceFilename: 'user-guide-4.0.md',
+        version: '4.0',
+        title: '紙芝居アプリ 4.0 操作説明書',
+        audience: '公開作品を上演する方・進行役',
+        description:
+          '公開中の4.0 Web版を開き、読み込み、キー・タッチ・カメラ・ポーズでの進行、終了、再実行、失敗時の戻り方までを説明します。',
+      },
     ],
   },
   {
