@@ -2,7 +2,7 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-文書状態: `4.0.0-rc.2`のブラウザー完結作者flowを対象とする公開候補\
+文書状態: 公開プレリリース`4.0.0-rc.2`のブラウザー完結作者flow\
 関連Issue: [ブラウザー作者flow #118](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118) / [本体実装 #555](https://github.com/kubohiroya/tmpose-kamishibai/issues/555) / [正式公開 #111](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/111) / [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31)
 
 読者向け入口: [紙芝居チュートリアル](index.md)
@@ -10,7 +10,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 このREADMEは、チュートリアルを公開する人のための管理メモです。初めて紙芝居を遊ぶ人や台本を作る人は、
 上の読者向け入口から始めてください。
 
-このディレクトリは、`4.0.0-rc.2`候補を対象とするチュートリアル本文、
+このディレクトリは、公開プレリリース`4.0.0-rc.2`を対象とするチュートリアル本文、
 スクリーンショット台帳、4.0ドキュメント一覧への公開計画を保持します。画面名、コマンド、
 サンプルURLは、公開済みのruntimeとsample成果物へ固定します。
 
@@ -100,8 +100,8 @@ YAMLはコピー可能なcode blockを正本とします。画像はTurboWarp Ed
 2026-08-12時点では、上流のbrowser preview live reload、transactional asset live reload、共通reload
 overlay、pose feedback、camera controlを含む公開RCの固定実装を
 [`0e7e23f`](https://github.com/kubohiroya/tmpose-kamishibai/commit/0e7e23f59a323f088408f42ba0dc41f6b6c9feef)
-で確認しています。さらに本体#555のbrowser distribution buildを`4.0.0-rc.2`候補へ反映し、
-`browser-authoring` gateを`implemented`、`ready: true`として追跡します。
+で確認しています。さらに本体#555のbrowser distribution buildを公開プレリリース`4.0.0-rc.2`へ反映し、
+`browser-authoring` gateを`published`、`ready: true`として追跡します。
 
 浦島太郎、my-urashima、チュートリアル用最小作品の4.0 Web版、SB3、integrityはsamples PR #97と
 Pages deploy run `31586410478`で公開済みです。
@@ -109,12 +109,12 @@ Pages deploy run `31586410478`で公開済みです。
 固定しています。チュートリアル用starterとaddition kitも同じrelease入力から生成され、実ファイルの
 sizeとSHA-256を公開manifestと照合しました。`tutorial-sample` gateは`published`、`ready: true`です。
 
-DSL `4.0.0-rc.1`は公開プレリリースとして固定済みです。annotated `v4.0.0-rc.1` tag、
-[npm `next`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.1)、
-[GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.1)、
+DSL `4.0.0-rc.2`は公開プレリリースとして固定済みです。annotated `v4.0.0-rc.2` tag、
+[npm `next`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.2)、
+[GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.2)、
 [Pages](https://kubohiroya.github.io/tmpose-kamishibai/downloads/)を
-[tmpose-kamishibai #548](https://github.com/kubohiroya/tmpose-kamishibai/issues/548)で照合し、
-SB3 SHA-256を`2d55ec71cfba272c21c8a560ecc52d0b05a289a842307a1f49cf1063b37890b8`へ固定しました。
+[tmpose-kamishibai #559](https://github.com/kubohiroya/tmpose-kamishibai/issues/559)で照合し、
+SB3 SHA-256を`917344e56488db42fcdc07f8036782a3912945081ed094c50cf84f6ecdb56f5f`へ固定しました。
 `dsl4-release` gateは`published`、`ready: true`です。安定版`4.0.0`ではなく、公開済みRCを
 チュートリアルの対象releaseとして扱います。
 
@@ -185,7 +185,7 @@ docs/images/tutorials/dsl4/create/
 - [DSL 4.0 Schemaリファレンス準備 Issue #29](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/29)
 - [source channelとゼロブロック作者フロー #258](https://github.com/kubohiroya/tmpose-kamishibai/issues/258)
 - [capability・Bundle・release境界 #266](https://github.com/kubohiroya/tmpose-kamishibai/issues/266)
-- [release candidate更新とversion／hash固定 #548](https://github.com/kubohiroya/tmpose-kamishibai/issues/548)
+- [4.0.0-rc.2の固定・公開・照合 #559](https://github.com/kubohiroya/tmpose-kamishibai/issues/559)
 - [チュートリアル用最小作品・starter・addition kit #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)
 - [poseModel asset lifecycle #327](https://github.com/kubohiroya/tmpose-kamishibai/issues/327)
 - [Web PreviewとYAML live reload #390](https://github.com/kubohiroya/tmpose-kamishibai/issues/390)

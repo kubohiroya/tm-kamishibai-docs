@@ -189,17 +189,17 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(screenshotManifest.formatVersion, 2);
   assert.equal(screenshotManifest.targetDslVersion, '4.0');
   assert.deepEqual(screenshotManifest.releaseBaseline, {
-    version: '4.0.0-rc.1',
+    version: '4.0.0-rc.2',
     channel: 'next',
     state: 'published-prerelease',
-    sourceIdentity: 'sha256:1fc8cb02c365a3bd8f5a5c236cbb7b4408e4a3cb757bce8068e809c77b81c5d9',
-    sb3Sha256: '2d55ec71cfba272c21c8a560ecc52d0b05a289a842307a1f49cf1063b37890b8',
-    npmUrl: 'https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.1',
-    githubReleaseUrl: 'https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.1',
+    sourceIdentity: 'sha256:70dfcb7dfc391e9f8c576976d810a55656c8cab09c0c729cc685d20e02140991',
+    sb3Sha256: '917344e56488db42fcdc07f8036782a3912945081ed094c50cf84f6ecdb56f5f',
+    npmUrl: 'https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.2',
+    githubReleaseUrl: 'https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.2',
     pagesUrl: 'https://kubohiroya.github.io/tmpose-kamishibai/downloads/',
     evidence: [
-      'https://github.com/kubohiroya/tmpose-kamishibai/issues/548',
-      'https://github.com/kubohiroya/tmpose-kamishibai/pull/553',
+      'https://github.com/kubohiroya/tmpose-kamishibai/issues/559',
+      'https://github.com/kubohiroya/tmpose-kamishibai/pull/561',
     ],
   });
   assert.equal(
@@ -208,7 +208,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   );
   assert.deepEqual(screenshotManifest.browserAuthoringBaseline, {
     version: '4.0.0-rc.2',
-    state: 'implementation-candidate',
+    state: 'published-prerelease',
     issue: 'https://github.com/kubohiroya/tmpose-kamishibai/issues/555',
     documentationIssue: 'https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118',
     captureFixture: 'test/fixtures/dsl4/browser-authoring-menu.html',
@@ -335,7 +335,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
       'tutorial-sample': 'published',
       'app-shell': 'published',
       'preview-flow': 'implemented',
-      'browser-authoring': 'implemented',
+      'browser-authoring': 'published',
       'pose-feedback': 'published',
       'camera-controls': 'published',
       'cli-contract': 'published',
@@ -356,9 +356,9 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(releaseGate.ready, true);
   assert.equal(releaseGate.progressStatus, 'published');
   assert.deepEqual(releaseGate.dependencies, [
-    'https://github.com/kubohiroya/tmpose-kamishibai/issues/548',
+    'https://github.com/kubohiroya/tmpose-kamishibai/issues/559',
   ]);
-  assert.match(releaseGate.description, /4\.0\.0-rc\.1/u);
+  assert.match(releaseGate.description, /4\.0\.0-rc\.2/u);
   assert.equal(releaseGate.remaining.length, 0);
   const tutorialSampleGate = screenshotManifest.gates.find(({id}) => id === 'tutorial-sample');
   assert.equal(tutorialSampleGate.ready, true);
@@ -434,8 +434,8 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert(optionalCaptures.every(({conditional}) => conditional.length > 0));
 });
 
-test('keeps the publication candidate reviewable with its fixed captures', () => {
-  assert.match(tutorialSources['README.md'], /公開候補/u);
+test('keeps the published prerelease reviewable with its fixed captures', () => {
+  assert.match(tutorialSources['README.md'], /公開プレリリース/u);
   assert.match(tutorialSources['README.md'], /\/4\.0\/tutorials\/play\//u);
   assert.match(tutorialSources['README.md'], /\/4\.0\/tutorials\/create\//u);
   assert.match(tutorialSources['README.md'], /4\.0トップには3ページを個別に並べず/u);
