@@ -31,11 +31,21 @@ DSL 4.0の実装、リリース、公開画面、文書の状態を混同しな�
 #41では正式UI画像を必須とせず、公開URL、表示文字列、操作順、失敗時の戻り方、完全性情報を
 文章と表で固定します。画像を将来追加するときだけcapture gateを適用します。
 
-## 公開状態を明記して更新する課題
+## 公開状態を明記して完了した課題
 
-- [#42](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/42): タグとリリースノートに基づく4.0変更履歴
+- [#42](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/42): release準備merge、検証candidate、
+  Schema、surface、制約と正式公開状態を分ける
+  [紙芝居DSL 4.0 リリース履歴](docs/dsl-author-guides/dsl-4.0-history.md)
 
-未公開のtag、release asset、npm情報を公開済みとして本文へ固定しません。
+## 正式公開時に更新する情報
+
+- annotated `v4.0.0` tagとrelease commit
+- GitHub Release URL、公開日、release asset URL／size／SHA-256／provenance
+- npm 4.0.0のregistry URLとintegrity
+- production Pagesのversionとartifact checksum
+
+未公開のtag、release asset、npm情報を公開済みとして本文へ固定しません。現在は履歴項目の
+`publicationState`を`candidate-verified-publication-pending`として維持します。
 
 ## リリース候補で完了した課題
 
@@ -44,7 +54,8 @@ DSL 4.0の実装、リリース、公開画面、文書の状態を混同しな�
   [DSL 4.0 release smoke](docs/developer-guides/release-smoke-4.0.md)として固定
 
 #47の結果はcandidateの公開可否を判定する記録であり、正式リリース済みという意味ではありません。正式tag、
-npm integrity、release asset URL、Pages URLが確定した時点でcandidate manifestを更新し、変更範囲のsmokeを再実行します。
+npm integrity、release asset URL、Pages URLが確定した時点でcandidate manifestとリリース履歴を更新し、
+変更範囲のsmokeを再実行します。
 
 ## 更新手順
 
