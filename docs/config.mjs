@@ -247,8 +247,8 @@ export const documentationConfig = {
   title: 'TMPose紙芝居 ドキュメント',
   author: 'Hiroya Kubo',
   tocSectionDepth: 3,
+  standaloneHtmlFilename: 'index.html',
   standaloneArticleHtmlFilename: 'document.html',
-  standaloneTocHtmlFilename: 'index.html',
   collections: documentCollections,
   documents: documentCollections.flatMap((collection) =>
     collection.documents.map((document) => {

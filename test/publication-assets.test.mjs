@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {existsSync} from 'node:fs';
-import {mkdir, mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
+import {mkdir, mkdtemp, readFile, rm, stat, writeFile} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -144,6 +144,16 @@ test('extracts shared assets and keeps publication-specific images local', async
       /\.\.\/\.\.\/assets\/fonts\/shared\.ttf/u,
     );
 
+    const organizedPaths = [
+      path.join(outputRoot, 'assets/images/shared.png'),
+      path.join(outputRoot, 'assets/fonts/shared.ttf'),
+      path.join(outputRoot, 'group/a/images/only-a.png'),
+      path.join(outputRoot, 'group/a/index.html'),
+      path.join(outputRoot, 'group/a/publication.json'),
+    ];
+    const mtimesBeforeSecondRun = await Promise.all(
+      organizedPaths.map(async (filePath) => (await stat(filePath)).mtimeMs),
+    );
     await organizePublicationAssets({
       sourceRoot,
       outputRoot,
@@ -155,5 +165,9 @@ test('extracts shared assets and keeps publication-specific images local', async
     const rebuiltHtml = await readFile(path.join(outputRoot, 'group/a/index.html'), 'utf8');
     assert.equal((rebuiltHtml.match(/assets\/images\/shared\.png/gu) ?? []).length, 1);
     assert.doesNotMatch(rebuiltHtml, /assets\/\.\.\/\.\.\/assets/u);
+    assert.deepEqual(
+      await Promise.all(organizedPaths.map(async (filePath) => (await stat(filePath)).mtimeMs)),
+      mtimesBeforeSecondRun,
+    );
   });
 });

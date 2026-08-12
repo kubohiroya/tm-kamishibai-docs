@@ -435,17 +435,22 @@ RUBYGANA_GRADE=4 pnpm run build
 
 文書リポジトリの`pnpm run build`は一般文書ごとにWeb Publicationを構築し、
 Vivliostyle CLIの`toc`設定で
-`h2`・`h3`までを含む目次を生成します。目次をMarkdownへ重複して記述しません。HTML、
-Vivliostyle Viewer、体験会資料のPDF、文書横断目次、画像参照、しおり、ライセンスを
-まとめて検証します。Markdownだけを確認して完了にせず、生成されたHTMLと、
+`h2`・`h3`までを含む目次を生成します。生成後処理で通常HTMLの`index.html`へ本文と目次を
+統合し、目次を固定・展開可能な階層ツリーにします。Vivliostyle Viewerのreading orderには
+`document.html`だけを残すため、同じ本文を二重に表示しません。目次をMarkdownへ重複して
+記述しません。HTML、Vivliostyle Viewer、体験会資料のPDF、文書横断目次、画像参照、しおり、
+ライセンスをまとめて検証します。Markdownだけを確認して完了にせず、生成されたHTMLと、
 `docs/workshops/`を変更した場合のPDFも確認します。
 
-2回目以降の`pnpm run build`は、出版物ごとにMarkdown、参照画像、共通theme、font、
-Vivliostyle設定、build scriptの更新時刻を調べます。必要なHTML、体験会資料のPDF、
-`build-info.json`がすべて存在し、生成物の最も古い更新時刻が入力の最も新しい更新時刻以後なら、
-その出版物のVivliostyle処理を省略します。全出版物を無条件に作り直す場合は
-`pnpm run build:full`を使用します。clean checkoutで生成物が存在しないCIでは、通常の
-`pnpm run build`でも全出版物を生成します。
+2回目以降の`pnpm run build`は、publication種別に依存しない共通の増分build処理で、
+出版物ごとにMarkdown、参照画像、共通theme、font、Vivliostyle設定、build scriptの
+更新時刻を調べます。必要なHTML、体験会資料のPDF、`build-info.json`がすべて存在し、
+生成物の最も古い更新時刻が入力の最も新しい更新時刻以後なら、その出版物のVivliostyle処理と
+目次統合を省略します。同じ内容のassetや後処理済みHTMLも再書き込みしません。生成だけを
+実行する場合は`pnpm run build:publications`、全出版物を無条件に作り直す場合は
+`pnpm run build:publications:full`、検証まで含めて強制再生成する場合は`pnpm run build:full`を
+使用します。clean checkoutで生成物が存在しないCIでは、通常の`pnpm run build`でも
+全出版物を生成します。
 
 文書の変更が本体の実装変更を伴う場合は、2つのIssueとPRに依存関係を記録します。
 文書buildが本体をcheckoutしたり、本体buildが文書を生成したりする循環依存は作りません。

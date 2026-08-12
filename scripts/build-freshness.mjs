@@ -1,4 +1,4 @@
-import {readFile, readdir, stat} from 'node:fs/promises';
+import {copyFile, mkdir, readFile, readdir, stat, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 
 function isLocalReference(reference) {
@@ -89,4 +89,56 @@ export async function isBuildCurrent({inputs, markerPath, outputs, expectedBuild
     if (error?.code === 'ENOENT' || error instanceof SyntaxError) return false;
     throw error;
   }
+}
+
+export async function runIncrementalBuild({
+  force = false,
+  inputs,
+  markerPath,
+  outputs,
+  expectedBuildInfo = {},
+  label,
+  build,
+}) {
+  const buildCurrent = await isBuildCurrent({
+    inputs,
+    markerPath,
+    outputs,
+    expectedBuildInfo,
+  });
+  if (!force && buildCurrent) {
+    console.log(`Skipped ${label}; outputs are newer than its inputs.`);
+    return false;
+  }
+
+  console.log(`Building ${label}${force ? ' (--force)' : ''}.`);
+  await build();
+  return true;
+}
+
+export async function copyFileIfStale(sourcePath, outputPath) {
+  try {
+    const [sourceStat, outputStat] = await Promise.all([stat(sourcePath), stat(outputPath)]);
+    if (sourceStat.size === outputStat.size && sourceStat.mtimeMs <= outputStat.mtimeMs) {
+      return false;
+    }
+  } catch (error) {
+    if (error?.code !== 'ENOENT') throw error;
+  }
+
+  await mkdir(path.dirname(outputPath), {recursive: true});
+  await copyFile(sourcePath, outputPath);
+  return true;
+}
+
+export async function writeFileIfChanged(outputPath, content) {
+  try {
+    if ((await readFile(outputPath)).equals(Buffer.from(content))) return false;
+  } catch (error) {
+    if (error?.code !== 'ENOENT') throw error;
+  }
+
+  await mkdir(path.dirname(outputPath), {recursive: true});
+  await writeFile(outputPath, content);
+  return true;
 }

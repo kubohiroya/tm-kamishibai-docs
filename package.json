@@ -15,8 +15,10 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "build": "pnpm docs:dsl4:check && node scripts/build-docs.mjs && node scripts/verify-build.mjs",
-    "build:full": "pnpm docs:dsl4:check && node scripts/build-docs.mjs --force && node scripts/verify-build.mjs",
+    "build": "pnpm docs:dsl4:check && pnpm build:publications && node scripts/verify-build.mjs",
+    "build:full": "pnpm docs:dsl4:check && pnpm build:publications:full && node scripts/verify-build.mjs",
+    "build:publications": "node scripts/build-docs.mjs",
+    "build:publications:full": "node scripts/build-docs.mjs --force",
     "docs:dsl4:check": "node scripts/generate-dsl4-reference.mjs --check",
     "docs:dsl4:generate": "node scripts/generate-dsl4-reference.mjs",
     "docs:dsl4:sync": "node scripts/sync-dsl4-schema.mjs",

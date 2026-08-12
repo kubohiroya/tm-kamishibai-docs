@@ -1,7 +1,8 @@
-import {mkdir, rm, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 
 import {documentationConfig} from '../docs/config.mjs';
+import {writeFileIfChanged} from './build-freshness.mjs';
+import {injectSiteAppBar} from './site-appbar.mjs';
 
 const documentationSiteRoot = 'https://kubohiroya.github.io/tmpose-kamishibai-docs/';
 
@@ -84,12 +85,18 @@ export async function writeLegacyVersionNotices(outputRoot) {
   for (const entry of entries) {
     const directory = path.join(outputRoot, entry.legacyDirectory);
     const notice = renderLegacyVersionNotice(entry);
-    await rm(directory, {recursive: true, force: true});
-    await mkdir(directory, {recursive: true});
+    const relativeRoot = path.relative(directory, outputRoot).split(path.sep).join('/');
+    const assetBase = relativeRoot === '' ? '' : `${relativeRoot}/`;
+    const index = injectSiteAppBar(notice, assetBase, {
+      pathname: `/tmpose-kamishibai-docs/${entry.legacyDirectory}/`,
+    });
+    const document = injectSiteAppBar(notice, assetBase, {
+      pathname: `/tmpose-kamishibai-docs/${entry.legacyDirectory}/document.html`,
+    });
     await Promise.all([
-      writeFile(path.join(directory, 'index.html'), notice),
-      writeFile(path.join(directory, 'document.html'), notice),
-      writeFile(
+      writeFileIfChanged(path.join(directory, 'index.html'), index),
+      writeFileIfChanged(path.join(directory, 'document.html'), document),
+      writeFileIfChanged(
         path.join(directory, 'publication.json'),
         `${JSON.stringify(renderLegacyPublicationManifest(entry), null, 2)}\n`,
       ),
