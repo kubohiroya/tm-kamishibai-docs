@@ -69,7 +69,7 @@
       "ready": false,
       "progressStatus": "blocked",
       "description": "DSL 4.0の公開versionと対象commitが固定されている",
-      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/266"],
+      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/548"],
       "remaining": ["DSL 4.0の正式releaseとtagを固定する"]
     },
     {
@@ -77,12 +77,11 @@
       "ready": false,
       "progressStatus": "partial",
       "description": "浦島太郎とmy-urashimaの4.0 Web版、SB3、integrityは公開済みだが、最小チュートリアル作品、starter、addition kitは未固定",
-      "dependencies": [
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/93"
-      ],
+      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94"],
       "evidence": [
         "../../sources/dsl4/user-guide-4.0-public-surfaces.json",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/93",
         "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/",
         "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
         "https://github.com/kubohiroya/tmpose-kamishibai-docs/blob/main/DSL4-IMPLEMENTATION-VISUALS.md",

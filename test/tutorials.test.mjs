@@ -215,8 +215,25 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
       .find(({id}) => id === 'preview-flow')
       .dependencies.includes('https://github.com/kubohiroya/tmpose-kamishibai/issues/394'),
   );
+  const releaseGate = screenshotManifest.gates.find(({id}) => id === 'dsl4-release');
+  assert.deepEqual(releaseGate.dependencies, [
+    'https://github.com/kubohiroya/tmpose-kamishibai/issues/548',
+  ]);
   const tutorialSampleGate = screenshotManifest.gates.find(({id}) => id === 'tutorial-sample');
   assert.equal(tutorialSampleGate.ready, false);
+  assert.deepEqual(tutorialSampleGate.dependencies, [
+    'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94',
+  ]);
+  assert(
+    tutorialSampleGate.evidence.includes(
+      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91',
+    ),
+  );
+  assert(
+    tutorialSampleGate.evidence.includes(
+      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/93',
+    ),
+  );
   assert.match(tutorialSampleGate.description, /4\.0 Web版、SB3、integrityは公開済み/u);
   assert.match(tutorialSampleGate.remaining.join('\n'), /starter、addition kit/u);
   assert.doesNotMatch(tutorialSampleGate.remaining.join('\n'), /PRをmerge/u);

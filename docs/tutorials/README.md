@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: DSL 4.0リリース前draft\
-関連Issue: [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31) / [実装追従 #34](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/34)
+関連Issue: [正式公開 #111](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/111) / [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31) / [実装追従 #34](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/34)
 
 読者向け入口: [紙芝居チュートリアル](index.md)
 
@@ -102,7 +102,13 @@ overlay、pose feedback、camera controlを含む固定実装を
 浦島太郎とmy-urashimaの4.0 Web版、SB3、integrityはsamples PR #91／#93とPages deployで公開済みです。
 公開surfaceは[操作説明書のmachine-readable manifest](../../sources/dsl4/user-guide-4.0-public-surfaces.json)へ
 固定しています。ただし、これらはチュートリアル用の最小作品、starter、addition kitではないため、
-`tutorial-sample` gateは`partial`、正式画像の再利用可否は`false`のまま維持します。
+`tutorial-sample` gateは`partial`、正式画像の再利用可否は`false`のまま維持します。残りの成果物は
+[samples #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)で追跡します。
+
+DSL 4.0のrelease candidateは準備済みですが、annotated `v4.0.0` tag、GitHub Release、npm 4.0.0は
+未公開です。versionとartifact hashの固定は
+[tmpose-kamishibai #548](https://github.com/kubohiroya/tmpose-kamishibai/issues/548)で追跡し、完了するまで
+`dsl4-release` gateを`blocked`、`ready: false`に保ちます。
 
 reload overlayは上流の
 [撮影引き継ぎ契約](https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff)と
@@ -159,7 +165,7 @@ docs/images/tutorials/dsl4/create/
 
 ## リリース後の引き継ぎ
 
-1. `tmpose-kamishibai-samples`で最小作品とstarterを公開する
+1. [samples #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)で最小作品、starter、addition kitを公開する
 2. DSL 4.0の公開versionとcapture条件を台帳へ記録する
 3. 台帳の順に画像を取得し、alt textとcaptionを実画面へ合わせる
 4. draft中のrelease gate注記を正式なUI名、コマンド、URLへ置き換える
@@ -172,6 +178,8 @@ docs/images/tutorials/dsl4/create/
 - [DSL 4.0 Schemaリファレンス準備 Issue #29](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/29)
 - [source channelとゼロブロック作者フロー #258](https://github.com/kubohiroya/tmpose-kamishibai/issues/258)
 - [capability・Bundle・release境界 #266](https://github.com/kubohiroya/tmpose-kamishibai/issues/266)
+- [release candidate更新とversion／hash固定 #548](https://github.com/kubohiroya/tmpose-kamishibai/issues/548)
+- [チュートリアル用最小作品・starter・addition kit #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)
 - [poseModel asset lifecycle #327](https://github.com/kubohiroya/tmpose-kamishibai/issues/327)
 - [Web PreviewとYAML live reload #390](https://github.com/kubohiroya/tmpose-kamishibai/issues/390)
 - [local assetの追加・内容更新live reload #391](https://github.com/kubohiroya/tmpose-kamishibai/issues/391)
