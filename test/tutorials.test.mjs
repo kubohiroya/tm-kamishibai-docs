@@ -206,6 +206,13 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
     screenshotManifest.implementationBaseline.commit,
     '0e7e23f59a323f088408f42ba0dc41f6b6c9feef',
   );
+  assert.deepEqual(screenshotManifest.browserAuthoringBaseline, {
+    version: '4.0.0-rc.2',
+    state: 'implementation-candidate',
+    issue: 'https://github.com/kubohiroya/tmpose-kamishibai/issues/555',
+    documentationIssue: 'https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118',
+    captureFixture: 'test/fixtures/dsl4/browser-authoring-menu.html',
+  });
   assert.equal(
     screenshotManifest.sampleBaseline.commit,
     'd2f37b95f552a39126533bbe1d623e71d52797f9',
@@ -269,7 +276,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
 
   const expectedIds = [
     ...Array.from({length: 8}, (_, index) => `P-${String(index + 1).padStart(2, '0')}`),
-    ...Array.from({length: 13}, (_, index) => `C-${String(index + 1).padStart(2, '0')}`),
+    ...Array.from({length: 14}, (_, index) => `C-${String(index + 1).padStart(2, '0')}`),
   ];
   const captureIds = screenshotManifest.captures.map(({id}) => id);
   assert.deepEqual(captureIds.sort(), expectedIds.sort());
@@ -301,6 +308,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
     'C-11': 7,
     'C-12': 9,
     'C-13': 1,
+    'C-14': 8,
   });
 
   const gateIds = new Set(screenshotManifest.gates.map(({id}) => id));
@@ -311,6 +319,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
       'tutorial-sample',
       'app-shell',
       'preview-flow',
+      'browser-authoring',
       'pose-feedback',
       'camera-controls',
       'cli-contract',
@@ -325,7 +334,8 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
       'dsl4-release': 'published',
       'tutorial-sample': 'published',
       'app-shell': 'published',
-      'preview-flow': 'published',
+      'preview-flow': 'implemented',
+      'browser-authoring': 'implemented',
       'pose-feedback': 'published',
       'camera-controls': 'published',
       'cli-contract': 'published',
@@ -395,7 +405,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
       }
     }
   }
-  assert.equal(Object.keys(screenshotManifest.captureArtifacts).length, 20);
+  assert.equal(Object.keys(screenshotManifest.captureArtifacts).length, 21);
 
   const fixtureFrames = screenshotManifest.captures.flatMap((capture) =>
     capture.frames
@@ -404,7 +414,6 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   );
   assert.deepEqual(fixtureFrames.sort(), [
     'camera-control-collision',
-    'diagnostic-last-known-good',
     'dialog-position-selector',
     'dialog-scope-selector',
     'reloaded-action',
@@ -434,10 +443,10 @@ test('keeps the publication candidate reviewable with its fixed captures', () =>
   assert.match(tutorialSources['play.md'], /## 完了チェック/u);
   assert.match(tutorialSources['create.md'], /Scratchのブロックは追加しません/u);
   assert.match(tutorialSources['create.md'], /```yaml[\s\S]*kamishibai: '4\.0'/u);
-  assert.match(tutorialSources['create.md'], /preview-dsl4 --watch/u);
+  assert.match(tutorialSources['create.md'], /preview-dsl4 --help/u);
   assert.match(tutorialSources['create.md'], /validate-dsl4/u);
   assert.match(tutorialSources['create.md'], /build-dsl4/u);
-  assert.match(tutorialSources['create.md'], /4\.0\.0-rc\.1/u);
+  assert.match(tutorialSources['create.md'], /4\.0\.0-rc\.2/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/new-beach\.svg/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/add-pose-scene\.yml\.txt/u);
   assert.match(tutorialSources['create.md'], /file: beach\.svg/u);
@@ -446,6 +455,12 @@ test('keeps the publication candidate reviewable with its fixed captures', () =>
   assert.match(tutorialSources['create.md'], /更新状態ボタン[\s\S]*再開位置[\s\S]*再開方針/u);
   assert.match(tutorialSources['create.md'], /poseModel: RescuePose/u);
   assert.match(tutorialSources['create.md'], /`Turtle\.sya`を`Turtle\.say`へ直/u);
+  const advancedCli = tutorialSources['create.md'].indexOf('## 高度な利用者・CI向けのCLI（任意）');
+  assert(advancedCli > 0);
+  const generalAuthorFlow = tutorialSources['create.md'].slice(0, advancedCli);
+  assert.doesNotMatch(generalAuthorFlow, /```bash|pnpm exec tmpose-kamishibai/u);
+  assert.match(generalAuthorFlow, /緑の旗[\s\S]*ファイルを開く[\s\S]*tutorial-story/u);
+  assert.match(generalAuthorFlow, /配布用SB3を作る/u);
   assert.doesNotMatch(
     tutorialSources['create.md'],
     /candidate|session token|transactional|Story Path|severity|外周8方向|プロジェクトを開く/iu,
@@ -478,7 +493,7 @@ test('routes general users and script authors before implementation details', ()
   assert.match(tutorialSources['play.md'], /stories\/tutorial\/web-4\.0\//u);
   assert.match(tutorialSources['create.md'], /tutorial-story-starter-4\.0\.zip/u);
 
-  const previewStep = tutorialSources['create.md'].indexOf('## 3. ローカルプレビューを起動する');
+  const previewStep = tutorialSources['create.md'].indexOf('## 3. TurboWarpで作品フォルダーを開く');
   const editStep = tutorialSources['create.md'].indexOf('## 4. セリフを変更する');
   const changedDialogue = tutorialSources['create.md'].indexOf('text: こんにちは！');
   assert(previewStep >= 0 && previewStep < editStep && editStep < changedDialogue);

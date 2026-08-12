@@ -25,6 +25,13 @@
       "fixture": "https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
     }
   },
+  "browserAuthoringBaseline": {
+    "version": "4.0.0-rc.2",
+    "state": "implementation-candidate",
+    "issue": "https://github.com/kubohiroya/tmpose-kamishibai/issues/555",
+    "documentationIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118",
+    "captureFixture": "test/fixtures/dsl4/browser-authoring-menu.html"
+  },
   "sampleBaseline": {
     "repository": "kubohiroya/tmpose-kamishibai-samples",
     "commit": "d2f37b95f552a39126533bbe1d623e71d52797f9",
@@ -89,6 +96,7 @@
       "runtimeCommit": "0e7e23f59a323f088408f42ba0dc41f6b6c9feef",
       "sampleCommit": "d2f37b95f552a39126533bbe1d623e71d52797f9",
       "fixtureSource": "test/fixtures/dsl4/preview-reload-overlay-screenshot.json",
+      "browserAuthoringFixture": "test/fixtures/dsl4/browser-authoring-menu.html",
       "privacy": "no real person, camera frame, local source path, or account data is included"
     },
     "recordForEachCapture": [
@@ -109,8 +117,8 @@
     "P-06": "sha256:48ac14c487f951c5a423b25a2a7f6faf421d2744e3fb27c89db64558ed2512d5",
     "P-07": "sha256:35635b3d879958705b975134c5afe6b5baaa900bb82d498780ef396ce0dd1dd4",
     "C-01": "sha256:263ba5c60b96e4373a6daa9ff7f9cf424bfc739cd3f7fdfac07f7d80e7d09b87",
-    "C-02": "sha256:7ae5acfe455452c61fad90b63201b505be2c87403e52a1900afec705fed179b3",
-    "C-03": "sha256:1985233a2d74a9eaf0a35cb696e97dec84fdba9f9aee644f9c06de08ab50d87d",
+    "C-02": "sha256:07a6a4e5ca1723b7f3b31cd0b2849202721fea0214211c562dad3dd4fce46308",
+    "C-03": "sha256:f4d6673eba11034aec634b890af5b4bf34b70bf86106e771e85d7251b3de374c",
     "C-04": "sha256:f68977d398367b073976851cd49a8b0e83fa14f994a55bfe1c30c3b67a84e6ca",
     "C-05-position": "sha256:f404765682721088c08e7286e53b00a630a4310db1430419d82098c28873e784",
     "C-05-scope": "sha256:7095e3fcc81d4c88e28cccef13ecb839db40fe4c52b2e87870557a8bc9b91c9d",
@@ -119,8 +127,9 @@
     "C-08": "sha256:fe5b534c784308dcecda707abd01fa92b6699b694336f8635f8d5e369e2e0601",
     "C-09": "sha256:16d97b4d49f1cb0b955c759a4cef0a840aac7b29b67b04d544f74fafa8918e94",
     "C-10": "sha256:0ff84d54320ba26f75858dfc2850dec7b489dcef0d2a49c8be8bf75a2cf9d97f",
-    "C-11": "sha256:effa0cd267ef75246d059380358577bac6189548c5eb65c0679bd79d19a613c2",
-    "C-12": "sha256:e79c0c9ac67bd8bce9d6805e5bce63c6d7656791984728bef301dd6a99d0ddf5"
+    "C-11": "sha256:b48521a5c4e1003323d11990d8daa7502a2f27b45e60c2cde9e3a5acc04015b4",
+    "C-12": "sha256:e79c0c9ac67bd8bce9d6805e5bce63c6d7656791984728bef301dd6a99d0ddf5",
+    "C-14": "sha256:2efd54b3eac00f35c39bb3c67a7347a356cea9c621d2545e6dcca2085227944a"
   },
   "gates": [
     {
@@ -171,8 +180,8 @@
     {
       "id": "preview-flow",
       "ready": true,
-      "progressStatus": "published",
-      "description": "4.0.0-rc.1のCLI local preview、reload選択、診断UIを公開starterと固定fixtureで追試している",
+      "progressStatus": "implemented",
+      "description": "非埋め込みStandard SB3のdirectory open、自動validation、reload、last-known-good診断と復旧を公開starterと固定fixtureで追試している",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/258",
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/266",
@@ -186,6 +195,21 @@
         "https://github.com/kubohiroya/tmpose-kamishibai/commit/3668573",
         "https://github.com/kubohiroya/tmpose-kamishibai/commit/c0921e4",
         "https://github.com/kubohiroya/tmpose-kamishibai/commit/315c5e7"
+      ],
+      "remaining": []
+    },
+    {
+      "id": "browser-authoring",
+      "ready": true,
+      "progressStatus": "implemented",
+      "description": "4.0.0-rc.2候補の作者用メニューで配布用SB3 build、保存、fresh TurboWarp実行までを追試している",
+      "dependencies": [
+        "https://github.com/kubohiroya/tmpose-kamishibai/issues/555",
+        "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118"
+      ],
+      "evidence": [
+        "test/fixtures/dsl4/browser-authoring-menu.html",
+        "docs/images/tutorials/dsl4/create/tutorial-create-14-build-menu.png"
       ],
       "remaining": []
     },
@@ -379,12 +403,12 @@
       "step": 3,
       "required": true,
       "status": "captured",
-      "surface": "local preview CLI",
-      "description": "preview-dsl4 --watchの起動命令",
+      "surface": "TurboWarp Editor with non-embedded Standard SB3",
+      "description": "Standard SB3を開き、緑の旗から作者用previewを開始する操作",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-02-project-open.png",
-      "captionDraft": "公開スターターとベースSB3を指定してローカルプレビューを起動します。",
-      "altDraft": "preview-dsl4 --watchがブラウザーを開き、台本の監視開始を表示したターミナル",
-      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "cli-contract"]
+      "captionDraft": "Standard SB3をTurboWarp Editorで開き、緑の旗から作者用プレビューを開始します。",
+      "altDraft": "TurboWarp EditorでStandard SB3を開き、緑の旗を押す位置を示した画面",
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "browser-authoring"]
     },
     {
       "id": "C-03",
@@ -392,16 +416,16 @@
       "step": 3,
       "required": true,
       "status": "captured",
-      "surface": "local preview status",
-      "description": "認証済みloopback previewのwatchingとVALID表示",
+      "surface": "TurboWarp application menu",
+      "description": "作者用メニューのファイルを開く操作とbuild無効理由",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-03-directory-picker.png",
-      "captionDraft": "ブラウザーで台本を監視していることと、状態がVALIDであることを確認します。",
-      "altDraft": "DSL 4.0 local previewにstory.kamishibai.yamlの監視中表示とVALID状態が表示された画面",
+      "captionDraft": "「ファイルを開く」から作品フォルダーを選びます。",
+      "altDraft": "TurboWarpの作者用メニューでファイルを開くボタンを示した画面",
       "gates": [
         "dsl4-release",
         "tutorial-sample",
         "preview-flow",
-        "cli-contract",
+        "browser-authoring",
         "capture-environment"
       ]
     },
@@ -543,11 +567,14 @@
       "status": "captured",
       "surface": "development diagnostics",
       "description": "source位置と修正候補を含む診断画面",
-      "sourceFixtureFrame": "diagnostic-last-known-good",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-11-diagnostic.png",
       "captionDraft": "表示されたファイル名、行、説明から台本を直します。",
       "altDraft": "台本のファイル名、間違いのある行、修正方法を表示したエラー画面",
-      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "cli-contract"]
+      "captureNotes": [
+        "本体のruntime-error-indicator.jsを直接読み込むcapture fixtureを使用する",
+        "story.kamishibai.yamlのinvalid candidateを表示し、last-known-good projectを変更しない"
+      ],
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "browser-authoring"]
     },
     {
       "id": "C-12",
@@ -560,7 +587,7 @@
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-12-built-sb3.png",
       "captionDraft": "完成したSB3をTurboWarpで開き、緑の旗から再生します。",
       "altDraft": "完成した紙芝居のSB3をTurboWarpで開いた画面",
-      "gates": ["dsl4-release", "tutorial-sample", "app-shell", "cli-contract"]
+      "gates": ["dsl4-release", "tutorial-sample", "app-shell", "browser-authoring"]
     },
     {
       "id": "C-13",
@@ -577,6 +604,23 @@
       "captionDraft": "このチュートリアルで完成させる紙芝居です。",
       "altDraft": "チュートリアルで完成させる紙芝居のproduction画面",
       "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
+    },
+    {
+      "id": "C-14",
+      "tutorial": "create",
+      "step": 8,
+      "required": true,
+      "status": "captured",
+      "surface": "TurboWarp application menu browser distribution build",
+      "description": "latest stable generationの最終検証後に有効になる配布用SB3 build action",
+      "filename": "docs/images/tutorials/dsl4/create/tutorial-create-14-build-menu.png",
+      "captionDraft": "台本と素材が正常なとき、メニューから配布用SB3を作れます。",
+      "altDraft": "TurboWarpの作者用メニューで配布用SB3を作るボタンが有効な画面",
+      "captureNotes": [
+        "本体のruntime-application-menu.jsとapp-shell-locales.mjsを直接読み込むcapture fixtureを使用する",
+        "project directory選択前は同じbuttonがdisabledとなり、古いgenerationをbuildできないことを確認する"
+      ],
+      "gates": ["dsl4-release", "tutorial-sample", "preview-flow", "browser-authoring"]
     }
   ]
 }
