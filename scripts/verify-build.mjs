@@ -18,6 +18,7 @@ const faviconPath = path.join(distRoot, 'favicon.png');
 const documentIndexCssPath = path.join(distRoot, 'document-index.css');
 const siteShellCssPath = path.join(distRoot, 'site-shell.css');
 const siteShellScriptPath = path.join(distRoot, 'site-shell.js');
+const documentTocScriptPath = path.join(distRoot, 'document-toc.js');
 const require = createRequire(import.meta.url);
 const vivliostyleRequire = createRequire(require.resolve('@vivliostyle/cli/package.json'));
 const {PDFDocument} = vivliostyleRequire('pdf-lib');
@@ -225,19 +226,63 @@ async function verifySiteAppBars() {
 async function verifyDocument(document) {
   const basename = document.sourceFilename.replace(/\.md$/u, '');
   const publicationDirectory = path.join(distRoot, document.outputDirectory, basename);
+  const indexPath = path.join(publicationDirectory, documentationConfig.standaloneHtmlFilename);
   const articlePath = path.join(
     publicationDirectory,
     documentationConfig.standaloneArticleHtmlFilename,
   );
   const manifestPath = path.join(publicationDirectory, 'publication.json');
-  const [article] = await Promise.all([readFile(articlePath, 'utf8'), access(manifestPath)]);
+  const [index, article, manifestSource] = await Promise.all([
+    readFile(indexPath, 'utf8'),
+    readFile(articlePath, 'utf8'),
+    readFile(manifestPath, 'utf8'),
+  ]);
+  const manifest = JSON.parse(manifestSource);
 
   assert(
     !/href="(?!https?:)[^"]+\.md(?:#[^"]*)?"/iu.test(article),
     `${basename} has a local .md link.`,
   );
   assert(article.includes(document.title), `${basename} does not contain its configured title.`);
-  await verifyLocalImages(articlePath, article);
+  assert(index.includes(document.title), `${basename} index does not contain its article.`);
+  assert(
+    index.includes('<nav id="toc" class="document-toc"'),
+    `${basename} index does not contain the inline table of contents.`,
+  );
+  assert(
+    index.includes('<main id="main-content" class="document-content" tabindex="-1">'),
+    `${basename} index does not expose its article through the main landmark.`,
+  );
+  assert(
+    index.includes('<details class="document-toc__panel" open>'),
+    `${basename} table of contents is not expandable.`,
+  );
+  assert(
+    !/href="document\.html#/iu.test(index),
+    `${basename} table of contents links to a separate article page.`,
+  );
+  const tocScriptReference = path
+    .relative(publicationDirectory, documentTocScriptPath)
+    .split(path.sep)
+    .join('/');
+  assert(
+    attributeValues(index, 'script', 'src').includes(tocScriptReference),
+    `${basename} index does not load the expandable tree behavior.`,
+  );
+  assert(
+    manifest.readingOrder?.length === 1 &&
+      manifest.readingOrder[0].url === documentationConfig.standaloneArticleHtmlFilename,
+    `${basename} Viewer reading order must contain the article exactly once.`,
+  );
+  assert(
+    manifest.resources?.some(
+      (entry) =>
+        (typeof entry === 'string' ? entry : entry.url) ===
+        documentationConfig.standaloneHtmlFilename,
+    ),
+    `${basename} publication resources do not include the combined HTML page.`,
+  );
+  await Promise.all([verifyLocalImages(indexPath, index), verifyLocalImages(articlePath, article)]);
   await verifyPublicationAssetReferences(publicationDirectory);
 }
 
@@ -496,6 +541,7 @@ export async function verifyBuild() {
     readFile(documentFontPath),
     readFile(publishedFontPath),
   ]);
+  await access(documentTocScriptPath);
   assert(publishedFont.equals(documentFont), 'The shared site font differs from its source.');
   for (const document of documentationConfig.documents) {
     await verifyDocument(document);

@@ -12,10 +12,16 @@ import {
   workshopDocumentConfig,
 } from '../docs/config.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
-import {collectSourceInputs, isBuildCurrent} from './build-freshness.mjs';
+import {
+  collectSourceInputs,
+  copyFileIfStale,
+  runIncrementalBuild,
+  writeFileIfChanged,
+} from './build-freshness.mjs';
+import {installInlineDocumentToc} from './inline-document-toc.mjs';
 import {writeLegacyVersionNotices} from './legacy-version-notices.mjs';
 import {organizePublicationAssets} from './publication-assets.mjs';
-import {installSiteAppBars} from './site-appbar.mjs';
+import {injectSiteAppBar, installSiteAppBars} from './site-appbar.mjs';
 
 const require = createRequire(import.meta.url);
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
@@ -35,11 +41,13 @@ const rubyganaGradeData = require('rubygana/lib/学年別漢字.js').metadata;
 const commonPublicationInputs = [
   fileURLToPath(import.meta.url),
   path.join(projectRoot, 'scripts/build-freshness.mjs'),
+  path.join(projectRoot, 'scripts/inline-document-toc.mjs'),
   path.join(projectRoot, 'scripts/publication-assets.mjs'),
   path.join(projectRoot, 'scripts/site-appbar.mjs'),
   path.join(projectRoot, 'docs/config.mjs'),
   path.join(projectRoot, 'docs/theme.css'),
   path.join(projectRoot, 'docs/fonts'),
+  path.join(projectRoot, 'site/document-toc.js'),
   path.join(projectRoot, 'sources/tmpose-kamishibai.json'),
   path.join(projectRoot, 'package.json'),
   path.join(projectRoot, 'pnpm-lock.yaml'),
@@ -191,7 +199,7 @@ function rewriteMarkdownLinks(source, document, htmlPath) {
         .relative(path.dirname(htmlPath), targetDirectory)
         .split(path.sep)
         .join('/');
-      const targetPage = hash === '' ? `${relativeTarget}/` : `${relativeTarget}/document.html`;
+      const targetPage = relativeTarget === '' ? './' : `${relativeTarget}/`;
       return `href="${targetPage}${hash}"`;
     }
 
@@ -258,21 +266,16 @@ async function writeBuildInfo(directory, details) {
   await writeFile(path.join(directory, 'build-info.json'), `${JSON.stringify(details, null, 2)}\n`);
 }
 
-async function shouldBuildPublication({
-  force,
-  inputs,
-  markerPath,
-  outputs,
-  expectedBuildInfo = {},
-  label,
-}) {
-  if (!force && (await isBuildCurrent({inputs, markerPath, outputs, expectedBuildInfo}))) {
-    console.log(`Skipped ${label}; outputs are newer than its inputs.`);
-    return false;
-  }
-
-  console.log(`Building ${label}${force ? ' (--force)' : ''}.`);
-  return true;
+async function writeStaticSiteHtml(sourcePath, outputPath) {
+  const source = await readFile(sourcePath, 'utf8');
+  const relativeRoot = path.relative(path.dirname(outputPath), distRoot).split(path.sep).join('/');
+  const assetBase = relativeRoot === '' ? '' : `${relativeRoot}/`;
+  const relativePath = path.relative(distRoot, outputPath).split(path.sep).join('/');
+  const pathname =
+    relativePath === 'index.html'
+      ? '/tmpose-kamishibai-docs/'
+      : `/tmpose-kamishibai-docs/${relativePath.replace(/(?:index\.html)?$/u, '')}`;
+  await writeFileIfChanged(outputPath, injectSiteAppBar(source, assetBase, {pathname}));
 }
 
 async function buildDocuments(grade, force) {
@@ -288,6 +291,7 @@ async function buildDocuments(grade, force) {
       documentationConfig.standaloneArticleHtmlFilename,
     );
     const manifestPath = path.join(publicationDirectory, 'publication.json');
+    const indexPath = path.join(publicationDirectory, documentationConfig.standaloneHtmlFilename);
     const obsoletePdfPaths = [
       path.join(pdfRoot, document.outputDirectory, pdfFilename),
       path.join(distRoot, document.outputDirectory, pdfFilename),
@@ -303,36 +307,38 @@ async function buildDocuments(grade, force) {
     ];
     const expectedBuildInfo = document.addFurigana === true ? {learnedThroughGrade: grade} : {};
     await Promise.all(obsoletePdfPaths.map((pdfPath) => rm(pdfPath, {force: true})));
-    if (
-      !(await shouldBuildPublication({
-        force,
-        inputs,
-        markerPath: path.join(publicationDirectory, 'build-info.json'),
-        outputs: [articlePath, manifestPath],
-        expectedBuildInfo,
-        label: document.sourceFilename,
-      }))
-    ) {
-      continue;
-    }
-
-    await buildWebPublication(configPath, publicationDirectory, {
-      ...process.env,
-      DOCUMENT_SOURCE: document.sourceFilename,
+    const built = await runIncrementalBuild({
+      force,
+      inputs,
+      markerPath: path.join(publicationDirectory, 'build-info.json'),
+      outputs: [indexPath, articlePath, manifestPath],
+      expectedBuildInfo,
+      label: document.sourceFilename,
+      build: async () => {
+        await buildWebPublication(configPath, publicationDirectory, {
+          ...process.env,
+          DOCUMENT_SOURCE: document.sourceFilename,
+        });
+        await prepareDocumentHtml(articlePath, document, grade);
+        await installInlineDocumentToc({
+          publicationDirectory,
+          siteRootDirectory: distRoot,
+          indexFilename: documentationConfig.standaloneHtmlFilename,
+          articleFilename: documentationConfig.standaloneArticleHtmlFilename,
+        });
+        await writeBuildInfo(
+          publicationDirectory,
+          buildInfo({
+            publicationKind: 'standalone-document',
+            sourceDirectory: document.sourceDirectory,
+            sourceFilename: document.sourceFilename,
+            rubyApplied: document.addFurigana === true,
+            ...(document.addFurigana === true ? {learnedThroughGrade: grade} : {}),
+          }),
+        );
+      },
     });
-
-    await prepareDocumentHtml(articlePath, document, grade);
-    await writeBuildInfo(
-      publicationDirectory,
-      buildInfo({
-        publicationKind: 'standalone-document',
-        sourceDirectory: document.sourceDirectory,
-        sourceFilename: document.sourceFilename,
-        rubyApplied: document.addFurigana === true,
-        ...(document.addFurigana === true ? {learnedThroughGrade: grade} : {}),
-      }),
-    );
-    builtCount += 1;
+    if (built) builtCount += 1;
   }
 
   return builtCount;
@@ -358,48 +364,42 @@ async function buildWorkshop(grade, force) {
     path.join(docsRoot, 'document-theme.css'),
     ...(await collectSourceInputs(sourcePaths)),
   ];
-  if (
-    !(await shouldBuildPublication({
-      force,
-      inputs,
-      markerPath: path.join(outputDirectory, 'build-info.json'),
-      outputs: [
-        path.join(outputDirectory, 'publication.json'),
-        path.join(outputDirectory, workshopDocumentConfig.coverHtmlFilename),
-        path.join(outputDirectory, workshopDocumentConfig.tocHtmlFilename),
-        path.join(
-          outputDirectory,
-          workshopDocumentConfig.sourceFilename.replace(/\.md$/u, '.html'),
-        ),
-        pdfPath,
-        publishedPdfPath,
-      ],
-      expectedBuildInfo: {learnedThroughGrade: grade},
-      label: workshopDocumentConfig.sourceFilename,
-    }))
-  ) {
-    return 0;
-  }
-
-  await buildWebPublication(configPath, tempDirectory);
-  for (const htmlPath of await findHtmlFiles(tempDirectory)) {
-    await prepareWorkshopHtml(htmlPath, grade);
-    await applyRubygana(htmlPath, grade);
-  }
-  await cp(tempDirectory, outputDirectory, {recursive: true});
-  await buildPdf(path.join(outputDirectory, 'publication.json'), pdfPath);
-  await copyFile(pdfPath, publishedPdfPath);
-  await writeBuildInfo(
-    outputDirectory,
-    buildInfo({
-      publicationKind: 'workshop-documentation',
-      rubyApplied: true,
-      learnedThroughGrade: grade,
-      rubyGenerator: `${rubyganaPackage.name} ${rubyganaPackage.version}`,
-      kanjiDataset: rubyganaGradeData,
-    }),
-  );
-  return 1;
+  const built = await runIncrementalBuild({
+    force,
+    inputs,
+    markerPath: path.join(outputDirectory, 'build-info.json'),
+    outputs: [
+      path.join(outputDirectory, 'publication.json'),
+      path.join(outputDirectory, workshopDocumentConfig.coverHtmlFilename),
+      path.join(outputDirectory, workshopDocumentConfig.tocHtmlFilename),
+      path.join(outputDirectory, workshopDocumentConfig.sourceFilename.replace(/\.md$/u, '.html')),
+      pdfPath,
+      publishedPdfPath,
+    ],
+    expectedBuildInfo: {learnedThroughGrade: grade},
+    label: workshopDocumentConfig.sourceFilename,
+    build: async () => {
+      await buildWebPublication(configPath, tempDirectory);
+      for (const htmlPath of await findHtmlFiles(tempDirectory)) {
+        await prepareWorkshopHtml(htmlPath, grade);
+        await applyRubygana(htmlPath, grade);
+      }
+      await cp(tempDirectory, outputDirectory, {recursive: true});
+      await buildPdf(path.join(outputDirectory, 'publication.json'), pdfPath);
+      await copyFile(pdfPath, publishedPdfPath);
+      await writeBuildInfo(
+        outputDirectory,
+        buildInfo({
+          publicationKind: 'workshop-documentation',
+          rubyApplied: true,
+          learnedThroughGrade: grade,
+          rubyGenerator: `${rubyganaPackage.name} ${rubyganaPackage.version}`,
+          kanjiDataset: rubyganaGradeData,
+        }),
+      );
+    },
+  });
+  return Number(built);
 }
 
 async function buildStaff(force) {
@@ -424,32 +424,29 @@ async function buildStaff(force) {
     path.join(docsRoot, 'staff-theme.css'),
     ...(await collectSourceInputs([sourcePath])),
   ];
-  if (
-    !(await shouldBuildPublication({
-      force,
-      inputs,
-      markerPath: path.join(outputDirectory, 'build-info.json'),
-      outputs: [htmlPath, pdfPath, publishedPdfPath],
-      label: staffDocumentConfig.sourceFilename,
-    }))
-  ) {
-    return 0;
-  }
-
-  await buildWebPublication(configPath, tempDirectory);
-  await rm(outputDirectory, {recursive: true, force: true});
-  await cp(tempDirectory, outputDirectory, {recursive: true});
-  await writeFile(htmlPath, normalizeWorkshopImagePaths(await readFile(htmlPath, 'utf8')));
-  await buildPdf(htmlPath, pdfPath);
-  await copyFile(pdfPath, publishedPdfPath);
-  await writeBuildInfo(
-    outputDirectory,
-    buildInfo({
-      publicationKind: 'workshop-staff-documentation',
-      rubyApplied: false,
-    }),
-  );
-  return 1;
+  const built = await runIncrementalBuild({
+    force,
+    inputs,
+    markerPath: path.join(outputDirectory, 'build-info.json'),
+    outputs: [htmlPath, pdfPath, publishedPdfPath],
+    label: staffDocumentConfig.sourceFilename,
+    build: async () => {
+      await buildWebPublication(configPath, tempDirectory);
+      await rm(outputDirectory, {recursive: true, force: true});
+      await cp(tempDirectory, outputDirectory, {recursive: true});
+      await writeFile(htmlPath, normalizeWorkshopImagePaths(await readFile(htmlPath, 'utf8')));
+      await buildPdf(htmlPath, pdfPath);
+      await copyFile(pdfPath, publishedPdfPath);
+      await writeBuildInfo(
+        outputDirectory,
+        buildInfo({
+          publicationKind: 'workshop-staff-documentation',
+          rubyApplied: false,
+        }),
+      );
+    },
+  });
+  return Number(built);
 }
 
 function publicationImagePlans() {
@@ -502,26 +499,45 @@ export async function buildDocs({force = false} = {}) {
     mkdir(path.join(distRoot, 'workshops'), {recursive: true}),
     mkdir(path.join(distRoot, 'licenses'), {recursive: true}),
   ]);
-  await writeFile(path.join(distRoot, '.nojekyll'), '');
+  await writeFileIfChanged(path.join(distRoot, '.nojekyll'), '');
   await Promise.all([
-    copyFile(path.join(projectRoot, 'site/index.html'), path.join(distRoot, 'index.html')),
-    copyFile(path.join(projectRoot, 'site/3.2/index.html'), path.join(distRoot, '3.2/index.html')),
-    copyFile(path.join(projectRoot, 'site/4.0/index.html'), path.join(distRoot, '4.0/index.html')),
-    copyFile(
+    writeStaticSiteHtml(
+      path.join(projectRoot, 'site/index.html'),
+      path.join(distRoot, 'index.html'),
+    ),
+    writeStaticSiteHtml(
+      path.join(projectRoot, 'site/3.2/index.html'),
+      path.join(distRoot, '3.2/index.html'),
+    ),
+    writeStaticSiteHtml(
+      path.join(projectRoot, 'site/4.0/index.html'),
+      path.join(distRoot, '4.0/index.html'),
+    ),
+    writeStaticSiteHtml(
       path.join(projectRoot, 'site/workshops/index.html'),
       path.join(distRoot, 'workshops/index.html'),
     ),
-    copyFile(
+    writeStaticSiteHtml(
       path.join(projectRoot, 'site/licenses/index.html'),
       path.join(distRoot, 'licenses/index.html'),
     ),
-    copyFile(path.join(projectRoot, 'site/favicon.png'), path.join(distRoot, 'favicon.png')),
-    copyFile(
+    copyFileIfStale(path.join(projectRoot, 'site/favicon.png'), path.join(distRoot, 'favicon.png')),
+    copyFileIfStale(
       path.join(projectRoot, 'site/document-index.css'),
       path.join(distRoot, 'document-index.css'),
     ),
-    copyFile(path.join(projectRoot, 'site/site-shell.css'), path.join(distRoot, 'site-shell.css')),
-    copyFile(path.join(projectRoot, 'site/site-shell.js'), path.join(distRoot, 'site-shell.js')),
+    copyFileIfStale(
+      path.join(projectRoot, 'site/site-shell.css'),
+      path.join(distRoot, 'site-shell.css'),
+    ),
+    copyFileIfStale(
+      path.join(projectRoot, 'site/site-shell.js'),
+      path.join(distRoot, 'site-shell.js'),
+    ),
+    copyFileIfStale(
+      path.join(projectRoot, 'site/document-toc.js'),
+      path.join(distRoot, 'document-toc.js'),
+    ),
   ]);
   const builtCount =
     (await buildDocuments(grade, force)) +
@@ -545,13 +561,17 @@ export async function buildDocs({force = false} = {}) {
     `Installed the shared AppBar in ${appBarResult.installedCount} of ` +
       `${appBarResult.htmlCount} documentation HTML file(s).`,
   );
-  await writeBuildInfo(
-    distRoot,
-    buildInfo({
-      publicationKind: 'documentation-site',
-      documentCount: documentationConfig.documents.length + 2,
-      legacyNoticeCount: legacyNotices.length,
-    }),
+  await writeFileIfChanged(
+    path.join(distRoot, 'build-info.json'),
+    `${JSON.stringify(
+      buildInfo({
+        publicationKind: 'documentation-site',
+        documentCount: documentationConfig.documents.length + 2,
+        legacyNoticeCount: legacyNotices.length,
+      }),
+      null,
+      2,
+    )}\n`,
   );
   const publicationCount = documentationConfig.documents.length + 2;
   console.log(

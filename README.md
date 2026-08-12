@@ -27,7 +27,8 @@
 - `/4.0/`: YAML project、Source Graph、preview／build toolchainで新しく制作するための文書
 - `/workshops/`: 体験会資料を開催時期とDSL系列ごとに一覧表示する独立した入口
 
-各版固有文書の通常HTML、`document.html`、`publication.json`、local assetは、
+各版固有文書の通常HTML（`index.html`）、Viewer用本文（`document.html`）、
+`publication.json`、local assetは、
 `/3.2/`または`/4.0/`以下へ生成します。以前のversion番号なしURLには自動転送を置かず、
 対応する新URLと版選択rootを案内するページを残します。以前のVivliostyle Viewer URLが参照する
 `publication.json`も、同じ移転案内を表示するWeb Publicationとして維持します。
@@ -65,10 +66,19 @@ pnpm install
 pnpm check
 ```
 
-`pnpm build`は、各文書のWeb Publicationを`dist/`へ生成します。PDFを生成するのは
+`pnpm build`は、増分buildと生成物検証を実行します。生成だけを実行する場合は
+`pnpm build:publications`、全publicationを強制的に再生成する場合は
+`pnpm build:publications:full`（検証も含める場合は`pnpm build:full`）を使用します。
+
+増分buildはpublication種別に依存しない共通処理で、Markdown、そこから参照する図版、
+共通theme、font、Vivliostyle設定、build scriptを入力として収集します。完了markerの
+`build-info.json`と必須出力のうち最も古い更新日時を、入力の最も新しい更新日時と比較し、
+必須出力の欠落、metadata不一致、または新しい入力があるpublicationだけを再生成します。
+同じ内容の共通assetと後処理済みHTMLは再書き込みしません。
+
+各文書のWeb Publicationは`dist/`へ生成します。PDFを生成するのは
 `docs/workshops/`配下の体験会資料だけで、公開用PDFを`dist/`、確認用PDFを
-`output/pdf/`へ出力します。2回目以降は入力と生成物の更新時刻を比較し、変更された
-出版物だけを再生成します。全出版物を作り直す場合は`pnpm build:full`を使用します。
+`output/pdf/`へ出力します。
 移設元の固定情報と機能拡張一覧は
 [`sources/tmpose-kamishibai.json`](sources/tmpose-kamishibai.json)で管理します。
 
@@ -88,9 +98,11 @@ Source Graph、preview／build toolchainで制作する場合は4.0を選びま�
   決定的に生成します。
 
 どちらのMarkdownも`pnpm build`で同じVivliostyle Web Publication工程へ入力し、通常のHTML版
-（各公開ディレクトリの`document.html`）とVivliostyle Viewer版（`publication.json`）を同時に
-用意します。DSL 3系をJSON Schemaへ置き換えたり、DSL 4.0と同じ生成方式へ擬似的に統一したりは
-しません。
+（各公開ディレクトリの`index.html`）とVivliostyle Viewer版（`publication.json`）を同時に
+用意します。通常HTMLは目次と本文を同一ページに収め、広い画面では目次を左上へ固定し、
+見出しの子階層を展開・折りたたみできるツリーとして表示します。Viewerのreading orderには
+`document.html`だけを含め、統合HTMLとの二重表示を防ぎます。DSL 3系をJSON Schemaへ置き換えたり、
+DSL 4.0と同じ生成方式へ擬似的に統一したりはしません。
 
 「TMPose紙芝居 アプリ・教材・ツールチェインガイド」も3.2版と4.0版を別のMarkdownとして保守し、
 それぞれに通常HTML版とVivliostyle Viewer版を用意します。3.2版は`/3.2/`、4.0版は`/4.0/`以下の

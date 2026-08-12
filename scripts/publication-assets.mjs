@@ -1,8 +1,8 @@
 import {readFileSync} from 'node:fs';
-import {copyFile, mkdir, readFile, readdir, rm, rmdir, stat, writeFile} from 'node:fs/promises';
+import {readFile, readdir, rm, rmdir, stat} from 'node:fs/promises';
 import path from 'node:path';
 
-import {referencedLocalAssets} from './build-freshness.mjs';
+import {copyFileIfStale, referencedLocalAssets, writeFileIfChanged} from './build-freshness.mjs';
 
 export const publicationImageExtensions = ['png', 'jpg', 'jpeg', 'svg', 'gif', 'webp', 'apng'];
 export const publicationFontExtensions = ['ttf', 'otf', 'woff', 'woff2'];
@@ -161,7 +161,7 @@ async function rewritePublicationReferences({
       }
       source = source.replaceAll(placeholder, targetReference);
     }
-    await writeFile(textFile, source);
+    await writeFileIfChanged(textFile, source);
   }
 }
 
@@ -192,12 +192,14 @@ export async function organizePublicationAssets({
     [...usages].filter(([, assetPlans]) => assetPlans.length >= 2).map(([asset]) => asset),
   );
   const sharedRoot = path.resolve(outputRoot, sharedOutputDirectory);
-  await rm(sharedRoot, {recursive: true, force: true});
+  for (const existingAsset of await findFiles(sharedRoot, isPublicationAsset)) {
+    const asset = path.relative(sharedRoot, existingAsset).split(path.sep).join('/');
+    if (!sharedAssets.has(asset)) await rm(existingAsset);
+  }
 
   for (const asset of sharedAssets) {
     const destination = path.join(sharedRoot, asset);
-    await mkdir(path.dirname(destination), {recursive: true});
-    await copyFile(path.join(sourceRoot, asset), destination);
+    await copyFileIfStale(path.join(sourceRoot, asset), destination);
   }
 
   for (const plan of plans) {
@@ -216,8 +218,7 @@ export async function organizePublicationAssets({
     for (const asset of plan.assets) {
       if (sharedAssets.has(asset)) continue;
       const destination = path.join(plan.directory, asset);
-      await mkdir(path.dirname(destination), {recursive: true});
-      await copyFile(path.join(sourceRoot, asset), destination);
+      await copyFileIfStale(path.join(sourceRoot, asset), destination);
     }
     await rewritePublicationReferences({
       publicationDirectory: plan.directory,
@@ -227,6 +228,7 @@ export async function organizePublicationAssets({
     });
     await Promise.all(localAssetRoots.map(removeEmptyDirectories));
   }
+  await removeEmptyDirectories(sharedRoot);
 
   let selectiveAssetBytes = 0;
   let organizedAssetBytes = 0;

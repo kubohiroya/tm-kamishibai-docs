@@ -48,7 +48,7 @@ export function createDocumentVivliostyleConfig(sourceFilename) {
     },
     toc: {
       title: '目次',
-      htmlPath: documentationConfig.standaloneTocHtmlFilename,
+      htmlPath: documentationConfig.standaloneHtmlFilename,
       sectionDepth: documentationConfig.tocSectionDepth,
     },
   });

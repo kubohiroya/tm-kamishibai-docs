@@ -6,13 +6,15 @@ import {renderSiteHeader, replaceSiteNavigation} from './site-navigation.mjs';
 const siteRoot = 'https://kubohiroya.github.io/tmpose-kamishibai/';
 const rightsUrl = 'https://kubohiroya.github.io/tmpose-kamishibai-docs/licenses/';
 
-function renderSiteAppBar(assetBase, pathname) {
+function renderSiteAppBar(assetBase, pathname, {includeContentAnchor = true} = {}) {
+  const contentAnchor = includeContentAnchor
+    ? '\n<div id="main-content" class="site-content-anchor" tabindex="-1"></div>'
+    : '';
   return `${renderSiteHeader({
     assetBase,
     site: 'tmpose-kamishibai-docs',
     pathname,
-  })}
-<div id="main-content" class="site-content-anchor" tabindex="-1"></div>`;
+  })}${contentAnchor}`;
 }
 
 function renderSiteFooter(assetBase) {
@@ -72,7 +74,10 @@ export function injectSiteAppBar(source, assetBase, {pathname = '/tmpose-kamishi
     updated = updated.replace(/<body\b[^>]*>/iu, addBodyClass);
     const withAppBar = updated.replace(
       /<body\b[^>]*>/iu,
-      (bodyTag) => `${bodyTag}\n${renderSiteAppBar(assetBase, pathname)}`,
+      (bodyTag) =>
+        `${bodyTag}\n${renderSiteAppBar(assetBase, pathname, {
+          includeContentAnchor: !/\bid=(["'])main-content\1/iu.test(updated),
+        })}`,
     );
     if (withAppBar === updated) {
       throw new Error(
@@ -109,6 +114,7 @@ async function findHtmlFiles(directory) {
 export async function installSiteAppBars(directory, siteRootDirectory) {
   const htmlFiles = await findHtmlFiles(directory);
   let installedCount = 0;
+  const installedPaths = [];
 
   for (const htmlFile of htmlFiles) {
     const source = await readFile(htmlFile, 'utf8');
@@ -126,8 +132,9 @@ export async function installSiteAppBars(directory, siteRootDirectory) {
     if (updated !== source) {
       await writeFile(htmlFile, updated);
       installedCount += 1;
+      installedPaths.push(relativePath);
     }
   }
 
-  return {htmlCount: htmlFiles.length, installedCount};
+  return {htmlCount: htmlFiles.length, installedCount, installedPaths};
 }

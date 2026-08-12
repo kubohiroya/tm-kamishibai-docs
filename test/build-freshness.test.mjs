@@ -1,13 +1,16 @@
 import assert from 'node:assert/strict';
-import {mkdir, mkdtemp, rm, utimes, writeFile} from 'node:fs/promises';
+import {mkdir, mkdtemp, readFile, rm, stat, utimes, writeFile} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 
 import {
   collectSourceInputs,
+  copyFileIfStale,
   isBuildCurrent,
   referencedLocalAssets,
+  runIncrementalBuild,
+  writeFileIfChanged,
 } from '../scripts/build-freshness.mjs';
 
 async function withTemporaryDirectory(callback) {
@@ -104,5 +107,62 @@ test('detects newer files inside a shared input directory', async () => {
       }),
       false,
     );
+  });
+});
+
+test('runs a reusable incremental build only when its outputs are stale or forced', async () => {
+  await withTemporaryDirectory(async (directory) => {
+    const inputPath = path.join(directory, 'guide.md');
+    const markerPath = path.join(directory, 'build-info.json');
+    const outputPath = path.join(directory, 'index.html');
+    let buildCount = 0;
+    const build = async () => {
+      buildCount += 1;
+      await Promise.all([
+        writeFile(outputPath, `<main>build ${buildCount}</main>`),
+        writeFile(markerPath, '{"kind":"guide"}\n'),
+      ]);
+    };
+    const options = {
+      inputs: [inputPath],
+      markerPath,
+      outputs: [outputPath],
+      expectedBuildInfo: {kind: 'guide'},
+      label: 'guide.md',
+      build,
+    };
+
+    await writeFile(inputPath, '# Guide\n');
+    assert.equal(await runIncrementalBuild(options), true);
+    assert.equal(await runIncrementalBuild(options), false);
+    assert.equal(buildCount, 1);
+
+    const future = new Date(Date.now() + 2_000);
+    await utimes(inputPath, future, future);
+    assert.equal(await runIncrementalBuild(options), true);
+    assert.equal(await runIncrementalBuild({...options, force: true}), true);
+    assert.equal(buildCount, 3);
+  });
+});
+
+test('copies stale files and writes changed content without touching current outputs', async () => {
+  await withTemporaryDirectory(async (directory) => {
+    const sourcePath = path.join(directory, 'source/image.png');
+    const copyPath = path.join(directory, 'output/image.png');
+    const textPath = path.join(directory, 'output/index.html');
+    await mkdir(path.dirname(sourcePath), {recursive: true});
+    await writeFile(sourcePath, 'image-v1');
+
+    assert.equal(await copyFileIfStale(sourcePath, copyPath), true);
+    const copiedMtime = (await stat(copyPath)).mtimeMs;
+    assert.equal(await copyFileIfStale(sourcePath, copyPath), false);
+    assert.equal((await stat(copyPath)).mtimeMs, copiedMtime);
+    assert.equal(await readFile(copyPath, 'utf8'), 'image-v1');
+
+    assert.equal(await writeFileIfChanged(textPath, '<main>Guide</main>\n'), true);
+    const writtenMtime = (await stat(textPath)).mtimeMs;
+    assert.equal(await writeFileIfChanged(textPath, '<main>Guide</main>\n'), false);
+    assert.equal((await stat(textPath)).mtimeMs, writtenMtime);
+    assert.equal(await writeFileIfChanged(textPath, '<main>Updated</main>\n'), true);
   });
 });
