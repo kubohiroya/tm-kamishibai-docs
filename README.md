@@ -96,6 +96,11 @@ Source Graph、preview／build toolchainで制作する場合は4.0を選びま�
 それぞれに通常HTML版とVivliostyle Viewer版を用意します。3.2版は`/3.2/`、4.0版は`/4.0/`以下の
 独立した開発者向けpublicationとして提供し、以前のversion番号なしURLには移転案内を残します。
 
+release smokeも3.x版と4.0版を別のMarkdown、URL、publicationとして保守します。4.0版は
+[`docs/developer-guides/release-smoke-4.0.md`](docs/developer-guides/release-smoke-4.0.md)と
+[`sources/dsl4/release-smoke-4.0-candidate.json`](sources/dsl4/release-smoke-4.0-candidate.json)を正本にし、
+候補commit、Schema、feature flag、SB3、Web版、実機確認、release-stop、rollbackを一組で固定します。
+
 ### DSL 4.0 Schemaリファレンスの生成
 
 DSL 4.0のリファレンスは、上流JSON Schemaの固定snapshot、source lock、日本語Annotationから

@@ -41,6 +41,7 @@ const expectedCollections = {
     'dsl-4.0-diagnostics-design.md',
     'dependency-audit.md',
     'release-smoke.md',
+    'release-smoke-4.0.md',
   ],
 };
 

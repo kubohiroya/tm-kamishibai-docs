@@ -25,14 +25,22 @@ DSL 4.0の実装、リリース、公開画面、文書の状態を混同しな�
 
 - [#41](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/41): 公開画面に基づく4.0操作説明書
 - [#42](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/42): タグとリリースノートに基づく4.0変更履歴
-- [#47](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/47): 配布物と完全性情報に基づくリリーススモーク手順
 
-これらの課題が再開するまでは、未確定のURL、バージョン、ハッシュ、画面名を正式情報として本文へ固定しません。
+未確定のURL、バージョン、ハッシュ、画面名を正式情報として本文へ固定しません。
+
+## リリース候補で完了した課題
+
+- [#47](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/47): checksum付き候補、配布SB3／Web、
+  Browser／CLI Preview、実カメラ・実ポーズ、release-stop、証跡、rollbackを
+  [DSL 4.0 release smoke](docs/developer-guides/release-smoke-4.0.md)として固定
+
+#47の結果はcandidateの公開可否を判定する記録であり、正式リリース済みという意味ではありません。正式tag、
+npm integrity、release asset URL、Pages URLが確定した時点でcandidate manifestを更新し、変更範囲のsmokeを再実行します。
 
 ## 更新手順
 
 1. GitHub Releaseのタグ、公開日時、リリースノート、配布物を一次情報で確認する
 2. リリース候補ではなく正式リリースであることを確認する
-3. #41、#42、#47の再開条件を満たし、各文書とテストを更新する
+3. #41、#42の再開条件を満たし、各文書とテストを更新する
 4. 4.0トップ、文書メタデータ、本文の状態表示を同じ変更で更新する
 5. 問題があれば、未確定の公開情報を削除し、固定実装基準の説明へ戻す

@@ -41,7 +41,7 @@ test('shows the same release boundary on the 4.0 top and every 4.0 document', ()
     /公開プレイヤー、サンプル、ダウンロード、CLIが利用可能だとは保証しません/u,
   );
 
-  assert.equal(dsl4Documents.length, 10);
+  assert.equal(dsl4Documents.length, 11);
   for (const source of dsl4Documents) {
     assert.match(source, /固定.{0,12}実装|実装基準/u);
     assert.match(source, /2026年8月8日時点/u);

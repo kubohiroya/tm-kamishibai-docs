@@ -386,6 +386,10 @@ pnpm verify:full
 
 ## releaseを作成する
 
+公開前のcandidate固定、Browser／CLI Preview、production SB3／Web版、実カメラ・実ポーズ、release-stop、
+証跡の保存は[DSL 4.0 release smoke](release-smoke-4.0.md)を正本とします。本節はrelease sourceを作る順序、
+同書は作成したcandidateを公開してよいか判定する手順を担当します。
+
 DSL 4.0 Standard Runtimeは、source-composedされた`kubohiroyakamishibairuntime4`と、完全固定したcapability
 packageから作ります。固定commitでは、4.0開発版sourceを`release-sources/4.0.0-dev/app/`、公開artifactを
 `kamishibai-4.0.sb3`として管理します。
