@@ -22,9 +22,9 @@ export const documentCollections = [
         sourceFilename: 'executive-summary-adult-4.0.md',
         version: '4.0',
         title: '紙芝居アプリ 4.0 概要説明書 大人向け',
-        audience: '保護者・教員・教材作成者・運営者',
+        audience: '初めての方・保護者・教員・教材作成者・運営者',
         description:
-          'TMPose紙芝居4.0の価値、YAMLプロジェクト、Source Graph、プレビュー・ビルド、カメラ・ポーズ入力、教育利用を説明します。',
+          'TMPose紙芝居4.0でできること、遊ぶ・作る流れ、人とAIの役割、カメラを使う際の安全、教育利用を初めての方向けに説明します。',
       },
       {
         sourceFilename: 'executive-summary-kids.md',

@@ -25,31 +25,48 @@ test('publishes the adult overview as an independent DSL 4.0 document', () => {
   assert.equal(dsl4Document?.version, '4.0');
   assert.equal(dsl4Document?.outputDirectory, '4.0/user-guides');
   assert.equal(dsl4Document?.legacyOutputDirectory, 'user-guides');
+  assert.match(dsl4Document?.audience ?? '', /初めての方/u);
   assert.equal(dsl32Document?.version, '3.2');
   assert.equal(dsl32Document?.outputDirectory, '3.2/user-guides');
   assert.match(dsl32Summary, /^# 紙芝居アプリ 3\.2 概要説明書 大人向け$/mu);
   assert.match(dsl4Summary, /^# 紙芝居アプリ 4\.0 概要説明書 大人向け$/mu);
-  assert.match(dsl4Summary, /対象仕様: `kamishibai: '4\.0'`/u);
+  assert.match(dsl4Summary, /文書状態: 4\.0公開前の概要/u);
   assert.match(dsl40Index, /href="user-guides\/executive-summary-adult-4\.0\/"/u);
   assert.match(dsl40Index, /4\.0\/user-guides\/executive-summary-adult-4\.0\/publication\.json/u);
 });
 
-test('grounds the adult overview in completed DSL 4.0 surfaces', () => {
+test('introduces the experience, creation flow, safety, and educational use in plain language', () => {
   for (const expected of [
-    '79457815f5c89b181b1a879a079a4d6a72d405ed',
-    'project.source.json',
-    'Source Graph',
-    'StoryDocument',
-    'Web Preview',
-    'validate-dsl4',
-    'preview-dsl4',
-    'build-dsl4',
-    '自己完結SB3',
-    'カメラプレビュー',
-    'poseModel',
+    'このアプリは何？',
+    'できること',
+    '遊ぶ人の流れ',
+    '作る人の流れ',
+    '人とAIの役割',
+    '安全に使うために',
     '教育・ワークショップでの利用',
+    '4.0の公開状況',
+    'キーやタッチだけで参加',
+    'カメラを使わないことも正式な選択肢',
   ]) {
-    assert.match(dsl4Summary, new RegExp(expected, 'u'));
+    assert.match(dsl4Summary, new RegExp(expected.replaceAll('?', '\\?'), 'u'));
+  }
+});
+
+test('keeps authoring and implementation details out of the first-read overview', () => {
+  for (const forbidden of [
+    /Source Graph/u,
+    /StoryDocument/u,
+    /project\.source\.json/u,
+    /candidate|generation/u,
+    /ソースフロントエンド/u,
+    /プラットフォームアダプター/u,
+    /フィーチャーフラグ/u,
+    /validate-dsl4|preview-dsl4|build-dsl4/u,
+    /自己完結SB3/u,
+    /Content-Type|SHA-256/u,
+    /```/u,
+  ]) {
+    assert.doesNotMatch(dsl4Summary, forbidden);
   }
 });
 
