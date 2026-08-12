@@ -53,9 +53,9 @@ test('documents the renderer policy and source fragment destination', () => {
   assert.match(writingStyle, /分岐、循環、複数経路を示す必要がある場合はMermaidを検討/u);
   assert.match(
     dsl4Index,
-    /href="user-guides\/executive-summary-adult-4\.0\/document\.html#制作のサイクル"/u,
+    /href="user-guides\/executive-summary-adult-4\.0\/document\.html#作る人の流れ"/u,
   );
-  assert.match(diagramDocuments[0], /^## 制作のサイクル$/mu);
+  assert.match(diagramDocuments[0], /^## 作る人の流れ$/mu);
   assert.match(qaRecord, /Vivliostyle CLI 11\.1\.0/u);
   assert.match(qaRecord, /viewport: 320×568px、1280×800px/u);
   assert.match(qaRecord, /文字と矢印の重なり、図自体の横overflowはなかった/u);

@@ -5,6 +5,10 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 文書状態: 検証済みリリース候補の再現・判定手順<br />
 対象Issue: [tmpose-kamishibai-docs #47](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/47)
 
+本書は、リリース候補を検証して公開可否を判断する担当者向けです。アプリの遊び方、台本の作り方、
+一般的な動作確認を説明する文書ではありません。初めて4.0を知る方は
+[大人向け概要](../user-guides/executive-summary-adult-4.0.md)へ進んでください。
+
 この手順は、DSL 4.0のリリース候補を、ソース、Schema、package、Standard SB3、作品SB3、Web版まで
 checksum付きで一意に固定し、自動テストだけでは確認できないブラウザ経路を判定するためのものです。
 DSL 3.xのrelease smokeとは別のpublication、別URLとして保守します。
@@ -14,6 +18,16 @@ DSL 3.xのrelease smokeとは別のpublication、別URLとして保守します�
 本書だけで公開URLが利用可能だとは保証しません。
 
 ## この手順の読み進め方
+
+最初に使う用語は、次の意味です。
+
+| 用語         | 本書での意味                                                         |
+| ------------ | -------------------------------------------------------------------- |
+| リリース候補 | 正式公開してよいかを検証する、内容を固定した一組のソースと成果物     |
+| manifest     | 候補に含める版、ファイル、確認値を記録した一覧                       |
+| checksum     | ダウンロードや再生成の前後で、ファイルが同じ内容かを照合するための値 |
+| checkout     | 記録したコミットのソースを、検証できる作業フォルダーへ取り出した状態 |
+| release-stop | 条件を満たさないため、公開作業を止める判断                           |
 
 1. 「候補を固定する」でmanifestとcheckoutが一致することを確認する
 2. 「自動検証」でソース、CLI、SB3、Web版の決定性を確認する

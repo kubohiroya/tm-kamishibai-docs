@@ -22,9 +22,9 @@ export const documentCollections = [
         sourceFilename: 'executive-summary-adult-4.0.md',
         version: '4.0',
         title: '紙芝居アプリ 4.0 概要説明書 大人向け',
-        audience: '保護者・教員・教材作成者・運営者',
+        audience: '初めての方・保護者・教員・教材作成者・運営者',
         description:
-          'TMPose紙芝居4.0の価値、YAMLプロジェクト、Source Graph、プレビュー・ビルド、カメラ・ポーズ入力、教育利用を説明します。',
+          'TMPose紙芝居4.0でできること、遊ぶ・作る流れ、人とAIの役割、カメラを使う際の安全、教育利用を初めての方向けに説明します。',
       },
       {
         sourceFilename: 'executive-summary-kids.md',
@@ -53,9 +53,9 @@ export const documentCollections = [
         sourceFilename: 'user-guide-4.0.md',
         version: '4.0',
         title: '紙芝居アプリ 4.0 操作説明書',
-        audience: '公開作品を上演する方・進行役',
+        audience: '初めてサンプル作品を試す方・進行役',
         description:
-          '公開中の4.0 Web版を開き、読み込み、キー・タッチ・カメラ・ポーズでの進行、終了、再実行、失敗時の戻り方までを説明します。',
+          '4.0のサンプル作品を開き、キー・タッチ・ポーズで進め、困ったときに戻る方法を順番に説明します。',
       },
     ],
   },
@@ -105,25 +105,25 @@ export const documentCollections = [
         title: '紙芝居DSL 4.0 台本作成ガイド',
         audience: 'DSL 4.0の作品を作る方',
         description:
-          '完成したDSL 4.0について、Source Graph、プロジェクト配置、変更の自動反映、カメラプレビュー、発話、透明度、分岐、診断を説明します。',
+          '入門チュートリアルの次に、作品フォルダー、場面、命令、入力、分岐、エラーへの対処を必要な範囲で調べるガイドです。',
       },
       {
         sourceFilename: 'dsl-4.0-schema-reference.md',
         sourceDirectory: 'dsl-author-guides',
         outputDirectory: 'dsl-author-guides',
         title: '紙芝居DSL 4.0 Schemaリファレンス',
-        audience: 'DSL 4.0のSchemaを確認する方',
+        audience: '台本の項目・命令の制約を調べる方',
         description:
-          '完成コミットの規範JSON Schemaから、カメラプレビュー、発話、思考、moveToのeasing、setTransparencyを含む型と制約を生成しています。',
+          '台本の項目や命令について、使える値、必須条件、制約を検索するための仕様一覧です。入門手順は扱いません。',
       },
       {
         sourceFilename: 'dsl-4.0-history.md',
         sourceDirectory: 'dsl-author-guides',
         outputDirectory: 'dsl-author-guides',
         title: '紙芝居DSL 4.0 リリース履歴',
-        audience: '4.0系列のrevision、公開状態、対応surface、制約を追跡する方',
+        audience: '4.0の公開を管理・確認する開発／リリース担当者',
         description:
-          '4.0.0のrelease準備merge、検証済みcandidate、Schema、surface、feature flag、成果物、制約と、tag・GitHub Release・npm・Pagesの公開状態を分けて記録します。',
+          '候補版と正式版を区別し、確認したソース、配布物、既知の制約、公開状態を版ごとに記録します。一般向けの操作手順ではありません。',
       },
       {
         sourceFilename: 'dsl-3.2-to-4.0-conversion-guide.md',
@@ -132,7 +132,7 @@ export const documentCollections = [
         title: '紙芝居DSL 3.2から4.0への変換ガイド',
         audience: 'DSL 3.1／3.2の既存作品を4.0へ移行する方',
         description:
-          'convert-dsl4の実行方法、pose model置換、診断、変換できない入力、検証とrollbackを説明します。',
+          '元の台本を残したまま4.0用の別ファイルへ変換し、警告を確認して作品作りへ引き渡す手順です。',
       },
     ],
   },
@@ -168,9 +168,9 @@ export const documentCollections = [
         sourceFilename: 'developer-guide-4.0.md',
         version: '4.0',
         title: '紙芝居アプリ 4.0 ソフトウェアメンテナンスガイド',
-        audience: 'TMPose紙芝居4.0のソースフロントエンド、ランタイム、アダプターを保守する開発者',
+        audience: 'TMPose紙芝居4.0の実装と公開手順を保守する開発者',
         description:
-          'DSL 4.0の固定スキーマ、Source Graphのトランザクション、プレビュー／ビルドのアダプター、自己完結SB3、検証表、リリースとロールバックを案内します。',
+          '実装の変更箇所とテスト、開発環境、プレビュー、完成ファイル、公開、切り戻しの手順を案内します。',
       },
       {
         sourceFilename: 'internal-specification.md',
@@ -185,7 +185,7 @@ export const documentCollections = [
         title: '紙芝居アプリ 4.0 内部仕様書',
         audience: 'TMPose紙芝居4.0の実装を調査・変更する方',
         description:
-          'TMPose紙芝居4.0のソースフロントエンド、Source Graph、StoryDocument、ランタイム、プラットフォームアダプター、トランザクション、状態遷移を記録します。',
+          '台本の読み込みから実行環境までの内部構造、責任分担、状態の切り替えを、用語表と実装経路に対応させて記録します。',
       },
       {
         sourceFilename: 'extension-guide.md',
@@ -198,9 +198,9 @@ export const documentCollections = [
         sourceFilename: 'extension-guide-4.0.md',
         version: '4.0',
         title: 'TMPose紙芝居 4.0 機能拡張・プラットフォーム統合ガイド',
-        audience: 'TMPose紙芝居4.0のcapability、adapter、外部統合を調査・変更する方',
+        audience: 'TMPose紙芝居4.0と外部機能の接続を調査・変更する開発者',
         description:
-          'DSL 4.0 Standard Runtimeのsource composition、platform adapter、browser／CLI／Production SB3の能力差、権限、fallback、bundle境界を説明します。',
+          '実行部分と外部機能の責任分担、利用環境ごとの違い、権限、失敗時の代替動作、配布境界を説明します。',
       },
       {
         sourceFilename: 'dsl-3.1-diagnostics-design.md',
@@ -213,9 +213,9 @@ export const documentCollections = [
         sourceFilename: 'dsl-4.0-diagnostics-design.md',
         version: '4.0',
         title: 'DSL 4.0 台本診断・安全停止 設計レビュー',
-        audience: 'DSL 4.0の診断、transaction、安全停止を実装・レビューする方',
+        audience: 'DSL 4.0の診断と安全停止を実装・レビューする開発者',
         description:
-          'DSL 4.0の解析、スキーマ、意味検証、include、アセットのトランザクション、ランタイム、プラットフォーム診断と、不正な候補、副作用禁止、後片付け、表示画面を記録します。',
+          '台本の読み込みから実行までの失敗を分類し、問題のある状態を公開しないこと、安全に停止・後片付けすることを記録します。',
       },
       {
         sourceFilename: 'dependency-audit.md',
@@ -235,9 +235,9 @@ export const documentCollections = [
         sourceFilename: 'release-smoke-4.0.md',
         version: '4.0',
         title: 'DSL 4.0 release smoke',
-        audience: 'DSL 4.0のリリース候補をブラウザと配布成果物で検証する方',
+        audience: 'DSL 4.0のリリース候補を検証して公開可否を判断する方',
         description:
-          'commit、Schema、feature flag、SB3、Web版をchecksum付きで固定し、Preview、camera、pose、診断、安全停止、証跡、rollbackを確認します。',
+          '公開候補の内容を固定し、自動テスト、ブラウザー、カメラ、ポーズ、安全停止、検証記録、切り戻しを確認します。',
       },
     ],
   },

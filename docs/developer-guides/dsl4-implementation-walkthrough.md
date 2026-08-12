@@ -107,16 +107,14 @@ http://127.0.0.1:4173/stories/urashima/web-4.0/
 右上の閉じるボタンでタイトルを閉じ、物語を開始します。浜辺、浦島太郎、亀が表示され、吹き出しが
 進むことを確認します。
 
-![浜辺、浦島太郎、亀、吹き出しが表示された固定実装の上演画面](../images/dsl4-implementation-scene.jpg)
-
-中央の円形表示は、撮影時にポーズモデルを準備していた`progressbar`です。画面を整えるために消した
-表示ではなく、同じ実行sessionで観測した状態です。
-
 ## 5. ポーズfeedbackを確認する
 
 `Urashima.pose`へ到達すると、画面上端にポーズ認識度とチャージが表示されます。
 
 ![物語画面の上端にポーズ認識度とチャージが表示された固定実装](../images/dsl4-implementation-pose-feedback.jpg)
+
+中央の円形表示は、撮影時にポーズモデルを準備していた`progressbar`です。画面を整えるために消した
+表示ではなく、同じ実行sessionで観測した状態です。
 
 この追試ではcamera映像を撮影しません。実際にポーズを成立させる場合は、camera利用に同意した成人が、
 背景と映り込みを確認したうえで現在のlocalhostへcameraを許可します。拒否したままでも、物語画面を
@@ -174,7 +172,7 @@ node --input-type=module -e 'import {createHash} from "node:crypto"; import {rea
 
 ## 正式チュートリアルへの引き継ぎ
 
-本ページの3画像には`P-01`〜`P-08`または`C-01`〜`C-13`を割り当てません。正式release、公開starter、
+本ページの2画像には`P-01`〜`P-08`または`C-01`〜`C-13`を割り当てません。正式release、公開starter、
 公開URL、最終UI、撮影環境が固定された後、
 [スクリーンショット台帳](../tutorials/screenshots.json)のgateを満たす画像を別に取得します。
 実装スナップショットの撮影条件とlicenseは

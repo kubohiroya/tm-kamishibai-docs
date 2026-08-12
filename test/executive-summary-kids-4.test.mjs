@@ -45,11 +45,12 @@ test('explains seeing, moving, making, and safe participation without technical 
     '困ったとき',
     'キーや画面のタッチで進める方法',
     '名前、学校、住所、電話番号、パスワード',
-    '79457815f5c89b181b1a879a079a4d6a72d405ed',
+    '4.0は公開準備中',
   ]) {
     assert.match(dsl4Summary, new RegExp(expected, 'u'));
   }
   assert.match(dsl4Summary, /最初からその書き方を覚える必要はありません/u);
+  assert.doesNotMatch(dsl4Summary, /[a-f0-9]{40}|固定した実装|StoryDocument|Source Graph/u);
 });
 
 test('does not mix DSL 3.x TXT syntax or delivery steps into the DSL 4.0 child source', () => {

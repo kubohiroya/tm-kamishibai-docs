@@ -2,12 +2,28 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-文書状態: 検証済みcandidateと正式公開状態を区別する4.0系列の履歴<br />
+この文書は、4.0の候補版と正式版を管理する開発・リリース担当者向けの記録です。アプリの使い方や台本作成の
+入門書ではありません。初めて使う方は[大人向け概要](../user-guides/executive-summary-adult-4.0.md)、実際に
+試す方は[操作説明書](../user-guides/user-guide-4.0.md)から始めてください。
+
+ここでは、どの版を検証し、何がまだ公開されていないかを追跡します。台本の書き方や操作手順は扱いません。
+既存作品を4.0へ移す方は[変換ガイド](dsl-3.2-to-4.0-conversion-guide.md)を参照してください。
+
+文書状態: 検証済みの候補版と正式公開を区別する4.0系列の履歴\
 対象Issue: [tmpose-kamishibai-docs #42](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/42)
 
-この履歴は、紙芝居DSL 4.0系列について、実装、Schema、対応surface、feature flag、成果物、既知制約を
-versionごとに追跡します。既存作品の変更方法は
-[専用ガイド](dsl-3.2-to-4.0-conversion-guide.md)へ委譲し、この履歴には操作手順や構文対応表を混在させません。
+## 最初に出てくる言葉
+
+| 言葉                         | この文書での意味                                                      |
+| ---------------------------- | --------------------------------------------------------------------- |
+| 候補版（candidate）          | 正式公開の前に、内容と動作を確認している版                            |
+| 正式公開                     | タグ、公開案内、配布ファイルが揃い、正式版として公開された状態        |
+| revision                     | 同じ内容を追跡するためのコミット識別子                                |
+| 実行経路（surface）          | ブラウザー、作成用コマンド、完成ファイルなど、4.0を利用・実行する場所 |
+| 機能切り替え（feature flag） | 開発中の機能を有効または無効にする設定                                |
+| 成果物（artifact）           | 配布候補として作られたSB3やnpmパッケージ                              |
+| SHA-256 / checksum           | ファイルが検証時と同じ内容か確かめるための値                          |
+| production Pages             | 正式版として案内する公開Webページ                                     |
 
 > **公開状態**
 >
@@ -23,8 +39,8 @@ versionごとに追跡します。既存作品の変更方法は
 
 | 層       | 記録するもの                                                        |
 | -------- | ------------------------------------------------------------------- |
-| 実装     | release準備merge、検証candidate、固定release source、Schema         |
-| 検証     | 対応surface、flag snapshot、成果物checksum、smoke結果、既知制約     |
+| 実装     | 公開準備の統合、検証した候補版、固定したsource、Schema              |
+| 検証     | 対応する実行経路、機能切り替え、成果物のchecksum、既知の制約        |
 | 正式公開 | annotated tag、GitHub Release、npm、release asset、production Pages |
 
 `publicationState`が`candidate-verified-publication-pending`の項目は、実装と候補成果物を再現できますが、
@@ -73,7 +89,7 @@ candidate Schemaのchecksumとは役割とrevisionが異なります。正式公
 source catalogの状態だけを根拠にtag、npm、Pagesも公開済みとは判断しません。正式公開後はこの表とmanifestを
 同じ変更で更新し、公開日とURLを追加します。
 
-### 対応surface
+### 対応する利用・実行経路（surface）
 
 | Surface                   | 4.0.0 candidateで追跡する範囲                                  |
 | ------------------------- | -------------------------------------------------------------- |
@@ -88,7 +104,7 @@ source catalogの状態だけを根拠にtag、npm、Pagesも公開済みとは�
 公開サンプルの操作方法は[紙芝居アプリ 4.0 操作説明書](../user-guides/user-guide-4.0.md)、候補の再現と
 端から端までの判定は[DSL 4.0 release smoke](../developer-guides/release-smoke-4.0.md)を正本とします。
 
-### Feature flag snapshot
+### 機能切り替えの記録（feature flag snapshot）
 
 すべてのDSL 4.0 flagは既定OFFです。surfaceは起動時に必要なsnapshotだけを明示します。
 
@@ -99,7 +115,7 @@ source catalogの状態だけを根拠にtag、npm、Pagesも公開済みとは�
 
 この履歴はflag状態を記録するだけで、既定値や配布設定を変更しません。
 
-### Candidate成果物
+### 候補版の成果物
 
 | 成果物       | 公開状態                | byte      | SHA-256                                                            |
 | ------------ | ----------------------- | --------- | ------------------------------------------------------------------ |
@@ -120,7 +136,7 @@ source catalogの状態だけを根拠にtag、npm、Pagesも公開済みとは�
 - 作者向けSchemaリファレンスとcandidate Schemaは別revisionであり、正式公開時に差分を再確認する
 - tag、GitHub Release、npm、production Pagesが揃うまで正式公開済みとは扱わない
 
-### 検証とrollback
+### 検証と切り戻し（rollback）
 
 候補は`pnpm verify:full`と`pnpm release:check`を成功し、unit 1,148件、実Chromium 57件、Standard SB3、
 npm tarball dry-runを確認済みです。実カメラ・実ポーズを含む詳細結果はrelease smokeのmanifestに固定しています。

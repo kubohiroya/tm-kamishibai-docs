@@ -54,11 +54,10 @@ block実装には、それぞれの権利者によるライセンスまたは利
 
 ## DSL 4.0実装スナップショット
 
-次の3図版は、2026年8月12日に固定した浦島太郎DSL 4.0 Web成果物をローカルで実行し、
+次の2図版は、2026年8月12日に固定した浦島太郎DSL 4.0 Web成果物をローカルで実行し、
 1280×720のブラウザー表示から説明対象を切り出した画面キャプチャです。
 
 - `images/dsl4-implementation-title.jpg`
-- `images/dsl4-implementation-scene.jpg`
 - `images/dsl4-implementation-pose-feedback.jpg`
 
 runtimeは`kubohiroya/tmpose-kamishibai@8ea06bfd100b106f559cb25a280fab5570e42919`、サンプルと

@@ -104,7 +104,8 @@ release smokeも3.x版と4.0版を別のMarkdown、URL、publicationとして保
 操作説明書も3.x版と4.0版を別のMarkdown、URL、publicationとして保守します。4.0版は
 [`docs/user-guides/user-guide-4.0.md`](docs/user-guides/user-guide-4.0.md)と
 [`sources/dsl4/user-guide-4.0-public-surfaces.json`](sources/dsl4/user-guide-4.0-public-surfaces.json)を正本にし、
-公開作品ページから開始、入力、終了、再実行、失敗時の復旧までを、公開URLとchecksum付きで固定します。
+一般向け本文には開始、入力、終了、再実行、失敗時の復旧を、機械可読データには公開URL、版、checksum、
+実機確認を分けて記録します。
 
 リリース履歴も3.x版と4.0版を別のMarkdown、URL、publicationとして保守します。4.0版は
 [`docs/dsl-author-guides/dsl-4.0-history.md`](docs/dsl-author-guides/dsl-4.0-history.md)と

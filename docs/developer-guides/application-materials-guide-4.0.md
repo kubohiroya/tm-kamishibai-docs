@@ -2,7 +2,7 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-<p class="application-guide-kicker">DSL 4.0のプロジェクト、物語、教材、YAML台本、プレビュー・ビルドを8ページでつなぐ</p>
+<p class="application-guide-kicker">物語づくりから教材設計、動作確認、完成ファイルの作成までを8ページでつなぐ</p>
 
 対象: 教材・ワークショップ設計者、制作環境担当者、プレビュー／ビルド確認者
 
@@ -30,17 +30,27 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 教材と制作環境を横断して扱うため、この文書はサイトの「開発者向けドキュメント」に配置しています。
 ただし、教材設計者にソフトウェア実装の知識を前提とするものではありません。
 
-<p class="application-page-label">1 / 8　DSL 4.0アプリ概要</p>
+最初に出てくる言葉は、次の意味です。
 
-TMPose紙芝居4.0は、YAMLで記述した物語とプロジェクト内の画像・音声・ポーズモデルを読み込み、
-カメラ映像、Actor、SVGテキスト、音、入力、分岐を一つの舞台で実行する参加型AI紙芝居です。
-DSL 4.0のソースフロントエンド、ランタイム、ブラウザー／CLIプレビュー、自己完結SB3のビルドを正式な一系列として扱います。
+| 言葉           | このガイドでの意味                                               |
+| -------------- | ---------------------------------------------------------------- |
+| YAML台本       | 場面、セリフ、動きなどを項目と字下げで記録するテキストファイル   |
+| 作品フォルダー | 台本と、作品で使う画像・音声・ポーズ用データをまとめたフォルダー |
+| プレビュー     | 完成ファイルを作る前に、ブラウザーで動きや変更を確かめること     |
+| ビルド         | 台本と素材を、一つの完成ファイルへまとめること                   |
+| 制作環境       | 台本の検査、プレビュー、ビルドに使う道具一式                     |
 
-<div class="application-value-grid"><section><strong>見る</strong><span>背景、Actor、発話、音、画面切り替えで物語を伝える</span></section><section><strong>動く</strong><span>ポーズ、キー、タッチを意味のある一つの入力として処理する</span></section><section><strong>作る</strong><span>YAMLとローカル素材をプロジェクトとして編集し、即座に検証する</span></section></div>
+<p class="application-page-label">1 / 8　アプリと制作の全体像</p>
 
-<figure class="application-flow"><figcaption>DSL 4.0の実行境界</figcaption><div><span>プロジェクトのソース</span><b>→</b><span>解析・スキーマ・意味検証</span><b>→</b><span>StoryDocument</span><b>→</b><span>ランタイム・プラットフォーム</span></div></figure>
+TMPose紙芝居4.0は、台本と画像・音声・ポーズ用データを読み込み、見る人がキー、タッチ、ポーズで
+参加できるデジタル紙芝居です。作品を作るときは、台本と素材を作品フォルダーへまとめ、内容を検査し、
+ブラウザーで動きを確かめてから、上映用の一つのファイルへまとめます。
 
-<p class="application-callout"><strong>正式サポートの単位:</strong> DSL 4.0の台本、スキーマ、プレビュー、ビルドを一つの契約として文書化します。利用するリリースで必要なフィーチャーフラグと配布画面が有効かは、上映前に確認します。</p>
+<div class="application-value-grid"><section><strong>見る</strong><span>背景、登場人物、セリフ、音、画面切り替えで物語を伝える</span></section><section><strong>参加する</strong><span>作品に合わせて、ポーズ、キー、タッチから参加方法を選ぶ</span></section><section><strong>作る</strong><span>台本と手元の素材を編集し、ブラウザーで確かめる</span></section></div>
+
+<figure class="application-flow"><figcaption>作品を作って上映するまで</figcaption><div><span>台本と素材を用意</span><b>→</b><span>問題がないか検査</span><b>→</b><span>ブラウザーで確認</span><b>→</b><span>完成ファイルで上映</span></div></figure>
+
+<p class="application-callout"><strong>上映前に確認:</strong> 4.0は公開準備中です。利用する版で台本の検査、ブラウザーでの確認、完成ファイルの作成が使えるかを、制作環境の担当者が確認します。</p>
 
 <p class="application-source">出典: <a href="../dsl-author-guides/dsl-4.0-author-guide.md">紙芝居DSL 4.0 台本作成ガイド</a>、<a href="../dsl-author-guides/dsl-4.0-schema-reference.md">紙芝居DSL 4.0 Schemaリファレンス</a></p>
 
@@ -154,7 +164,7 @@ DSL 4.0の教材では、物語と演出を決める人、画像やポーズモ�
 
 <div class="application-columns"><section><p class="application-subhead">作者が確認するもの</p><ul><li>YAML 1.2として解析できる</li><li>スキーマの型、必須フィールド、未知のキーが正しい</li><li>アセット、Actor、シーン、分岐の参照先が存在する</li><li>カメラ、音、入力の終了処理が成立する</li></ul></section><section><p class="application-subhead">プレビューが守るもの</p><ul><li>書き込み途中のソースを実行対象にしない</li><li>ローカル素材をハッシュと世代で識別する</li><li>失敗時に正常な実行状態を破壊しない</li><li>物語上の位置とソースの行・列を診断へ戻す</li></ul></section></div>
 
-<p class="application-source">出典: <a href="../dsl-author-guides/dsl-4.0-author-guide.md#web-previewで変更をlive-reloadする">Web Previewで変更をlive reloadする</a></p>
+<p class="application-source">出典: <a href="../dsl-author-guides/dsl-4.0-author-guide.md#保存した変更をブラウザーの確認画面へ反映する">保存した変更をブラウザーの確認画面へ反映する</a></p>
 
 ## 紙芝居DSL 4.0が物語を構造化する {#dsl-40 .application-sheet .unnumbered}
 

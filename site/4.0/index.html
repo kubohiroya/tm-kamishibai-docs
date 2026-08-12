@@ -3,8 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="紙芝居DSL 4.0の台本作者向け、開発者向け公式ドキュメント" />
-    <title>紙芝居DSL 4.0 ドキュメント | TMPose紙芝居</title>
+    <meta
+      name="description"
+      content="TMPose紙芝居4.0を初めて知る方、作品を作る方、開発する方のための案内"
+    />
+    <title>TMPose紙芝居 4.0 ドキュメント</title>
     <link rel="icon" type="image/png" sizes="256x256" href="../favicon.png" />
     <link rel="stylesheet" href="../site-shell.css" />
     <link rel="stylesheet" href="../document-index.css" />
@@ -67,34 +70,31 @@
         <a href="./" aria-current="page">DSL 4.0</a>
       </nav>
       <header class="page-intro">
-        <p class="page-kicker">新規制作</p>
-        <h1>紙芝居DSL 4.0 ドキュメント</h1>
+        <p class="page-kicker">見る・参加する・作る</p>
+        <h1>TMPose紙芝居 4.0 ドキュメント</h1>
         <p class="version-summary">
-          YAMLプロジェクト、Source
-          Graph、プレビュー／ビルドのツールチェインで新しく制作するための専用ページです。
+          TMPose紙芝居4.0について、初めて知る方、作品を作る方、開発する方を、目的に合う文書へ案内します。
         </p>
       </header>
       <section class="release-status" aria-labelledby="release-status-title">
         <p class="release-status__eyebrow">2026年8月12日確認</p>
-        <h2 id="release-status-title">固定実装の文書と、正式リリースは別です</h2>
+        <h2 id="release-status-title">4.0のサンプルはブラウザーで試せます</h2>
         <p>
-          このページの4.0文書は、固定コミットとスキーマで確認した実装を説明します。GitHub
-          Releasesで公開済みの最新正式リリースは <code>v3.2.3</code> で、<code>v4.0.0</code>
-          はまだ正式リリースされていません。一方、公開作品ページの4.0サンプルとWeb版は利用可能で、
-          タイトル表示、読み込み、上演開始、実カメラ・実ポーズまで確認済みです。
+          公開作品ページにある4.0のサンプル作品は、現在ブラウザーで利用できます。最初に試す方は、
+          <a href="user-guides/user-guide-4.0/">操作説明書</a>に沿って「浦島太郎」を開いてください。
         </p>
         <p>
-          公開作品の操作は<a href="user-guides/user-guide-4.0/">操作説明書</a>を参照してください。
-          4.0.0の実装と正式公開の差は<a href="dsl-author-guides/dsl-4.0-history/">リリース履歴</a
-          >に記録しています。正式版のダウンロードとCLIが利用可能だとは保証しません。リリーススモーク
-          #47は、正式公開と切り分けた候補版の検証手順・証跡として公開しています。
+          4.0正式版のダウンロードはまだ公開準備中です。現在公開中の正式版は
+          <code>v3.2.3</code> です。公開準備の根拠や版ごとの記録が必要な開発・リリース担当者は、
+          <a href="dsl-author-guides/dsl-4.0-history/">リリース履歴</a
+          >と、このページ後半の専門文書を参照してください。
         </p>
       </section>
       <section class="reading-paths" aria-labelledby="reading-paths-title">
         <h2 id="reading-paths-title">目的に合う順番で読む</h2>
         <p class="reading-paths__intro">
           すべてを順番に読む必要はありません。最初に全体像をつかみ、その後は目的に合う経路へ進んでください。
-          Schemaリファレンスは通読用ではなく、台本作成中にfieldやactionを調べるための資料です。
+          細かな仕様書は最初から読む必要はありません。台本を作りながら、必要な項目だけを調べるための資料です。
         </p>
         <div class="reading-paths__grid">
           <article>
@@ -106,7 +106,7 @@
                   >子供向け</a
                 >概要のうち、対象に合うドキュメントを読む
               </li>
-              <li>概要で、できること、制作の流れ、安全上の注意をつかむ</li>
+              <li>概要で、できること、遊ぶ・作る流れ、安全上の注意をつかむ</li>
               <li>
                 <a href="user-guides/user-guide-4.0/">操作説明書</a>で公開作品を最初から最後まで試す
               </li>
@@ -117,16 +117,17 @@
             <h3>新しい作品を作る</h3>
             <ol>
               <li>
-                <a href="user-guides/executive-summary-adult-4.0/document.html#制作のサイクル"
-                  >概要説明書の制作のサイクル</a
+                <a href="user-guides/executive-summary-adult-4.0/document.html#作る人の流れ"
+                  >概要説明書の「作る人の流れ」</a
                 >を確認する
               </li>
               <li>
-                <a href="dsl-author-guides/dsl-4.0-author-guide/">台本作成ガイド</a>を実践する
+                <a href="dsl-author-guides/dsl-4.0-author-guide/">台本作成ガイド</a
+                >から、必要な節を選んで進める
               </li>
               <li>
                 必要な項目だけ<a href="dsl-author-guides/dsl-4.0-schema-reference/"
-                  >Schemaリファレンス</a
+                  >項目・命令の仕様一覧</a
                 >で確認する
               </li>
             </ol>
@@ -136,12 +137,12 @@
             <ol>
               <li>
                 <a href="dsl-author-guides/dsl-3.2-to-4.0-conversion-guide/">変換ガイド</a
-                >で安全に別fileへ変換する
+                >で元の台本を残したまま別ファイルへ変換する
               </li>
               <li>
                 <a href="dsl-author-guides/dsl-4.0-author-guide/">台本作成ガイド</a>で出力を読む
               </li>
-              <li>検証、プレビュー、ビルドの順に確認する</li>
+              <li>台本を検査し、ブラウザーで確認してから完成ファイルを作る</li>
             </ol>
           </article>
           <article>
@@ -168,10 +169,9 @@
         <div class="cards">
           <article>
             <h3><span aria-hidden="true">🎭</span> 紙芝居アプリ 4.0 概要説明書 大人向け</h3>
-            <p class="audience">保護者・教員・教材作成者・運営者</p>
+            <p class="audience">初めての方・保護者・教員・教材作成者・運営者</p>
             <p>
-              TMPose紙芝居4.0の価値、YAMLプロジェクト、Source
-              Graph、プレビュー・ビルド、カメラ・ポーズ入力、教育利用を説明します。
+              TMPose紙芝居4.0でできること、遊ぶ・作る流れ、人とAIの役割、カメラを使う際の安全、教育利用を初めての方向けに説明します。
             </p>
             <div class="actions">
               <a class="button" href="user-guides/executive-summary-adult-4.0/">HTML</a>
@@ -203,10 +203,9 @@
           </article>
           <article>
             <h3><span aria-hidden="true">▶️</span> 紙芝居アプリ 4.0 操作説明書</h3>
-            <p class="audience">公開作品を上演する方・進行役</p>
+            <p class="audience">初めてサンプル作品を試す方・進行役</p>
             <p>
-              公開中の4.0 Web版を開き、読み込み、キー・タッチ・カメラ・ポーズでの進行、
-              終了、再実行、失敗時の戻り方までを説明します。
+              4.0のサンプル作品を開き、キー・タッチ・ポーズで進め、困ったときに戻る方法を順番に説明します。
             </p>
             <div class="actions">
               <a class="button" href="user-guides/user-guide-4.0/">HTML</a>
@@ -228,8 +227,7 @@
             <h3><span aria-hidden="true">🧭</span> 紙芝居DSL 4.0 台本作成ガイド</h3>
             <p class="audience">DSL 4.0の作品を作る方</p>
             <p>
-              Source Graph、プロジェクト配置、変更の自動反映、カメラプレビュー、
-              発話、透明度、分岐、診断を説明します。
+              入門チュートリアルの次に、作品フォルダー、場面、命令、入力、分岐、エラーへの対処を必要な範囲で調べるガイドです。
             </p>
             <div class="actions">
               <a class="button" href="dsl-author-guides/dsl-4.0-author-guide/">HTML</a>
@@ -244,10 +242,9 @@
           </article>
           <article>
             <h3><span aria-hidden="true">🔎</span> 紙芝居DSL 4.0 Schemaリファレンス</h3>
-            <p class="audience">DSL 4.0のSchemaを確認する方</p>
+            <p class="audience">台本の項目・命令の制約を調べる方</p>
             <p>
-              完成コミットの規範JSON
-              Schemaから、フィールド、アセット、設定、シーン、アクションの型と制約を生成しています。
+              台本の項目や命令について、使える値、必須条件、制約を検索するための仕様一覧です。入門手順は扱いません。
             </p>
             <div class="actions">
               <a class="button" href="dsl-author-guides/dsl-4.0-schema-reference/">HTML</a>
@@ -262,10 +259,9 @@
           </article>
           <article>
             <h3><span aria-hidden="true">🗓️</span> 紙芝居DSL 4.0 リリース履歴</h3>
-            <p class="audience">4.0系列のrevision、公開状態、対応surface、制約を追跡する方</p>
+            <p class="audience">4.0の公開を管理・確認する開発／リリース担当者</p>
             <p>
-              4.0.0のrelease準備merge、検証済みcandidate、Schema、surface、feature flag、成果物、
-              制約と、tag・GitHub Release・npm・Pagesの公開状態を分けて記録します。
+              候補版と正式版を区別し、確認したソース、配布物、既知の制約、公開状態を版ごとに記録します。一般向けの操作手順ではありません。
             </p>
             <div class="actions">
               <a class="button" href="dsl-author-guides/dsl-4.0-history/">HTML</a>
@@ -282,8 +278,7 @@
             <h3><span aria-hidden="true">🔄</span> 紙芝居DSL 3.2から4.0への変換ガイド</h3>
             <p class="audience">DSL 3.1／3.2の既存作品を4.0へ移行する方</p>
             <p>
-              convert-dsl4の実行方法、pose
-              model置換、診断、変換できない入力、検証とrollbackを説明します。
+              元の台本を残したまま4.0用の別ファイルへ変換し、警告を確認して作品作りへ引き渡す手順です。
             </p>
             <div class="actions">
               <a class="button" href="dsl-author-guides/dsl-3.2-to-4.0-conversion-guide/">HTML</a>
@@ -326,12 +321,9 @@
             <h3>
               <span aria-hidden="true">🛠️</span> 紙芝居アプリ 4.0 ソフトウェアメンテナンスガイド
             </h3>
-            <p class="audience">
-              TMPose紙芝居4.0のソースフロントエンド、ランタイム、アダプターを保守する開発者
-            </p>
+            <p class="audience">TMPose紙芝居4.0の実装と公開手順を保守する開発者</p>
             <p>
-              固定スキーマ、Source Graphのトランザクション、プレビュー／ビルドの
-              アダプター、自己完結SB3、検証表、リリースとロールバックを説明します。
+              実装の変更箇所とテスト、開発環境、プレビュー、完成ファイル、公開、切り戻しの手順を案内します。
             </p>
             <div class="actions">
               <a class="button" href="developer-guides/developer-guide-4.0/">HTML</a>
@@ -346,10 +338,9 @@
           </article>
           <article>
             <h3><span aria-hidden="true">🔬</span> DSL 4.0 release smoke</h3>
-            <p class="audience">DSL 4.0のリリース候補をブラウザと配布成果物で検証する方</p>
+            <p class="audience">DSL 4.0のリリース候補を検証して公開可否を判断する方</p>
             <p>
-              commit、Schema、feature
-              flag、SB3、Web版をchecksum付きで固定し、Preview、camera、pose、診断、安全停止、証跡、rollbackを確認します。
+              公開候補の内容を固定し、自動テスト、ブラウザー、カメラ、ポーズ、安全停止、検証記録、切り戻しを確認します。
             </p>
             <div class="actions">
               <a class="button" href="developer-guides/release-smoke-4.0/">HTML</a>
@@ -366,8 +357,7 @@
             <h3><span aria-hidden="true">⚙️</span> 紙芝居アプリ 4.0 内部仕様書</h3>
             <p class="audience">TMPose紙芝居4.0の実装を調査・変更する方</p>
             <p>
-              ソースフロントエンド、Source Graph、StoryDocument、ランタイム、プラットフォーム
-              アダプター、トランザクション、状態遷移を実装パスとテストへ対応させて説明します。
+              台本の読み込みから実行環境までの内部構造、責任分担、状態の切り替えを、用語表と実装経路に対応させて記録します。
             </p>
             <div class="actions">
               <a class="button" href="developer-guides/internal-specification-4.0/">HTML</a>
@@ -385,10 +375,9 @@
               <span aria-hidden="true">🧩</span> TMPose紙芝居 4.0
               機能拡張・プラットフォーム統合ガイド
             </h3>
-            <p class="audience">TMPose紙芝居4.0のcapabilityと外部統合を保守する開発者</p>
+            <p class="audience">TMPose紙芝居4.0と外部機能の接続を調査・変更する開発者</p>
             <p>
-              Standard Runtimeのsource composition、browser／CLI／Production
-              SB3の能力差、権限、fallback、bundle境界を説明します。
+              実行部分と外部機能の責任分担、利用環境ごとの違い、権限、失敗時の代替動作、配布境界を説明します。
             </p>
             <div class="actions">
               <a class="button" href="developer-guides/extension-guide-4.0/">HTML</a>
@@ -403,10 +392,9 @@
           </article>
           <article>
             <h3><span aria-hidden="true">🩺</span> DSL 4.0 台本診断・安全停止 設計レビュー</h3>
-            <p class="audience">DSL 4.0の診断、transaction、安全停止を実装・レビューする方</p>
+            <p class="audience">DSL 4.0の診断と安全停止を実装・レビューする開発者</p>
             <p>
-              解析、スキーマ、意味検証、include、アセットのトランザクション、ランタイム、プラットフォームの失敗分類と、
-              不正な候補、副作用禁止、後片付け、表示画面を説明します。
+              台本の読み込みから実行までの失敗を分類し、問題のある状態を公開しないこと、安全に停止・後片付けすることを記録します。
             </p>
             <div class="actions">
               <a class="button" href="developer-guides/dsl-4.0-diagnostics-design/">HTML</a>

@@ -20,27 +20,26 @@ test('publishes the DSL 4.0 user guide independently', () => {
 
 test('covers the public start-to-finish operation path', () => {
   for (const expected of [
-    'Version 4.0.0 (2026/08/11)',
+    '浦島太郎 Web版',
     'Loading',
-    'タイトル画面右上の「×」',
+    '右上の「×」',
     'Space',
     'ArrowRight',
     'ArrowDown',
     'カメラを拒否した',
     'ポーズが成立しない',
-    '画像や音声が見つからない',
-    'YAMLの診断',
-    '終了と再実行',
-    'カメラ使用中の表示が消えた',
+    'エラーが表示された',
+    '終える・もう一度見る',
+    'カメラ使用中の表示',
   ]) {
     assert.match(guide, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&'), 'u'));
   }
 
-  assert.match(guide, /実カメラ・実ポーズ[\s\S]*確認済み/u);
-  assert.match(guide, /issuecomment-5255177777/u);
+  assert.match(guide, /カメラを使わない場合や許可したくない場合は、キーや画面の\s*タッチ/u);
+  assert.match(guide, /画面の文章だけを記録/u);
 });
 
-test('pins the live public surfaces and integrity values', () => {
+test('keeps live-surface evidence in the machine-readable manifest', () => {
   assert.equal(surfaces.formatVersion, 1);
   assert.equal(surfaces.releaseState.formalGitHubReleasePublished, false);
   assert.equal(surfaces.samples.pagesDeploymentRun, 31559545314);
@@ -50,10 +49,10 @@ test('pins the live public surfaces and integrity values', () => {
 
   for (const sample of [surfaces.samples.urashima, surfaces.samples.myUrashima]) {
     assert.match(guide, new RegExp(sample.webUrl.replaceAll('.', '\\.'), 'u'));
-    for (const artifact of [sample.sb3, sample.web]) {
-      assert.match(guide, new RegExp(artifact.sha256, 'u'));
-    }
   }
+
+  assert.doesNotMatch(guide, /SHA-256|[a-f0-9]{64}/u);
+  assert.doesNotMatch(guide, /issuecomment-|feature flag|checksum|surface/iu);
 });
 
 test('does not fold earlier-series operation formats into the 4.0 guide', () => {

@@ -20,9 +20,13 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 ## 読む前に
 
-本書は4.0文書群のうち、正常経路を理解した後に読む失敗経路の詳細資料です。先に
+本書は、診断と安全停止を実装・レビューする開発者向けであり、エラーを見た台本作者の操作手順ではありません。
+台本を直したい方は[台本作成ガイド](../dsl-author-guides/dsl-4.0-author-guide.md)を参照してください。
+
+4.0文書群のうち、正常経路を理解した後に読む失敗経路の詳細資料です。先に
 [内部仕様書](internal-specification-4.0.md)で`StoryDocument`、generation、commit、rollbackを確認し、
 [機能拡張・プラットフォーム統合ガイド](extension-guide-4.0.md)でportとadapterの所有関係を確認してください。
+これらの専門語は[内部仕様書の用語表](internal-specification-4.0.md#terminology)で定義しています。
 
 読む順序は「レビュー結論 → commit gate → diagnostic形式 → 段階別の失敗 → cleanup・表示」です。
 特定の診断codeだけを調べる場合でも、先にcommit gateの表で、その失敗が起きる段階と維持すべき状態を

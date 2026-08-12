@@ -25,11 +25,12 @@ DSL 4.0の実装、リリース、公開画面、文書の状態を混同しな�
 ## 公開画面に基づき完了した課題
 
 - [#41](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/41): 公開作品ページ、公開Web版、
-  checksum付きSB3、実機証跡に基づく
+  機械可読manifest、実機証跡に基づく
   [紙芝居アプリ 4.0 操作説明書](docs/user-guides/user-guide-4.0.md)
 
-#41では正式UI画像を必須とせず、公開URL、表示文字列、操作順、失敗時の戻り方、完全性情報を
-文章と表で固定します。画像を将来追加するときだけcapture gateを適用します。
+#41では正式UI画像を必須とせず、一般向け本文は操作順と失敗時の戻り方に絞ります。公開URL、版、
+checksumなどの追跡情報は`sources/dsl4/user-guide-4.0-public-surfaces.json`で固定します。
+画像を将来追加するときだけcapture gateを適用します。
 
 ## 公開状態を明記して完了した課題
 

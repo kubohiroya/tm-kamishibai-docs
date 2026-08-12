@@ -77,10 +77,10 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
   assert.match(dsl4AuthorGuide, /\.kamishibai\.yaml/u);
   assert.match(dsl4AuthorGuide, /K4-SCHEMA-UNKNOWN-KEY/u);
   assert.match(dsl4AuthorGuide, /紙芝居DSL 4\.0 Schemaリファレンス/u);
-  assert.match(dsl4AuthorGuide, /camera previewの表示と操作UI/u);
+  assert.match(dsl4AuthorGuide, /カメラ映像の表示と操作/u);
   assert.match(dsl4AuthorGuide, /path.*省略時は後方互換の既定値`story\.kamishibai\.yaml`/u);
   assert.match(dsl4AuthorGuide, /Web Previewで選択するのはYAML fileではなく/u);
-  assert.match(dsl4AuthorGuide, /Local assetの追加と内容更新/u);
+  assert.match(dsl4AuthorGuide, /手元の素材を追加・更新する/u);
   assert.match(dsl4AuthorGuide, /一つのtransactionへ束ねるatomicityは保証しません/u);
   assert.match(dsl4AuthorGuide, /Actor\.say`と`Actor\.think/u);
   assert.match(dsl4AuthorGuide, /`seconds`だけなら表示開始から指定秒数後/u);
@@ -88,7 +88,7 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
   assert.match(dsl4AuthorGuide, /`easing`は`linear`、`easeIn`、`easeOut`、`easeInOut`/u);
   assert.match(dsl4AuthorGuide, /`Actor\.setTransparency`の即時指定/u);
   assert.match(dsl4AuthorGuide, /`0`は完全不透明/u);
-  assert.match(dsl4AuthorGuide, /台本を複数sourceへ分割する/u);
+  assert.match(dsl4AuthorGuide, /台本を複数ファイルへ分ける/u);
   assert.match(dsl4AuthorGuide, /同じnamespaceの同じID/u);
   assert.match(dsl4AuthorGuide, /`K4-INCLUDE-CYCLE`/u);
   assert.match(dsl4AuthorGuide, /`--max-total-source-bytes`/u);
@@ -279,7 +279,7 @@ test('documents the DSL 3.2 to 4.0 converter as a dedicated migration guide', ()
   assert.match(dsl4ConversionGuide, /fullConfidenceHoldSeconds = 10 \/ poseCharge/u);
   assert.match(dsl4ConversionGuide, /`delivery: remote`/u);
   assert.match(dsl4ConversionGuide, /`integrity`、`contentType`、`size`/u);
-  assert.match(dsl4ConversionGuide, /error時は途中までの\nYAMLを残さず既存出力を維持/u);
+  assert.match(dsl4ConversionGuide, /エラー時は書きかけの出力を残しません/u);
   assert.match(dsl4ConversionGuide, /convertDsl32ToDsl4/u);
   assert.match(dsl4ConversionGuide, /convertDsl32File/u);
 });

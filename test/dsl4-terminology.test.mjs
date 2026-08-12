@@ -7,6 +7,7 @@ const read = (relativePath) => readFileSync(new URL(`../${relativePath}`, import
 const writingStyle = read('WRITING-STYLE.md');
 const adultOverview = read('docs/user-guides/executive-summary-adult-4.0.md');
 const applicationGuide = read('docs/developer-guides/application-materials-guide-4.0.md');
+const developerGuide = read('docs/developer-guides/developer-guide-4.0.md');
 const dsl4Index = read('site/4.0/index.html');
 
 test('documents the Japanese prose policy without translating code identifiers', () => {
@@ -32,23 +33,32 @@ test('uses consistent Japanese terms in the first-read DSL 4.0 surfaces', () => 
     }
   }
 
-  assert.match(adultOverview, /プロジェクトから上演まで/u);
-  assert.match(adultOverview, /カメラプレビュー/u);
+  assert.match(adultOverview, /紙芝居を楽しむ流れ/u);
+  assert.match(adultOverview, /カメラを使わないことも正式な選択肢/u);
   assert.match(applicationGuide, /プレビュー・ビルド/u);
-  assert.match(dsl4Index, /YAMLプロジェクト/u);
+  assert.match(dsl4Index, /初めて知る方、作品を作る方、開発する方/u);
+  assert.doesNotMatch(
+    dsl4Index.match(/<header class="page-intro">[\s\S]*?<\/header>/u)?.[0] ?? '',
+    /Source Graph|Schema|CLI/u,
+  );
 });
 
-test('retains exact commands, files, and schema identifiers', () => {
-  for (const expected of [
-    'project.source.json',
-    'validate-dsl4',
-    'preview-dsl4',
-    'build-dsl4',
-    'StoryDocument',
+test('keeps exact commands and internal identifiers in detailed documents', () => {
+  for (const implementationTerm of [
+    /project\.source\.json/u,
+    /validate-dsl4/u,
+    /preview-dsl4/u,
+    /build-dsl4/u,
+    /StoryDocument/u,
   ]) {
-    assert.match(adultOverview, new RegExp(expected, 'u'));
+    assert.doesNotMatch(adultOverview, implementationTerm);
   }
 
+  assert.match(applicationGuide, /project\.source\.json/u);
+  assert.match(applicationGuide, /validate-dsl4/u);
+  assert.match(applicationGuide, /build-dsl4/u);
+  assert.match(applicationGuide, /StoryDocument/u);
+  assert.match(developerGuide, /preview-dsl4/u);
   assert.match(applicationGuide, /--project-root/u);
   assert.match(applicationGuide, /--source-manifest/u);
 });
