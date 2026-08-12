@@ -17,6 +17,9 @@ const navigationContract = JSON.parse(
 const screenshotManifest = JSON.parse(
   readFileSync(path.join(tutorialRoot, 'screenshots.json'), 'utf8'),
 );
+const publicSurfaces = JSON.parse(
+  readFileSync(path.join(projectRoot, 'sources/dsl4/user-guide-4.0-public-surfaces.json'), 'utf8'),
+);
 const packageManifest = JSON.parse(readFileSync(path.join(projectRoot, 'package.json'), 'utf8'));
 const dsl4Schema = JSON.parse(
   readFileSync(path.join(projectRoot, 'sources/dsl4/dsl-4.schema.json'), 'utf8'),
@@ -105,6 +108,39 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
     screenshotManifest.sampleBaseline.commit,
     'dc9f6626de9ef85ca71312402fd139082922b867',
   );
+  assert.equal(screenshotManifest.sampleBaseline.pullRequestState, 'merged');
+  assert.equal(
+    screenshotManifest.sampleBaseline.publicationCommit,
+    publicSurfaces.samples.publicationCommit,
+  );
+  assert.equal(
+    screenshotManifest.sampleBaseline.status,
+    'public-4.0-samples-available-tutorial-starter-pending',
+  );
+  assert.deepEqual(screenshotManifest.sampleBaseline.publicSamples, {
+    urashima: {
+      detailUrl: publicSurfaces.samples.urashima.detailUrl,
+      webUrl: publicSurfaces.samples.urashima.webUrl,
+      yamlUrl: publicSurfaces.samples.urashima.yamlUrl,
+      sb3Url: publicSurfaces.samples.urashima.sb3Url,
+      sb3Sha256: publicSurfaces.samples.urashima.sb3.sha256,
+      webSha256: publicSurfaces.samples.urashima.web.sha256,
+    },
+    myUrashima: {
+      detailUrl: publicSurfaces.samples.myUrashima.detailUrl,
+      webUrl: publicSurfaces.samples.myUrashima.webUrl,
+      sb3Sha256: publicSurfaces.samples.myUrashima.sb3.sha256,
+      webSha256: publicSurfaces.samples.myUrashima.web.sha256,
+    },
+  });
+  assert.equal(
+    screenshotManifest.sampleBaseline.sb3Sha256,
+    publicSurfaces.samples.urashima.sb3.sha256,
+  );
+  assert.equal(
+    screenshotManifest.sampleBaseline.webSha256,
+    publicSurfaces.samples.urashima.web.sha256,
+  );
   assert.equal(screenshotManifest.sampleBaseline.formalCaptureReuse, false);
   assert.equal(
     screenshotManifest.sampleBaseline.walkthrough,
@@ -179,6 +215,11 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
       .find(({id}) => id === 'preview-flow')
       .dependencies.includes('https://github.com/kubohiroya/tmpose-kamishibai/issues/394'),
   );
+  const tutorialSampleGate = screenshotManifest.gates.find(({id}) => id === 'tutorial-sample');
+  assert.equal(tutorialSampleGate.ready, false);
+  assert.match(tutorialSampleGate.description, /4\.0 Web版、SB3、integrityは公開済み/u);
+  assert.match(tutorialSampleGate.remaining.join('\n'), /starter、addition kit/u);
+  assert.doesNotMatch(tutorialSampleGate.remaining.join('\n'), /PRをmerge/u);
 
   for (const capture of screenshotManifest.captures) {
     assert(['play', 'create'].includes(capture.tutorial));

@@ -99,6 +99,11 @@ overlay、pose feedback、camera controlを含む固定実装を
 `implemented`、`partial`、`blocked`で区別します。`implemented`でも、公開version、starter、最終UI、
 撮影環境が揃うまでは`ready: false`を維持します。
 
+浦島太郎とmy-urashimaの4.0 Web版、SB3、integrityはsamples PR #91／#93とPages deployで公開済みです。
+公開surfaceは[操作説明書のmachine-readable manifest](../../sources/dsl4/user-guide-4.0-public-surfaces.json)へ
+固定しています。ただし、これらはチュートリアル用の最小作品、starter、addition kitではないため、
+`tutorial-sample` gateは`partial`、正式画像の再利用可否は`false`のまま維持します。
+
 reload overlayは上流の
 [撮影引き継ぎ契約](https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff)と
 [fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/test/fixtures/dsl4/preview-reload-overlay-screenshot.json)
