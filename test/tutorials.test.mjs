@@ -17,6 +17,9 @@ const navigationContract = JSON.parse(
 const screenshotManifest = JSON.parse(
   readFileSync(path.join(tutorialRoot, 'screenshots.json'), 'utf8'),
 );
+const publicationPlan = JSON.parse(
+  readFileSync(path.join(tutorialRoot, 'publication-plan.json'), 'utf8'),
+);
 const publicSurfaces = JSON.parse(
   readFileSync(path.join(projectRoot, 'sources/dsl4/user-guide-4.0-public-surfaces.json'), 'utf8'),
 );
@@ -50,7 +53,7 @@ function yamlBlocksBetween(source, startHeading, endHeading) {
 
 test('keeps the active navigation contract separate from tutorial drafts', () => {
   assert.equal(navigationContract.status, 'active');
-  assert.equal(screenshotManifest.status, 'blocked-until-dsl4-release');
+  assert.equal(screenshotManifest.status, 'blocked-until-publication-gates-ready');
   assert(
     documentationConfig.documents.every((document) => document.sourceDirectory !== 'tutorials'),
   );
@@ -97,9 +100,84 @@ test('defines the active five-item AppBar and current-section rules', () => {
   for (const location of navigationContract.changeLocations) assert(location.paths.length > 0);
 });
 
+test('fixes the versioned tutorial publication plan without adding an AppBar item', () => {
+  assert.equal(publicationPlan.formatVersion, 1);
+  assert.equal(publicationPlan.status, 'blocked-until-gates-ready');
+  assert.equal(publicationPlan.targetDslVersion, '4.0');
+  assert.deepEqual(publicationPlan.listing, {
+    source: 'site/4.0/index.html',
+    sectionId: 'user-documents',
+    title: 'TMPose紙芝居 4.0 チュートリアル',
+    entryCount: 1,
+    entrySource: 'index.md',
+  });
+  const listingSource = readFileSync(
+    path.join(projectRoot, publicationPlan.listing.source),
+    'utf8',
+  );
+  assert.match(listingSource, /id="user-documents"/u);
+  assert.deepEqual(
+    publicationPlan.pages.map(({source, publicPath, role}) => [source, publicPath, role]),
+    [
+      ['index.md', '/4.0/tutorials/', 'entry'],
+      ['play.md', '/4.0/tutorials/play/', 'play'],
+      ['create.md', '/4.0/tutorials/create/', 'create'],
+    ],
+  );
+  assert.equal(new Set(publicationPlan.pages.map(({publicPath}) => publicPath)).size, 3);
+  for (const page of publicationPlan.pages) {
+    assert(page.publicPath.startsWith('/4.0/tutorials/'));
+    assert.equal(readFileSync(path.join(tutorialRoot, page.source), 'utf8').length > 0, true);
+  }
+  assert.deepEqual(
+    publicationPlan.activationGates,
+    screenshotManifest.gates.map(({id}) => id),
+  );
+  assert.deepEqual(publicationPlan.navigation, {
+    contract: 'navigation-contract.json',
+    addAppBarItem: false,
+    currentItem: 'documents',
+    currentLabel: 'ドキュメント',
+  });
+  assert.equal(
+    navigationContract.items.some(
+      ({id, label}) => id === 'tutorials' || label === 'チュートリアル',
+    ),
+    false,
+  );
+  assert(
+    navigationContract.currentSectionRules.some(
+      ({site, pathPrefix, current}) =>
+        site === 'tmpose-kamishibai-docs' &&
+        pathPrefix === '/tmpose-kamishibai-docs/' &&
+        current === 'documents',
+    ),
+  );
+  assert.deepEqual(publicationPlan.rollback, {
+    removeListingEntry: true,
+    unpublishPages: true,
+    preserveAppBar: true,
+    preserveDsl32: true,
+  });
+});
+
 test('maps every planned screenshot to a draft marker and a release gate', () => {
   assert.equal(screenshotManifest.formatVersion, 2);
   assert.equal(screenshotManifest.targetDslVersion, '4.0');
+  assert.deepEqual(screenshotManifest.releaseBaseline, {
+    version: '4.0.0-rc.1',
+    channel: 'next',
+    state: 'published-prerelease',
+    sourceIdentity: 'sha256:1fc8cb02c365a3bd8f5a5c236cbb7b4408e4a3cb757bce8068e809c77b81c5d9',
+    sb3Sha256: '2d55ec71cfba272c21c8a560ecc52d0b05a289a842307a1f49cf1063b37890b8',
+    npmUrl: 'https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.1',
+    githubReleaseUrl: 'https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.1',
+    pagesUrl: 'https://kubohiroya.github.io/tmpose-kamishibai/downloads/',
+    evidence: [
+      'https://github.com/kubohiroya/tmpose-kamishibai/issues/548',
+      'https://github.com/kubohiroya/tmpose-kamishibai/pull/553',
+    ],
+  });
   assert.equal(
     screenshotManifest.implementationBaseline.commit,
     '8ea06bfd100b106f559cb25a280fab5570e42919',
@@ -189,13 +267,16 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   });
 
   const gateIds = new Set(screenshotManifest.gates.map(({id}) => id));
-  assert(screenshotManifest.gates.every(({ready}) => ready === false));
+  assert.deepEqual(
+    screenshotManifest.gates.filter(({ready}) => ready).map(({id}) => id),
+    ['dsl4-release'],
+  );
   assert.deepEqual(
     Object.fromEntries(
       screenshotManifest.gates.map(({id, progressStatus}) => [id, progressStatus]),
     ),
     {
-      'dsl4-release': 'blocked',
+      'dsl4-release': 'published',
       'tutorial-sample': 'partial',
       'app-shell': 'partial',
       'preview-flow': 'implemented',
@@ -206,8 +287,8 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
     },
   );
   for (const gate of screenshotManifest.gates) {
-    assert(['blocked', 'partial', 'implemented'].includes(gate.progressStatus));
-    assert(gate.remaining.length > 0);
+    assert(['blocked', 'partial', 'implemented', 'published'].includes(gate.progressStatus));
+    assert.equal(gate.remaining.length === 0, gate.ready);
     if (gate.progressStatus !== 'blocked') assert(gate.evidence.length > 0);
   }
   assert(
@@ -215,8 +296,29 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
       .find(({id}) => id === 'preview-flow')
       .dependencies.includes('https://github.com/kubohiroya/tmpose-kamishibai/issues/394'),
   );
+  const releaseGate = screenshotManifest.gates.find(({id}) => id === 'dsl4-release');
+  assert.equal(releaseGate.ready, true);
+  assert.equal(releaseGate.progressStatus, 'published');
+  assert.deepEqual(releaseGate.dependencies, [
+    'https://github.com/kubohiroya/tmpose-kamishibai/issues/548',
+  ]);
+  assert.match(releaseGate.description, /4\.0\.0-rc\.1/u);
+  assert.equal(releaseGate.remaining.length, 0);
   const tutorialSampleGate = screenshotManifest.gates.find(({id}) => id === 'tutorial-sample');
   assert.equal(tutorialSampleGate.ready, false);
+  assert.deepEqual(tutorialSampleGate.dependencies, [
+    'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94',
+  ]);
+  assert(
+    tutorialSampleGate.evidence.includes(
+      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91',
+    ),
+  );
+  assert(
+    tutorialSampleGate.evidence.includes(
+      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/93',
+    ),
+  );
   assert.match(tutorialSampleGate.description, /4\.0 Web版、SB3、integrityは公開済み/u);
   assert.match(tutorialSampleGate.remaining.join('\n'), /starter、addition kit/u);
   assert.doesNotMatch(tutorialSampleGate.remaining.join('\n'), /PRをmerge/u);
@@ -269,8 +371,10 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
 
 test('keeps the source drafts reviewable before screenshots exist', () => {
   assert.match(tutorialSources['README.md'], /DSL 4\.0リリース前draft/u);
-  assert.match(tutorialSources['README.md'], /\/tutorials\/play\//u);
-  assert.match(tutorialSources['README.md'], /\/tutorials\/create\//u);
+  assert.match(tutorialSources['README.md'], /\/4\.0\/tutorials\/play\//u);
+  assert.match(tutorialSources['README.md'], /\/4\.0\/tutorials\/create\//u);
+  assert.match(tutorialSources['README.md'], /4\.0トップには3ページを個別に並べず/u);
+  assert.match(tutorialSources['README.md'], /AppBarへ独立した「チュートリアル」項目は追加せず/u);
   assert.match(tutorialSources['play.md'], /## 完了チェック/u);
   assert.match(tutorialSources['create.md'], /Scratchのブロックは追加しません/u);
   assert.match(tutorialSources['create.md'], /```yaml[\s\S]*kamishibai: '4\.0'/u);

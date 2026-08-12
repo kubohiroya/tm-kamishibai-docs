@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: DSL 4.0リリース前draft\
-関連Issue: [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31) / [実装追従 #34](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/34)
+関連Issue: [正式公開 #111](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/111) / [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31) / [実装追従 #34](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/34)
 
 読者向け入口: [紙芝居チュートリアル](index.md)
 
@@ -11,22 +11,28 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 上の読者向け入口から始めてください。
 
 このディレクトリは、DSL 4.0の正式リリース後に公開するチュートリアルの本文骨格、
-スクリーンショット台帳、サイト共通AppBar契約を保持します。リリース前に確定できない
+スクリーンショット台帳、4.0ドキュメント一覧への公開計画を保持します。リリース前に確定できない
 画面名、コマンド、サンプルURLを現行仕様として断定せず、正式リリース時に固定された
 成果物から補完します。
 
-このdraftは`docs/config.mjs`へ登録せず、公開サイトのAppBarからリンクしません。
+このdraftは`docs/config.mjs`へ登録せず、4.0トップのドキュメント一覧からリンクしません。
+公開時もAppBarへ独立した「チュートリアル」項目は追加せず、各ページでは既存の
+「ドキュメント」を現在地にします。
 
 ## 公開時の情報設計
 
-| URL                  | 役割                           | source draft           |
-| -------------------- | ------------------------------ | ---------------------- |
-| `/tutorials/`        | 二つのチュートリアルを選ぶ入口 | [index.md](index.md)   |
-| `/tutorials/play/`   | 紙芝居を遊ぶ                   | [play.md](play.md)     |
-| `/tutorials/create/` | 紙芝居を作る                   | [create.md](create.md) |
+| URL                      | 役割                           | source draft           |
+| ------------------------ | ------------------------------ | ---------------------- |
+| `/4.0/tutorials/`        | 二つのチュートリアルを選ぶ入口 | [index.md](index.md)   |
+| `/4.0/tutorials/play/`   | 紙芝居を遊ぶ                   | [play.md](play.md)     |
+| `/4.0/tutorials/create/` | 紙芝居を作る                   | [create.md](create.md) |
 
 初版のチュートリアルはWeb操作を正本とし、PDFを公開しません。詳細な仕様、全field、全action、
 移行、開発者向け手順は既存ドキュメントへリンクし、チュートリアルへ重複掲載しません。
+
+[publication-plan.json](publication-plan.json)を公開先、4.0一覧での項目数、AppBarの現在地、
+activation gate、ロールバック方針の正本とします。4.0トップには3ページを個別に並べず、
+「TMPose紙芝居 4.0 チュートリアル」の1項目だけを置き、入口から「遊ぶ」「作る」へ分岐します。
 
 ## 台本作成ガイドとの役割分担
 
@@ -102,7 +108,17 @@ overlay、pose feedback、camera controlを含む固定実装を
 浦島太郎とmy-urashimaの4.0 Web版、SB3、integrityはsamples PR #91／#93とPages deployで公開済みです。
 公開surfaceは[操作説明書のmachine-readable manifest](../../sources/dsl4/user-guide-4.0-public-surfaces.json)へ
 固定しています。ただし、これらはチュートリアル用の最小作品、starter、addition kitではないため、
-`tutorial-sample` gateは`partial`、正式画像の再利用可否は`false`のまま維持します。
+`tutorial-sample` gateは`partial`、正式画像の再利用可否は`false`のまま維持します。残りの成果物は
+[samples #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)で追跡します。
+
+DSL `4.0.0-rc.1`は公開プレリリースとして固定済みです。annotated `v4.0.0-rc.1` tag、
+[npm `next`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.1)、
+[GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.1)、
+[Pages](https://kubohiroya.github.io/tmpose-kamishibai/downloads/)を
+[tmpose-kamishibai #548](https://github.com/kubohiroya/tmpose-kamishibai/issues/548)で照合し、
+SB3 SHA-256を`2d55ec71cfba272c21c8a560ecc52d0b05a289a842307a1f49cf1063b37890b8`へ固定しました。
+`dsl4-release` gateは`published`、`ready: true`です。安定版`4.0.0`ではなく、公開済みRCを
+チュートリアルの対象releaseとして扱います。
 
 reload overlayは上流の
 [撮影引き継ぎ契約](https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff)と
@@ -128,7 +144,7 @@ docs/images/tutorials/dsl4/play/
 docs/images/tutorials/dsl4/create/
 ```
 
-## AppBar
+## 公開導線とAppBar
 
 [navigation-contract.json](navigation-contract.json)を5項目AppBarの正本とします。契約とレンダラーは
 `@kubohiroya/tmpose-kamishibai-docs`のバージョン付きビルド依存として提供し、他の2リポジトリは
@@ -140,7 +156,7 @@ docs/images/tutorials/dsl4/create/
 
 `/workshops/`と配下では「ワークショップ」、それ以外のドキュメントサイトでは「ドキュメント」だけを
 現在地にします。各サイトは実行時に外部HTMLやJavaScriptを取得せず、静的生成物へナビゲーションを
-埋め込みます。
+埋め込みます。チュートリアル公開時もこの5項目と3リポジトリの契約は変更しません。
 
 ## Capture gate
 
@@ -159,12 +175,12 @@ docs/images/tutorials/dsl4/create/
 
 ## リリース後の引き継ぎ
 
-1. `tmpose-kamishibai-samples`で最小作品とstarterを公開する
+1. [samples #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)で最小作品、starter、addition kitを公開する
 2. DSL 4.0の公開versionとcapture条件を台帳へ記録する
 3. 台帳の順に画像を取得し、alt textとcaptionを実画面へ合わせる
 4. draft中のrelease gate注記を正式なUI名、コマンド、URLへ置き換える
-5. 入口、遊ぶ、作るのHTMLを公開し、最初から最後まで追試する
-6. 3リポジトリのAppBarとトップページカードを更新する
+5. `/4.0/tutorials/`、`play/`、`create/`のHTMLを公開し、最初から最後まで追試する
+6. 4.0トップのドキュメント一覧へ1項目を追加し、既存AppBarの「ドキュメント」が現在地になることを確認する
 
 ## 関連資料
 
@@ -172,6 +188,8 @@ docs/images/tutorials/dsl4/create/
 - [DSL 4.0 Schemaリファレンス準備 Issue #29](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/29)
 - [source channelとゼロブロック作者フロー #258](https://github.com/kubohiroya/tmpose-kamishibai/issues/258)
 - [capability・Bundle・release境界 #266](https://github.com/kubohiroya/tmpose-kamishibai/issues/266)
+- [release candidate更新とversion／hash固定 #548](https://github.com/kubohiroya/tmpose-kamishibai/issues/548)
+- [チュートリアル用最小作品・starter・addition kit #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)
 - [poseModel asset lifecycle #327](https://github.com/kubohiroya/tmpose-kamishibai/issues/327)
 - [Web PreviewとYAML live reload #390](https://github.com/kubohiroya/tmpose-kamishibai/issues/390)
 - [local assetの追加・内容更新live reload #391](https://github.com/kubohiroya/tmpose-kamishibai/issues/391)
