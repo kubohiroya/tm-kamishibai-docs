@@ -1,0 +1,108 @@
+{
+  "formatVersion": 1,
+  "series": "4.0",
+  "updatedAt": "2026-08-12T13:30:00+09:00",
+  "entries": [
+    {
+      "version": "4.0.0",
+      "publicationState": "candidate-verified-publication-pending",
+      "formalPublication": {
+        "checkedAt": "2026-08-12T13:30:00+09:00",
+        "gitTag": null,
+        "githubRelease": null,
+        "npmVersion": null,
+        "productionPagesState": "not-verified-as-v4.0.0",
+        "latestFormalRelease": "v3.2.3"
+      },
+      "source": {
+        "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+        "releasePreparationPullRequest": 452,
+        "releasePreparationMergeCommit": "23739cc102a8afaaba713b0c92adb4c1c236aaee",
+        "verifiedCandidateCommit": "28d98125573f3186530fba231ecda844752bb14f",
+        "releaseSourcePath": "release-sources/4.0.0/app",
+        "releaseSourceCommit": "dc8f65eb9f9b68d778ba3b4fd9da0926b42ff4e9",
+        "releaseNotePath": "docs/releases/v4.0.0.md",
+        "sourceCatalogState": "stable-recommended"
+      },
+      "schema": {
+        "path": "schema/dsl-4.schema.json",
+        "candidateSha256": "287867c36feff4d3fd7a5b266ab4f27368dd25ca0edc5b8c400fcc64ad08f230",
+        "documentationReferenceCommit": "283daadeffa5d11ab4510daa66f60168277dafea",
+        "documentationReferenceSha256": "f519c033c68be61d71cc5dcba20a8434e23255ec0279fc0dc2d6408e7f014d7e"
+      },
+      "surfaces": [
+        "yaml-source",
+        "source-graph",
+        "standard-runtime",
+        "validate-dsl4",
+        "build-dsl4",
+        "preview-dsl4-watch",
+        "browser-owned-preview",
+        "production-sb3",
+        "production-web"
+      ],
+      "featureFlags": {
+        "defaultState": "all-off",
+        "standardProductionEnabled": [
+          "dsl4Runtime",
+          "dsl4AppShell",
+          "dsl4PoseFeedbackModes",
+          "dsl4SpeechAdvanceTypewriter"
+        ],
+        "nonEmbeddedDevelopmentAdditionalEnabled": [
+          "dsl4WebPreviewAdapter",
+          "dsl4PreviewReloadOverlay",
+          "dsl4Debugger"
+        ]
+      },
+      "artifacts": {
+        "standardSb3": {
+          "publicationState": "verified-candidate-build",
+          "size": 7633722,
+          "sha256": "ab8bfefab37620538db27e4846334723d567c64bf7972d8a962287feb2a72807"
+        },
+        "npmTarball": {
+          "publicationState": "npm-publish-dry-run",
+          "filename": "kubohiroya-tmpose-kamishibai-4.0.0.tgz",
+          "size": 5499295,
+          "sha256": "19117725dc8fa291776087ea9250025a557f0a1db6174cab9d94c4bdf476d8b7"
+        }
+      },
+      "knownConstraints": [
+        "loopback-preview-only",
+        "source-includes-explicit-opt-in",
+        "development-session-state-not-persisted",
+        "asset-only-watch-requires-cli-preview",
+        "remote-assets-require-https-digest-and-media-type",
+        "standard-runtime-is-not-an-extension-bundle-repack",
+        "formal-publication-pending",
+        "documentation-schema-reference-is-a-separate-pinned-snapshot"
+      ],
+      "verification": {
+        "candidateManifest": "sources/dsl4/release-smoke-4.0-candidate.json",
+        "commands": ["pnpm verify:full", "pnpm release:check"],
+        "unitTests": 1148,
+        "chromiumTests": 57,
+        "physicalCameraAndPose": "passed"
+      },
+      "rollback": {
+        "beforeFormalPublication": "discard-candidate-and-keep-v3.2.3-recommended",
+        "afterFormalPublication": "deprecate-and-annotate-then-publish-next-patch"
+      }
+    }
+  ],
+  "updateContract": {
+    "requiredFields": [
+      "publication-state",
+      "tag-and-release-url",
+      "release-and-source-commits",
+      "schema-sha256",
+      "surface-and-feature-flag-state",
+      "artifact-url-size-sha256-and-provenance",
+      "known-constraints",
+      "verification-evidence",
+      "rollback"
+    ],
+    "requiredChecks": ["pnpm verify:full", "pnpm release:check", "pnpm check", "repeat-build-skip"]
+  }
+}

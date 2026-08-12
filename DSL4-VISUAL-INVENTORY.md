@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 確認日: 2026年8月12日\
-対象: `docs/config.mjs`で4.0として公開する12 publication
+対象: `docs/config.mjs`で4.0として公開する13 publication
 
 ## 判定基準
 
@@ -32,6 +32,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | `dsl-4.0-author-guide`「Project」「複数source」                                                                                              | fileとinclude先assetの基準位置はどこか                     | copy可能なdirectory tree、JSON、YAML例と規則がある                     | 文章・codeで十分。構造を変えずに検索・転記できることを優先 | P2     | text code blockと本文                                       | #87の分冊判断後に再評価                        |
 | `dsl-4.0-author-guide`「全体構造」から「総合サンプル」                                                                                       | field、scene、actionをどう記述するか                       | 小さなYAML例と説明を機能単位で配置                                     | 文章・codeで十分                                           | P2     | copy可能なYAMLと見出し                                      | Schema変更時に再監査                           |
 | [`dsl-4.0-schema-reference`](docs/dsl-author-guides/dsl-4.0-schema-reference.md)全体                                                         | fieldの型、必須性、制約は何か                              | 規範Schemaから生成した表と例がある                                     | 文章・表で十分。通読用の図を追加しない                     | P3     | 生成Markdown。byte-for-byte再生成                           | Schema generatorが正本                         |
+| [`dsl-4.0-history`](docs/dsl-author-guides/dsl-4.0-history.md)全体                                                                           | versionごとに何が固定され、どこまで公開されたか            | revision、Schema、surface、flag、artifact、制約、公開状態の表がある    | 文章・表で十分。exact値と状態の比較を優先                  | P1／P3 | history manifest、Markdown表、一次情報link                  | #42、正式公開時は同じ項目を更新                |
 | [`dsl-3.2-to-4.0-conversion-guide`](docs/dsl-author-guides/dsl-3.2-to-4.0-conversion-guide.md)全体                                           | 元fileを守りながらどの順で変換・検証するか                 | 「既存作品を4.0の制作経路へ引き渡す」の既存図、command、停止条件がある | 既存図で十分                                               | P1     | semantic HTML、caption、rollback注記                        | #88で表示確認済み                              |
 | [`application-materials-guide-4.0`](docs/developer-guides/application-materials-guide-4.0.md)全8ページ                                       | project、Source Graph、教材活動、toolchainはどう接続するか | 実行境界、合成、教材の3図と比較表がある                                | 既存図で十分                                               | P1／P2 | semantic HTML 2図、既存教材画像1図、caption・alt            | 教材画像のlicenseは`docs/LICENSE.md`           |
 | [`developer-guide-4.0`](docs/developer-guides/developer-guide-4.0.md)「保守境界」「repository構成」                                          | どの変更をどのsourceとtestで扱うか                         | path・責務表、repository別の表がある                                   | 文章・表で十分                                             | P1     | Markdown表。pathをコピー可能                                | 固定実装commitに追随                           |

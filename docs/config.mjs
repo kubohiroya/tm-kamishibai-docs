@@ -117,6 +117,15 @@ export const documentCollections = [
           '完成コミットの規範JSON Schemaから、カメラプレビュー、発話、思考、moveToのeasing、setTransparencyを含む型と制約を生成しています。',
       },
       {
+        sourceFilename: 'dsl-4.0-history.md',
+        sourceDirectory: 'dsl-author-guides',
+        outputDirectory: 'dsl-author-guides',
+        title: '紙芝居DSL 4.0 リリース履歴',
+        audience: '4.0系列のrevision、公開状態、対応surface、制約を追跡する方',
+        description:
+          '4.0.0のrelease準備merge、検証済みcandidate、Schema、surface、feature flag、成果物、制約と、tag・GitHub Release・npm・Pagesの公開状態を分けて記録します。',
+      },
+      {
         sourceFilename: 'dsl-3.2-to-4.0-conversion-guide.md',
         sourceDirectory: 'dsl-author-guides',
         outputDirectory: 'dsl-author-guides',

@@ -106,6 +106,11 @@ release smokeも3.x版と4.0版を別のMarkdown、URL、publicationとして保
 [`sources/dsl4/user-guide-4.0-public-surfaces.json`](sources/dsl4/user-guide-4.0-public-surfaces.json)を正本にし、
 公開作品ページから開始、入力、終了、再実行、失敗時の復旧までを、公開URLとchecksum付きで固定します。
 
+リリース履歴も3.x版と4.0版を別のMarkdown、URL、publicationとして保守します。4.0版は
+[`docs/dsl-author-guides/dsl-4.0-history.md`](docs/dsl-author-guides/dsl-4.0-history.md)と
+[`sources/dsl4/release-history-4.0.json`](sources/dsl4/release-history-4.0.json)を正本にし、実装・検証済みcandidateと
+tag、GitHub Release、npm、production Pagesの正式公開状態を分けて追跡します。
+
 ### DSL 4.0 Schemaリファレンスの生成
 
 DSL 4.0のリファレンスは、上流JSON Schemaの固定snapshot、source lock、日本語Annotationから

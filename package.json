@@ -21,7 +21,7 @@
     "docs:dsl4:generate": "node scripts/generate-dsl4-reference.mjs",
     "docs:dsl4:sync": "node scripts/sync-dsl4-schema.mjs",
     "lint": "eslint .",
-    "format": "prettier --check \"**/*.{js,mjs,cjs,json,yaml,yml}\" \".github/**/*.{yaml,yml}\" \"*.md\" \"docs/{user-guides/user-guide-4.0,developer-guides/{application-materials-guide,application-materials-guide-4.0,developer-guide,developer-guide-4.0,internal-specification,internal-specification-4.0,extension-guide,extension-guide-4.0,dsl-3.1-diagnostics-design,dsl-4.0-diagnostics-design,dsl4-implementation-walkthrough,dependency-audit,release-smoke,release-smoke-4.0},tutorials/*,LICENSE}.md\" \"site/**/*.{html,css}\"",
+    "format": "prettier --check \"**/*.{js,mjs,cjs,json,yaml,yml}\" \".github/**/*.{yaml,yml}\" \"*.md\" \"docs/{user-guides/user-guide-4.0,dsl-author-guides/dsl-4.0-history,developer-guides/{application-materials-guide,application-materials-guide-4.0,developer-guide,developer-guide-4.0,internal-specification,internal-specification-4.0,extension-guide,extension-guide-4.0,dsl-3.1-diagnostics-design,dsl-4.0-diagnostics-design,dsl4-implementation-walkthrough,dependency-audit,release-smoke,release-smoke-4.0},tutorials/*,LICENSE}.md\" \"site/**/*.{html,css}\"",
     "typecheck": "tsc --project tsconfig.json",
     "test": "node --test test/*.test.mjs",
     "check": "pnpm lint && pnpm format && pnpm typecheck && pnpm test && pnpm build",
