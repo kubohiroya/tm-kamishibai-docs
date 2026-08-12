@@ -61,7 +61,7 @@ test('connects overview, authoring, reference, and implementation documents with
   assert.match(authorGuide, /Schemaリファレンスは最初から通読せず/u);
   assert.match(conversionGuide, /## このガイドの位置づけ/u);
   assert.match(conversionGuide, /既存TXT台本を安全にYAMLへ変換/u);
-  assert.match(schemaReference, /このリファレンスは先頭から通読する手順書ではありません/u);
+  assert.match(schemaReference, /先頭から読むチュートリアルではありません/u);
 
   assert.match(developerGuide, /## このガイドの読み進め方/u);
   assert.match(internalSpecification, /## 読む前に/u);
@@ -108,8 +108,8 @@ test('uses focused rendered diagrams for relationships that span multiple stages
   }
 
   assert.match(adultOverview, /作品を開く[\s\S]*物語を見る[\s\S]*キー・タッチ・ポーズで参加する/u);
-  assert.match(authorGuide, /最小台本[\s\S]*projectとasset[\s\S]*sceneとaction/u);
-  assert.match(conversionGuide, /3\.1／3\.2 TXT[\s\S]*convert-dsl4[\s\S]*4\.0 YAML/u);
+  assert.match(authorGuide, /最小台本[\s\S]*台本と素材を配置[\s\S]*場面と命令を追加/u);
+  assert.match(conversionGuide, /3\.1／3\.2のTXT[\s\S]*convert-dsl4[\s\S]*4\.0のYAML/u);
   assert.match(internalSpecification, /Source Graph[\s\S]*StoryDocument[\s\S]*Runtime controller/u);
   assert.match(extensionGuide, /Port contract[\s\S]*Platform composition/u);
   assert.match(diagnosticsDesign, /validate[\s\S]*commit[\s\S]*安全停止/u);

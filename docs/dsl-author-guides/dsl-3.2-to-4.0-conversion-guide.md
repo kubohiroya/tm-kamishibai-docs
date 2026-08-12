@@ -7,30 +7,34 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 文書状態: 固定実装基準を説明する変換ガイド（正式リリースの操作資料ではない）\
 調査基準: tmpose-kamishibai `283daad`、2026年8月8日
 
+このガイドは、すでに3.1／3.2の台本を持っている方のための移行手順です。初めてTMPose紙芝居を使う方や、
+4.0で最初の作品を作る方は、先に[大人向け概要](../user-guides/executive-summary-adult-4.0.md)と
+[「紙芝居を作る」チュートリアル](../tutorials/create.md)をお読みください。
+
 > **配布状態との区別:** 2026年8月8日時点で`v4.0.0`は正式リリースされていません。
 > `convert-dsl4`を含むpackage releaseを使用し、利用中のpackageで`pnpm exec tmpose-kamishibai --help`を
 > 実行して、コマンド一覧に`convert-dsl4`があることを確認してください。
 
-`convert-dsl4`は、行形式のDSL 3.2台本を、DSL 4.0のYAML台本へ明示的に変換するone-shot
-commandです。DSL 3.1は3.2互換grammarとして読み込み、warningを出します。
+`convert-dsl4`は、行ごとに命令を書く3.2の台本を、4.0のYAML台本へ一度だけ変換するコマンドです。
+3.1の台本も読み込めますが、変換結果には確認が必要な箇所を「警告」として表示します。
 
-変換元は変更しません。変換に成功した場合だけ出力をatomicに作成または置換し、error時は途中までの
-YAMLを残さず既存出力を維持します。まず元作品とは別の出力名を指定し、warningと実行結果を確認してください。
+元の台本は変更しません。変換に成功した場合だけ新しいYAMLを保存し、エラー時は書きかけの出力を残しません。
+まず元の作品とは別のファイル名を指定し、警告と実行結果を確認してください。
 
 ## このガイドの位置づけ
 
-このガイドは、DSL 3.1／3.2の文法を説明し直す資料でも、4.0の全fieldを説明する資料でもありません。
+このガイドは、DSL 3.1／3.2の文法を説明し直す資料でも、4.0の全項目を説明する資料でもありません。
 既存TXT台本を安全にYAMLへ変換し、4.0作者向けの作業へ引き渡すところまでを扱います。
 
-<figure class="concept-flow"><figcaption>既存作品を4.0の制作経路へ引き渡す</figcaption><div class="concept-flow__track"><span>3.1／3.2 TXT<br>元fileを保持</span><b aria-hidden="true">→</b><span>convert-dsl4<br>別fileへ変換</span><b aria-hidden="true">→</b><span>4.0 YAML<br>warningを確認</span><b aria-hidden="true">→</b><span>台本作成ガイドで構造確認</span><b aria-hidden="true">→</b><span>validate・preview・build</span></div><p class="concept-flow__note"><strong>変換または検証に失敗した場合:</strong> 元fileを変更せず、診断に対応する入力または生成YAMLを修正します。</p></figure>
+<figure class="concept-flow"><figcaption>既存作品を4.0の制作手順へ引き渡す</figcaption><div class="concept-flow__track"><span>3.1／3.2のTXT<br>元ファイルを保持</span><b aria-hidden="true">→</b><span>convert-dsl4<br>別ファイルへ変換</span><b aria-hidden="true">→</b><span>4.0のYAML<br>警告を確認</span><b aria-hidden="true">→</b><span>台本作成ガイドで確認</span><b aria-hidden="true">→</b><span>検査・画面確認・SB3作成</span></div><p class="concept-flow__note"><strong>変換または検査に失敗した場合:</strong> 元ファイルを変更せず、表示された問題に対応する入力または生成YAMLを修正します。</p></figure>
 
 変換前は本書の「自動変換を停止する入力」まで確認し、変換後は
-[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)の最小台本、project配置、診断の順に読みます。
-型や必須性を調べるときだけSchemaリファレンスを使用します。
+[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)の最小台本、作品フォルダーの配置、エラー表示の順に読みます。
+項目の型や必須条件を調べるときだけ、検索用のSchemaリファレンスを使用します。
 
 ## 基本コマンド
 
-packageを導入したprojectのdirectoryで実行します。
+必要なパッケージを導入した作品フォルダーで実行します。
 
 ```bash
 pnpm exec tmpose-kamishibai convert-dsl4 \
@@ -48,10 +52,10 @@ pnpm exec tmpose-kamishibai convert-dsl4 \
   --pose-models pose-models.json
 ```
 
-| option               | 必須 | 内容                                                               |
-| -------------------- | ---- | ------------------------------------------------------------------ |
-| `--input FILE`       | 必須 | UTF-8のDSL 3.1／3.2台本。BOM、CRLF、CRは読み込み時に正規化します。 |
-| `--output FILE`      | 必須 | 生成するDSL 4.0 YAML。入力と同じpathは指定できません。             |
+| option               | 必須 | 内容                                                                     |
+| -------------------- | ---- | ------------------------------------------------------------------------ |
+| `--input FILE`       | 必須 | UTF-8のDSL 3.1／3.2台本。BOM、CRLF、CRは読み込み時に正規化します。       |
+| `--output FILE`      | 必須 | 生成するDSL 4.0 YAML。入力と同じpathは指定できません。                   |
 | `--pose-models FILE` | 任意 | 内容固定時に`TMPoseURL`をlocal pose model assetへ置換するJSON fileです。 |
 
 相対pathはcommandを実行したdirectoryから解決されます。新しいDSL 4.0 sourceには短い`.k4.yml` suffixを
@@ -104,7 +108,7 @@ headerの`poseRecog`は`sequence.confidenceThreshold`へ変換します。旧run
 `sequence.fullConfidenceHoldSeconds = 10 / poseCharge`へ変換します。`poseIdle=0`は変換できますが、
 非zero値は旧runtimeだけがconfidenceを乗算するためerrorです。
 
-## リモートアセットの扱い
+## インターネット上の素材を扱う
 
 DSL 4.0のposeModelは、`delivery: remote`と`source.url`だけの通常のTMPose directory参照に対応します。
 converterは3.1／3.2の`TMPoseURL`をこの形式へ自動変換し、network取得やcache lookupは行いません。
@@ -154,7 +158,7 @@ converterは、次の構造をDSL 4.0に対応する形へ変換します。
 従ってSVG Text actorへ移します。custom Scratch blockやSB3のblock graphは入力台本から推測せず、
 converterもblockを生成・変更しません。
 
-## 診断と終了status
+## エラー表示と終了状態
 
 正常時は生成先を標準出力へ表示します。warningとerrorは標準エラー出力へ
 `source:line:column: severity [code] message`形式で表示します。
@@ -189,7 +193,7 @@ pnpm exec tmpose-kamishibai validate-dsl4 \
 scene遷移、表示、音、ポーズ認識、作品固有blockとの関係を確認します。問題があれば生成YAMLと4.0成果物だけを
 破棄し、元台本を3.2 runtimeで継続できます。
 
-## JavaScript API
+## プログラムから変換する（JavaScript API）
 
 副作用なしで文字列を変換する場合は、package exportを使用します。
 

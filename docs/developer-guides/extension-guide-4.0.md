@@ -21,7 +21,9 @@ runtime coreまで含む内部構造は[紙芝居アプリ 4.0 内部仕様書](
 ## 読む前に
 
 このガイドは、[内部仕様書](internal-specification-4.0.md)でruntime、port、adapterの役割を確認した後に読む
-詳細資料です。先にすべてのpackage名を覚える必要はありません。まず「Standard Runtimeの構成契約」で
+開発者向けの詳細資料です。アプリの利用者や台本作者が読む必要はありません。本文の専門語は
+[内部仕様書の用語表](internal-specification-4.0.md#terminology)と同じ意味で使います。
+先にすべてのpackage名を覚える必要はありません。まず「Standard Runtimeの構成契約」で
 共通境界をつかみ、その後は変更対象に対応する「統合1〜9」だけを読み、最後に共通規則・flag・検証matrixを
 確認してください。
 

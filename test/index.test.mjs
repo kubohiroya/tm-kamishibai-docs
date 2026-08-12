@@ -121,7 +121,7 @@ test('keeps the two version tops independent', () => {
   const dsl40Content = dsl40Index.replace(/<nav class="version-switch"[\s\S]*?<\/nav>/u, '');
 
   assert.match(dsl32Index, /<h1>紙芝居DSL 3\.2 ドキュメント<\/h1>/u);
-  assert.match(dsl40Index, /<h1>紙芝居DSL 4\.0 ドキュメント<\/h1>/u);
+  assert.match(dsl40Index, /<h1>TMPose紙芝居 4\.0 ドキュメント<\/h1>/u);
   assert.doesNotMatch(dsl32Index, /kamishibai: '4\.0'|Source Graph/u);
   assert.match(dsl40Content, /href="dsl-author-guides\/dsl-3\.2-to-4\.0-conversion-guide\/"/u);
   assert.doesNotMatch(

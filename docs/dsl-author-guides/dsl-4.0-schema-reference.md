@@ -5,6 +5,11 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 対象: DSL 4.0台本の作成、構造・制約の確認を行う方\
 対象仕様: `kamishibai: '4.0'`\
+
+この文書は、台本の項目や命令について正確な値を検索するための仕様一覧です。先頭から読むチュートリアルではありません。
+初めて作品を作る場合は、先に[「紙芝居を作る」チュートリアル](../tutorials/create.md)を行い、機能を
+増やすときに[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)の必要な節をお読みください。
+
 文書状態: **固定実装基準を説明するSchemaリファレンス（正式リリースの操作資料ではない）**\
 Schema固定commit: [`283daad`](https://github.com/kubohiroya/tmpose-kamishibai/commit/283daadeffa5d11ab4510daa66f60168277dafea)\
 Schema SHA-256: `f519c033c68be61d71cc5dcba20a8434e23255ec0279fc0dc2d6408e7f014d7e`
@@ -20,9 +25,8 @@ Schema SHA-256: `f519c033c68be61d71cc5dcba20a8434e23255ec0279fc0dc2d6408e7f014d7
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
 注意事項、例はAnnotationで管理します。Schemaと生成物が異なる場合はSchemaを優先します。
 
-> **読み方:** このリファレンスは先頭から通読する手順書ではありません。初めて作品を作る場合は、先に
-> [紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)で最小台本、project、scene、actionの順を確認し、
-> 作成中に必要になったfield、asset種別、actionの節だけを本書で参照してください。
+> **使い方:** 作成中に分からない項目や命令が出たとき、その項目の節だけを開きます。表中の「field」は
+> 台本の項目、「asset」は画像・音声などの素材、「action」は登場人物や舞台への命令を表します。
 
 
 

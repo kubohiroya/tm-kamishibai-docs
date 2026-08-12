@@ -22,9 +22,10 @@ preview transactionの責務境界を、完成実装に対応させて記録し�
 
 ## 読む前に {#before-reading .unnumbered}
 
-本書は、4.0の利用方法を知った後に内部の層を理解するための文書です。初めて4.0に触れる場合は、先に
-[アプリ・教材・ツールチェインガイド](application-materials-guide-4.0.md)でproject、validate、preview、buildの
-関係を確認してください。実際の保守手順だけを探している場合は
+本書は、4.0の利用方法を知った後に内部の層を理解する開発者向け文書です。アプリの使い方や台本作成の
+入門書ではありません。初めて4.0に触れる場合は[大人向け概要](../user-guides/executive-summary-adult-4.0.md)、
+制作環境から実装へ進む場合は[アプリ・教材・ツールチェインガイド](application-materials-guide-4.0.md)を
+先にお読みください。実際の保守手順だけを探している場合は
 [ソフトウェアメンテナンスガイド](developer-guide-4.0.md)から入り、必要な内部節へ戻る方法もあります。
 
 本書は「範囲 → 用語 → アーキテクチャ → 各層 → transaction → 診断」の順で読みます。特に

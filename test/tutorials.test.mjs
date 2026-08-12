@@ -275,7 +275,8 @@ test('routes general users and script authors before implementation details', ()
   assert.match(tutorialSources['create.md'], /text: こんにちは！/u);
   assert.match(tutorialSources['create.md'], /Scratchのブロックは追加しません/u);
 
-  const previewStep = tutorialSources['create.md'].indexOf('## 3. Web Previewで作品を開く');
+  const previewStep =
+    tutorialSources['create.md'].indexOf('## 3. ブラウザーの確認画面で作品を開く');
   const editStep = tutorialSources['create.md'].indexOf('## 4. セリフを変更する');
   const changedDialogue = tutorialSources['create.md'].indexOf('text: こんにちは！');
   assert(previewStep >= 0 && previewStep < editStep && editStep < changedDialogue);

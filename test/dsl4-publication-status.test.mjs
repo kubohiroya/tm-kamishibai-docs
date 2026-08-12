@@ -36,24 +36,22 @@ test('distinguishes implementation, release, public surfaces, and document state
 });
 
 test('shows the same release boundary on the 4.0 top and every 4.0 document', () => {
-  assert.match(dsl4Index, /固定実装の文書と、正式リリースは別です/u);
-  assert.match(dsl4Index, /最新正式リリースは <code>v3\.2\.3<\/code>/u);
-  assert.match(dsl4Index, /<code>v4\.0\.0<\/code>\s*はまだ正式リリースされていません/u);
-  assert.match(
-    dsl4Index,
-    /公開プレイヤー、サンプル、ダウンロード、CLIが利用可能だとは保証しません/u,
-  );
+  assert.match(dsl4Index, /4\.0は公開準備中です/u);
+  assert.match(dsl4Index, /現在公開中の正式版は <code>v3\.2\.3<\/code>/u);
+  assert.match(dsl4Index, /<code>v4\.0\.0<\/code>\s*はまだ正式公開されていない/u);
+  assert.match(dsl4Index, /4\.0の画面、作品、ダウンロードが利用できるとは限りません/u);
 
   assert.equal(dsl4Documents.length, 11);
   for (const {sourceFilename, source} of dsl4Documents) {
-    if (sourceFilename === 'executive-summary-adult-4.0.md') {
-      assert.match(source, /開発中の4\.0で確認できている内容/u);
+    if (sourceFilename.startsWith('executive-summary-')) {
+      assert.match(source, /公開前|公開準備中/u);
+      assert.doesNotMatch(source, /[a-f0-9]{40}/u);
     } else {
       assert.match(source, /固定.{0,12}実装|実装基準/u);
+      assert.match(source, /2026年8月8日時点/u);
+      assert.match(source, /正式リリース/u);
     }
-    assert.match(source, /2026年8月8日時点/u);
-    assert.match(source, /正式リリース/u);
-    assert.match(source, /保証しません|確認してください|保守作業を含みます|公開元のリリース情報/u);
+    assert.match(source, /保証しません|確認してください|保守作業を含みます|公開元|公開準備中/u);
   }
 });
 

@@ -8,6 +8,11 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 > **配布状態との区別:** 2026年8月8日時点で`v4.0.0`は正式リリースされていません。
 > 本書のリリース手順は、公開済み4.0配布物の操作説明ではなく、正式公開までに行う保守作業を含みます。
 
+本書はソフトウェアを変更・公開する開発者向けであり、アプリの使い方や台本作成の入門書ではありません。
+初めて4.0を知る方は[大人向け概要](../user-guides/executive-summary-adult-4.0.md)、作品を作る方は
+[台本作成ガイド](../dsl-author-guides/dsl-4.0-author-guide.md)へ進んでください。本書で使う内部用語は、先に
+[内部仕様書の用語表](internal-specification-4.0.md#terminology)で確認できます。
+
 このガイドは、TMPose紙芝居のDSL 4.0 source frontend、runtime、platform adapter、preview、build、
 releaseを変更・検証・公開するソフトウェア開発者向けの作業資料です。対象となる実装基準は
 `kubohiroya/tmpose-kamishibai`のcommit
@@ -21,7 +26,7 @@ releaseを変更・検証・公開するソフトウェア開発者向けの作�
 
 ## このガイドの読み進め方
 
-4.0全体を初めて調べる場合は、先に
+4.0の実装全体を初めて調べる場合は、先に
 [アプリ・教材・ツールチェインガイド](application-materials-guide-4.0.md)でprojectからruntimeまでの流れを
 確認してください。本書はその全体像を、実際の変更・検証・release作業へ対応させる入口です。
 

@@ -36,7 +36,11 @@ test('uses consistent Japanese terms in the first-read DSL 4.0 surfaces', () => 
   assert.match(adultOverview, /紙芝居を楽しむ流れ/u);
   assert.match(adultOverview, /カメラを使わないことも正式な選択肢/u);
   assert.match(applicationGuide, /プレビュー・ビルド/u);
-  assert.match(dsl4Index, /YAMLプロジェクト/u);
+  assert.match(dsl4Index, /初めて知る方、作品を作る方、開発する方/u);
+  assert.doesNotMatch(
+    dsl4Index.match(/<header class="page-intro">[\s\S]*?<\/header>/u)?.[0] ?? '',
+    /Source Graph|Schema|CLI/u,
+  );
 });
 
 test('keeps exact commands and internal identifiers in detailed documents', () => {
