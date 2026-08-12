@@ -2,15 +2,15 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-文書状態: 公開済み`4.0.0-rc.1`を対象とする公開候補。全activation gate完了\
-関連Issue: [正式公開 #111](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/111) / [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31) / [実装追従 #34](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/34)
+文書状態: 公開プレリリース`4.0.0-rc.2`のブラウザー完結作者flow\
+関連Issue: [ブラウザー作者flow #118](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118) / [本体実装 #555](https://github.com/kubohiroya/tmpose-kamishibai/issues/555) / [正式公開 #111](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/111) / [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31)
 
 読者向け入口: [紙芝居チュートリアル](index.md)
 
 このREADMEは、チュートリアルを公開する人のための管理メモです。初めて紙芝居を遊ぶ人や台本を作る人は、
 上の読者向け入口から始めてください。
 
-このディレクトリは、公開プレリリース`4.0.0-rc.1`を対象とするチュートリアル本文、
+このディレクトリは、公開プレリリース`4.0.0-rc.2`を対象とするチュートリアル本文、
 スクリーンショット台帳、4.0ドキュメント一覧への公開計画を保持します。画面名、コマンド、
 サンプルURLは、公開済みのruntimeとsample成果物へ固定します。
 
@@ -36,7 +36,7 @@ activation gate、ロールバック方針の正本とします。4.0トップ�
 ## 台本作成ガイドとの役割分担
 
 「紙芝居を作る」は、最初の作品を完成させるための最短経路です。対象読者は初めてDSL 4.0を書く方で、
-固定starterを変更し、preview、診断修正、検証、build、SB3再生までを一回通します。全構文、全action、
+固定starterを変更し、TurboWarp Editor内のpreview、自動検証、診断修正、menu build、SB3再生までを一回通します。全構文、全action、
 Source Graph、複雑な分岐、custom action、runtimeやextensionの開発は扱いません。
 
 「紙芝居DSL 4.0 台本作成ガイド」は、入門後に必要な機能を調べる作者、教材作成者、授業設計者のための
@@ -60,10 +60,10 @@ Source Graph、複雑な分岐、custom action、runtimeやextensionの開発は
 
 ## 読者と完了条件
 
-| チュートリアル | 対象                     | 想定時間 | 完了条件                                                                     |
-| -------------- | ------------------------ | -------: | ---------------------------------------------------------------------------- |
-| 紙芝居を遊ぶ   | 初めて紙芝居を再生する人 | 10〜15分 | サンプルを開き、ポーズ認識を経て最後まで再生できる                           |
-| 紙芝居を作る   | 初めてDSL 4.0を書く人    | 60〜90分 | starterを変更し、preview、診断修正、検証、buildを経て自己完結SB3を再生できる |
+| チュートリアル | 対象                     | 想定時間 | 完了条件                                                                            |
+| -------------- | ------------------------ | -------: | ----------------------------------------------------------------------------------- |
+| 紙芝居を遊ぶ   | 初めて紙芝居を再生する人 | 10〜15分 | サンプルを開き、ポーズ認識を経て最後まで再生できる                                  |
+| 紙芝居を作る   | 初めてDSL 4.0を書く人    | 60〜90分 | starterをbrowser previewで変更し、診断修正とmenu buildを経て自己完結SB3を再生できる |
 
 通常の台本作者はScratchブロックを追加しません。「作る」は外部YAML正本とアセットを編集し、
 標準templateのblock graphを変更しないゼロブロック作者フローを前提にします。
@@ -92,15 +92,16 @@ Teachable Machineでのモデル作成は初版の対象外とし、検証済み
 [screenshots.json](screenshots.json)を画像台帳の正本とします。各画像にはID、対応step、用途、
 想定caption、alt text案、file名、依存するrelease gateを記録します。
 
-YAMLとcommandはコピー可能なcode blockを正本とします。画像は画面操作、実行時のterminal出力、
-正常状態、失敗状態を示す補助として使用します。
+YAMLはコピー可能なcode blockを正本とします。画像はTurboWarp Editorでの画面操作、正常状態、
+失敗状態を示す補助として使用します。CLI commandは高度な利用者向けの任意手順だけに置きます。
 
 ### 実装追跡
 
-2026-08-12時点では、上流のlocal preview live reload、transactional asset live reload、共通reload
+2026-08-12時点では、上流のbrowser preview live reload、transactional asset live reload、共通reload
 overlay、pose feedback、camera controlを含む公開RCの固定実装を
 [`0e7e23f`](https://github.com/kubohiroya/tmpose-kamishibai/commit/0e7e23f59a323f088408f42ba0dc41f6b6c9feef)
-で確認しています。`screenshots.json`の全gateは`published`、`ready: true`です。
+で確認しています。さらに本体#555のbrowser distribution buildを公開プレリリース`4.0.0-rc.2`へ反映し、
+`browser-authoring` gateを`published`、`ready: true`として追跡します。
 
 浦島太郎、my-urashima、チュートリアル用最小作品の4.0 Web版、SB3、integrityはsamples PR #97と
 Pages deploy run `31586410478`で公開済みです。
@@ -108,21 +109,22 @@ Pages deploy run `31586410478`で公開済みです。
 固定しています。チュートリアル用starterとaddition kitも同じrelease入力から生成され、実ファイルの
 sizeとSHA-256を公開manifestと照合しました。`tutorial-sample` gateは`published`、`ready: true`です。
 
-DSL `4.0.0-rc.1`は公開プレリリースとして固定済みです。annotated `v4.0.0-rc.1` tag、
-[npm `next`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.1)、
-[GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.1)、
+DSL `4.0.0-rc.2`は公開プレリリースとして固定済みです。annotated `v4.0.0-rc.2` tag、
+[npm `next`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.2)、
+[GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.2)、
 [Pages](https://kubohiroya.github.io/tmpose-kamishibai/downloads/)を
-[tmpose-kamishibai #548](https://github.com/kubohiroya/tmpose-kamishibai/issues/548)で照合し、
-SB3 SHA-256を`2d55ec71cfba272c21c8a560ecc52d0b05a289a842307a1f49cf1063b37890b8`へ固定しました。
+[tmpose-kamishibai #559](https://github.com/kubohiroya/tmpose-kamishibai/issues/559)で照合し、
+SB3 SHA-256を`917344e56488db42fcdc07f8036782a3912945081ed094c50cf84f6ecdb56f5f`へ固定しました。
 `dsl4-release` gateは`published`、`ready: true`です。安定版`4.0.0`ではなく、公開済みRCを
 チュートリアルの対象releaseとして扱います。
 
 reload overlayは上流の
 [撮影引き継ぎ契約](https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff)と
 [fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json)
-を正本にします。1280 × 720 CSS px、DPR 1、`ja-JP`、reduced motionで、同じfixtureをWeb Previewと
-CLI browser previewに使用します。人物や実カメラ映像を含まない合成fixtureとし、local source pathは
-画像へ表示しません。
+を正本にします。作者用の開始、directory open、診断、build menuは、本体の
+`test/fixtures/dsl4/browser-authoring-menu.html`から実際のmenu／error indicator moduleを読み込んで撮影します。
+1280 × 720 CSS px、DPR 1、`ja-JP`、reduced motionとし、人物や実カメラ映像、local source pathを
+画像へ含めません。
 
 ### 開発者向けの固定実装追試
 
@@ -162,11 +164,11 @@ docs/images/tutorials/dsl4/create/
 - DSL 4.0の公開versionと対象commit
 - Standard Web playerとapp shellの配置、状態、文言
 - チュートリアル用サンプルURLとstarter artifact
-- Web Previewのdirectory選択、YAML／additive asset live reload、診断UI
+- 非埋め込みStandard SB3のdirectory選択、YAML／additive asset live reload、診断UI
 - 2段階reload dialogの再開位置、適用範囲、8方向anchorと衝突回避
 - pose feedback presenter
 - camera preview、mirroring、camera選択UIの採用範囲
-- `validate`と`build`の正式CLI
+- 作者用メニューの「配布用SB3を作る」、保存状態、CLI fallback
 - viewport、device pixel ratio、browser version
 - 人物と実カメラを使わない合成fixture、背景、個人情報除去方針
 
@@ -183,7 +185,7 @@ docs/images/tutorials/dsl4/create/
 - [DSL 4.0 Schemaリファレンス準備 Issue #29](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/29)
 - [source channelとゼロブロック作者フロー #258](https://github.com/kubohiroya/tmpose-kamishibai/issues/258)
 - [capability・Bundle・release境界 #266](https://github.com/kubohiroya/tmpose-kamishibai/issues/266)
-- [release candidate更新とversion／hash固定 #548](https://github.com/kubohiroya/tmpose-kamishibai/issues/548)
+- [4.0.0-rc.2の固定・公開・照合 #559](https://github.com/kubohiroya/tmpose-kamishibai/issues/559)
 - [チュートリアル用最小作品・starter・addition kit #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)
 - [poseModel asset lifecycle #327](https://github.com/kubohiroya/tmpose-kamishibai/issues/327)
 - [Web PreviewとYAML live reload #390](https://github.com/kubohiroya/tmpose-kamishibai/issues/390)

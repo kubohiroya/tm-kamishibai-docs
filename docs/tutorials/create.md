@@ -2,7 +2,7 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象バージョン: `4.0.0-rc.1`（公開プレリリース）\
+対象バージョン: `4.0.0-rc.2`（公開プレリリース）\
 対象: 初めて紙芝居DSL 4.0を書く人\
 扱う台本: 4.0用のYAML台本\
 想定時間: 60〜90分
@@ -10,9 +10,10 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 入口: [TMPose紙芝居 4.0 チュートリアル](index.md)
 
 このチュートリアルでは、「紙芝居を遊ぶ」で使用した作品のスターターを少しずつ変更します。台本は、
-YAML（項目を字下げして並べるテキスト形式）で書きます。変更はローカルプレビュー（ブラウザー上で
-変更を確かめる画面）で確かめ、最後に
-SB3（TurboWarpやScratchで開ける一つの作品ファイル）として出力します。Scratchのブロックは追加しません。
+YAML（項目を字下げして並べるテキスト形式）で書きます。SB3（TurboWarpやScratchで開ける一つの作品ファイル）
+のうち、台本をまだ埋め込んでいないStandard SB3をTurboWarp Editorで実行します。ローカルプレビュー（ブラウザー上で
+変更を確かめる画面）、自動検査、配布用SB3の作成までをブラウザー内で行います。
+Node.js、pnpm、ターミナルは使いません。Scratchのブロックは追加しません。
 
 ## 最初のゴール
 
@@ -21,27 +22,26 @@ SB3（TurboWarpやScratchで開ける一つの作品ファイル）として出�
 
 ## 用意するもの
 
-- Node.js `22.12.0`以降とpnpmを使えるパソコン
 - 文字を編集できるエディター
-- 新しいWebブラウザー
+- File System Access APIに対応したChromium系ブラウザー
 - ポーズ場面を確かめるためのカメラと、全身を映せる少しの空間
 
-この手順では`@kubohiroya/tmpose-kamishibai`を`4.0.0-rc.1`へ固定します。公開プレリリースを
-試す手順であることを理解したうえで、ほかの作品と分けた作業フォルダーで進めてください。
+この手順では`4.0.0-rc.2`の非埋め込みStandard SB3を使用します。安定版`4.0.0`ではなく、
+公開プレリリースを試す手順であることを理解したうえで、ほかの作品と分けた作業フォルダーで進めてください。
 
 ## 全体の流れ
 
-| Step | やること                       | 画面で確かめること                 |
-| ---: | ------------------------------ | ---------------------------------- |
-|    1 | 完成作品を遊ぶ                 | 物語の始まり、ポーズ、終わり       |
-|    2 | スターターと実行環境を用意する | 編集する台本ファイル               |
-|    3 | ローカルプレビューを起動する   | 変更を待っている状態               |
-|    4 | セリフを一行変える             | 新しいセリフ                       |
-|    5 | 背景、登場人物、場面を加える   | 新しい場面                         |
-|    6 | 同梱されたポーズ場面を加える   | ポーズの案内と進み具合             |
-|    7 | わざと一つ間違えてから直す     | エラーの場所と、修正後に消えること |
-|    8 | 台本と素材を検査してSB3を作る  | 完成したSB3                        |
-|    9 | 完成したSB3を再生する          | 最後まで遊べること                 |
+| Step | やること                           | 画面で確かめること                 |
+| ---: | ---------------------------------- | ---------------------------------- |
+|    1 | 完成作品を遊ぶ                     | 物語の始まり、ポーズ、終わり       |
+|    2 | スターターとStandard SB3を用意する | 編集する台本ファイル               |
+|    3 | TurboWarpで作品フォルダーを開く    | 変更を待っている状態               |
+|    4 | セリフを一行変える                 | 新しいセリフ                       |
+|    5 | 背景、登場人物、場面を加える       | 新しい場面                         |
+|    6 | 同梱されたポーズ場面を加える       | ポーズの案内と進み具合             |
+|    7 | わざと一つ間違えてから直す         | エラーの場所と、修正後に消えること |
+|    8 | メニューから配布用SB3を作る        | 完成したSB3                        |
+|    9 | 完成したSB3を再生する              | 最後まで遊べること                 |
 
 ## 1. 完成作品を確認する
 
@@ -50,29 +50,19 @@ SB3（TurboWarpやScratchで開ける一つの作品ファイル）として出�
 
 <!-- screenshot:C-13 -->
 
-## 2. スターターと実行環境を用意する
+## 2. スターターとStandard SB3を用意する
 
 次の二つをダウンロードします。
 
 - [チュートリアル用スターター](https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip)
-- [紙芝居4.0.0-rc.1のベースSB3](https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.1.sb3)
+- [紙芝居4.0.0-rc.2のStandard SB3](https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.2.sb3)
 
-新しい作業フォルダーを作り、スターターのZIPをその中へ展開します。ベースSB3も同じ作業フォルダーへ
-保存し、名前を`kamishibai-4.0.0-rc.1.sb3`にします。ターミナルで作業フォルダーへ移動し、実行環境を
-インストールします。
-
-```bash
-pnpm init
-pnpm add --save-exact @kubohiroya/tmpose-kamishibai@4.0.0-rc.1
-```
-
-インストール後の主なファイルは次の配置になります。
+新しい作業フォルダーを作り、スターターのZIPをその中へ展開します。Standard SB3も同じ作業フォルダーへ
+保存します。インストール作業はありません。展開後の主なファイルは次の配置になります。
 
 ```text
 作業フォルダー/
-├── package.json
-├── pnpm-lock.yaml
-├── kamishibai-4.0.0-rc.1.sb3
+├── kamishibai-4.0.0-rc.2.sb3
 └── tutorial-story/
     ├── README.md
     ├── LICENSES.md
@@ -103,47 +93,38 @@ pnpm add --save-exact @kubohiroya/tmpose-kamishibai@4.0.0-rc.1
 
 _スターターを開き、編集する台本と後で使う追加素材を確認します。画像は公開starterの配置を再現したfixtureです。_
 
-## 3. ローカルプレビューを起動する
+## 3. TurboWarpで作品フォルダーを開く
 
-作業フォルダーのターミナルで、次の命令を実行します。
-
-```bash
-pnpm exec tmpose-kamishibai preview-dsl4 --watch \
-  --base kamishibai-4.0.0-rc.1.sb3 \
-  --project-root tutorial-story \
-  --source-manifest tutorial-story/project.source.json \
-  --control-profile production \
-  --channel bundled \
-  --max-source-bytes 65536 \
-  --max-asset-file-bytes 8388608 \
-  --max-asset-files 32 \
-  --max-total-asset-bytes 16777216 \
-  --replace-existing
-```
+1. [TurboWarp Editor](https://turbowarp.org/editor)を開く
+2. 「ファイル」から`kamishibai-4.0.0-rc.2.sb3`を読み込む
+3. 緑の旗を押す
+4. タイトル画面を閉じ、メニューの「ファイルを開く」（以後「開く」）を押す
+5. フォルダー選択画面で、スターターを展開した`tutorial-story`フォルダーを選ぶ
+6. ブラウザーから確認を求められたら、このフォルダーの読み取りを許可する
 
 <!-- screenshot:C-02 -->
 
-![ターミナルでDSL 4.0のローカルプレビューを起動しているところ](../images/tutorials/dsl4/create/tutorial-create-02-project-open.png)
+![TurboWarp Editorで非埋め込みStandard SB3を開き、緑の旗を押す位置](../images/tutorials/dsl4/create/tutorial-create-02-project-open.png)
 
-_ターミナルで`preview-dsl4 --watch`を実行します。画像は公開CLIの引数と出力を固定したfixtureです。_
+_Standard SB3をTurboWarp Editorで開き、緑の旗から作者用プレビューを開始します。_
 
-ブラウザーが自動で開き、「DSL 4.0 local preview」と、`story.kamishibai.yaml`を監視していることが
-表示されます。ターミナルはプレビューを使っている間、そのまま開いておきます。
+「開く」はYAMLファイル一つではなく、`project.source.json`がある`tutorial-story`フォルダーを選びます。
+選択したフォルダーの外は読み取りません。フォルダーの名前や端末内の絶対パスは、作成するSB3へ保存されません。
 
 <!-- screenshot:C-03 -->
 
-![story.kamishibai.yamlの検証成功と監視中の状態を表示したローカルプレビュー](../images/tutorials/dsl4/create/tutorial-create-03-directory-picker.png)
+![紙芝居メニューで「ファイルを開く」を選ぶ画面](../images/tutorials/dsl4/create/tutorial-create-03-directory-picker.png)
 
-_自動で開いたローカルプレビューで、台本が`VALID`で監視中であることを確認します。画像は説明用fixtureです。_
+_メニューの「ファイルを開く」を押し、続いて表示される選択画面で`tutorial-story`フォルダーを選びます。_
 
-作品のタイトル画面と、台本の状態が`VALID`であることを確認します。終了するときはターミナルで
-`Ctrl-C`を押します。
+台本と素材の読み取りが完了すると、作品が始まります。以後、選択したフォルダー内の台本と宣言済み素材が
+監視されます。通常の保存は自動で検査され、問題がなければ安全な区切りで作品へ反映されます。
 
 <!-- screenshot:C-04 -->
 
 ![スターターを開き、最初のセリフとWatching表示を示したローカルプレビュー](../images/tutorials/dsl4/create/tutorial-create-04-first-preview.png)
 
-_作品の最初の画面と、変更を待つ`Watching`状態を確認します。画像は公開starterと固定実装から作成したfixtureです。_
+_作品の最初の画面と、変更を待つ状態を確認します。_
 
 ## 4. セリフを変更する
 
@@ -361,63 +342,48 @@ _カメラ操作を右上、更新状態を上中央へ分けた固定layoutを�
 
 ## 7. 診断を読んで修正する
 
-`addition-kit/intentional-diagnostic.kamishibai.yaml.txt`を複製し、作業用ファイル名を
-`intentional-diagnostic.kamishibai.yaml`にします。次の命令で、わざと含めてある`Turtle.sya`の
-間違いを検査します。
-
-```bash
-pnpm exec tmpose-kamishibai validate-dsl4 \
-  --input tutorial-story/intentional-diagnostic.kamishibai.yaml \
-  --max-source-bytes 262144 \
-  --format pretty
-```
-
-表示されたファイル名、行、説明を確認します。
+`story.kamishibai.yaml`の`Turtle.say`を一か所だけ`Turtle.sya`へ変え、保存します。保存した内容は
+自動で検査されます。不正な台本へ切り替わらず、画面では最後に正常だった作品がそのまま動き、診断に
+ファイル名、行、`K4-SCHEMA-UNKNOWN-KEY`、未知の命令であることが表示されます。
 
 <!-- screenshot:C-11 -->
 
-![intentional-diagnostic.kamishibai.yamlのファイル名、行、Turtle.syaの未知命令、修正方法を示した診断画面](../images/tutorials/dsl4/create/tutorial-create-11-diagnostic.png)
+![story.kamishibai.yamlのファイル名、行、Turtle.syaの未知命令、修正方法を示した診断画面](../images/tutorials/dsl4/create/tutorial-create-11-diagnostic.png)
 
-_診断のファイル名、行、コード、説明から台本を直します。画像は固定診断契約を再現したfixtureです。_
+_不正な保存では最後に正常だった作品を保ち、診断のファイル名、行、コード、説明から台本を直します。_
 
-作業用ファイルの`Turtle.sya`を`Turtle.say`へ直し、同じ命令をもう一度実行します。エラーがなくなれば
-診断修正の練習は完了です。以後のプレビューとビルドでは`story.kamishibai.yaml`を使います。
+`Turtle.sya`を`Turtle.say`へ直して保存します。自動検査に成功すると診断が消え、修正した台本へ
+自動で復旧します。別の検証コマンドを実行する必要はありません。
 
-## 8. 検査してSB3を作る
+## 8. メニューから配布用SB3を作る
 
-まず、編集した台本を検査します。
+作品のメニューへ戻り、「配布用SB3を作る」を押します。ボタンを押した時点で、紙芝居はフォルダーを
+もう一度安定して読み取り、最新の台本、宣言済み素材、実行環境をまとめて最終検査します。
 
-```bash
-pnpm exec tmpose-kamishibai validate-dsl4 \
-  --input tutorial-story/story.kamishibai.yaml \
-  --max-source-bytes 262144 \
-  --format pretty
-```
+<!-- screenshot:C-14 -->
 
-エラーがないことを確認してから、完成したSB3を作ります。プレビューが動いている場合は`Ctrl-C`で
-終了してから実行します。
+![作者用メニューの「配布用SB3を作る」ボタンと、ビルド可能な状態](../images/tutorials/dsl4/create/tutorial-create-14-build-menu.png)
 
-```bash
-pnpm exec tmpose-kamishibai build-dsl4 \
-  --base kamishibai-4.0.0-rc.1.sb3 \
-  --project-root tutorial-story \
-  --source-manifest tutorial-story/project.source.json \
-  --output tutorial-story-built.sb3 \
-  --control-profile production \
-  --channel bundled \
-  --max-source-bytes 262144 \
-  --max-asset-file-bytes 8388608 \
-  --max-asset-files 32 \
-  --max-total-asset-bytes 16777216 \
-  --replace-existing
-```
+_台本と素材が正常で、フォルダーの読み取り権限があるときだけ、配布用SB3を作れます。_
 
-作業フォルダーに`tutorial-story-built.sb3`が作られたことを確認します。エラーが出た場合は、表示された
-ファイル名と行を直してから、検査とビルドをもう一度実行します。
+保存先を選ぶ画面が表示された場合は、元のStandard SB3とは別の名前、たとえば
+`tutorial-story-built.sb3`で保存します。保存先を選ぶ機能がない環境では、同じファイルがブラウザーの
+ダウンロード先へ保存されます。元のStandard SB3と作品フォルダーは書き換えられません。
+
+次の場合、古い正常版を黙って出力せず、ボタンが無効になるか診断を表示して停止します。
+
+- 作品フォルダーをまだ開いていない
+- 台本または素材が不正、見つからない、保存途中である
+- 変更の読み取りや反映が進行中である
+- フォルダーの読み取り権限が失われた
+- 出力サイズやファイル数の上限を超えた
+
+直前の保存が完了するまで待つか、表示されたファイルと行を修正してから、もう一度作成します。
 
 ## 9. 完成したSB3を再生する
 
-完成した`tutorial-story-built.sb3`をTurboWarpまたは対応するScratch環境で開き、緑の旗を押します。
+新しいTurboWarp Editorのタブを開き、完成した`tutorial-story-built.sb3`を読み込んで緑の旗を押します。
+元の作品フォルダーを移動するか閉じた状態でも、「開く」やフォルダー選択をせずに物語が始まります。
 
 <!-- screenshot:C-12 -->
 
@@ -430,15 +396,39 @@ _完成したSB3をTurboWarpで開き、緑の旗から再生します。画像�
 
 ## 完了チェック
 
-- [ ] `4.0.0-rc.1`のスターター、ベースSB3、実行環境を用意した
-- [ ] ローカルプレビューでスターターを開いた
-- [ ] セリフを一行変更し、プレビューへ反映した
+- [ ] `4.0.0-rc.2`のスターターと非埋め込みStandard SB3を用意した
+- [ ] TurboWarp Editorで緑の旗を押し、「開く」から作品フォルダーを選んだ
+- [ ] セリフを一行変更し、自動検査後にプレビューへ反映した
 - [ ] 新しい背景、登場人物、場面を追加した
 - [ ] 同梱されたポーズを使う場面を確認した
-- [ ] エラーが示した行から間違いを修正した
-- [ ] 台本を検査し、SB3を作った
-- [ ] 完成したSB3を最後まで再生した
+- [ ] 不正な保存でも最後に正常だった作品が続き、診断が表示された
+- [ ] エラーが示した行を修正し、自動で復旧した
+- [ ] メニューの「配布用SB3を作る」からSB3を保存した
+- [ ] 新しいTurboWarp Editorで、作品フォルダーなしに完成したSB3を最後まで再生した
 - [ ] Scratchブロックを追加しなかった
+
+## 対応ブラウザーと権限
+
+この入門手順は、File System Access APIのdirectory pickerを利用できるChromium系ブラウザーと、
+HTTPSで提供されるTurboWarp Editorを対象にします。フォルダーは利用者が「開く」を押したときだけ選択し、
+読み取り権限はブラウザーのsession中だけ保持します。再読み込み後に確認を求められた場合は、同じ
+`tutorial-story`フォルダーを選び直してください。
+
+FirefoxやSafariなどdirectory pickerを利用できない環境、組織のpolicyでlocal filesystem accessが
+禁止された環境、埋め込みframe内、secure contextでないページでは、このブラウザー完結flowは使えません。
+対応ブラウザーへ切り替えられない場合は、次の任意のCLI手順を使用します。
+
+## 高度な利用者・CI向けのCLI（任意）
+
+複数作品の一括処理、CIでの再現可能な検査、高度な配布profile、directory picker非対応環境では、
+Node.jsとpnpmを用意して`preview-dsl4`、`validate-dsl4`、`build-dsl4`を利用できます。一般作者が
+このチュートリアルを完了するためには不要です。正確な引数と上限は、使用する版で次を実行して確認します。
+
+```bash
+pnpm exec tmpose-kamishibai preview-dsl4 --help
+pnpm exec tmpose-kamishibai validate-dsl4 --help
+pnpm exec tmpose-kamishibai build-dsl4 --help
+```
 
 ## このチュートリアルと台本作成ガイドの違い
 
