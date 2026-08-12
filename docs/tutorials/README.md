@@ -111,10 +111,14 @@ overlay、pose feedback、camera controlを含む固定実装を
 `tutorial-sample` gateは`partial`、正式画像の再利用可否は`false`のまま維持します。残りの成果物は
 [samples #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)で追跡します。
 
-DSL 4.0のrelease candidateは準備済みですが、annotated `v4.0.0` tag、GitHub Release、npm 4.0.0は
-未公開です。versionとartifact hashの固定は
-[tmpose-kamishibai #548](https://github.com/kubohiroya/tmpose-kamishibai/issues/548)で追跡し、完了するまで
-`dsl4-release` gateを`blocked`、`ready: false`に保ちます。
+DSL `4.0.0-rc.1`は公開プレリリースとして固定済みです。annotated `v4.0.0-rc.1` tag、
+[npm `next`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.1)、
+[GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.1)、
+[Pages](https://kubohiroya.github.io/tmpose-kamishibai/downloads/)を
+[tmpose-kamishibai #548](https://github.com/kubohiroya/tmpose-kamishibai/issues/548)で照合し、
+SB3 SHA-256を`2d55ec71cfba272c21c8a560ecc52d0b05a289a842307a1f49cf1063b37890b8`へ固定しました。
+`dsl4-release` gateは`published`、`ready: true`です。安定版`4.0.0`ではなく、公開済みRCを
+チュートリアルの対象releaseとして扱います。
 
 reload overlayは上流の
 [撮影引き継ぎ契約](https://github.com/kubohiroya/tmpose-kamishibai/blob/e1696f64f414baa3b80c1be2fdad32164efe1bec/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff)と

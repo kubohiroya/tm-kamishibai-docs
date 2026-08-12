@@ -1,7 +1,21 @@
 {
   "formatVersion": 2,
-  "status": "blocked-until-dsl4-release",
+  "status": "blocked-until-publication-gates-ready",
   "targetDslVersion": "4.0",
+  "releaseBaseline": {
+    "version": "4.0.0-rc.1",
+    "channel": "next",
+    "state": "published-prerelease",
+    "sourceIdentity": "sha256:1fc8cb02c365a3bd8f5a5c236cbb7b4408e4a3cb757bce8068e809c77b81c5d9",
+    "sb3Sha256": "2d55ec71cfba272c21c8a560ecc52d0b05a289a842307a1f49cf1063b37890b8",
+    "npmUrl": "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.1",
+    "githubReleaseUrl": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.1",
+    "pagesUrl": "https://kubohiroya.github.io/tmpose-kamishibai/downloads/",
+    "evidence": [
+      "https://github.com/kubohiroya/tmpose-kamishibai/issues/548",
+      "https://github.com/kubohiroya/tmpose-kamishibai/pull/553"
+    ]
+  },
   "implementationBaseline": {
     "repository": "kubohiroya/tmpose-kamishibai",
     "commit": "8ea06bfd100b106f559cb25a280fab5570e42919",
@@ -66,11 +80,17 @@
   "gates": [
     {
       "id": "dsl4-release",
-      "ready": false,
-      "progressStatus": "blocked",
-      "description": "DSL 4.0の公開versionと対象commitが固定されている",
+      "ready": true,
+      "progressStatus": "published",
+      "description": "DSL 4.0.0-rc.1が公開プレリリースとして固定され、npm next、GitHub prerelease、PagesのversionとSHA-256が照合されている",
       "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/548"],
-      "remaining": ["DSL 4.0の正式releaseとtagを固定する"]
+      "evidence": [
+        "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.1",
+        "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.1",
+        "https://kubohiroya.github.io/tmpose-kamishibai/downloads/",
+        "https://github.com/kubohiroya/tmpose-kamishibai/pull/553"
+      ],
+      "remaining": []
     },
     {
       "id": "tutorial-sample",
