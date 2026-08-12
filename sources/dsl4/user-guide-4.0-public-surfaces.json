@@ -1,10 +1,10 @@
 {
   "formatVersion": 1,
-  "verifiedAt": "2026-08-12T19:45:00+09:00",
+  "verifiedAt": "2026-08-13T00:28:00+09:00",
   "documentIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/41",
   "releaseState": {
     "runtimeVersionLabel": "Version 4.0.0 (2026/08/11)",
-    "publishedPrerelease": "v4.0.0-rc.1",
+    "publishedPrerelease": "v4.0.0-rc.2",
     "formalGitHubReleasePublished": false,
     "latestFormalGitHubRelease": "v3.2.3"
   },

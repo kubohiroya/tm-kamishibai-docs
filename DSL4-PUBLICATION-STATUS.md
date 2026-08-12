@@ -12,14 +12,14 @@ DSL 4.0の実装、リリース、公開画面、文書の状態を混同しな�
 | 公開画面     | 読者が実際に利用できるプレイヤー、サンプル、ダウンロード、CLI      |
 | 文書状態     | 固定実装を説明する資料か、正式リリースの操作を説明する資料かの区別 |
 
-## 2026年8月12日の確認結果
+## 2026年8月13日の確認結果
 
-- DSL 4.0文書の公開実装基準は`tmpose-kamishibai`のコミット`0e7e23f59a323f088408f42ba0dc41f6b6c9feef`
-- `v4.0.0-rc.1`はnpmの`next`、GitHub prerelease、PagesのSB3として公開済み
+- DSL 4.0文書の公開実装基準は`tmpose-kamishibai`のコミット`9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014`
+- `v4.0.0-rc.2`はnpmの`next`、GitHub prerelease、PagesのSB3として公開済み
 - GitHub Releasesで公開済みの最新正式リリースは`v3.2.3`
 - `v4.0.0`の正式リリースは未公開
 - 公開作品ページの4.0サンプル、Web版、チュートリアル用スターター、addition kitは利用可能
-- `4.0.0-rc.1`のCLIは利用可能だが、安定版`4.0.0`との同一性は保証しない
+- `4.0.0-rc.2`のCLIは利用可能だが、安定版`4.0.0`との同一性は保証しない
 
 確認元: [tmpose-kamishibai Releases](https://github.com/kubohiroya/tmpose-kamishibai/releases)
 
