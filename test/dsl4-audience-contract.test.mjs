@@ -51,8 +51,8 @@ test('keeps implementation terms out of the general-user entry surfaces', () => 
 test('introduces authoring terms before relying on them', () => {
   assert.match(createTutorial, /YAML（項目を字下げして並べるテキスト形式）/u);
   assert.match(createTutorial, /SB3（TurboWarpやScratchで開ける一つの作品ファイル）/u);
-  assert.match(createTutorial, /Web Preview（ブラウザー上で変更を確かめる画面）/u);
-  assert.match(createTutorial, /`project\.source\.json`は作品全体の設定ファイル/u);
+  assert.match(createTutorial, /ローカルプレビュー（ブラウザー上で\s*変更を確かめる画面）/u);
+  assert.match(createTutorial, /`project\.source\.json`は読み込む台本を\s*指定する設定ファイル/u);
 
   const authorIntroduction = authorGuide.slice(0, authorGuide.indexOf('## 公開前の文書について'));
   for (const term of [

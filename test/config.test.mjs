@@ -30,6 +30,7 @@ const expectedCollections = {
     'dsl-4.0-history.md',
     'dsl-3.2-to-4.0-conversion-guide.md',
   ],
+  tutorials: ['index.md', 'play.md', 'create.md'],
   'developer-guides': [
     'application-materials-guide.md',
     'application-materials-guide-4.0.md',
@@ -225,6 +226,7 @@ test('publishes DSL 3.2 and 4.0 as parallel dedicated collections', () => {
 test('places every version-specific document below an explicit version root', () => {
   for (const document of documentationConfig.documents) {
     assert.match(document.outputDirectory, /^(?:3\.2|4\.0)\//u);
+    assert.match(document.publicationOutputDirectory, /^(?:3\.2|4\.0)\//u);
     assert.ok(['3.2', '4.0'].includes(document.version));
     assert.doesNotMatch(document.legacyOutputDirectory, /^(?:3\.2|4\.0)\//u);
   }
@@ -232,6 +234,36 @@ test('places every version-specific document below an explicit version root', ()
   assert.equal(staffDocumentConfig.versionFamily, '3.2系');
   assert.equal(workshopDocumentConfig.outputDirectory, 'workshops/2026-08-01');
   assert.equal(staffDocumentConfig.outputDirectory, 'workshops/2026-08-01/staff');
+});
+
+test('publishes the tutorial entry and its two child pages at the planned stable URLs', () => {
+  const tutorials = documentationConfig.documents.filter(
+    ({collectionId}) => collectionId === 'tutorials',
+  );
+  assert.deepEqual(
+    tutorials.map(({sourceFilename, publicationOutputDirectory, listedOnVersionTop}) => ({
+      sourceFilename,
+      publicationOutputDirectory,
+      listedOnVersionTop,
+    })),
+    [
+      {
+        sourceFilename: 'index.md',
+        publicationOutputDirectory: '4.0/tutorials',
+        listedOnVersionTop: true,
+      },
+      {
+        sourceFilename: 'play.md',
+        publicationOutputDirectory: '4.0/tutorials/play',
+        listedOnVersionTop: false,
+      },
+      {
+        sourceFilename: 'create.md',
+        publicationOutputDirectory: '4.0/tutorials/create',
+        listedOnVersionTop: false,
+      },
+    ],
+  );
 });
 
 test('marks every 3-series publication in its public title', () => {

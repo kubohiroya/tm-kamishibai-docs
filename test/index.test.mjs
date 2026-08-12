@@ -29,8 +29,7 @@ test('keeps version selection and camera privacy guidance on the site root', () 
   assert.ok(rootIndex.indexOf('version-banner--40') < rootIndex.indexOf('version-banner--32'));
 
   for (const document of documentationConfig.documents) {
-    const basename = document.sourceFilename.replace(/\.md$/u, '');
-    assert.doesNotMatch(rootIndex, new RegExp(`${basename}/`, 'u'));
+    assert.doesNotMatch(rootIndex, new RegExp(`${document.publicationOutputDirectory}/`, 'u'));
   }
 });
 
@@ -78,19 +77,22 @@ test('styles camera privacy guidance independently from DSL version banners', ()
 
 test('publishes each document only from its version-specific top page', () => {
   for (const document of documentationConfig.documents) {
-    const basename = document.sourceFilename.replace(/\.md$/u, '');
     const versionIndex = document.version === '3.2' ? dsl32Index : dsl40Index;
     const otherVersionIndex = document.version === '3.2' ? dsl40Index : dsl32Index;
-    const localDirectory = `${document.legacyOutputDirectory}/${basename}`;
+    const localDirectory = document.publicationOutputDirectory.replace(`${document.version}/`, '');
 
-    assert.match(versionIndex, new RegExp(`href="${localDirectory}/"`, 'u'));
-    assert.match(
-      versionIndex,
-      new RegExp(
-        `tmpose-kamishibai-docs/${document.outputDirectory}/${basename}/publication\\.json`,
-        'u',
-      ),
-    );
+    if (document.listedOnVersionTop !== false) {
+      assert.match(versionIndex, new RegExp(`href="${localDirectory}/"`, 'u'));
+      assert.match(
+        versionIndex,
+        new RegExp(
+          `tmpose-kamishibai-docs/${document.publicationOutputDirectory}/publication\\.json`,
+          'u',
+        ),
+      );
+    } else {
+      assert.doesNotMatch(versionIndex, new RegExp(`href="${localDirectory}/"`, 'u'));
+    }
     assert.doesNotMatch(otherVersionIndex, new RegExp(`href="${localDirectory}/"`, 'u'));
     assert.doesNotMatch(versionIndex, new RegExp(`href="${localDirectory}\\.pdf"`, 'u'));
   }
@@ -101,7 +103,9 @@ test('keeps publication actions on their dedicated version and workshop pages', 
   const dsl40Actions = [...dsl40Index.matchAll(/<div class="actions">([\s\S]*?)<\/div>/gu)];
   const workshopActions = [...workshopIndex.matchAll(/<div class="actions">([\s\S]*?)<\/div>/gu)];
   const dsl32Documents = documentationConfig.documents.filter(({version}) => version === '3.2');
-  const dsl40Documents = documentationConfig.documents.filter(({version}) => version === '4.0');
+  const dsl40Documents = documentationConfig.documents.filter(
+    ({version, listedOnVersionTop}) => version === '4.0' && listedOnVersionTop !== false,
+  );
 
   assert.equal(dsl32Actions.length, dsl32Documents.length);
   assert.equal(dsl40Actions.length, dsl40Documents.length);

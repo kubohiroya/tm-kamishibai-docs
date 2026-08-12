@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "status": "blocked-until-gates-ready",
+  "status": "ready-for-publication",
   "targetDslVersion": "4.0",
   "listing": {
     "source": "site/4.0/index.html",

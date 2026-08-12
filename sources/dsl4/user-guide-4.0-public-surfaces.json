@@ -1,28 +1,29 @@
 {
   "formatVersion": 1,
-  "verifiedAt": "2026-08-12T13:14:00+09:00",
+  "verifiedAt": "2026-08-12T19:45:00+09:00",
   "documentIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/41",
   "releaseState": {
     "runtimeVersionLabel": "Version 4.0.0 (2026/08/11)",
+    "publishedPrerelease": "v4.0.0-rc.1",
     "formalGitHubReleasePublished": false,
     "latestFormalGitHubRelease": "v3.2.3"
   },
   "samples": {
     "repository": "kubohiroya/tmpose-kamishibai-samples",
-    "publicationCommit": "8ec5a30d5f9927f30fc2f05a476c634a7f79d73c",
-    "pagesDeploymentRun": 31559545314,
+    "publicationCommit": "d2f37b95f552a39126533bbe1d623e71d52797f9",
+    "pagesDeploymentRun": 31586410478,
     "urashima": {
       "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/",
       "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/web-4.0/",
       "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.k4.yml",
       "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima-4.0.sb3",
       "sb3": {
-        "size": 42437519,
-        "sha256": "a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a"
+        "size": 42531147,
+        "sha256": "e223cd7da288144a811824435514cdaaf096fbe42d1a0ab3047bd59f253586b5"
       },
       "web": {
-        "size": 67069097,
-        "sha256": "6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1",
+        "size": 67465893,
+        "sha256": "6ce618a1ad93e4075882afd3b106c57d8dbd30238e9f8a7f332e225982e1badb",
         "networkDependencies": [],
         "runtimeCapabilities": ["camera", "audio"]
       }
@@ -31,15 +32,48 @@
       "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
       "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/web-4.0/",
       "sb3": {
-        "size": 22406696,
-        "sha256": "e4e7fe7d9c525ef2f50a438785879e93e00468b8a9e5bd1677a6ec1a14f8359c"
+        "size": 22500927,
+        "sha256": "4c42a3dfda20f5018af26a0bc67263d2ebeb3364f5c9ed0e62a0fa3b20c461c4"
       },
       "web": {
-        "size": 42758087,
-        "sha256": "eeb01e05fdbc8df6d850a8e817d43cfb405b7ca90ab419c5ff18ae01f981f64e",
+        "size": 43155224,
+        "sha256": "5d5d49ed05d7533e053b37de855131d0973a4e58022c80cdd15d8221c8f86fe2",
         "projectInput": "external-yaml",
         "runtimeCapabilities": ["file-picker", "camera", "audio"],
         "allowedNetworkPrefixes": ["https://sqs.prof.cuc.ac.jp/kamishibai/20260630/"]
+      }
+    },
+    "tutorial": {
+      "version": "4.0.0-rc.1",
+      "status": "published",
+      "sourceIdentity": "50880d5de1fede2b73b01ff1a26eb6191d5ac9b9433a8d8489d945935638ddc6",
+      "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
+      "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
+      "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
+      "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-4.0.sb3",
+      "starterUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
+      "additionKitUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
+      "manifestUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json",
+      "license": "MPL-2.0",
+      "source": {
+        "size": 1378,
+        "sha256": "c786674254aff5854f2af6d77b49a53009176bdb3c6e07896e06d7e9ced5adf2"
+      },
+      "sb3": {
+        "size": 13639883,
+        "sha256": "165f6d97727dafa34255ed4179746737eccaf089fa85224ceecf73ab57d4cf1f"
+      },
+      "web": {
+        "size": 31946591,
+        "sha256": "57b56c808283d16733837d08b9da9d3a21106e080d6750e2e4770fdde86a6c92"
+      },
+      "starter": {
+        "size": 5912556,
+        "sha256": "e4e584815453b2a3298c2ae2ee41842a69c390d33cc20d6aa712e24058e891b1"
+      },
+      "additionKit": {
+        "size": 4260,
+        "sha256": "053209f45b5b45e8d2655151b9ef81ee9b11791d77546e9437e210d4422dbe68"
       }
     },
     "packager": "TurboWarp Packager 3.13.0",

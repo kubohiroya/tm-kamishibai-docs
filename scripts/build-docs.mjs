@@ -190,11 +190,7 @@ function rewriteMarkdownLinks(source, document, htmlPath) {
     const targetSourcePath = path.resolve(path.dirname(documentSourcePath), markdownHref);
     const targetDocument = documentsBySourcePath.get(targetSourcePath);
     if (targetDocument !== undefined) {
-      const targetDirectory = path.join(
-        distRoot,
-        targetDocument.outputDirectory,
-        targetDocument.sourceFilename.replace(/\.md$/u, ''),
-      );
+      const targetDirectory = path.join(distRoot, targetDocument.publicationOutputDirectory);
       const relativeTarget = path
         .relative(path.dirname(htmlPath), targetDirectory)
         .split(path.sep)
@@ -283,9 +279,8 @@ async function buildDocuments(grade, force) {
   let builtCount = 0;
 
   for (const document of documentationConfig.documents) {
-    const basename = document.sourceFilename.replace(/\.md$/u, '');
     const pdfFilename = document.sourceFilename.replace(/\.md$/u, '.pdf');
-    const publicationDirectory = path.join(distRoot, document.outputDirectory, basename);
+    const publicationDirectory = path.join(distRoot, document.publicationOutputDirectory);
     const articlePath = path.join(
       publicationDirectory,
       documentationConfig.standaloneArticleHtmlFilename,
@@ -451,10 +446,7 @@ async function buildStaff(force) {
 
 function publicationImagePlans() {
   const documentPlans = documentationConfig.documents.map((document) => ({
-    outputDirectory: path.join(
-      document.outputDirectory,
-      document.sourceFilename.replace(/\.md$/u, ''),
-    ),
+    outputDirectory: document.publicationOutputDirectory,
     sourcePaths: [
       path.join(document.sourceDirectory, document.sourceFilename),
       'theme.css',

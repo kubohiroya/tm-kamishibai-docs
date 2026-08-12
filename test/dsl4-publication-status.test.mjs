@@ -11,15 +11,17 @@ const dsl4Index = read('site/4.0/index.html');
 const dsl4Documents = documentationConfig.documents
   .filter((document) => document.version === '4.0')
   .map((document) => ({
+    collectionId: document.collectionId,
     sourceFilename: document.sourceFilename,
     source: read(`docs/${document.sourceDirectory}/${document.sourceFilename}`),
   }));
 
 test('records the verified implementation and release state in config', () => {
   assert.deepEqual(dsl4PublicationStatus, {
-    verifiedOn: '2026-08-08',
-    implementationCommit: '79457815f5c89b181b1a879a079a4d6a72d405ed',
+    verifiedOn: '2026-08-12',
+    implementationCommit: '0e7e23f59a323f088408f42ba0dc41f6b6c9feef',
     latestPublishedRelease: 'v3.2.3',
+    publishedDsl4Prerelease: 'v4.0.0-rc.1',
     officialDsl4Release: null,
   });
 });
@@ -36,13 +38,18 @@ test('distinguishes implementation, release, public surfaces, and document state
 });
 
 test('shows the same release boundary on the 4.0 top and every 4.0 document', () => {
-  assert.match(dsl4Index, /4\.0のサンプルはブラウザーで試せます/u);
-  assert.match(dsl4Index, /4\.0正式版のダウンロードはまだ公開準備中/u);
-  assert.match(dsl4Index, /現在公開中の正式版は\s*<code>v3\.2\.3<\/code>/u);
-  assert.match(dsl4Index, /user-guides\/user-guide-4\.0/u);
+  assert.match(dsl4Index, /4\.0\.0-rc\.1を公開しています/u);
+  assert.match(dsl4Index, /安定版<code>4\.0\.0<\/code>はまだ未公開/u);
+  assert.match(dsl4Index, /最新安定版は\s*<code>v3\.2\.3<\/code>/u);
+  assert.match(dsl4Index, /tutorials\//u);
 
-  assert.equal(dsl4Documents.length, 13);
-  for (const {sourceFilename, source} of dsl4Documents) {
+  assert.equal(dsl4Documents.length, 16);
+  for (const {collectionId, sourceFilename, source} of dsl4Documents) {
+    if (collectionId === 'tutorials') {
+      assert.match(source, /4\.0\.0-rc\.1/u);
+      assert.match(source, /公開プレリリース/u);
+      continue;
+    }
     if (sourceFilename.startsWith('executive-summary-') || sourceFilename === 'user-guide-4.0.md') {
       assert.match(source, /公開前|公開準備中/u);
       assert.doesNotMatch(source, /[a-f0-9]{40}/u);

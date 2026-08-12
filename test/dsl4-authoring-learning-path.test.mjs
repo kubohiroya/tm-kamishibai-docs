@@ -27,17 +27,18 @@ test('defines tutorial scope, canonical sample ownership, and release stages', (
   assert.match(tutorialReadme, /`tmpose-kamishibai-samples`を正本/u);
   assert.match(tutorialReadme, /完全なsample YAMLや\s*配布物を複製して保守しません/u);
   assert.match(tutorialReadme, /固定commit、\s*starter version、artifact URL、integrity、license/u);
-  assert.match(tutorialReadme, /capture gateが未完了/u);
+  assert.match(tutorialReadme, /全gateは`published`、`ready: true`/u);
 });
 
 test('keeps the create tutorial minimal and separate from 3.x migration', () => {
-  assert.match(createTutorial, /## このチュートリアルと作者ガイドの違い/u);
+  assert.match(createTutorial, /## このチュートリアルと台本作成ガイドの違い/u);
   assert.match(createTutorial, /できあがるのは、変更した台本と\s*素材をまとめたSB3/u);
   assert.match(createTutorial, /すべての命令、複数の台本を組み合わせる方法、分岐、独自の命令/u);
   assert.match(createTutorial, /DSL 3\.1／3\.2のTXT／SB3操作や変換は扱いません/u);
-  assert.match(createTutorial, /正式なひな形、サンプル作品、画面、出力手順が決まる前/u);
+  assert.match(createTutorial, /4\.0\.0-rc\.1/u);
+  assert.match(createTutorial, /公開プレリリース/u);
   assert(
     createTutorial.indexOf('## 完了チェック') <
-      createTutorial.indexOf('## このチュートリアルと作者ガイドの違い'),
+      createTutorial.indexOf('## このチュートリアルと台本作成ガイドの違い'),
   );
 });
