@@ -15,11 +15,31 @@
     "repository": "kubohiroya/tmpose-kamishibai-samples",
     "commit": "dc9f6626de9ef85ca71312402fd139082922b867",
     "pullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91",
-    "status": "draft-implementation-evidence",
+    "pullRequestState": "merged",
+    "publicationCommit": "8ec5a30d5f9927f30fc2f05a476c634a7f79d73c",
+    "publicationFixPullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/93",
+    "status": "public-4.0-samples-available-tutorial-starter-pending",
     "story": "stories/urashima",
     "sourceSha256": "9ff92d07fb6851ddb07cc6f13d20fc9023b2c90605d2533fec89cb9fdbb1faa2",
     "sb3Sha256": "a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a",
     "webSha256": "6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1",
+    "publicSurfaceManifest": "../../sources/dsl4/user-guide-4.0-public-surfaces.json",
+    "publicSamples": {
+      "urashima": {
+        "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/",
+        "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/web-4.0/",
+        "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.k4.yml",
+        "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima-4.0.sb3",
+        "sb3Sha256": "a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a",
+        "webSha256": "6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1"
+      },
+      "myUrashima": {
+        "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
+        "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/web-4.0/",
+        "sb3Sha256": "e4e7fe7d9c525ef2f50a438785879e93e00468b8a9e5bd1677a6ec1a14f8359c",
+        "webSha256": "eeb01e05fdbc8df6d850a8e817d43cfb405b7ca90ab419c5ff18ae01f981f64e"
+      }
+    },
     "walkthrough": "../developer-guides/dsl4-implementation-walkthrough.md",
     "formalCaptureReuse": false
   },
@@ -56,15 +76,20 @@
       "id": "tutorial-sample",
       "ready": false,
       "progressStatus": "partial",
-      "description": "固定commitの浦島太郎実装追試用Web版、SB3、integrityは存在するが、正式starterと公開URLは未固定",
-      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91"],
+      "description": "浦島太郎とmy-urashimaの4.0 Web版、SB3、integrityは公開済みだが、最小チュートリアル作品、starter、addition kitは未固定",
+      "dependencies": [
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/91",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/93"
+      ],
       "evidence": [
+        "../../sources/dsl4/user-guide-4.0-public-surfaces.json",
+        "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/",
+        "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
         "https://github.com/kubohiroya/tmpose-kamishibai-docs/blob/main/DSL4-IMPLEMENTATION-VISUALS.md",
         "../developer-guides/dsl4-implementation-walkthrough.md"
       ],
       "remaining": [
-        "最小チュートリアル作品とstarterを固定する",
-        "sample PRをmergeし、Web版、SB3、integrityを正式公開URLへ固定する"
+        "最小チュートリアル作品、starter、addition kitのURL、integrity、licenseを固定する"
       ]
     },
     {
