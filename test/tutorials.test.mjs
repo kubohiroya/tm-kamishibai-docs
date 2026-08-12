@@ -351,7 +351,6 @@ test('keeps the reproducible implementation walkthrough in the developer guide',
   );
   for (const filename of [
     'dsl4-implementation-title.jpg',
-    'dsl4-implementation-scene.jpg',
     'dsl4-implementation-pose-feedback.jpg',
   ]) {
     assert.match(implementationWalkthrough, new RegExp(`\\.\\./images/${filename}`, 'u'));

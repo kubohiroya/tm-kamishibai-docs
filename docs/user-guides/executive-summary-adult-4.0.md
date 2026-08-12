@@ -126,19 +126,6 @@ Source Graphは、起点のYAMLから`include`で到達する複数ソースの�
 `StoryDocument`へ正規化します。検証中の入力は候補（candidate）、同じ時点で安定して取得したソースと素材の組は
 世代（generation）と呼びます。候補の検証に失敗しても、直前の正常な世代を置き換えません。
 
-## 実装スナップショット
-
-次の3画面は、正式公開プレイヤーの操作説明ではありません。2026年8月12日に、
-`tmpose-kamishibai`の固定実装`8ea06bf`と、`tmpose-kamishibai-samples`の固定成果物`dc9f662`から
-浦島太郎DSL 4.0 Web版をローカルで再現し、同じブラウザーセッションで実際に進行させた記録です。
-画面内の`Version 4.0.0`は成果物内の実装メタデータであり、GitHub Releasesでの正式公開を示しません。
-
-<div class="dsl4-snapshot-gallery"><figure><img src="../images/dsl4-implementation-title.jpg" alt="参加型AI紙芝居、Version 4.0.0、公式Webサイトボタン、閉じるボタンが見えるDSL 4.0実装のタイトル上部"><figcaption>起動直後のタイトル上部。個人情報を含む下部は収録範囲から外し、作品を開始する閉じるボタンまでを示します。</figcaption></figure><figure><img src="../images/dsl4-implementation-scene.jpg" alt="浜辺を背景に浦島太郎と亀が表示され、亀の吹き出しに点が並ぶDSL 4.0浦島太郎の上演画面"><figcaption>YAMLの<code>stage</code>、Actor表示、移動、<code>say</code>が同じシーンで実行された状態です。</figcaption></figure><figure><img src="../images/dsl4-implementation-pose-feedback.jpg" alt="浜辺の浦島太郎と亀の上に、ポーズ認識度とチャージの表示が出たポーズ待機画面"><figcaption><code>Urashima.pose</code>の待機中。認識度とチャージが、物語画面を保ったまま上端へ表示されます。</figcaption></figure></div>
-
-上演画面中央の円形表示は、撮影時にポーズモデルを準備していたインジケーターです。画面を整えるために
-消去せず、同じセッションで観測した状態をそのまま収録しました。成果物のSHA-256、撮影範囲、画像hash、
-再現手順は[DSL 4.0 実装ビジュアル記録](../../DSL4-IMPLEMENTATION-VISUALS.md)に固定しています。
-
 ## プロジェクトとYAML台本
 
 小さな作品は、次のようなディレクトリから始められます。

@@ -45,10 +45,9 @@ byte一致することを記録しています。画面内の`Version 4.0.0`は�
 | file                                                |   pixel | SHA-256                                                            | 観測した状態                                              |
 | --------------------------------------------------- | ------: | ------------------------------------------------------------------ | --------------------------------------------------------- |
 | `docs/images/dsl4-implementation-title.jpg`         | 960×300 | `23c93cd48642e28f626a3d509538cb6653cc7022ad6a6e990d382da524e674a2` | タイトル、実装version、公式site、開始に相当する閉じる操作 |
-| `docs/images/dsl4-implementation-scene.jpg`         | 960×680 | `563fb1e5aa0438a0f615e2078474b21f44e900b075b7697220b23444c20aba65` | `Beach1`、Urashima、Turtle、Turtleの発話bubble            |
 | `docs/images/dsl4-implementation-pose-feedback.jpg` | 960×680 | `25418684648f1876dff8c612695c295bcc2219dd6626f2dee6e98f5bc6286fbe` | `Urashima.pose`待機、認識度、チャージ、物語画面の維持     |
 
-sceneとpose画像の中央にある円形表示は、同じ実行セッションでポーズモデル準備中として観測した
+pose画像の中央にある円形表示は、実行セッションでポーズモデル準備中として観測した
 `progressbar`です。実装状態を整形して見せるために消さず、画像とcaptionで存在を説明します。
 
 ## 実装追跡
@@ -72,14 +71,13 @@ platform port境界を維持します。
 
 ## 表示検証
 
-- Web publication: `pnpm build`で生成した`dist/`をlocalhost配信し、1280×720で成人向け概要の
-  3画像galleryと内部仕様書の呼出し図を目視した。追加要素に横スクロール、欠け、captionの重なりはない。
-- 狭幅: 同じ2ページを320×568で再表示した。galleryと呼出し図はいずれもcontent幅280pxに対して
-  `scrollWidth` 280pxで、1列化後も追加要素からのoverflowはない。
+- Web publication: 成人向け概要から固定実装の画面記録を外し、読者の理解に必要な概念図だけを公開する。
+  実装画像は公開AppBarへ登録しない開発者向け追試資料に限定する。
+- 狭幅: 内部仕様書の呼出し図を320×568で表示し、content幅280pxに対して`scrollWidth` 280pxで、
+  追加要素からのoverflowがないことを確認する。
 - A4: 公開ビルド後の`dist/.../document.html`をVivliostyle CLI 11.1.0でA4へ組版し、PNGへrenderした。
-  成人向け概要の3画像はcaptionと対応して1ページに収まり、内部仕様書の呼出し図はmodule列と3 port群を
-  切らずに表示する。
-- 自動検証: JPEG signature・pixel・SHA-256、非release表記、responsive／print style、呼出し図の
+  内部仕様書の呼出し図はmodule列と3 port群を切らずに表示する。
+- 自動検証: JPEG signature・pixel・SHA-256、非release表記、公開概要からの分離、呼出し図の
   module名を`test/dsl4-implementation-visuals.test.mjs`で固定した。
 
 ## 再取得
@@ -87,7 +85,7 @@ platform port境界を維持します。
 1. sample repositoryを`dc9f662`へcheckoutし、`pnpm build`でlockと一致する`dist/`を生成する。
 2. `dist/`をlocalhostで配信し、`/stories/urashima/web-4.0/`を1280×720で開く。
 3. タイトルは上部960×300だけをcaptureし、連絡先を含めない。
-4. 閉じる操作で上演を開始し、Beach sceneのbubbleと`Urashima.pose`待機を同じsessionでcaptureする。
+4. 閉じる操作で上演を開始し、Beach sceneを経て`Urashima.pose`待機へ到達した状態をcaptureする。
 5. 画像のMIME type、pixel、SHA-256を確認し、本表と差がある場合は実装・成果物・撮影条件のどれが
    変わったかを記録してから差し替える。
 
