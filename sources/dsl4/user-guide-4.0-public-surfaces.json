@@ -1,7 +1,8 @@
 {
   "formatVersion": 1,
-  "verifiedAt": "2026-08-13T00:28:00+09:00",
+  "verifiedAt": "2026-08-13T01:18:23+09:00",
   "documentIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/41",
+  "verificationIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/122",
   "releaseState": {
     "runtimeVersionLabel": "Version 4.0.0 (2026/08/11)",
     "publishedPrerelease": "v4.0.0-rc.2",
@@ -10,20 +11,28 @@
   },
   "samples": {
     "repository": "kubohiroya/tmpose-kamishibai-samples",
-    "publicationCommit": "d2f37b95f552a39126533bbe1d623e71d52797f9",
-    "pagesDeploymentRun": 31586410478,
+    "publicationCommit": "19d0670f4afd95d1b6cbbde4ef575e8e18800a3a",
+    "publicationPullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/101",
+    "pagesDeploymentRun": 31615900357,
+    "runtime": {
+      "version": "4.0.0-rc.2",
+      "commit": "9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014",
+      "sourceIdentity": "sha256:70dfcb7dfc391e9f8c576976d810a55656c8cab09c0c729cc685d20e02140991",
+      "standardSb3Size": 7648753,
+      "standardSb3Sha256": "917344e56488db42fcdc07f8036782a3912945081ed094c50cf84f6ecdb56f5f"
+    },
     "urashima": {
       "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/",
       "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/web-4.0/",
       "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.k4.yml",
       "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima-4.0.sb3",
       "sb3": {
-        "size": 42531147,
-        "sha256": "e223cd7da288144a811824435514cdaaf096fbe42d1a0ab3047bd59f253586b5"
+        "size": 42546369,
+        "sha256": "5181f414944489652d9758812b5da6ea351113ccb62111c361533495f48ff5ad"
       },
       "web": {
-        "size": 67465893,
-        "sha256": "6ce618a1ad93e4075882afd3b106c57d8dbd30238e9f8a7f332e225982e1badb",
+        "size": 67518293,
+        "sha256": "0733a3d50e2b4a3b12caafd5d976a23b3cc556c7eb323963c76eedc3037cb1cf",
         "networkDependencies": [],
         "runtimeCapabilities": ["camera", "audio"]
       }
@@ -32,21 +41,21 @@
       "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
       "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/web-4.0/",
       "sb3": {
-        "size": 22500927,
-        "sha256": "4c42a3dfda20f5018af26a0bc67263d2ebeb3364f5c9ed0e62a0fa3b20c461c4"
+        "size": 22514945,
+        "sha256": "1f2948b214d1c3e4013ac78d25cdbbc87d7147d6d7d1d78c9f01dc55a75ae742"
       },
       "web": {
-        "size": 43155224,
-        "sha256": "5d5d49ed05d7533e053b37de855131d0973a4e58022c80cdd15d8221c8f86fe2",
+        "size": 43207204,
+        "sha256": "05aafe55fedd122945d8885fbf484e142825081fc66043bde05dcad31c9baaa7",
         "projectInput": "external-yaml",
         "runtimeCapabilities": ["file-picker", "camera", "audio"],
         "allowedNetworkPrefixes": ["https://sqs.prof.cuc.ac.jp/kamishibai/20260630/"]
       }
     },
     "tutorial": {
-      "version": "4.0.0-rc.1",
+      "version": "4.0.0-rc.2",
       "status": "published",
-      "sourceIdentity": "50880d5de1fede2b73b01ff1a26eb6191d5ac9b9433a8d8489d945935638ddc6",
+      "sourceIdentity": "b5278ea502cab0d06cd301022aed128c91ec3909c4cd9cfc216be46784c9e6c3",
       "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
       "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
       "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
@@ -60,12 +69,12 @@
         "sha256": "c786674254aff5854f2af6d77b49a53009176bdb3c6e07896e06d7e9ced5adf2"
       },
       "sb3": {
-        "size": 13639883,
-        "sha256": "165f6d97727dafa34255ed4179746737eccaf089fa85224ceecf73ab57d4cf1f"
+        "size": 13654464,
+        "sha256": "ed5d78fc8f81338d124edccd9aef1808631947bf5bc71a084bfe64d15086d5cc"
       },
       "web": {
-        "size": 31946591,
-        "sha256": "57b56c808283d16733837d08b9da9d3a21106e080d6750e2e4770fdde86a6c92"
+        "size": 31998889,
+        "sha256": "d885428d11c7478844f63d19809fe0d91155ec8d6d2415a0b8587ffa1a641e10"
       },
       "starter": {
         "size": 5912556,

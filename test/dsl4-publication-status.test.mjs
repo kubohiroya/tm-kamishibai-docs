@@ -48,11 +48,7 @@ test('shows the same release boundary on the 4.0 top and every 4.0 document', ()
   assert.equal(dsl4Documents.length, 16);
   for (const {collectionId, sourceFilename, source} of dsl4Documents) {
     if (collectionId === 'tutorials') {
-      if (sourceFilename === 'play.md') {
-        assert.match(source, /4\.0\.0-rc\.1/u);
-      } else {
-        assert.match(source, /4\.0\.0-rc\.2/u);
-      }
+      assert.match(source, /4\.0\.0-rc\.2/u);
       assert.match(source, /公開プレリリース/u);
       continue;
     }

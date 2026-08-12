@@ -215,7 +215,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   });
   assert.equal(
     screenshotManifest.sampleBaseline.commit,
-    'd2f37b95f552a39126533bbe1d623e71d52797f9',
+    '19d0670f4afd95d1b6cbbde4ef575e8e18800a3a',
   );
   assert.equal(screenshotManifest.sampleBaseline.pullRequestState, 'merged');
   assert.equal(
@@ -273,6 +273,13 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(screenshotManifest.capturePolicy.capturedAt, '2026-08-12T19:42:31+09:00');
   assert.match(screenshotManifest.capturePolicy.browser, /Google Chrome 151/u);
   assert.match(screenshotManifest.capturePolicy.provenance.privacy, /no real person/u);
+
+  for (const captureId of ['P-01', 'P-02']) {
+    const capture = screenshotManifest.captures.find(({id}) => id === captureId);
+    assert.equal(capture.capturedAt, '2026-08-13T01:18:23+09:00');
+    assert.equal(capture.captureProvenance.sampleCommit, screenshotManifest.sampleBaseline.commit);
+    assert.equal(capture.captureProvenance.pagesDeploymentRun, 31615900357);
+  }
 
   const expectedIds = [
     ...Array.from({length: 8}, (_, index) => `P-${String(index + 1).padStart(2, '0')}`),
@@ -364,10 +371,11 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(tutorialSampleGate.ready, true);
   assert.deepEqual(tutorialSampleGate.dependencies, [
     'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94',
+    'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/100',
   ]);
   assert(
     tutorialSampleGate.evidence.includes(
-      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/97',
+      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/101',
     ),
   );
   assert.match(tutorialSampleGate.description, /starter、addition kit、Web版、SB3/u);
