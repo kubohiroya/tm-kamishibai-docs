@@ -1,8 +1,8 @@
 export const dsl4PublicationStatus = Object.freeze({
-  verifiedOn: '2026-08-12',
-  implementationCommit: '0e7e23f59a323f088408f42ba0dc41f6b6c9feef',
+  verifiedOn: '2026-08-13',
+  implementationCommit: '9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014',
   latestPublishedRelease: 'v3.2.3',
-  publishedDsl4Prerelease: 'v4.0.0-rc.1',
+  publishedDsl4Prerelease: 'v4.0.0-rc.2',
   officialDsl4Release: null,
 });
 

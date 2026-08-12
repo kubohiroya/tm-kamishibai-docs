@@ -43,7 +43,7 @@ test('keeps live-surface evidence in the machine-readable manifest', () => {
   assert.equal(surfaces.formatVersion, 1);
   assert.equal(surfaces.releaseState.formalGitHubReleasePublished, false);
   assert.equal(surfaces.samples.pagesDeploymentRun, 31586410478);
-  assert.equal(surfaces.releaseState.publishedPrerelease, 'v4.0.0-rc.1');
+  assert.equal(surfaces.releaseState.publishedPrerelease, 'v4.0.0-rc.2');
   assert.equal(surfaces.samples.tutorial.status, 'published');
   assert.equal(surfaces.samples.tutorial.license, 'MPL-2.0');
   assert.equal(surfaces.physicalVerification.camera, 'passed');

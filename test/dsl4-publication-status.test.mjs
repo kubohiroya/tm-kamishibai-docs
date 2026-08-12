@@ -18,10 +18,10 @@ const dsl4Documents = documentationConfig.documents
 
 test('records the verified implementation and release state in config', () => {
   assert.deepEqual(dsl4PublicationStatus, {
-    verifiedOn: '2026-08-12',
-    implementationCommit: '0e7e23f59a323f088408f42ba0dc41f6b6c9feef',
+    verifiedOn: '2026-08-13',
+    implementationCommit: '9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014',
     latestPublishedRelease: 'v3.2.3',
-    publishedDsl4Prerelease: 'v4.0.0-rc.1',
+    publishedDsl4Prerelease: 'v4.0.0-rc.2',
     officialDsl4Release: null,
   });
 });
@@ -38,7 +38,9 @@ test('distinguishes implementation, release, public surfaces, and document state
 });
 
 test('shows the same release boundary on the 4.0 top and every 4.0 document', () => {
-  assert.match(dsl4Index, /4\.0\.0-rc\.1を公開しています/u);
+  assert.match(dsl4Index, /4\.0\.0-rc\.2を公開しています/u);
+  assert.match(dsl4Index, /kamishibai-4\.0\.0-rc\.2\.sb3/u);
+  assert.match(dsl4Index, /tmpose-kamishibai\/v\/4\.0\.0-rc\.2/u);
   assert.match(dsl4Index, /安定版<code>4\.0\.0<\/code>はまだ未公開/u);
   assert.match(dsl4Index, /最新安定版は\s*<code>v3\.2\.3<\/code>/u);
   assert.match(dsl4Index, /tutorials\//u);
