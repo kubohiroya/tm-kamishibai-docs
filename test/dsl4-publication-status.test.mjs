@@ -36,12 +36,10 @@ test('shows the same release boundary on the 4.0 top and every 4.0 document', ()
   assert.match(dsl4Index, /固定実装の文書と、正式リリースは別です/u);
   assert.match(dsl4Index, /最新正式リリースは <code>v3\.2\.3<\/code>/u);
   assert.match(dsl4Index, /<code>v4\.0\.0<\/code>\s*はまだ正式リリースされていません/u);
-  assert.match(
-    dsl4Index,
-    /公開プレイヤー、サンプル、ダウンロード、CLIが利用可能だとは保証しません/u,
-  );
+  assert.match(dsl4Index, /公開作品ページの4\.0サンプルとWeb版は利用可能/u);
+  assert.match(dsl4Index, /正式版のダウンロードとCLIが利用可能だとは保証しません/u);
 
-  assert.equal(dsl4Documents.length, 11);
+  assert.equal(dsl4Documents.length, 12);
   for (const source of dsl4Documents) {
     assert.match(source, /固定.{0,12}実装|実装基準/u);
     assert.match(source, /2026年8月8日時点/u);

@@ -21,6 +21,7 @@ const expectedCollections = {
     'executive-summary-kids.md',
     'executive-summary-kids-4.0.md',
     'user-guide.md',
+    'user-guide-4.0.md',
   ],
   'dsl-3.2-guides': ['dsl-manual.md', 'command-reference.md', 'history.md'],
   'dsl-4.0-guides': [

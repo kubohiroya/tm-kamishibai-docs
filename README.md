@@ -101,6 +101,11 @@ release smokeも3.x版と4.0版を別のMarkdown、URL、publicationとして保
 [`sources/dsl4/release-smoke-4.0-candidate.json`](sources/dsl4/release-smoke-4.0-candidate.json)を正本にし、
 候補commit、Schema、feature flag、SB3、Web版、実機確認、release-stop、rollbackを一組で固定します。
 
+操作説明書も3.x版と4.0版を別のMarkdown、URL、publicationとして保守します。4.0版は
+[`docs/user-guides/user-guide-4.0.md`](docs/user-guides/user-guide-4.0.md)と
+[`sources/dsl4/user-guide-4.0-public-surfaces.json`](sources/dsl4/user-guide-4.0-public-surfaces.json)を正本にし、
+公開作品ページから開始、入力、終了、再実行、失敗時の復旧までを、公開URLとchecksum付きで固定します。
+
 ### DSL 4.0 Schemaリファレンスの生成
 
 DSL 4.0のリファレンスは、上流JSON Schemaの固定snapshot、source lock、日本語Annotationから

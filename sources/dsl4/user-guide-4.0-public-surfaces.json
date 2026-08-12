@@ -1,0 +1,58 @@
+{
+  "formatVersion": 1,
+  "verifiedAt": "2026-08-12T13:14:00+09:00",
+  "documentIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/41",
+  "releaseState": {
+    "runtimeVersionLabel": "Version 4.0.0 (2026/08/11)",
+    "formalGitHubReleasePublished": false,
+    "latestFormalGitHubRelease": "v3.2.3"
+  },
+  "samples": {
+    "repository": "kubohiroya/tmpose-kamishibai-samples",
+    "publicationCommit": "8ec5a30d5f9927f30fc2f05a476c634a7f79d73c",
+    "pagesDeploymentRun": 31559545314,
+    "urashima": {
+      "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/",
+      "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/web-4.0/",
+      "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.k4.yml",
+      "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima-4.0.sb3",
+      "sb3": {
+        "size": 42437519,
+        "sha256": "a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a"
+      },
+      "web": {
+        "size": 67069097,
+        "sha256": "6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1",
+        "networkDependencies": [],
+        "runtimeCapabilities": ["camera", "audio"]
+      }
+    },
+    "myUrashima": {
+      "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
+      "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/web-4.0/",
+      "sb3": {
+        "size": 22406696,
+        "sha256": "e4e7fe7d9c525ef2f50a438785879e93e00468b8a9e5bd1677a6ec1a14f8359c"
+      },
+      "web": {
+        "size": 42758087,
+        "sha256": "eeb01e05fdbc8df6d850a8e817d43cfb405b7ca90ab419c5ff18ae01f981f64e",
+        "projectInput": "external-yaml",
+        "runtimeCapabilities": ["file-picker", "camera", "audio"],
+        "allowedNetworkPrefixes": ["https://sqs.prof.cuc.ac.jp/kamishibai/20260630/"]
+      }
+    },
+    "packager": "TurboWarp Packager 3.13.0",
+    "webPublicationFeatureFlagDefault": false
+  },
+  "physicalVerification": {
+    "verifiedOn": "2026-08-11",
+    "camera": "passed",
+    "pose": "passed",
+    "evidenceUrl": "https://github.com/kubohiroya/tmpose-kamishibai/issues/510#issuecomment-5255177777"
+  },
+  "visuals": {
+    "formalUiCapturesIncluded": false,
+    "reason": "The guide is complete with semantic steps, exact labels, URLs, and integrity tables."
+  }
+}
