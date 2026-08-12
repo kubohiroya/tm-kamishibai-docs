@@ -26,7 +26,7 @@ Copyright © 2026 Hiroya Kubo.
 CC BY-SA 4.0を適用します。
 
 - `dist/user-guides/**`
-- `dist/tutorials/**`
+- `dist/4.0/tutorials/**`
 - `dist/dsl-author-guides/**`
 - `dist/developer-guides/**`
 - `output/pdf/user-guides/**`

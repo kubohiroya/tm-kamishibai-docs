@@ -11,22 +11,28 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 上の読者向け入口から始めてください。
 
 このディレクトリは、DSL 4.0の正式リリース後に公開するチュートリアルの本文骨格、
-スクリーンショット台帳、サイト共通AppBar契約を保持します。リリース前に確定できない
+スクリーンショット台帳、4.0ドキュメント一覧への公開計画を保持します。リリース前に確定できない
 画面名、コマンド、サンプルURLを現行仕様として断定せず、正式リリース時に固定された
 成果物から補完します。
 
-このdraftは`docs/config.mjs`へ登録せず、公開サイトのAppBarからリンクしません。
+このdraftは`docs/config.mjs`へ登録せず、4.0トップのドキュメント一覧からリンクしません。
+公開時もAppBarへ独立した「チュートリアル」項目は追加せず、各ページでは既存の
+「ドキュメント」を現在地にします。
 
 ## 公開時の情報設計
 
-| URL                  | 役割                           | source draft           |
-| -------------------- | ------------------------------ | ---------------------- |
-| `/tutorials/`        | 二つのチュートリアルを選ぶ入口 | [index.md](index.md)   |
-| `/tutorials/play/`   | 紙芝居を遊ぶ                   | [play.md](play.md)     |
-| `/tutorials/create/` | 紙芝居を作る                   | [create.md](create.md) |
+| URL                      | 役割                           | source draft           |
+| ------------------------ | ------------------------------ | ---------------------- |
+| `/4.0/tutorials/`        | 二つのチュートリアルを選ぶ入口 | [index.md](index.md)   |
+| `/4.0/tutorials/play/`   | 紙芝居を遊ぶ                   | [play.md](play.md)     |
+| `/4.0/tutorials/create/` | 紙芝居を作る                   | [create.md](create.md) |
 
 初版のチュートリアルはWeb操作を正本とし、PDFを公開しません。詳細な仕様、全field、全action、
 移行、開発者向け手順は既存ドキュメントへリンクし、チュートリアルへ重複掲載しません。
+
+[publication-plan.json](publication-plan.json)を公開先、4.0一覧での項目数、AppBarの現在地、
+activation gate、ロールバック方針の正本とします。4.0トップには3ページを個別に並べず、
+「TMPose紙芝居 4.0 チュートリアル」の1項目だけを置き、入口から「遊ぶ」「作る」へ分岐します。
 
 ## 台本作成ガイドとの役割分担
 
@@ -134,7 +140,7 @@ docs/images/tutorials/dsl4/play/
 docs/images/tutorials/dsl4/create/
 ```
 
-## AppBar
+## 公開導線とAppBar
 
 [navigation-contract.json](navigation-contract.json)を5項目AppBarの正本とします。契約とレンダラーは
 `@kubohiroya/tmpose-kamishibai-docs`のバージョン付きビルド依存として提供し、他の2リポジトリは
@@ -146,7 +152,7 @@ docs/images/tutorials/dsl4/create/
 
 `/workshops/`と配下では「ワークショップ」、それ以外のドキュメントサイトでは「ドキュメント」だけを
 現在地にします。各サイトは実行時に外部HTMLやJavaScriptを取得せず、静的生成物へナビゲーションを
-埋め込みます。
+埋め込みます。チュートリアル公開時もこの5項目と3リポジトリの契約は変更しません。
 
 ## Capture gate
 
@@ -169,8 +175,8 @@ docs/images/tutorials/dsl4/create/
 2. DSL 4.0の公開versionとcapture条件を台帳へ記録する
 3. 台帳の順に画像を取得し、alt textとcaptionを実画面へ合わせる
 4. draft中のrelease gate注記を正式なUI名、コマンド、URLへ置き換える
-5. 入口、遊ぶ、作るのHTMLを公開し、最初から最後まで追試する
-6. 3リポジトリのAppBarとトップページカードを更新する
+5. `/4.0/tutorials/`、`play/`、`create/`のHTMLを公開し、最初から最後まで追試する
+6. 4.0トップのドキュメント一覧へ1項目を追加し、既存AppBarの「ドキュメント」が現在地になることを確認する
 
 ## 関連資料
 
