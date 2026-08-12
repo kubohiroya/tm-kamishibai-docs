@@ -68,16 +68,16 @@ Node.js、pnpm、ターミナルは使いません。Scratchのブロックは�
     ├── LICENSES.md
     ├── project.source.json
     ├── story.kamishibai.yaml
-    ├── beach.svg
-    ├── turtle.svg
-    ├── opening.mp3
-    ├── rescue-pose/
+    ├── classroom.svg
+    ├── student-ready.svg
+    ├── success.mp3
+    ├── safety-pose/
     │   ├── model.json
     │   ├── metadata.json
     │   └── weights.bin
     └── addition-kit/
-        ├── new-beach.svg
-        ├── friend.svg
+        ├── earthquake-classroom.svg
+        ├── protect-head.svg
         ├── add-background-and-actor.yml.txt
         ├── add-pose-scene.yml.txt
         └── intentional-diagnostic.kamishibai.yaml.txt
@@ -85,11 +85,11 @@ Node.js、pnpm、ターミナルは使いません。Scratchのブロックは�
 
 最初に編集するのは`tutorial-story/story.kamishibai.yaml`です。`project.source.json`は読み込む台本を
 指定する設定ファイルです。この設定ファイル、画像、音声、
-`rescue-pose`フォルダーはそのままにします。`addition-kit`はStep 5以降で使う追加素材とYAML見本です。
+`safety-pose`フォルダーはそのままにします。`addition-kit`はStep 5以降で使う追加素材とYAML見本です。
 
 <!-- screenshot:C-01 -->
 
-![story.kamishibai.yamlと画像、音声、rescue-pose、addition-kitが並ぶスターターのファイルツリー](../images/tutorials/dsl4/create/tutorial-create-01-starter-project.png)
+![story.kamishibai.yamlと教室、人物、音声、safety-pose、addition-kitが並ぶスターターのファイルツリー](../images/tutorials/dsl4/create/tutorial-create-01-starter-project.png)
 
 _スターターを開き、編集する台本と後で使う追加素材を確認します。画像は公開starterの配置を再現したfixtureです。_
 
@@ -134,22 +134,22 @@ _作品の最初の画面と、変更を待つ状態を確認します。_
 kamishibai: '4.0'
 
 assets:
-  Beach:
+  Classroom:
     kind: backdrop
-    file: beach.svg
-  TurtleIdle:
+    file: classroom.svg
+  StudentReady:
     kind: costume
-    target: Turtle
-    file: turtle.svg
+    target: Student
+    file: student-ready.svg
 
 actors:
-  Turtle: TurtleIdle
+  Student: StudentReady
 
 scenes:
-  opening:
-    - stage: Beach
-    - Turtle.say:
-        text: 助けて！
+  earthquake:
+    - stage: Classroom
+    - Student.say:
+        text: なにがおきたの？
         seconds: 2
 ```
 
@@ -157,8 +157,8 @@ scenes:
 変えません。
 
 ```yaml
-- Turtle.say:
-    text: こんにちは！
+- Student.say:
+    text: 地震だ！
     seconds: 2
 ```
 
@@ -175,11 +175,11 @@ _更新状態ボタンを開いた場合は、今回の再開位置を選べま�
 
 _次の画面では、選んだ再開位置を今回だけ使うか、次回以降も使うかを選べます。_
 
-変更したセリフが「こんにちは！」になったことを確認します。ここまでできれば、最初の編集は成功です。
+変更したセリフが「地震だ！」になったことを確認します。ここまでできれば、最初の編集は成功です。
 
 <!-- screenshot:C-06 -->
 
-![変更後の「こんにちは！」というセリフを表示したローカルプレビュー](../images/tutorials/dsl4/create/tutorial-create-06-updated-dialogue.png)
+![変更後の「地震だ！」というセリフを表示したローカルプレビュー](../images/tutorials/dsl4/create/tutorial-create-06-updated-dialogue.png)
 
 _台本で変更したセリフがプレビューへ反映されたことを確認します。画像は公開starterを再現したfixtureです。_
 
@@ -187,7 +187,7 @@ _台本で変更したセリフがプレビューへ反映されたことを確�
 
 次は、`addition-kit`の追加素材を使います。一度に一種類ずつ追加します。
 
-1. `addition-kit/new-beach.svg`と`addition-kit/friend.svg`を`tutorial-story`直下へコピーする
+1. `addition-kit/earthquake-classroom.svg`と`addition-kit/protect-head.svg`を`tutorial-story`直下へコピーする
 2. `addition-kit/add-background-and-actor.yml.txt`を開き、`assets`、`actors`、`scenes`を同じ形にする
 3. `story.kamishibai.yaml`を保存する
 
@@ -195,55 +195,49 @@ _台本で変更したセリフがプレビューへ反映されたことを確�
 
 ```yaml
 assets:
-  Beach:
+  Classroom:
     kind: backdrop
-    file: beach.svg
-  TurtleIdle:
+    file: classroom.svg
+  StudentReady:
     kind: costume
-    target: Turtle
-    file: turtle.svg
-  NewBeach:
+    target: Student
+    file: student-ready.svg
+  EarthquakeClassroom:
     kind: backdrop
-    file: new-beach.svg
-  FriendIdle:
+    file: earthquake-classroom.svg
+  ProtectHead:
     kind: costume
-    target: Friend
-    file: friend.svg
+    target: Student
+    file: protect-head.svg
 ```
 
 ```yaml
 actors:
-  Turtle: TurtleIdle
-  Friend: FriendIdle
+  Student: StudentReady
 ```
 
 ```yaml
 scenes:
-  opening:
-    - stage: Beach
-    - Turtle.show:
-        skin: TurtleIdle
-        x: 0
-        y: -70
-        scale: 45
-    - Turtle.say:
-        text: こんにちは！
-        seconds: 2
-  meeting:
-    - stage: NewBeach
-    - Friend.show:
-        skin: FriendIdle
-        x: 80
+  earthquake:
+    - stage: Classroom
+    - Student.show:
+        skin: StudentReady
+        x: -90
         y: -55
-        scale: 38
-    - Friend.say:
-        text: こんにちは、カメさん！
+        scale: 58
+    - Student.say:
+        text: 地震だ！
         seconds: 2
+  instruction:
+    - stage: EarthquakeClassroom
+    - Student.say:
+        text: 自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！
+        seconds: 4
 ```
 
 <!-- screenshot:C-07 -->
 
-![new-beach.svgとfriend.svgを作品フォルダー直下へ追加したファイルツリー](../images/tutorials/dsl4/create/tutorial-create-07-added-files.png)
+![earthquake-classroom.svgとprotect-head.svgを作品フォルダー直下へ追加したファイルツリー](../images/tutorials/dsl4/create/tutorial-create-07-added-files.png)
 
 _追加素材の背景と登場人物の画像を作品フォルダー直下へコピーします。画像は公開starterの配置を再現したfixtureです。_
 
@@ -251,84 +245,81 @@ _追加素材の背景と登場人物の画像を作品フォルダー直下へ�
 
 <!-- screenshot:C-08 -->
 
-![新しい背景と登場人物を確認して先頭からの更新を選ぶダイアログ](../images/tutorials/dsl4/create/tutorial-create-08-asset-reload-dialog.png)
+![揺れている教室と頭を守る見本を確認して先頭からの更新を選ぶダイアログ](../images/tutorials/dsl4/create/tutorial-create-08-asset-reload-dialog.png)
 
-_追加した`NewBeach`と`FriendIdle`を確認し、先頭から更新します。画像はasset差分契約を再現したfixtureです。_
+_追加した`EarthquakeClassroom`と`ProtectHead`を確認し、先頭から更新します。画像はasset差分契約を再現したfixtureです。_
 
 先頭から再開し、新しい背景、登場人物、場面が表示されることを確認します。表示されない場合は、
 ファイル名と台本の`file`が同じか確認します。
 
 <!-- screenshot:C-09 -->
 
-![追加した背景の前に新しい登場人物とセリフが表示されたローカルプレビュー](../images/tutorials/dsl4/create/tutorial-create-09-backdrop-actor.png)
+![揺れている教室に具体的な安全行動の指示が表示されたローカルプレビュー](../images/tutorials/dsl4/create/tutorial-create-09-backdrop-actor.png)
 
-_新しい背景、登場人物、`meeting`場面が表示されたことを確認します。画像は公開addition kitを再現したfixtureです。_
+_揺れている教室、頭を守る見本、`instruction`場面が表示されたことを確認します。画像は公開addition kitを再現したfixtureです。_
 
 ## 6. ポーズ場面を追加する
 
-スターターに同梱された`rescue-pose`を使う場面を追加します。このモデルには`help`というポーズが
-登録済みです。`addition-kit/add-pose-scene.yml.txt`を開き、`assets`、`actors`、`scenes`を見本と
+スターターに同梱された`safety-pose`を使う場面を追加します。このモデルには`頭を守る`というポーズが
+登録済みです。これは浦島太郎の最終場面で使う「ひざまずいて両手で頭を抱える」姿勢の学習済みクラスを、
+同じ身体形状の「しゃがんで両手で頭を守る」見本へ転用したものです。
+`addition-kit/add-pose-scene.yml.txt`を開き、`assets`、`actors`、`scenes`を見本と
 同じ形にして保存します。追加するアセットと場面は次の部分です。
 
 ```yaml
 assets:
-  Beach:
+  Classroom:
     kind: backdrop
-    file: beach.svg
-  TurtleIdle:
+    file: classroom.svg
+  StudentReady:
     kind: costume
-    target: Turtle
-    file: turtle.svg
-  NewBeach:
+    target: Student
+    file: student-ready.svg
+  EarthquakeClassroom:
     kind: backdrop
-    file: new-beach.svg
-  FriendIdle:
+    file: earthquake-classroom.svg
+  ProtectHead:
     kind: costume
-    target: Friend
-    file: friend.svg
-  RescuePose:
+    target: Student
+    file: protect-head.svg
+  SafetyPose:
     kind: poseModel
-    file: rescue-pose
+    file: safety-pose
     loading: lazy
-  RescueSound:
+  SuccessSound:
     kind: sound
-    file: opening.mp3
+    file: success.mp3
 ```
 
 ```yaml
 scenes:
-  opening:
-    - stage: Beach
-    - Turtle.show:
-        skin: TurtleIdle
-        x: 0
-        y: -70
-        scale: 45
-    - Turtle.say:
-        text: こんにちは！
-        seconds: 2
-  meeting:
-    - stage: NewBeach
-    - Friend.show:
-        skin: FriendIdle
-        x: 80
+  earthquake:
+    - stage: Classroom
+    - Student.show:
+        skin: StudentReady
+        x: -90
         y: -55
-        scale: 38
-    - Friend.say:
-        text: こんにちは、カメさん！
+        scale: 58
+    - Student.say:
+        text: 地震だ！
         seconds: 2
-  rescue:
-    poseModel: RescuePose
+  instruction:
+    - stage: EarthquakeClassroom
+    - Student.say:
+        text: 自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！
+        seconds: 4
+  protect:
+    poseModel: SafetyPose
     actions:
-      - stage: Beach
-      - Turtle.pose:
+      - stage: EarthquakeClassroom
+      - Student.pose:
           steps:
-            - pose: help
-              skin: TurtleIdle
-              sound: RescueSound
-      - Turtle.say:
-          text: 助けてくれて、ありがとう！
-          seconds: 2
+            - pose: 頭を守る
+              skin: ProtectHead
+              sound: SuccessSound
+      - Student.say:
+          text: できた！ 揺れがおさまるまで待とう。
+          seconds: 3
 ```
 
 このチュートリアルでは、ポーズモデルそのものは作りません。プレビューを先頭から更新し、カメラを
@@ -342,17 +333,17 @@ _カメラ操作を右上、更新状態を上中央へ分けた固定layoutを�
 
 ## 7. 診断を読んで修正する
 
-`story.kamishibai.yaml`の`Turtle.say`を一か所だけ`Turtle.sya`へ変え、保存します。保存した内容は
+`story.kamishibai.yaml`の`Student.say`を一か所だけ`Student.sya`へ変え、保存します。保存した内容は
 自動で検査されます。不正な台本へ切り替わらず、画面では最後に正常だった作品がそのまま動き、診断に
 ファイル名、行、`K4-SCHEMA-UNKNOWN-KEY`、未知の命令であることが表示されます。
 
 <!-- screenshot:C-11 -->
 
-![story.kamishibai.yamlのファイル名、行、Turtle.syaの未知命令、修正方法を示した診断画面](../images/tutorials/dsl4/create/tutorial-create-11-diagnostic.png)
+![story.kamishibai.yamlのファイル名、行、Student.syaの未知命令、修正方法を示した診断画面](../images/tutorials/dsl4/create/tutorial-create-11-diagnostic.png)
 
 _不正な保存では最後に正常だった作品を保ち、診断のファイル名、行、コード、説明から台本を直します。_
 
-`Turtle.sya`を`Turtle.say`へ直して保存します。自動検査に成功すると診断が消え、修正した台本へ
+`Student.sya`を`Student.say`へ直して保存します。自動検査に成功すると診断が消え、修正した台本へ
 自動で復旧します。別の検証コマンドを実行する必要はありません。
 
 ## 8. メニューから配布用SB3を作る
@@ -391,8 +382,8 @@ _台本と素材が正常で、フォルダーの読み取り権限があると�
 
 _完成したSB3をTurboWarpで開き、緑の旗から再生します。画像は操作位置を示すfixtureです。_
 
-タイトルから開始し、「遊ぶ」と同じ順序で最後まで再生します。変更したセリフ、新しい背景、登場人物、
-ポーズ場面がすべて表示されれば完成です。
+タイトルから開始し、「遊ぶ」と同じ順序で最後まで再生します。「地震だ！」という発端、教室の背景、
+具体的な安全行動の案内、「頭を守る」ポーズ場面がすべて表示されれば完成です。
 
 ## 完了チェック
 

@@ -215,7 +215,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   });
   assert.equal(
     screenshotManifest.sampleBaseline.commit,
-    '19d0670f4afd95d1b6cbbde4ef575e8e18800a3a',
+    'aea5d71e84794f4f25af294f05c09199071cde85',
   );
   assert.equal(screenshotManifest.sampleBaseline.pullRequestState, 'merged');
   assert.equal(
@@ -270,15 +270,15 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(screenshotManifest.capturePolicy.sourcePathsVisible, false);
   assert.equal(screenshotManifest.capturePolicy.cameraPermissionRequired, false);
   assert.equal(screenshotManifest.capturePolicy.cameraSubject, 'synthetic-fixture');
-  assert.equal(screenshotManifest.capturePolicy.capturedAt, '2026-08-12T19:42:31+09:00');
-  assert.match(screenshotManifest.capturePolicy.browser, /Google Chrome 151/u);
+  assert.equal(screenshotManifest.capturePolicy.capturedAt, '2026-08-13T08:11:40+09:00');
+  assert.match(screenshotManifest.capturePolicy.browser, /Codex In-app Browser/u);
   assert.match(screenshotManifest.capturePolicy.provenance.privacy, /no real person/u);
 
   for (const captureId of ['P-01', 'P-02']) {
     const capture = screenshotManifest.captures.find(({id}) => id === captureId);
-    assert.equal(capture.capturedAt, '2026-08-13T01:18:23+09:00');
+    assert.equal(capture.capturedAt, '2026-08-13T08:11:40+09:00');
     assert.equal(capture.captureProvenance.sampleCommit, screenshotManifest.sampleBaseline.commit);
-    assert.equal(capture.captureProvenance.pagesDeploymentRun, 31615900357);
+    assert.equal(capture.captureProvenance.pagesDeploymentRun, 31649836275);
   }
 
   const expectedIds = [
@@ -372,10 +372,11 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.deepEqual(tutorialSampleGate.dependencies, [
     'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94',
     'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/100',
+    'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/102',
   ]);
   assert(
     tutorialSampleGate.evidence.includes(
-      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/101',
+      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/103',
     ),
   );
   assert.match(tutorialSampleGate.description, /starter、addition kit、Web版、SB3/u);
@@ -455,14 +456,14 @@ test('keeps the published prerelease reviewable with its fixed captures', () => 
   assert.match(tutorialSources['create.md'], /validate-dsl4/u);
   assert.match(tutorialSources['create.md'], /build-dsl4/u);
   assert.match(tutorialSources['create.md'], /4\.0\.0-rc\.2/u);
-  assert.match(tutorialSources['create.md'], /addition-kit\/new-beach\.svg/u);
+  assert.match(tutorialSources['create.md'], /addition-kit\/earthquake-classroom\.svg/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/add-pose-scene\.yml\.txt/u);
-  assert.match(tutorialSources['create.md'], /file: beach\.svg/u);
-  assert.match(tutorialSources['create.md'], /file: turtle\.svg/u);
-  assert.match(tutorialSources['create.md'], /file: new-beach\.svg/u);
+  assert.match(tutorialSources['create.md'], /file: classroom\.svg/u);
+  assert.match(tutorialSources['create.md'], /file: student-ready\.svg/u);
+  assert.match(tutorialSources['create.md'], /file: earthquake-classroom\.svg/u);
   assert.match(tutorialSources['create.md'], /更新状態ボタン[\s\S]*再開位置[\s\S]*再開方針/u);
-  assert.match(tutorialSources['create.md'], /poseModel: RescuePose/u);
-  assert.match(tutorialSources['create.md'], /`Turtle\.sya`を`Turtle\.say`へ直/u);
+  assert.match(tutorialSources['create.md'], /poseModel: SafetyPose/u);
+  assert.match(tutorialSources['create.md'], /`Student\.sya`を`Student\.say`へ直/u);
   const advancedCli = tutorialSources['create.md'].indexOf('## 高度な利用者・CI向けのCLI（任意）');
   assert(advancedCli > 0);
   const generalAuthorFlow = tutorialSources['create.md'].slice(0, advancedCli);
@@ -495,15 +496,15 @@ test('routes general users and script authors before implementation details', ()
   assert.match(tutorialSources['create.md'], /\[TMPose紙芝居 4\.0 チュートリアル\]\(index\.md\)/u);
   assert.match(tutorialSources['create.md'], /## 最初のゴール/u);
   assert.match(tutorialSources['create.md'], /ここではまだ編集せず、Step 1から順番に進めます/u);
-  assert.match(tutorialSources['create.md'], /text: 助けて！/u);
-  assert.match(tutorialSources['create.md'], /text: こんにちは！/u);
+  assert.match(tutorialSources['create.md'], /text: なにがおきたの？/u);
+  assert.match(tutorialSources['create.md'], /text: 地震だ！/u);
   assert.match(tutorialSources['create.md'], /Scratchのブロックは追加しません/u);
   assert.match(tutorialSources['play.md'], /stories\/tutorial\/web-4\.0\//u);
   assert.match(tutorialSources['create.md'], /tutorial-story-starter-4\.0\.zip/u);
 
   const previewStep = tutorialSources['create.md'].indexOf('## 3. TurboWarpで作品フォルダーを開く');
   const editStep = tutorialSources['create.md'].indexOf('## 4. セリフを変更する');
-  const changedDialogue = tutorialSources['create.md'].indexOf('text: こんにちは！');
+  const changedDialogue = tutorialSources['create.md'].indexOf('text: 地震だ！');
   assert(previewStep >= 0 && previewStep < editStep && editStep < changedDialogue);
 });
 

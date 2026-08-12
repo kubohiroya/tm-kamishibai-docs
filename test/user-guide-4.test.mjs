@@ -42,7 +42,7 @@ test('covers the public start-to-finish operation path', () => {
 test('keeps live-surface evidence in the machine-readable manifest', () => {
   assert.equal(surfaces.formatVersion, 1);
   assert.equal(surfaces.releaseState.formalGitHubReleasePublished, false);
-  assert.equal(surfaces.samples.pagesDeploymentRun, 31615900357);
+  assert.equal(surfaces.samples.pagesDeploymentRun, 31649836275);
   assert.equal(surfaces.releaseState.publishedPrerelease, 'v4.0.0-rc.2');
   assert.equal(surfaces.samples.runtime.version, '4.0.0-rc.2');
   assert.equal(surfaces.samples.runtime.commit, '9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014');
