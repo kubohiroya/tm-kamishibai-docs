@@ -41,7 +41,7 @@ test('shows the same release boundary on the 4.0 top and every 4.0 document', ()
   assert.match(dsl4Index, /現在公開中の正式版は\s*<code>v3\.2\.3<\/code>/u);
   assert.match(dsl4Index, /user-guides\/user-guide-4\.0/u);
 
-  assert.equal(dsl4Documents.length, 12);
+  assert.equal(dsl4Documents.length, 13);
   for (const {sourceFilename, source} of dsl4Documents) {
     if (sourceFilename.startsWith('executive-summary-') || sourceFilename === 'user-guide-4.0.md') {
       assert.match(source, /公開前|公開準備中/u);

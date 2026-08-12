@@ -117,6 +117,15 @@ export const documentCollections = [
           '台本の項目や命令について、使える値、必須条件、制約を検索するための仕様一覧です。入門手順は扱いません。',
       },
       {
+        sourceFilename: 'dsl-4.0-history.md',
+        sourceDirectory: 'dsl-author-guides',
+        outputDirectory: 'dsl-author-guides',
+        title: '紙芝居DSL 4.0 リリース履歴',
+        audience: '4.0の公開を管理・確認する開発／リリース担当者',
+        description:
+          '候補版と正式版を区別し、確認したソース、配布物、既知の制約、公開状態を版ごとに記録します。一般向けの操作手順ではありません。',
+      },
+      {
         sourceFilename: 'dsl-3.2-to-4.0-conversion-guide.md',
         sourceDirectory: 'dsl-author-guides',
         outputDirectory: 'dsl-author-guides',

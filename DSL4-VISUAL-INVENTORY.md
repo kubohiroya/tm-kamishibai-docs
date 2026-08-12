@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 確認日: 2026年8月12日\
-対象: `docs/config.mjs`で4.0として公開する12 publication
+対象: `docs/config.mjs`で4.0として公開する13 publication
 
 ## 判定基準
 
@@ -44,6 +44,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | [`user-guide-4.0`](docs/user-guides/user-guide-4.0.md)全体                                                                     | サンプル作品をどう始め、進め、終了・復旧するか        | 文章・表で十分。正式UI画像を必須としない                   | P1     | 番号列、操作表、保守情報を分離したmachine manifest |
 | [`dsl-4.0-author-guide`](docs/dsl-author-guides/dsl-4.0-author-guide.md)「読み進め方」「最小台本」                             | 最初の作品をどの順で完成させるか                      | 既存図で十分                                               | P1     | semantic HTML、caption、診断時の戻り先             |
 | [`dsl-4.0-schema-reference`](docs/dsl-author-guides/dsl-4.0-schema-reference.md)全体                                           | 項目の型、必須性、制約は何か                          | 文章・表で十分。通読用の図を追加しない                     | P3     | 生成Markdown。byte-for-byte再生成                  |
+| [`dsl-4.0-history`](docs/dsl-author-guides/dsl-4.0-history.md)全体                                                             | 版ごとに何が固定され、どこまで公開されたか            | 文章・表で十分。冒頭で対象読者と用語を説明                 | P1／P3 | history manifest、Markdown表、一次情報へのリンク   |
 | [`dsl-3.2-to-4.0-conversion-guide`](docs/dsl-author-guides/dsl-3.2-to-4.0-conversion-guide.md)全体                             | 元ファイルを守りながら、どの順で変換・検証するか      | 既存図で十分                                               | P1     | semantic HTML、caption、rollback注記               |
 | [`application-materials-guide-4.0`](docs/developer-guides/application-materials-guide-4.0.md)全8ページ                         | 作品、教材活動、作成用ツールがどうつながるか          | 既存図で十分                                               | P1／P2 | semantic HTML 2図、既存教材画像1図、caption・alt   |
 | [`developer-guide-4.0`](docs/developer-guides/developer-guide-4.0.md)全体                                                      | どの変更をどのsourceとtestで扱うか                    | 文章・表で十分。内部処理図は専門文書へ委譲                 | P1／P2 | Markdown表、コピー可能なpath                       |

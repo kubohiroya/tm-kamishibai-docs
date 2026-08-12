@@ -14,6 +14,7 @@ const createTutorial = read('docs/tutorials/create.md');
 const authorGuide = read('docs/dsl-author-guides/dsl-4.0-author-guide.md');
 const conversionGuide = read('docs/dsl-author-guides/dsl-3.2-to-4.0-conversion-guide.md');
 const schemaReference = read('docs/dsl-author-guides/dsl-4.0-schema-reference.md');
+const releaseHistory = read('docs/dsl-author-guides/dsl-4.0-history.md');
 const applicationGuide = read('docs/developer-guides/application-materials-guide-4.0.md');
 const developerGuide = read('docs/developer-guides/developer-guide-4.0.md');
 const internalSpecification = read('docs/developer-guides/internal-specification-4.0.md');
@@ -86,6 +87,9 @@ test('marks migration and schema documents as purpose-specific references', () =
 });
 
 test('states the audience and prerequisites before developer detail', () => {
+  assert.match(releaseHistory, /開発・リリース担当者向け/u);
+  assert.match(releaseHistory, /アプリの使い方や台本作成の\s*入門書ではありません/u);
+  assert.match(releaseHistory, /## 最初に出てくる言葉/u);
   assert.match(applicationGuide, /新規作品を作る全員の必須手順書でもありません/u);
   assert.match(applicationGuide, /最初に出てくる言葉は、次の意味です/u);
   assert.match(developerGuide, /アプリの使い方や台本作成の入門書ではありません/u);

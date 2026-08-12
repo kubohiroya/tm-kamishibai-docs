@@ -13,6 +13,7 @@ const dsl4Publications = [
   'user-guide-4.0',
   'dsl-4.0-author-guide',
   'dsl-4.0-schema-reference',
+  'dsl-4.0-history',
   'dsl-3.2-to-4.0-conversion-guide',
   'application-materials-guide-4.0',
   'developer-guide-4.0',
@@ -23,7 +24,7 @@ const dsl4Publications = [
 ];
 
 test('records a visual decision for every DSL 4.0 publication', () => {
-  assert.match(inventory, /対象: `docs\/config\.mjs`で4\.0として公開する12 publication/u);
+  assert.match(inventory, /対象: `docs\/config\.mjs`で4\.0として公開する13 publication/u);
 
   for (const publication of dsl4Publications) {
     assert.match(inventory, new RegExp(publication.replaceAll('.', '\\.')));
