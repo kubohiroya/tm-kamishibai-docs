@@ -1,0 +1,147 @@
+{
+  "formatVersion": 1,
+  "candidateId": "dsl4-rc-2026-08-12",
+  "status": "verified-release-candidate",
+  "recordedAt": "2026-08-12T11:55:00+09:00",
+  "runtime": {
+    "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+    "candidateCommit": "28d98125573f3186530fba231ecda844752bb14f",
+    "version": "4.0.0",
+    "schema": {
+      "path": "schema/dsl-4.schema.json",
+      "sha256": "287867c36feff4d3fd7a5b266ab4f27368dd25ca0edc5b8c400fcc64ad08f230"
+    },
+    "releaseSource": {
+      "path": "release-sources/4.0.0/app",
+      "commit": "dc8f65eb9f9b68d778ba3b4fd9da0926b42ff4e9"
+    },
+    "standardArtifact": {
+      "path": "dist/downloads/kamishibai-4.0.sb3",
+      "buildDate": "2026-08-12",
+      "size": 7633722,
+      "sha256": "ab8bfefab37620538db27e4846334723d567c64bf7972d8a962287feb2a72807"
+    },
+    "packageTarball": {
+      "publicationState": "npm-publish-dry-run",
+      "filename": "kubohiroya-tmpose-kamishibai-4.0.0.tgz",
+      "size": 5499295,
+      "sha256": "19117725dc8fa291776087ea9250025a557f0a1db6174cab9d94c4bdf476d8b7"
+    },
+    "featureFlags": {
+      "defaultState": "all-off",
+      "standardProductionEnabled": [
+        "dsl4Runtime",
+        "dsl4AppShell",
+        "dsl4PoseFeedbackModes",
+        "dsl4SpeechAdvanceTypewriter"
+      ],
+      "nonEmbeddedDevelopmentAdditionalEnabled": [
+        "dsl4WebPreviewAdapter",
+        "dsl4PreviewReloadOverlay",
+        "dsl4Debugger"
+      ]
+    }
+  },
+  "samples": {
+    "repository": "https://github.com/kubohiroya/tmpose-kamishibai-samples",
+    "candidateCommit": "dc9f6626de9ef85ca71312402fd139082922b867",
+    "pullRequest": 91,
+    "runtimeCommit": "8ea06bfd100b106f559cb25a280fab5570e42919",
+    "baseSourceCommit": "98cec94387cac726e947cf2454e3f0c5e9146061",
+    "urashima": {
+      "sb3": {
+        "path": "stories/urashima/urashima-4.0.sb3",
+        "size": 42437519,
+        "sha256": "a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a"
+      },
+      "web": {
+        "path": "dist/stories/urashima/web-4.0/index.html",
+        "size": 67069097,
+        "sha256": "6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1"
+      }
+    },
+    "myUrashima": {
+      "sb3": {
+        "path": "stories/my-urashima/my-urashima-4.0.sb3",
+        "size": 22406696,
+        "sha256": "e4e7fe7d9c525ef2f50a438785879e93e00468b8a9e5bd1677a6ec1a14f8359c"
+      },
+      "web": {
+        "path": "dist/stories/my-urashima/web-4.0/index.html",
+        "size": 42758087,
+        "sha256": "eeb01e05fdbc8df6d850a8e817d43cfb405b7ca90ab419c5ff18ae01f981f64e"
+      }
+    }
+  },
+  "environment": {
+    "os": "macOS 27.0 (Build 26A5388g)",
+    "chrome": "151.0.7922.137",
+    "cameraDeviceLabel": "not-retained",
+    "cameraFrameStorage": false,
+    "allowedOrigins": ["localhost", "https"]
+  },
+  "evidence": {
+    "physicalCameraAndPose": {
+      "status": "pass",
+      "verifiedOn": "2026-08-12",
+      "source": "user-confirmed",
+      "issue": "https://github.com/kubohiroya/tmpose-kamishibai/issues/510",
+      "record": "https://github.com/kubohiroya/tmpose-kamishibai/issues/510#issuecomment-5255177777",
+      "firstFeedbackMs": null,
+      "firstFeedbackMsReason": "not-retained-in-the-completion-record"
+    },
+    "currentCandidateApplicability": {
+      "sampleRuntimeIsCandidateAncestor": true,
+      "cameraPoseCorePathsChanged": false,
+      "currentCandidateAutomatedCapabilitySmoke": "pass"
+    },
+    "upstreamVerification": {
+      "status": "pass",
+      "commands": ["pnpm verify:full", "pnpm release:check"],
+      "unitTests": 1148,
+      "chromiumTests": 57,
+      "githubActions": "https://github.com/kubohiroya/tmpose-kamishibai/actions/runs/31551313527"
+    },
+    "sampleVerification": {
+      "status": "pass",
+      "commands": ["pnpm test", "pnpm build", "pnpm test:web", "pnpm verify"],
+      "unitTests": 22,
+      "publishedFiles": 111,
+      "sourceAssets": 48,
+      "githubActions": "https://github.com/kubohiroya/tmpose-kamishibai-samples/actions/runs/31511056568"
+    },
+    "documentationVerification": {
+      "status": "pass",
+      "command": "pnpm check",
+      "tests": 94,
+      "publications": 26,
+      "htmlFiles": 105,
+      "workshopPdfs": 2,
+      "browserVisual": {
+        "status": "pass",
+        "pages": [
+          "/4.0/",
+          "/4.0/developer-guides/release-smoke-4.0/",
+          "/4.0/developer-guides/release-smoke-4.0/document.html"
+        ],
+        "horizontalOverflow": false,
+        "brokenImages": 0
+      }
+    }
+  },
+  "releaseStops": [
+    "candidate-metadata-mismatch",
+    "artifact-integrity-mismatch",
+    "schema-or-feature-flag-change",
+    "browser-console-or-page-error",
+    "camera-or-pose-transition-failure",
+    "asset-or-diagnostic-failure",
+    "resource-leak",
+    "nondeterministic-build"
+  ],
+  "rollback": {
+    "recommendedVersion": "3.2.3",
+    "preRelease": "discard-candidate-and-keep-3.2.3-recommended",
+    "postRelease": "deprecate-and-annotate-then-release-a-new-patch"
+  }
+}

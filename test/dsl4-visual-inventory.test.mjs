@@ -18,10 +18,11 @@ const dsl4Publications = [
   'internal-specification-4.0',
   'extension-guide-4.0',
   'dsl-4.0-diagnostics-design',
+  'release-smoke-4.0',
 ];
 
 test('records a visual decision for every DSL 4.0 publication', () => {
-  assert.match(inventory, /対象: `docs\/config\.mjs`で4\.0として公開する10 publication/u);
+  assert.match(inventory, /対象: `docs\/config\.mjs`で4\.0として公開する11 publication/u);
 
   for (const publication of dsl4Publications) {
     assert.match(inventory, new RegExp(publication.replaceAll('.', '\\.')));

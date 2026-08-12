@@ -214,6 +214,14 @@ export const documentCollections = [
         description:
           'Scratch VMテストでは確認できないEditor、カメラ、TMPose、Packagerのrelease smoke手順をまとめます。',
       },
+      {
+        sourceFilename: 'release-smoke-4.0.md',
+        version: '4.0',
+        title: 'DSL 4.0 release smoke',
+        audience: 'DSL 4.0のリリース候補をブラウザと配布成果物で検証する方',
+        description:
+          'commit、Schema、feature flag、SB3、Web版をchecksum付きで固定し、Preview、camera、pose、診断、安全停止、証跡、rollbackを確認します。',
+      },
     ],
   },
 ];

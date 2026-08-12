@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 確認日: 2026年8月12日\
-対象: `docs/config.mjs`で4.0として公開する10 publication
+対象: `docs/config.mjs`で4.0として公開する11 publication
 
 ## 判定基準
 
@@ -40,6 +40,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | `extension-guide-4.0`「統合1〜9」                                                                                                            | 各providerの入力、出力、権限、fallbackは何か               | 同じdimensionの表を統合単位で反復している                              | 文章・表で十分。画面captureを使わない                      | P2     | Markdown表と固定source link                                 | package更新時に再監査                          |
 | [`dsl-4.0-diagnostics-design`](docs/developer-guides/dsl-4.0-diagnostics-design.md)「レビュー結論」「commit gate」                           | 無効なcandidateを公開せず、どこで安全停止するか            | commit gateの既存図と失敗経路表がある                                  | 既存図で十分                                               | P1     | semantic HTML、caption、validate／activate／runtime失敗注記 | #88で表示確認済み                              |
 | `dsl-4.0-diagnostics-design`「段階別分類」以降                                                                                               | code、診断surface、cleanupをどう対応させるか               | 段階別の表、envelope例、確認表がある                                   | 文章・表で十分                                             | P2     | Markdown表とJSON例                                          | 固定実装commitに追随                           |
+| [`release-smoke-4.0`](docs/developer-guides/release-smoke-4.0.md)全体                                                                        | candidateを何で固定し、どこで公開を止めるか                | exact値の表、copy可能なcommand、判定表、証跡treeがある                 | 文章・表・codeで十分。camera frameを保存しない             | P1     | candidate manifest、Markdown表、code block                  | #47、実機結果は上流#510                        |
 
 ## P1判定の結果
 
