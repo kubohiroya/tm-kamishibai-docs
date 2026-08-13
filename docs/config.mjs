@@ -20,7 +20,6 @@ export const documentUpdatedAt = Object.freeze({
   'dsl-4.0-schema-reference.md': '2026-08-12',
   'dsl-4.0-history.md': '2026-08-12',
   'dsl-3.2-to-4.0-conversion-guide.md': '2026-08-12',
-  'index.md': '2026-08-13',
   'play.md': '2026-08-13',
   'create.md': '2026-08-13',
   'application-materials-guide.md': '2026-08-09',
@@ -42,7 +41,7 @@ export const documentCollections = [
   {
     id: 'user-guides',
     version: '3.2',
-    title: '一般向けドキュメント',
+    title: '紙芝居を見る人向けドキュメント',
     documents: [
       {
         sourceFilename: 'executive-summary-adult.md',
@@ -95,7 +94,7 @@ export const documentCollections = [
   {
     id: 'dsl-3.2-guides',
     version: '3.2',
-    title: '紙芝居DSL 3.2 公式ドキュメント',
+    title: '台本を作る人向けドキュメント',
     documents: [
       {
         sourceFilename: 'dsl-manual.md',
@@ -129,7 +128,7 @@ export const documentCollections = [
   {
     id: 'dsl-4.0-guides',
     version: '4.0',
-    title: '紙芝居DSL 4.0 公式ドキュメント',
+    title: '台本を作る人向けドキュメント',
     documents: [
       {
         sourceFilename: 'dsl-4.0-author-guide.md',
@@ -175,18 +174,9 @@ export const documentCollections = [
     title: 'TMPose紙芝居 4.0 チュートリアル',
     documents: [
       {
-        sourceFilename: 'index.md',
-        publicationBasename: '',
-        listedOnVersionTop: true,
-        title: 'TMPose紙芝居 4.0 チュートリアル',
-        audience: '初めて紙芝居で遊ぶ方・初めてDSL 4.0の作品を作る方',
-        description:
-          '公開サンプルで遊ぶ10〜15分の手順と、スターターから作品を作る60〜90分の手順を、目的に合わせて選べます。',
-      },
-      {
         sourceFilename: 'play.md',
         publicationBasename: 'play',
-        listedOnVersionTop: false,
+        listedOnVersionTop: true,
         title: '紙芝居を遊ぶ',
         audience: '初めてTMPose紙芝居を再生する方',
         description: '公開サンプルを開き、ポーズを使って物語を最後まで進める手順を説明します。',
@@ -194,7 +184,7 @@ export const documentCollections = [
       {
         sourceFilename: 'create.md',
         publicationBasename: 'create',
-        listedOnVersionTop: false,
+        listedOnVersionTop: true,
         title: '紙芝居を作る',
         audience: '初めて紙芝居DSL 4.0を書く方',
         description: '公開スターターを変更し、プレビュー、検査、ビルドを経て作品を完成させます。',
@@ -204,7 +194,7 @@ export const documentCollections = [
   {
     id: 'developer-guides',
     version: '3.2',
-    title: '開発者向けドキュメント',
+    title: 'アプリを開発する人向けドキュメント',
     documents: [
       {
         sourceFilename: 'application-materials-guide.md',

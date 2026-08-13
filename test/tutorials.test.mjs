@@ -29,7 +29,7 @@ const dsl4Schema = JSON.parse(
   readFileSync(path.join(projectRoot, 'sources/dsl4/dsl-4.schema.json'), 'utf8'),
 );
 const tutorialSources = Object.fromEntries(
-  ['README.md', 'index.md', 'play.md', 'create.md'].map((filename) => [
+  ['README.md', 'play.md', 'create.md'].map((filename) => [
     filename,
     readFileSync(path.join(tutorialRoot, filename), 'utf8'),
   ]),
@@ -65,19 +65,14 @@ test('registers the tutorial publications without changing the active AppBar con
       })),
     [
       {
-        sourceFilename: 'index.md',
-        publicationOutputDirectory: '4.0/tutorials',
-        listedOnVersionTop: true,
-      },
-      {
         sourceFilename: 'play.md',
         publicationOutputDirectory: '4.0/tutorials/play',
-        listedOnVersionTop: false,
+        listedOnVersionTop: true,
       },
       {
         sourceFilename: 'create.md',
         publicationOutputDirectory: '4.0/tutorials/create',
-        listedOnVersionTop: false,
+        listedOnVersionTop: true,
       },
     ],
   );
@@ -130,29 +125,64 @@ test('fixes the versioned tutorial publication plan without adding an AppBar ite
   assert.equal(publicationPlan.targetDslVersion, '4.0');
   assert.deepEqual(publicationPlan.listing, {
     source: 'site/4.0/index.html',
-    sectionId: 'user-documents',
-    title: 'TMPose紙芝居 4.0 チュートリアル',
-    entryCount: 1,
-    entrySource: 'index.md',
+    entryCount: 2,
+    entries: [
+      {
+        sectionId: 'user-documents',
+        categoryTitle: '紙芝居を見る人向けドキュメント',
+        title: '紙芝居を遊ぶ',
+        entrySource: 'play.md',
+      },
+      {
+        sectionId: 'dsl-documents',
+        categoryTitle: '台本を作る人向けドキュメント',
+        title: '紙芝居を作る',
+        entrySource: 'create.md',
+      },
+    ],
   });
   const listingSource = readFileSync(
     path.join(projectRoot, publicationPlan.listing.source),
     'utf8',
   );
-  assert.match(listingSource, /id="user-documents"/u);
+  for (const {sectionId, categoryTitle, title, entrySource} of publicationPlan.listing.entries) {
+    const section = listingSource.match(
+      new RegExp(`<section aria-labelledby="${sectionId}">[\\s\\S]*?<\\/section>`, 'u'),
+    )?.[0];
+    assert.ok(section);
+    assert.match(section, new RegExp(`<h2 id="${sectionId}">${categoryTitle}<\\/h2>`, 'u'));
+    assert.match(section, new RegExp(`>[^<]*${title}<\\/h3>`, 'u'));
+    assert.match(
+      section,
+      new RegExp(`href="tutorials/${entrySource.replace(/\.md$/u, '')}/"`, 'u'),
+    );
+  }
+  assert.doesNotMatch(listingSource, /<h3>[\s\S]*?TMPose紙芝居 4\.0 チュートリアル[\s\S]*?<\/h3>/u);
   assert.deepEqual(
     publicationPlan.pages.map(({source, publicPath, role}) => [source, publicPath, role]),
     [
-      ['index.md', '/4.0/tutorials/', 'entry'],
       ['play.md', '/4.0/tutorials/play/', 'play'],
       ['create.md', '/4.0/tutorials/create/', 'create'],
     ],
   );
-  assert.equal(new Set(publicationPlan.pages.map(({publicPath}) => publicPath)).size, 3);
+  assert.equal(new Set(publicationPlan.pages.map(({publicPath}) => publicPath)).size, 2);
   for (const page of publicationPlan.pages) {
     assert(page.publicPath.startsWith('/4.0/tutorials/'));
     assert.equal(readFileSync(path.join(tutorialRoot, page.source), 'utf8').length > 0, true);
   }
+  assert.deepEqual(publicationPlan.redirects, [
+    {
+      source: 'site/4.0/tutorials/index.html',
+      from: '/4.0/tutorials/',
+      to: '/4.0/',
+    },
+  ]);
+  const redirectSource = readFileSync(
+    path.join(projectRoot, publicationPlan.redirects[0].source),
+    'utf8',
+  );
+  assert.match(redirectSource, /http-equiv="refresh" content="0; url=\.\.\/"/u);
+  assert.match(redirectSource, /rel="canonical"[^>]*\/4\.0\//u);
   assert.deepEqual(
     publicationPlan.activationGates,
     screenshotManifest.gates.map(({id}) => id),
@@ -178,8 +208,9 @@ test('fixes the versioned tutorial publication plan without adding an AppBar ite
     ),
   );
   assert.deepEqual(publicationPlan.rollback, {
-    removeListingEntry: true,
+    removeListingEntries: true,
     unpublishPages: true,
+    restoreOverviewPage: true,
     preserveAppBar: true,
     preserveDsl32: true,
   });
@@ -448,7 +479,11 @@ test('keeps the published prerelease reviewable with its fixed captures', () => 
   assert.match(tutorialSources['README.md'], /公開プレリリース/u);
   assert.match(tutorialSources['README.md'], /\/4\.0\/tutorials\/play\//u);
   assert.match(tutorialSources['README.md'], /\/4\.0\/tutorials\/create\//u);
-  assert.match(tutorialSources['README.md'], /4\.0トップには3ページを個別に並べず/u);
+  assert.match(
+    tutorialSources['README.md'],
+    /「紙芝居を遊ぶ」を[\s\S]*「紙芝居を見る人向けドキュメント」/u,
+  );
+  assert.match(tutorialSources['README.md'], /「紙芝居を作る」を「台本を作る人向けドキュメント」/u);
   assert.match(tutorialSources['README.md'], /AppBarへ独立した「チュートリアル」項目は追加せず/u);
   assert.match(tutorialSources['play.md'], /## 完了チェック/u);
   assert.match(tutorialSources['create.md'], /Scratchのブロックは追加しません/u);
@@ -482,22 +517,17 @@ test('keeps the published prerelease reviewable with its fixed captures', () => 
 });
 
 test('routes general users and script authors before implementation details', () => {
-  assert.match(tutorialSources['index.md'], /\[紙芝居で遊ぶ\]\(play\.md\)/u);
-  assert.match(tutorialSources['index.md'], /\[紙芝居を作る\]\(create\.md\)/u);
-  assert.match(tutorialSources['index.md'], /10〜15分/u);
-  assert.match(tutorialSources['index.md'], /60〜90分/u);
-  assert.match(tutorialSources['index.md'], /最初にすること/u);
-  assert.match(tutorialSources['index.md'], /迷ったら/u);
-  assert.doesNotMatch(
-    tutorialSources['index.md'],
-    /repository|commit|SHA-256|CLI|Source Graph|candidate|port/iu,
+  assert.match(
+    tutorialSources['play.md'],
+    /入口: \[TMPose紙芝居 4\.0 ドキュメント\]\(https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-docs\/4\.0\/\)/u,
   );
-
-  assert.match(tutorialSources['play.md'], /\[紙芝居チュートリアル\]\(index\.md\)/u);
   assert.match(tutorialSources['play.md'], /## 最初にやること/u);
   assert.match(tutorialSources['play.md'], /台本やコマンドを入力する必要はありません/u);
 
-  assert.match(tutorialSources['create.md'], /\[TMPose紙芝居 4\.0 チュートリアル\]\(index\.md\)/u);
+  assert.match(
+    tutorialSources['create.md'],
+    /入口: \[TMPose紙芝居 4\.0 ドキュメント\]\(https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-docs\/4\.0\/\)/u,
+  );
   assert.match(tutorialSources['create.md'], /## 最初のゴール/u);
   assert.match(tutorialSources['create.md'], /ここではまだ編集せず、Step 1から順番に進めます/u);
   assert.match(tutorialSources['create.md'], /text: なにがおきたの？/u);

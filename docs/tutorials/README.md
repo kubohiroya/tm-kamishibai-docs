@@ -5,7 +5,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 文書状態: 公開プレリリース`4.0.0-rc.3`のブラウザー完結作者flow\
 関連Issue: [ブラウザー作者flow #118](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118) / [本体実装 #555](https://github.com/kubohiroya/tmpose-kamishibai/issues/555) / [正式公開 #111](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/111) / [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31)
 
-読者向け入口: [紙芝居チュートリアル](index.md)
+読者向け入口: [TMPose紙芝居 4.0 ドキュメント](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/)
 
 このREADMEは、チュートリアルを公開する人のための管理メモです。初めて紙芝居を遊ぶ人や台本を作る人は、
 上の読者向け入口から始めてください。
@@ -14,24 +14,26 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 スクリーンショット台帳、4.0ドキュメント一覧への公開計画を保持します。画面名、コマンド、
 サンプルURLは、公開済みのruntimeとsample成果物へ固定します。
 
-3ページを`docs/config.mjs`へ登録し、4.0トップのドキュメント一覧には入口だけを
-1項目として置きます。公開時も
+2ページを`docs/config.mjs`へ登録し、4.0トップのドキュメント一覧には「紙芝居を遊ぶ」と
+「紙芝居を作る」を、それぞれ見る人向け・台本を作る人向けの項目として直接置きます。
+旧総合入口は内容を重複掲載せず、4.0トップへ転送します。公開時も
 AppBarへ独立した「チュートリアル」項目は追加せず、各ページでは既存の「ドキュメント」を現在地にします。
 
 ## 公開時の情報設計
 
-| URL                      | 役割                           | source                 |
-| ------------------------ | ------------------------------ | ---------------------- |
-| `/4.0/tutorials/`        | 二つのチュートリアルを選ぶ入口 | [index.md](index.md)   |
-| `/4.0/tutorials/play/`   | 紙芝居を遊ぶ                   | [play.md](play.md)     |
-| `/4.0/tutorials/create/` | 紙芝居を作る                   | [create.md](create.md) |
+| URL                      | 役割                | source                          |
+| ------------------------ | ------------------- | ------------------------------- |
+| `/4.0/tutorials/`        | `/4.0/`への互換転送 | `site/4.0/tutorials/index.html` |
+| `/4.0/tutorials/play/`   | 紙芝居を遊ぶ        | [play.md](play.md)              |
+| `/4.0/tutorials/create/` | 紙芝居を作る        | [create.md](create.md)          |
 
 初版のチュートリアルはWeb操作を正本とし、PDFを公開しません。詳細な仕様、全field、全action、
 移行、開発者向け手順は既存ドキュメントへリンクし、チュートリアルへ重複掲載しません。
 
 [publication-plan.json](publication-plan.json)を公開先、4.0一覧での項目数、AppBarの現在地、
-activation gate、ロールバック方針の正本とします。4.0トップには3ページを個別に並べず、
-「TMPose紙芝居 4.0 チュートリアル」の1項目だけを置き、入口から「遊ぶ」「作る」へ分岐します。
+activation gate、ロールバック方針の正本とします。4.0トップでは「紙芝居を遊ぶ」を
+「紙芝居を見る人向けドキュメント」、「紙芝居を作る」を「台本を作る人向けドキュメント」に
+直接置きます。各チュートリアルの入口リンクも4.0トップへ戻します。
 
 ## 台本作成ガイドとの役割分担
 
@@ -178,10 +180,10 @@ docs/images/tutorials/dsl4/create/
 
 ## 公開手順
 
-1. `/4.0/tutorials/`、`play/`、`create/`のHTMLを生成し、最初から最後まで追試する
-2. 4.0トップのドキュメント一覧へ1項目だけ追加されることを確認する
+1. `play/`と`create/`のHTMLを生成し、最初から最後まで追試する
+2. 4.0トップの該当カテゴリへ2項目が直接掲載されることを確認する
 3. AppBarの項目数を変えず、既存の「ドキュメント」が現在地になることを確認する
-4. Pages公開後に3 URL、画像、公開サンプルへのリンクを確認する
+4. Pages公開後に2ページ、画像、公開サンプルへのリンクと旧入口からの転送を確認する
 
 ## 関連資料
 

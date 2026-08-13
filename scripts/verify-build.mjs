@@ -296,13 +296,31 @@ async function verifyDocument(document) {
 }
 
 async function verifyIndex() {
-  const [index, dsl32Index, dsl40Index, workshopIndex, licensesIndex] = await Promise.all([
-    readFile(path.join(distRoot, 'index.html'), 'utf8'),
-    readFile(path.join(distRoot, '3.2/index.html'), 'utf8'),
-    readFile(path.join(distRoot, '4.0/index.html'), 'utf8'),
-    readFile(path.join(distRoot, 'workshops/index.html'), 'utf8'),
-    readFile(path.join(distRoot, 'licenses/index.html'), 'utf8'),
-  ]);
+  const [index, dsl32Index, dsl40Index, tutorialRedirect, workshopIndex, licensesIndex] =
+    await Promise.all([
+      readFile(path.join(distRoot, 'index.html'), 'utf8'),
+      readFile(path.join(distRoot, '3.2/index.html'), 'utf8'),
+      readFile(path.join(distRoot, '4.0/index.html'), 'utf8'),
+      readFile(path.join(distRoot, '4.0/tutorials/index.html'), 'utf8'),
+      readFile(path.join(distRoot, 'workshops/index.html'), 'utf8'),
+      readFile(path.join(distRoot, 'licenses/index.html'), 'utf8'),
+    ]);
+  assert(
+    /<meta\b(?=[^>]*\bhttp-equiv="refresh")(?=[^>]*\bcontent="0; url=\.\.\/")[^>]*>/u.test(
+      tutorialRedirect,
+    ),
+    'The retired tutorial overview does not redirect to the DSL 4.0 top.',
+  );
+  assert(
+    /<link\b(?=[^>]*\brel="canonical")(?=[^>]*\bhref="https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-docs\/4\.0\/")[^>]*>/u.test(
+      tutorialRedirect,
+    ),
+    'The retired tutorial overview does not declare the DSL 4.0 canonical URL.',
+  );
+  assert(
+    tutorialRedirect.includes('<a href="../">TMPose紙芝居 4.0 ドキュメントへ移動</a>'),
+    'The retired tutorial overview does not provide a fallback link.',
+  );
   assert(
     licensesIndex.includes('<h1>ライセンス・権利表示</h1>'),
     'The public rights page is missing.',
