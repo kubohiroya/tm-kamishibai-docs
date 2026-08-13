@@ -75,12 +75,16 @@
 
       <div class="version-banners" aria-label="紙芝居DSLの版">
         <section class="version-banner version-banner--40" aria-labelledby="version-40-title">
-          <div class="version-banner__label">
+          <a class="version-banner__label" href="4.0/" aria-label="DSL 4.0のドキュメントへ">
             <span class="version-banner__status">新規制作を開始</span>
             <strong class="version-banner__version" aria-hidden="true">4.0</strong>
-          </div>
+          </a>
           <div class="version-banner__body">
-            <h2 id="version-40-title">YAML projectと4.0 toolchainで新しく作る</h2>
+            <h2 id="version-40-title">
+              <a class="version-banner__title-link" href="4.0/"
+                >YAML projectと4.0 toolchainで新しく作る</a
+              >
+            </h2>
             <p>
               Schema検証からpreview、配布用buildまでを一貫したprojectとして扱う場合はDSL
               4.0へ進みます。
@@ -95,20 +99,20 @@
               <dd>
                 新規project、Source Graphによる台本分割、Web／CLI preview、自己完結SB3 build。
               </dd>
-              <dt>3.2を選ぶ場合</dt>
-              <dd>既存のTXT台本や3.2.xアプリ・教材を、移行せず安定して保守したい場合。</dd>
             </dl>
             <a class="version-banner__primary" href="4.0/">DSL 4.0のドキュメントへ</a>
           </div>
         </section>
 
         <section class="version-banner version-banner--32" aria-labelledby="version-32-title">
-          <div class="version-banner__label">
+          <a class="version-banner__label" href="3.2/" aria-label="DSL 3.2のドキュメントへ">
             <span class="version-banner__status">既存作品を継続</span>
             <strong class="version-banner__version" aria-hidden="true">3.2</strong>
-          </div>
+          </a>
           <div class="version-banner__body">
-            <h2 id="version-32-title">TXT台本と3.2.xアプリを使い続ける</h2>
+            <h2 id="version-32-title">
+              <a class="version-banner__title-link" href="3.2/">TXT台本と3.2.xアプリを使い続ける</a>
+            </h2>
             <p>
               すでに上映している作品や教材、従来のアプリとツールチェインを保守する場合はDSL
               3.2へ進みます。
@@ -120,8 +124,6 @@
               </dd>
               <dt>主な用途</dt>
               <dd>既存作品・体験会教材の修正、汎用SB3への台本読込、従来素材の継続利用。</dd>
-              <dt>4.0を選ぶ場合</dt>
-              <dd>YAML project、複数source、preview／buildの一体化で新規制作したい場合。</dd>
             </dl>
             <a class="version-banner__primary" href="3.2/">DSL 3.2のドキュメントへ</a>
           </div>

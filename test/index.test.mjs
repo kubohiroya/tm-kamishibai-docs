@@ -200,6 +200,48 @@ test('explains how to choose between the versions on the root page', () => {
   assert.match(rootIndex, /aria-labelledby="version-40-title"/u);
 });
 
+test('links each version label and heading to its version top', () => {
+  for (const {version, heading} of [
+    {version: '4.0', heading: 'YAML projectと4.0 toolchainで新しく作る'},
+    {version: '3.2', heading: 'TXT台本と3.2.xアプリを使い続ける'},
+  ]) {
+    const href = version.replace('.', '\\.');
+    assert.match(
+      rootIndex,
+      new RegExp(
+        `<a\\s+class="version-banner__label"\\s+href="${href}/"\\s+aria-label="DSL ${href}のドキュメントへ"`,
+        'u',
+      ),
+    );
+    assert.match(
+      rootIndex,
+      new RegExp(
+        `<h2 id="version-${version.replace('.', '')}-title">\\s*<a class="version-banner__title-link" href="${href}/"[^>]*>${heading}</a`,
+        'u',
+      ),
+    );
+  }
+  assert.match(documentIndexCss, /\.version-banner__label:focus-visible/u);
+  assert.match(documentIndexCss, /\.version-banner__title-link:focus-visible/u);
+});
+
+test('keeps each version criterion list concise', () => {
+  for (const banner of ['version-banner--40', 'version-banner--32']) {
+    const bannerStart = rootIndex.indexOf(banner);
+    const criteriaStart = rootIndex.indexOf('<dl class="version-banner__criteria">', bannerStart);
+    const criteriaEnd = rootIndex.indexOf('</dl>', criteriaStart);
+    const criteria = rootIndex.slice(criteriaStart, criteriaEnd);
+
+    assert.ok(bannerStart >= 0);
+    assert.ok(criteriaStart > bannerStart);
+    assert.ok(criteriaEnd > criteriaStart);
+    assert.equal((criteria.match(/<dt>/gu) ?? []).length, 2);
+    assert.match(criteria, /<dt>台本形式<\/dt>/u);
+    assert.match(criteria, /<dt>主な用途<\/dt>/u);
+    assert.doesNotMatch(criteria, /を選ぶ場合/u);
+  }
+});
+
 test('lists workshop material chronologically with explicit DSL families', () => {
   const dsl40Position = workshopIndex.indexOf('id="workshops-40"');
   const dsl32Position = workshopIndex.indexOf('id="workshops-32"');
