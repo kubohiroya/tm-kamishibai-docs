@@ -81,6 +81,7 @@ test('organizes every migrated document into one reader-oriented collection', ()
   assert(!existsSync(path.join(projectRoot, 'docs/general')));
 
   for (const document of documentationConfig.documents) {
+    assert.match(document.updatedAt, /^\d{4}-\d{2}-\d{2}$/u);
     const sourcePath = path.join(
       projectRoot,
       'docs',
@@ -93,6 +94,8 @@ test('organizes every migrated document into one reader-oriented collection', ()
       new RegExp(`^# ${document.title.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')}$`, 'mu'),
     );
   }
+  assert.match(workshopDocumentConfig.updatedAt, /^\d{4}-\d{2}-\d{2}$/u);
+  assert.match(staffDocumentConfig.updatedAt, /^\d{4}-\d{2}-\d{2}$/u);
 });
 
 test('pins the merged 3.2.0 source contract', () => {

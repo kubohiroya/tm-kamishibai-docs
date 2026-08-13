@@ -6,6 +6,38 @@ export const dsl4PublicationStatus = Object.freeze({
   officialDsl4Release: null,
 });
 
+export const documentUpdatedAt = Object.freeze({
+  'executive-summary-adult.md': '2026-08-08',
+  'executive-summary-adult-4.0.md': '2026-08-12',
+  'executive-summary-kids.md': '2026-08-08',
+  'executive-summary-kids-4.0.md': '2026-08-12',
+  'user-guide.md': '2026-08-08',
+  'user-guide-4.0.md': '2026-08-12',
+  'dsl-manual.md': '2026-08-08',
+  'command-reference.md': '2026-08-08',
+  'history.md': '2026-08-04',
+  'dsl-4.0-author-guide.md': '2026-08-12',
+  'dsl-4.0-schema-reference.md': '2026-08-12',
+  'dsl-4.0-history.md': '2026-08-12',
+  'dsl-3.2-to-4.0-conversion-guide.md': '2026-08-12',
+  'index.md': '2026-08-13',
+  'play.md': '2026-08-13',
+  'create.md': '2026-08-13',
+  'application-materials-guide.md': '2026-08-09',
+  'application-materials-guide-4.0.md': '2026-08-12',
+  'developer-guide.md': '2026-08-12',
+  'developer-guide-4.0.md': '2026-08-12',
+  'internal-specification.md': '2026-08-08',
+  'internal-specification-4.0.md': '2026-08-12',
+  'extension-guide.md': '2026-08-08',
+  'extension-guide-4.0.md': '2026-08-12',
+  'dsl-3.1-diagnostics-design.md': '2026-08-04',
+  'dsl-4.0-diagnostics-design.md': '2026-08-12',
+  'dependency-audit.md': '2026-08-08',
+  'release-smoke.md': '2026-08-04',
+  'release-smoke-4.0.md': '2026-08-12',
+});
+
 export const documentCollections = [
   {
     id: 'user-guides',
@@ -292,6 +324,7 @@ export const documentationConfig = {
         document.publicationBasename ?? document.sourceFilename.replace(/\.md$/u, '');
       return {
         ...document,
+        updatedAt: documentUpdatedAt[document.sourceFilename],
         version,
         collectionId: collection.id,
         sourceDirectory: document.sourceDirectory ?? collection.id,
@@ -311,6 +344,7 @@ export const workshopDocumentConfig = {
   versionFamily: '3.2系',
   title: 'AIを使って「紙芝居の物語に参加する仕組み」を作ろう！',
   author: 'Hiroya Kubo',
+  updatedAt: '2026-08-04',
   sourceDirectory: 'workshops/2026-08-01',
   legacyOutputDirectory: 'workshops/2026-08-01',
   outputDirectory: 'workshops/2026-08-01',
@@ -334,6 +368,7 @@ export const staffDocumentConfig = {
   versionFamily: '3.2系',
   title: '親子AIプログラミング体験会スタッフ向け資料2026年8月1日版',
   author: 'Hiroya Kubo',
+  updatedAt: '2026-08-04',
   sourceDirectory: 'workshops/2026-08-01',
   legacyOutputDirectory: 'workshops/2026-08-01/staff',
   outputDirectory: 'workshops/2026-08-01/staff',
