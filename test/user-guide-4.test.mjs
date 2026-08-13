@@ -42,11 +42,11 @@ test('covers the public start-to-finish operation path', () => {
 test('keeps live-surface evidence in the machine-readable manifest', () => {
   assert.equal(surfaces.formatVersion, 1);
   assert.equal(surfaces.releaseState.formalGitHubReleasePublished, false);
-  assert.equal(surfaces.samples.pagesDeploymentRun, 31656477345);
-  assert.equal(surfaces.releaseState.publishedPrerelease, 'v4.0.0-rc.2');
-  assert.equal(surfaces.samples.runtime.version, '4.0.0-rc.2');
-  assert.equal(surfaces.samples.runtime.commit, '9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014');
-  assert.equal(surfaces.samples.tutorial.version, '4.0.0-rc.2');
+  assert.equal(surfaces.samples.pagesDeploymentRun, 31660773675);
+  assert.equal(surfaces.releaseState.publishedPrerelease, 'v4.0.0-rc.3');
+  assert.equal(surfaces.samples.runtime.version, '4.0.0-rc.3');
+  assert.equal(surfaces.samples.runtime.commit, '087dfa526e967bb2cc38af3f5b5a795355de7739');
+  assert.equal(surfaces.samples.tutorial.version, '4.0.0-rc.3');
   assert.equal(surfaces.samples.tutorial.status, 'published');
   assert.equal(surfaces.samples.tutorial.license, 'MPL-2.0');
   assert.equal(surfaces.physicalVerification.camera, 'passed');

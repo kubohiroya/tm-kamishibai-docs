@@ -189,25 +189,25 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(screenshotManifest.formatVersion, 2);
   assert.equal(screenshotManifest.targetDslVersion, '4.0');
   assert.deepEqual(screenshotManifest.releaseBaseline, {
-    version: '4.0.0-rc.2',
+    version: '4.0.0-rc.3',
     channel: 'next',
     state: 'published-prerelease',
-    sourceIdentity: 'sha256:70dfcb7dfc391e9f8c576976d810a55656c8cab09c0c729cc685d20e02140991',
-    sb3Sha256: '917344e56488db42fcdc07f8036782a3912945081ed094c50cf84f6ecdb56f5f',
-    npmUrl: 'https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.2',
-    githubReleaseUrl: 'https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.2',
+    sourceIdentity: 'sha256:f56cc0f2b2df805cc1baebcbaa08094fa7df20b0f28b2c8b62c445d9b54e8fa3',
+    sb3Sha256: '77ac23862ef0e729ca75be93340f65f21ded9b39449fc8f9be2c904c70d4096c',
+    npmUrl: 'https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.3',
+    githubReleaseUrl: 'https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.3',
     pagesUrl: 'https://kubohiroya.github.io/tmpose-kamishibai/downloads/',
     evidence: [
-      'https://github.com/kubohiroya/tmpose-kamishibai/issues/559',
-      'https://github.com/kubohiroya/tmpose-kamishibai/pull/561',
+      'https://github.com/kubohiroya/tmpose-kamishibai/issues/571',
+      'https://github.com/kubohiroya/tmpose-kamishibai/pull/574',
     ],
   });
   assert.equal(
     screenshotManifest.implementationBaseline.commit,
-    '0e7e23f59a323f088408f42ba0dc41f6b6c9feef',
+    '087dfa526e967bb2cc38af3f5b5a795355de7739',
   );
   assert.deepEqual(screenshotManifest.browserAuthoringBaseline, {
-    version: '4.0.0-rc.2',
+    version: '4.0.0-rc.3',
     state: 'published-prerelease',
     issue: 'https://github.com/kubohiroya/tmpose-kamishibai/issues/555',
     documentationIssue: 'https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118',
@@ -215,7 +215,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   });
   assert.equal(
     screenshotManifest.sampleBaseline.commit,
-    '3f533cfb6e4bbe157f85d407b9c1f9417d767d02',
+    '919565243adc3800ebe8271cc4af6f7b68110ef2',
   );
   assert.equal(screenshotManifest.sampleBaseline.pullRequestState, 'merged');
   assert.equal(
@@ -270,18 +270,15 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(screenshotManifest.capturePolicy.sourcePathsVisible, false);
   assert.equal(screenshotManifest.capturePolicy.cameraPermissionRequired, false);
   assert.equal(screenshotManifest.capturePolicy.cameraSubject, 'synthetic-fixture');
-  assert.equal(screenshotManifest.capturePolicy.capturedAt, '2026-08-13T08:11:40+09:00');
-  assert.match(screenshotManifest.capturePolicy.browser, /Codex In-app Browser/u);
+  assert.equal(screenshotManifest.capturePolicy.capturedAt, '2026-08-13T11:39:48+09:00');
+  assert.match(screenshotManifest.capturePolicy.browser, /Google Chrome 151/u);
   assert.match(screenshotManifest.capturePolicy.provenance.privacy, /no real person/u);
 
   for (const captureId of ['P-01', 'P-02']) {
     const capture = screenshotManifest.captures.find(({id}) => id === captureId);
-    assert.equal(
-      capture.capturedAt,
-      captureId === 'P-01' ? '2026-08-13T10:09:35+09:00' : '2026-08-13T08:11:40+09:00',
-    );
+    assert.equal(capture.capturedAt, '2026-08-13T11:39:48+09:00');
     assert.equal(capture.captureProvenance.sampleCommit, screenshotManifest.sampleBaseline.commit);
-    assert.equal(capture.captureProvenance.pagesDeploymentRun, 31656477345);
+    assert.equal(capture.captureProvenance.pagesDeploymentRun, 31660773675);
   }
 
   const expectedIds = [
@@ -366,9 +363,9 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(releaseGate.ready, true);
   assert.equal(releaseGate.progressStatus, 'published');
   assert.deepEqual(releaseGate.dependencies, [
-    'https://github.com/kubohiroya/tmpose-kamishibai/issues/559',
+    'https://github.com/kubohiroya/tmpose-kamishibai/issues/571',
   ]);
-  assert.match(releaseGate.description, /4\.0\.0-rc\.2/u);
+  assert.match(releaseGate.description, /4\.0\.0-rc\.3/u);
   assert.equal(releaseGate.remaining.length, 0);
   const tutorialSampleGate = screenshotManifest.gates.find(({id}) => id === 'tutorial-sample');
   assert.equal(tutorialSampleGate.ready, true);
@@ -380,7 +377,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   ]);
   assert(
     tutorialSampleGate.evidence.includes(
-      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/105',
+      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/107',
     ),
   );
   assert.match(tutorialSampleGate.description, /starter、addition kit、Web版、SB3/u);
@@ -459,7 +456,7 @@ test('keeps the published prerelease reviewable with its fixed captures', () => 
   assert.match(tutorialSources['create.md'], /preview-dsl4 --help/u);
   assert.match(tutorialSources['create.md'], /validate-dsl4/u);
   assert.match(tutorialSources['create.md'], /build-dsl4/u);
-  assert.match(tutorialSources['create.md'], /4\.0\.0-rc\.2/u);
+  assert.match(tutorialSources['create.md'], /4\.0\.0-rc\.3/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/earthquake-classroom\.svg/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/add-pose-scene\.yml\.txt/u);
   assert.match(tutorialSources['create.md'], /file: classroom\.svg/u);
@@ -475,7 +472,7 @@ test('keeps the published prerelease reviewable with its fixed captures', () => 
   assert(advancedCli > 0);
   const generalAuthorFlow = tutorialSources['create.md'].slice(0, advancedCli);
   assert.doesNotMatch(generalAuthorFlow, /```bash|pnpm exec tmpose-kamishibai/u);
-  assert.match(generalAuthorFlow, /緑の旗[\s\S]*ファイルを開く[\s\S]*tutorial-story/u);
+  assert.match(generalAuthorFlow, /緑の旗[\s\S]*台本を開く[\s\S]*tutorial-story/u);
   assert.match(generalAuthorFlow, /配布用SB3を作る/u);
   assert.doesNotMatch(
     tutorialSources['create.md'],

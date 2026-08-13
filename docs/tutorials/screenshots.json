@@ -3,30 +3,30 @@
   "status": "ready-for-publication",
   "targetDslVersion": "4.0",
   "releaseBaseline": {
-    "version": "4.0.0-rc.2",
+    "version": "4.0.0-rc.3",
     "channel": "next",
     "state": "published-prerelease",
-    "sourceIdentity": "sha256:70dfcb7dfc391e9f8c576976d810a55656c8cab09c0c729cc685d20e02140991",
-    "sb3Sha256": "917344e56488db42fcdc07f8036782a3912945081ed094c50cf84f6ecdb56f5f",
-    "npmUrl": "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.2",
-    "githubReleaseUrl": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.2",
+    "sourceIdentity": "sha256:f56cc0f2b2df805cc1baebcbaa08094fa7df20b0f28b2c8b62c445d9b54e8fa3",
+    "sb3Sha256": "77ac23862ef0e729ca75be93340f65f21ded9b39449fc8f9be2c904c70d4096c",
+    "npmUrl": "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.3",
+    "githubReleaseUrl": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.3",
     "pagesUrl": "https://kubohiroya.github.io/tmpose-kamishibai/downloads/",
     "evidence": [
-      "https://github.com/kubohiroya/tmpose-kamishibai/issues/559",
-      "https://github.com/kubohiroya/tmpose-kamishibai/pull/561"
+      "https://github.com/kubohiroya/tmpose-kamishibai/issues/571",
+      "https://github.com/kubohiroya/tmpose-kamishibai/pull/574"
     ]
   },
   "implementationBaseline": {
     "repository": "kubohiroya/tmpose-kamishibai",
-    "commit": "0e7e23f59a323f088408f42ba0dc41f6b6c9feef",
-    "reviewedAt": "2026-08-12",
+    "commit": "087dfa526e967bb2cc38af3f5b5a795355de7739",
+    "reviewedAt": "2026-08-13",
     "screenshotContract": {
-      "design": "https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff",
-      "fixture": "https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
+      "design": "https://github.com/kubohiroya/tmpose-kamishibai/blob/087dfa526e967bb2cc38af3f5b5a795355de7739/docs/design/dsl-4-preview-reload-overlay.md#tutorial-screenshot-handoff",
+      "fixture": "https://github.com/kubohiroya/tmpose-kamishibai/blob/087dfa526e967bb2cc38af3f5b5a795355de7739/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
     }
   },
   "browserAuthoringBaseline": {
-    "version": "4.0.0-rc.2",
+    "version": "4.0.0-rc.3",
     "state": "published-prerelease",
     "issue": "https://github.com/kubohiroya/tmpose-kamishibai/issues/555",
     "documentationIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118",
@@ -34,16 +34,16 @@
   },
   "sampleBaseline": {
     "repository": "kubohiroya/tmpose-kamishibai-samples",
-    "commit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
-    "pullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/105",
+    "commit": "919565243adc3800ebe8271cc4af6f7b68110ef2",
+    "pullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/107",
     "pullRequestState": "merged",
-    "publicationCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
-    "pagesDeploymentRun": 31656477345,
+    "publicationCommit": "919565243adc3800ebe8271cc4af6f7b68110ef2",
+    "pagesDeploymentRun": 31660773675,
     "status": "tutorial-sample-published",
     "story": "stories/tutorial",
     "sourceSha256": "62b940b68b7177628a0dcd29d84754fcbaff911a9a9a955c58ffe727f59fdb57",
-    "sb3Sha256": "2c8ebda3a96722699f17b9e6961af1acd05e112e85c24e7a4f2f3667ce796d9d",
-    "webSha256": "48dd35c979c3110235e8b28c44dcb1a7f2b0daf11eef276d790c9b2b0ad8b2a5",
+    "sb3Sha256": "518fe92750a2e05a4711d8c9ad646256e9b21b9fa7161275174d12cca3a4dc7b",
+    "webSha256": "ff9553c797e4b613f8c03dbbe5c9cdec1b3493e927b13df8ddf975666a6ec513",
     "starterSha256": "bf0ad3b250f79d6fb49cb7584a4559d7e979e75e4b2d46923effae4b183fdfb8",
     "additionKitSha256": "fb3f7bbb7eb4c136d189a7a1bd3e6484146f42fc7ab4b87795d2f5892a7f3c81",
     "license": "MPL-2.0",
@@ -54,14 +54,14 @@
         "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/web-4.0/",
         "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.k4.yml",
         "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima-4.0.sb3",
-        "sb3Sha256": "5181f414944489652d9758812b5da6ea351113ccb62111c361533495f48ff5ad",
-        "webSha256": "0733a3d50e2b4a3b12caafd5d976a23b3cc556c7eb323963c76eedc3037cb1cf"
+        "sb3Sha256": "4516f543c25fe8d96edfa639cf789a174fd898199c5e34a1a29e079ceecbc6cb",
+        "webSha256": "d0a605d0f7838fd52f1ceb71507ad0385435d0ad32cd7ebc8ae4798bed8e37ce"
       },
       "myUrashima": {
         "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
         "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/web-4.0/",
-        "sb3Sha256": "1f2948b214d1c3e4013ac78d25cdbbc87d7147d6d7d1d78c9f01dc55a75ae742",
-        "webSha256": "05aafe55fedd122945d8885fbf484e142825081fc66043bde05dcad31c9baaa7"
+        "sb3Sha256": "7cbb6084b42d11c61473649db45950e293cf806ce1f54bace61f9c17ad7f33f3",
+        "webSha256": "c1952f90e1cd25502d0dfcbe379f9493183d8af308c6338e1afe716540404c10"
       },
       "tutorial": {
         "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
@@ -71,8 +71,8 @@
         "starterUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
         "additionKitUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
         "manifestUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json",
-        "sb3Sha256": "2c8ebda3a96722699f17b9e6961af1acd05e112e85c24e7a4f2f3667ce796d9d",
-        "webSha256": "48dd35c979c3110235e8b28c44dcb1a7f2b0daf11eef276d790c9b2b0ad8b2a5"
+        "sb3Sha256": "518fe92750a2e05a4711d8c9ad646256e9b21b9fa7161275174d12cca3a4dc7b",
+        "webSha256": "ff9553c797e4b613f8c03dbbe5c9cdec1b3493e927b13df8ddf975666a6ec513"
       }
     },
     "walkthrough": "../developer-guides/dsl4-implementation-walkthrough.md",
@@ -89,12 +89,12 @@
     "reducedMotion": true,
     "sourcePathsVisible": false,
     "cameraPermissionRequired": false,
-    "capturedAt": "2026-08-13T08:11:40+09:00",
-    "browser": "Codex In-app Browser (Chromium)",
+    "capturedAt": "2026-08-13T11:39:48+09:00",
+    "browser": "Google Chrome 151.0.7922.137 (headless Chromium)",
     "provenance": {
       "publishedSurface": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
-      "runtimeCommit": "9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014",
-      "sampleCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
+      "runtimeCommit": "087dfa526e967bb2cc38af3f5b5a795355de7739",
+      "sampleCommit": "919565243adc3800ebe8271cc4af6f7b68110ef2",
       "fixtureSource": "scripts/fixtures/tutorial-screenshot.html",
       "browserAuthoringFixture": "scripts/fixtures/tutorial-screenshot.html",
       "privacy": "no real person, camera frame, local source path, or account data is included"
@@ -109,40 +109,40 @@
     ]
   },
   "captureArtifacts": {
-    "P-01": "sha256:14a38d5e4a53ff0a7219f66f5662d2cf40cc233a013e32f7817ba2ae2e686275",
-    "P-02": "sha256:968fc04abf2c42c40c5e6a6748caf4fb5c6b73a900a84274336a8b95a0fc51ca",
-    "P-03": "sha256:ed5a638b142ca34406cc5e266c7657c70d56990d28855c4426f6baa944391786",
-    "P-04": "sha256:98dfca33b4834914ba8ef750ad5b2fe5d6eb4c39faf6516ca67ca62fa765dafb",
-    "P-05": "sha256:c9a74c00678fced5b9bf09c8a83481d25303efb2849e2b515cb5952372eca07e",
-    "P-06": "sha256:d0a1ec758b4a137794323344542f5bd4fb78fd55803315511fb2073cc799a85e",
-    "P-07": "sha256:ff96f5d51afa61b557523b5cded6de93ee259a001097d42fe47d22ff3f411440",
-    "C-01": "sha256:96d00ee461fa7ad67afe84b3cca9371429581b3da82d75eb2c0e78c78ea17c49",
-    "C-02": "sha256:89a8b2741d06fae5159de44c6fd2318f555aa1c9dc7eec8f922cc75bf3196b60",
-    "C-03": "sha256:d45f88cbf2fc061ccd3f95cd6e9774286d2d1e0fbe34f649499e6629c47465da",
-    "C-04": "sha256:afe00c94248e16d05166ed6ae878304383cdfef6662db570d224b0c19b453410",
-    "C-05-position": "sha256:da70c3bb1419f5cf6ff8504ee82438316f7050d02b961d0399491c41ebf25801",
-    "C-05-scope": "sha256:1f5415d515128dd2198e4ddb8211ade5bf8c630ad572266c9b5522de084908b4",
-    "C-06": "sha256:fa2c67f81301fe345add906a033c5ab15591d5753d92a2fad2530a98ed65c6e8",
-    "C-07": "sha256:4be1cd3227d315791496d95c4d7d907d17b14deb7b8ff9863dc0d5a39c35572a",
-    "C-08": "sha256:2544416aec75cf8148498ae6966bef1d01b7159ef584c9c64eb01d9ec755eba0",
-    "C-09": "sha256:4d84ee567b0779ba82384fe75d81c0364a02c8ab6b3afcb68720529fd643f766",
-    "C-10": "sha256:b61db2f0275715db6c6f0a97889bb443e07e6ee9fb76cd10721636b4910fbc94",
-    "C-11": "sha256:d421f826270b2a0fee2fbfa5e2cd50e3f72db2dbbdd23afa134831d94a13c4be",
-    "C-12": "sha256:b22876fcc5ad3a782975610c4298e7a4a2efeb28c8a9b85687771683020b0e5c",
-    "C-14": "sha256:4aed273e5d5ca49a0f1a2024f6e0c578b4d4d8aa9abda07f0ae3968b3441001f"
+    "P-01": "sha256:0cba4f7840f5e1411003c703404660be71d2ee2922a00075dbd0bc1d9d9167ed",
+    "P-02": "sha256:7ae830e770199b7776cbf785db1fca60eca53e2db12b50dbc28543f9cd6078cc",
+    "P-03": "sha256:9eef88192fda610758cb0fefc7be6b680f0a68d65c7004aea85f0c8441563dc4",
+    "P-04": "sha256:6d5ae90601d7b0e373e414fecc43d08ee9b6119e3cf61c20c13bb09881e291a6",
+    "P-05": "sha256:2f4c2415651b7de39e834310f6398f10e53c1384caa89ecc76218886af9e9195",
+    "P-06": "sha256:7d163052621c24bd40bc0b4d15ab9de140fcd57b0dd703bc90bd5852552681a0",
+    "P-07": "sha256:14fb035941d43154b271d320c5864deb11f41cdb4e66771d434fe4b3f4cb16b0",
+    "C-01": "sha256:d9c0f2bc3b9b7b44092fb0814684c51885111ea79e0d62ca6c9eb3c1723543b0",
+    "C-02": "sha256:d42add39e41531ff1f356f6c396ef393223597ec8568b1d08ce3475f2b63573c",
+    "C-03": "sha256:358266e7d8b3890ad3d67436a309d117f774a838a64e83a5bb27a3af642a8d46",
+    "C-04": "sha256:68b4539b3e8a3499c61fb7a3d50ef9dff42a74cc1ee0cbaf2c938dbffbba01ad",
+    "C-05-position": "sha256:3a04ed694917651085040261ee137faf3a753c33dbd3cc7c7d2c6c7fec7275f4",
+    "C-05-scope": "sha256:40528b48a054c67dea9aa9c704161d898e6b541bb9fcae56bf89aeede7598c7c",
+    "C-06": "sha256:ae6835a133bd4bd3c6862dcd93e123fb3a2f42e3703f242ad26377276acfbfba",
+    "C-07": "sha256:1c2bc5531e522669129e7425a06600e4d04b5f2e8ade11a582691caf77bbeae9",
+    "C-08": "sha256:13cf2f43bc5381f8c9589b5838c4f9fb0a74cca4871a8cb2a7420d6945aea8d3",
+    "C-09": "sha256:ea90e072836b07c941a30daed55ec8c34c0e3c92533de208bb0fa3cf8688d117",
+    "C-10": "sha256:aea1982caff253b0dd6e26f6bd7732ffcbbff614e0085b2dc4419af3b9e8437c",
+    "C-11": "sha256:9871920b13460c98114a470ce5d2f369ddb31c3c915596c7f824a08521e0bfe2",
+    "C-12": "sha256:afc78125e6e40b9a6a8eae3d73b69facf8403783fa64b5933bd485cc68c097c5",
+    "C-14": "sha256:cf3bb949c65c0a23ad84f4e70f2b3b633133e78a677af24d4d9140517dc028b5"
   },
   "gates": [
     {
       "id": "dsl4-release",
       "ready": true,
       "progressStatus": "published",
-      "description": "DSL 4.0.0-rc.2が公開プレリリースとして固定され、npm next、GitHub prerelease、PagesのversionとSHA-256が照合されている",
-      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/559"],
+      "description": "DSL 4.0.0-rc.3が公開プレリリースとして固定され、npm next、GitHub prerelease、PagesのversionとSHA-256が照合されている",
+      "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/571"],
       "evidence": [
-        "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.2",
-        "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.2",
+        "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.3",
+        "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.3",
         "https://kubohiroya.github.io/tmpose-kamishibai/downloads/",
-        "https://github.com/kubohiroya/tmpose-kamishibai/pull/561"
+        "https://github.com/kubohiroya/tmpose-kamishibai/pull/574"
       ],
       "remaining": []
     },
@@ -150,7 +150,7 @@
       "id": "tutorial-sample",
       "ready": true,
       "progressStatus": "published",
-      "description": "最小チュートリアル作品、starter、addition kit、Web版、SB3が4.0.0-rc.2の同じ入力から公開され、実artifactのsize、integrity、licenseがmanifestと照合されている",
+      "description": "最小チュートリアル作品、starter、addition kit、Web版、SB3が4.0.0-rc.3の同じ入力から公開され、実artifactのsize、integrity、licenseがmanifestと照合されている",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94",
         "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/100",
@@ -159,8 +159,8 @@
       ],
       "evidence": [
         "../../sources/dsl4/user-guide-4.0-public-surfaces.json",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/105",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/actions/runs/31656477345",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/107",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/actions/runs/31660773675",
         "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
         "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json"
       ],
@@ -170,14 +170,14 @@
       "id": "app-shell",
       "ready": true,
       "progressStatus": "published",
-      "description": "4.0.0-rc.2の公開Web版でLoading、版・ライセンス、再生、ポーズfeedbackの配置と文言を確認している",
+      "description": "4.0.0-rc.3の公開Web版でLoading、版・ライセンス、再生、ポーズfeedbackの配置と文言を確認している",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/265",
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/336"
       ],
       "evidence": [
         "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
-        "https://github.com/kubohiroya/tmpose-kamishibai/commit/0e7e23f59a323f088408f42ba0dc41f6b6c9feef",
+        "https://github.com/kubohiroya/tmpose-kamishibai/commit/087dfa526e967bb2cc38af3f5b5a795355de7739",
         "../developer-guides/dsl4-implementation-walkthrough.md"
       ],
       "remaining": []
@@ -195,7 +195,7 @@
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/394"
       ],
       "evidence": [
-        "https://github.com/kubohiroya/tmpose-kamishibai/blob/v4.0.0-rc.2/README.md",
+        "https://github.com/kubohiroya/tmpose-kamishibai/blob/v4.0.0-rc.3/README.md",
         "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/101",
         "https://github.com/kubohiroya/tmpose-kamishibai/commit/3668573",
         "https://github.com/kubohiroya/tmpose-kamishibai/commit/c0921e4",
@@ -207,7 +207,7 @@
       "id": "browser-authoring",
       "ready": true,
       "progressStatus": "published",
-      "description": "公開プレリリース4.0.0-rc.2の作者用メニューで配布用SB3 build、保存、fresh TurboWarp実行までを追試している",
+      "description": "公開プレリリース4.0.0-rc.3の作者用メニューで配布用SB3 build、保存、fresh TurboWarp実行までを追試している",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/555",
         "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118"
@@ -215,7 +215,7 @@
       "evidence": [
         "test/fixtures/dsl4/browser-authoring-menu.html",
         "docs/images/tutorials/dsl4/create/tutorial-create-14-build-menu.png",
-        "https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.2.sb3",
+        "https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.3.sb3",
         "https://github.com/kubohiroya/tmpose-kamishibai/pull/556"
       ],
       "remaining": []
@@ -224,14 +224,14 @@
       "id": "pose-feedback",
       "ready": true,
       "progressStatus": "published",
-      "description": "4.0.0-rc.2の公開Web版でポーズ認識度とチャージ表示を確認し、人物を含まないfixtureで状態を固定している",
+      "description": "4.0.0-rc.3の公開Web版でポーズ認識度とチャージ表示を確認し、人物を含まないfixtureで状態を固定している",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/383",
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/413"
       ],
       "evidence": [
         "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
-        "https://github.com/kubohiroya/tmpose-kamishibai/commit/0e7e23f59a323f088408f42ba0dc41f6b6c9feef",
+        "https://github.com/kubohiroya/tmpose-kamishibai/commit/087dfa526e967bb2cc38af3f5b5a795355de7739",
         "../developer-guides/dsl4-implementation-walkthrough.md"
       ],
       "remaining": []
@@ -240,11 +240,11 @@
       "id": "camera-controls",
       "ready": true,
       "progressStatus": "published",
-      "description": "4.0.0-rc.2ではcamera previewと明示的なcamera control予約領域を採用し、reload statusとの衝突回避を固定fixtureで確認している",
+      "description": "4.0.0-rc.3ではcamera previewと明示的なcamera control予約領域を採用し、reload statusとの衝突回避を固定fixtureで確認している",
       "dependencies": ["https://github.com/kubohiroya/tmpose-kamishibai/issues/388"],
       "evidence": [
         "https://github.com/kubohiroya/tmpose-kamishibai/commit/1af226f",
-        "https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
+        "https://github.com/kubohiroya/tmpose-kamishibai/blob/087dfa526e967bb2cc38af3f5b5a795355de7739/test/fixtures/dsl4/preview-reload-overlay-screenshot.json"
       ],
       "remaining": []
     },
@@ -252,14 +252,14 @@
       "id": "cli-contract",
       "ready": true,
       "progressStatus": "published",
-      "description": "4.0.0-rc.2のvalidate-dsl4、preview-dsl4 --watch、build-dsl4と有限resource limitを公開starterで追試している",
+      "description": "4.0.0-rc.3のvalidate-dsl4、preview-dsl4 --watch、build-dsl4と有限resource limitを公開starterで追試している",
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/258",
         "https://github.com/kubohiroya/tmpose-kamishibai/issues/266"
       ],
       "evidence": [
-        "https://github.com/kubohiroya/tmpose-kamishibai/blob/v4.0.0-rc.2/README.md",
-        "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.2",
+        "https://github.com/kubohiroya/tmpose-kamishibai/blob/v4.0.0-rc.3/README.md",
+        "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.3",
         "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/101"
       ],
       "remaining": []
@@ -268,10 +268,10 @@
       "id": "capture-environment",
       "ready": true,
       "progressStatus": "published",
-      "description": "Chromium系のCodex In-app Browser、1280×720、DPR 1、ja-JP、reduced motionを固定し、実人物と実カメラを使わない合成fixtureで個人情報を除去している",
+      "description": "Google Chrome 151.0.7922.137（Chromium）、1280×720、DPR 1、ja-JP、固定motionとし、実人物と実カメラを使わない合成fixtureで個人情報を除去している",
       "dependencies": [],
       "evidence": [
-        "https://github.com/kubohiroya/tmpose-kamishibai/blob/0e7e23f59a323f088408f42ba0dc41f6b6c9feef/test/fixtures/dsl4/preview-reload-overlay-screenshot.json",
+        "https://github.com/kubohiroya/tmpose-kamishibai/blob/087dfa526e967bb2cc38af3f5b5a795355de7739/test/fixtures/dsl4/preview-reload-overlay-screenshot.json",
         "docs/images/tutorials/dsl4/play/",
         "docs/images/tutorials/dsl4/create/"
       ],
@@ -290,11 +290,11 @@
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-01-sample-page.png",
       "captionDraft": "チュートリアル用作品の詳細ページからWeb版を開きます。",
       "altDraft": "チュートリアル用作品の詳細とWeb版を開く導線が表示されたサンプルサイト",
-      "capturedAt": "2026-08-13T10:09:35+09:00",
+      "capturedAt": "2026-08-13T11:39:48+09:00",
       "captureProvenance": {
-        "sampleCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
-        "pagesDeploymentRun": 31656477345,
-        "browser": "Codex In-app Browser (Chromium)"
+        "sampleCommit": "919565243adc3800ebe8271cc4af6f7b68110ef2",
+        "pagesDeploymentRun": 31660773675,
+        "browser": "Google Chrome 151.0.7922.137 (headless Chromium)"
       },
       "gates": ["dsl4-release", "tutorial-sample"]
     },
@@ -308,13 +308,13 @@
       "description": "DSL 4.0 app shellのversionとlicense画面",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-02-title.png",
       "captionDraft": "versionとlicenseを確認し、閉じる操作から紙芝居を開始します。",
-      "altDraft": "Version 4.0.0-rc.2とlicenseおよび閉じる操作が表示されたDSL 4.0 app shell",
-      "capturedAt": "2026-08-13T08:11:40+09:00",
+      "altDraft": "Version 4.0.0-rc.3とlicenseおよび閉じる操作が表示されたDSL 4.0 app shell",
+      "capturedAt": "2026-08-13T11:39:48+09:00",
       "captureProvenance": {
-        "runtimeCommit": "9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014",
-        "sampleCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
-        "pagesDeploymentRun": 31656477345,
-        "browser": "Codex In-app Browser (Chromium)"
+        "runtimeCommit": "087dfa526e967bb2cc38af3f5b5a795355de7739",
+        "sampleCommit": "919565243adc3800ebe8271cc4af6f7b68110ef2",
+        "pagesDeploymentRun": 31660773675,
+        "browser": "Google Chrome 151.0.7922.137 (headless Chromium)"
       },
       "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
     },
@@ -387,11 +387,11 @@
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-07-finished.png",
       "captionDraft": "できたことと揺れがおさまるまで待つことを確認してからメニューへ戻ります。",
       "altDraft": "机の下で頭を守る見本と、できたことおよび揺れがおさまるまで待つことを伝える達成メッセージ",
-      "capturedAt": "2026-08-13T10:09:35+09:00",
+      "capturedAt": "2026-08-13T11:39:48+09:00",
       "captureProvenance": {
-        "sampleCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
-        "pagesDeploymentRun": 31656477345,
-        "browser": "Codex In-app Browser (Chromium)"
+        "sampleCommit": "919565243adc3800ebe8271cc4af6f7b68110ef2",
+        "pagesDeploymentRun": 31660773675,
+        "browser": "Google Chrome 151.0.7922.137 (headless Chromium)"
       },
       "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
     },
@@ -402,7 +402,7 @@
       "required": false,
       "conditional": "Standard app shellがcamera選択またはmirroring controlを提供する場合",
       "status": "not-applicable",
-      "notApplicableReason": "4.0.0-rc.2の公開Web版では利用者向けのcamera選択またはmirroring controlを表示しない",
+      "notApplicableReason": "4.0.0-rc.3の公開Web版では利用者向けのcamera選択またはmirroring controlを表示しない",
       "surface": "camera controls",
       "description": "camera選択と左右反転UI",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-08-camera-controls.png",
@@ -443,10 +443,10 @@
       "required": true,
       "status": "captured",
       "surface": "TurboWarp application menu",
-      "description": "作者用メニューのファイルを開く操作とbuild無効理由",
+      "description": "作者用メニューの台本を開く操作とbuild無効理由",
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-03-directory-picker.png",
-      "captionDraft": "「ファイルを開く」から作品フォルダーを選びます。",
-      "altDraft": "TurboWarpの作者用メニューでファイルを開くボタンを示した画面",
+      "captionDraft": "「台本を開く」から作品フォルダーを選びます。",
+      "altDraft": "TurboWarpの作者用メニューで台本を開くボタンを示した画面",
       "gates": [
         "dsl4-release",
         "tutorial-sample",
@@ -613,11 +613,11 @@
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-12-built-sb3.png",
       "captionDraft": "完成したSB3をTurboWarpで開き、緑の旗から再生します。",
       "altDraft": "完成した紙芝居のSB3をTurboWarpで開いた画面",
-      "capturedAt": "2026-08-13T10:09:35+09:00",
+      "capturedAt": "2026-08-13T11:39:48+09:00",
       "captureProvenance": {
-        "sampleCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
-        "pagesDeploymentRun": 31656477345,
-        "browser": "Codex In-app Browser (Chromium)"
+        "sampleCommit": "919565243adc3800ebe8271cc4af6f7b68110ef2",
+        "pagesDeploymentRun": 31660773675,
+        "browser": "Google Chrome 151.0.7922.137 (headless Chromium)"
       },
       "gates": ["dsl4-release", "tutorial-sample", "app-shell", "browser-authoring"]
     },

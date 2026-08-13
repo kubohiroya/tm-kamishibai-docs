@@ -2,7 +2,7 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象バージョン: `4.0.0-rc.2`（公開プレリリース）\
+対象バージョン: `4.0.0-rc.3`（公開プレリリース）\
 対象: 初めてTMPose紙芝居を再生する人\
 想定時間: 10〜15分
 
@@ -43,7 +43,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 ## 1. サンプル作品を選ぶ
 
 [チュートリアル用サンプル作品](https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/)を開き、
-「Web版を開く」を押します。作品の説明で、対象バージョンが`4.0.0-rc.2`であることと、カメラを
+「Web版を開く」を押します。作品の説明で、対象バージョンが`4.0.0-rc.3`であることと、カメラを
 使うことを確認してから開きます。
 
 <!-- screenshot:P-01 -->
@@ -58,11 +58,11 @@ Web版へ直接進む場合は、
 ## 2. 紙芝居を開始する
 
 Web版を開くと、最初に黒い読み込み画面が表示され、その後にバージョンとライセンスの画面が
-表示されます。`Version 4.0.0-rc.2`を確認し、右上の「閉じる」を押すと作品が始まります。
+表示されます。`Version 4.0.0-rc.3`を確認し、右上の「閉じる」を押すと作品が始まります。
 
 <!-- screenshot:P-02 -->
 
-![Version 4.0.0-rc.2とライセンスを表示したWeb版の初期画面](../images/tutorials/dsl4/play/tutorial-play-02-title.png)
+![Version 4.0.0-rc.3とライセンスを表示したWeb版の初期画面](../images/tutorials/dsl4/play/tutorial-play-02-title.png)
 
 _バージョンと利用条件を確認し、右上の「閉じる」を押します。_
 
