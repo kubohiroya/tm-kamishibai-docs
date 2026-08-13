@@ -124,7 +124,11 @@ test('preserves workshop Viewer reading order when the screen index is only a re
 test('shares fixed desktop and collapsible mobile tree styles across publications', () => {
   assert.match(tocStyles, /@media \(min-width: 1100px\)[\s\S]*?#toc\s*\{[\s\S]*?position: fixed/u);
   assert.match(tocStyles, /#toc\s*\{[\s\S]*?position: relative/u);
-  assert.match(tocStyles, /\.document-toc--explicit-labels/u);
+  assert.match(
+    tocStyles,
+    /#toc\.document-toc--explicit-labels li\s*\{[\s\S]*?grid-template-columns: 1\.65rem minmax\(0, 1fr\)/u,
+  );
+  assert.match(tocStyles, /#toc\.document-toc--explicit-labels li > a\s*\{\s*grid-column: 2/u);
   assert.match(tocStyles, /\.document-content a,[\s\S]*?overflow-wrap: anywhere/u);
   assert.match(tocStyles, /@media \(prefers-reduced-motion: reduce\)/u);
   assert.match(tocStyles, /:focus-visible/u);

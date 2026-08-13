@@ -130,15 +130,15 @@
     border-left: 1px solid var(--line);
   }
 
-  .document-toc--explicit-labels li {
+  #toc.document-toc--explicit-labels li {
     grid-template-columns: 1.65rem minmax(0, 1fr);
   }
 
-  .document-toc--explicit-labels li > a {
+  #toc.document-toc--explicit-labels li > a {
     grid-column: 2;
   }
 
-  .document-toc--explicit-labels li > ol {
+  #toc.document-toc--explicit-labels li > ol {
     grid-column: 1 / -1;
   }
 
@@ -158,7 +158,7 @@
     cursor: pointer;
   }
 
-  .document-toc--explicit-labels .document-toc__toggle {
+  #toc.document-toc--explicit-labels .document-toc__toggle {
     grid-column: 1;
   }
 
