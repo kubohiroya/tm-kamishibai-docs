@@ -215,7 +215,7 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   });
   assert.equal(
     screenshotManifest.sampleBaseline.commit,
-    'aea5d71e84794f4f25af294f05c09199071cde85',
+    '3f533cfb6e4bbe157f85d407b9c1f9417d767d02',
   );
   assert.equal(screenshotManifest.sampleBaseline.pullRequestState, 'merged');
   assert.equal(
@@ -276,9 +276,12 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
 
   for (const captureId of ['P-01', 'P-02']) {
     const capture = screenshotManifest.captures.find(({id}) => id === captureId);
-    assert.equal(capture.capturedAt, '2026-08-13T08:11:40+09:00');
+    assert.equal(
+      capture.capturedAt,
+      captureId === 'P-01' ? '2026-08-13T10:09:35+09:00' : '2026-08-13T08:11:40+09:00',
+    );
     assert.equal(capture.captureProvenance.sampleCommit, screenshotManifest.sampleBaseline.commit);
-    assert.equal(capture.captureProvenance.pagesDeploymentRun, 31649836275);
+    assert.equal(capture.captureProvenance.pagesDeploymentRun, 31656477345);
   }
 
   const expectedIds = [
@@ -373,10 +376,11 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
     'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94',
     'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/100',
     'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/102',
+    'https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/104',
   ]);
   assert(
     tutorialSampleGate.evidence.includes(
-      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/103',
+      'https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/105',
     ),
   );
   assert.match(tutorialSampleGate.description, /starter、addition kit、Web版、SB3/u);
@@ -463,6 +467,9 @@ test('keeps the published prerelease reviewable with its fixed captures', () => 
   assert.match(tutorialSources['create.md'], /file: earthquake-classroom\.svg/u);
   assert.match(tutorialSources['create.md'], /更新状態ボタン[\s\S]*再開位置[\s\S]*再開方針/u);
   assert.match(tutorialSources['create.md'], /poseModel: SafetyPose/u);
+  assert.match(tutorialSources['create.md'], /Student\.show:[\s\S]*skin: ProtectHead/u);
+  assert.match(tutorialSources['create.md'], /success:[\s\S]*できた！ 頭を守れたね/u);
+  assert.match(tutorialSources['play.md'], /メニューへ戻る前[\s\S]*できたこと/u);
   assert.match(tutorialSources['create.md'], /`Student\.sya`を`Student\.say`へ直/u);
   const advancedCli = tutorialSources['create.md'].indexOf('## 高度な利用者・CI向けのCLI（任意）');
   assert(advancedCli > 0);
@@ -534,6 +541,17 @@ test('keeps the starter and every tutorial addition valid against the pinned DSL
   ).map((block) => parse(block));
   Object.assign(starter, poseAssets, poseScene);
   assert.equal(validate(starter), true, JSON.stringify(validate.errors));
+  assert.deepEqual(Object.keys(starter.scenes), [
+    'earthquake',
+    'instruction',
+    'protect',
+    'success',
+  ]);
+  assert.equal(starter.scenes.protect.actions[1]['Student.show'].skin, 'ProtectHead');
+  assert.equal(
+    starter.scenes.success[2]['Student.say'].text,
+    'できた！ 頭を守れたね。揺れがおさまるまで、そのまま待とう。',
+  );
 });
 
 test('separates reader-facing screenshot text from capture-only implementation details', () => {

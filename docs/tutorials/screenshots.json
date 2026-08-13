@@ -34,18 +34,18 @@
   },
   "sampleBaseline": {
     "repository": "kubohiroya/tmpose-kamishibai-samples",
-    "commit": "aea5d71e84794f4f25af294f05c09199071cde85",
-    "pullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/103",
+    "commit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
+    "pullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/105",
     "pullRequestState": "merged",
-    "publicationCommit": "aea5d71e84794f4f25af294f05c09199071cde85",
-    "pagesDeploymentRun": 31649836275,
+    "publicationCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
+    "pagesDeploymentRun": 31656477345,
     "status": "tutorial-sample-published",
     "story": "stories/tutorial",
-    "sourceSha256": "4016c237438c942222ea4c7c1bbfabef83184e489e913b06260c93a491b09c59",
-    "sb3Sha256": "419cb4db90923658f4754610cd462e0caadd790636d7c688923529016b932292",
-    "webSha256": "2be5c37c83cdde01a7a35f4339290b7b2d59b45cb3d9ddbb64bc6d2fda3541b0",
-    "starterSha256": "1f13af3451a6afdb3bcf19f9e398759542610da8748500c93626b853b4616186",
-    "additionKitSha256": "0036fa2ec9721873427af27d7d4fa545f8c4f174368229d22cfe9aab568799d9",
+    "sourceSha256": "62b940b68b7177628a0dcd29d84754fcbaff911a9a9a955c58ffe727f59fdb57",
+    "sb3Sha256": "2c8ebda3a96722699f17b9e6961af1acd05e112e85c24e7a4f2f3667ce796d9d",
+    "webSha256": "48dd35c979c3110235e8b28c44dcb1a7f2b0daf11eef276d790c9b2b0ad8b2a5",
+    "starterSha256": "bf0ad3b250f79d6fb49cb7584a4559d7e979e75e4b2d46923effae4b183fdfb8",
+    "additionKitSha256": "fb3f7bbb7eb4c136d189a7a1bd3e6484146f42fc7ab4b87795d2f5892a7f3c81",
     "license": "MPL-2.0",
     "publicSurfaceManifest": "../../sources/dsl4/user-guide-4.0-public-surfaces.json",
     "publicSamples": {
@@ -71,8 +71,8 @@
         "starterUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
         "additionKitUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
         "manifestUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json",
-        "sb3Sha256": "419cb4db90923658f4754610cd462e0caadd790636d7c688923529016b932292",
-        "webSha256": "2be5c37c83cdde01a7a35f4339290b7b2d59b45cb3d9ddbb64bc6d2fda3541b0"
+        "sb3Sha256": "2c8ebda3a96722699f17b9e6961af1acd05e112e85c24e7a4f2f3667ce796d9d",
+        "webSha256": "48dd35c979c3110235e8b28c44dcb1a7f2b0daf11eef276d790c9b2b0ad8b2a5"
       }
     },
     "walkthrough": "../developer-guides/dsl4-implementation-walkthrough.md",
@@ -94,7 +94,7 @@
     "provenance": {
       "publishedSurface": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
       "runtimeCommit": "9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014",
-      "sampleCommit": "aea5d71e84794f4f25af294f05c09199071cde85",
+      "sampleCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
       "fixtureSource": "scripts/fixtures/tutorial-screenshot.html",
       "browserAuthoringFixture": "scripts/fixtures/tutorial-screenshot.html",
       "privacy": "no real person, camera frame, local source path, or account data is included"
@@ -109,13 +109,13 @@
     ]
   },
   "captureArtifacts": {
-    "P-01": "sha256:d94cafb0151932645ba74156c1a1c08b5ba0b2a9c9cfbad19baeab09dba3d078",
+    "P-01": "sha256:14a38d5e4a53ff0a7219f66f5662d2cf40cc233a013e32f7817ba2ae2e686275",
     "P-02": "sha256:968fc04abf2c42c40c5e6a6748caf4fb5c6b73a900a84274336a8b95a0fc51ca",
     "P-03": "sha256:ed5a638b142ca34406cc5e266c7657c70d56990d28855c4426f6baa944391786",
     "P-04": "sha256:98dfca33b4834914ba8ef750ad5b2fe5d6eb4c39faf6516ca67ca62fa765dafb",
     "P-05": "sha256:c9a74c00678fced5b9bf09c8a83481d25303efb2849e2b515cb5952372eca07e",
     "P-06": "sha256:d0a1ec758b4a137794323344542f5bd4fb78fd55803315511fb2073cc799a85e",
-    "P-07": "sha256:bcdfeb86c89fad636269925c554202794ca78dcd4817c201d0a04cc5b746a1c7",
+    "P-07": "sha256:ff96f5d51afa61b557523b5cded6de93ee259a001097d42fe47d22ff3f411440",
     "C-01": "sha256:96d00ee461fa7ad67afe84b3cca9371429581b3da82d75eb2c0e78c78ea17c49",
     "C-02": "sha256:89a8b2741d06fae5159de44c6fd2318f555aa1c9dc7eec8f922cc75bf3196b60",
     "C-03": "sha256:d45f88cbf2fc061ccd3f95cd6e9774286d2d1e0fbe34f649499e6629c47465da",
@@ -128,7 +128,7 @@
     "C-09": "sha256:4d84ee567b0779ba82384fe75d81c0364a02c8ab6b3afcb68720529fd643f766",
     "C-10": "sha256:b61db2f0275715db6c6f0a97889bb443e07e6ee9fb76cd10721636b4910fbc94",
     "C-11": "sha256:d421f826270b2a0fee2fbfa5e2cd50e3f72db2dbbdd23afa134831d94a13c4be",
-    "C-12": "sha256:da9cfd80629c61f17d5b34bc674fd1e05217b9b70f35de8953d9d759fb202f8a",
+    "C-12": "sha256:b22876fcc5ad3a782975610c4298e7a4a2efeb28c8a9b85687771683020b0e5c",
     "C-14": "sha256:4aed273e5d5ca49a0f1a2024f6e0c578b4d4d8aa9abda07f0ae3968b3441001f"
   },
   "gates": [
@@ -154,12 +154,13 @@
       "dependencies": [
         "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94",
         "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/100",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/102"
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/102",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/104"
       ],
       "evidence": [
         "../../sources/dsl4/user-guide-4.0-public-surfaces.json",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/103",
-        "https://github.com/kubohiroya/tmpose-kamishibai-samples/actions/runs/31649836275",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/105",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/actions/runs/31656477345",
         "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
         "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json"
       ],
@@ -289,10 +290,10 @@
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-01-sample-page.png",
       "captionDraft": "チュートリアル用作品の詳細ページからWeb版を開きます。",
       "altDraft": "チュートリアル用作品の詳細とWeb版を開く導線が表示されたサンプルサイト",
-      "capturedAt": "2026-08-13T08:11:40+09:00",
+      "capturedAt": "2026-08-13T10:09:35+09:00",
       "captureProvenance": {
-        "sampleCommit": "aea5d71e84794f4f25af294f05c09199071cde85",
-        "pagesDeploymentRun": 31649836275,
+        "sampleCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
+        "pagesDeploymentRun": 31656477345,
         "browser": "Codex In-app Browser (Chromium)"
       },
       "gates": ["dsl4-release", "tutorial-sample"]
@@ -311,8 +312,8 @@
       "capturedAt": "2026-08-13T08:11:40+09:00",
       "captureProvenance": {
         "runtimeCommit": "9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014",
-        "sampleCommit": "aea5d71e84794f4f25af294f05c09199071cde85",
-        "pagesDeploymentRun": 31649836275,
+        "sampleCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
+        "pagesDeploymentRun": 31656477345,
         "browser": "Codex In-app Browser (Chromium)"
       },
       "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
@@ -381,11 +382,17 @@
       "step": 5,
       "required": true,
       "status": "captured",
-      "surface": "Standard app shell finished",
-      "description": "終了画面と再実行またはタイトル復帰",
+      "surface": "achievement message before application menu",
+      "description": "ポーズ認識後、メニューへ戻る前の達成メッセージ",
       "filename": "docs/images/tutorials/dsl4/play/tutorial-play-07-finished.png",
-      "captionDraft": "防災ポーズの練習後は、もう一度遊ぶかタイトルへ戻ります。",
-      "altDraft": "教室で頭を守る練習の終了状態と、再実行およびタイトル復帰の操作",
+      "captionDraft": "できたことと揺れがおさまるまで待つことを確認してからメニューへ戻ります。",
+      "altDraft": "机の下で頭を守る見本と、できたことおよび揺れがおさまるまで待つことを伝える達成メッセージ",
+      "capturedAt": "2026-08-13T10:09:35+09:00",
+      "captureProvenance": {
+        "sampleCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
+        "pagesDeploymentRun": 31656477345,
+        "browser": "Codex In-app Browser (Chromium)"
+      },
       "gates": ["dsl4-release", "tutorial-sample", "app-shell"]
     },
     {
@@ -606,6 +613,12 @@
       "filename": "docs/images/tutorials/dsl4/create/tutorial-create-12-built-sb3.png",
       "captionDraft": "完成したSB3をTurboWarpで開き、緑の旗から再生します。",
       "altDraft": "完成した紙芝居のSB3をTurboWarpで開いた画面",
+      "capturedAt": "2026-08-13T10:09:35+09:00",
+      "captureProvenance": {
+        "sampleCommit": "3f533cfb6e4bbe157f85d407b9c1f9417d767d02",
+        "pagesDeploymentRun": 31656477345,
+        "browser": "Codex In-app Browser (Chromium)"
+      },
       "gates": ["dsl4-release", "tutorial-sample", "app-shell", "browser-authoring"]
     },
     {

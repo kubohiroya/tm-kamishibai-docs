@@ -107,13 +107,13 @@
       add-background-and-actor.yml.txt
       add-pose-scene.yml.txt</div>`;
     const frames = {
-      "P-01": () => `<div class="sample-page"><div class="sample-nav"><strong>📚 TMPose紙芝居</strong><span>トップ</span><span>ドキュメント</span><span>チュートリアル</span><span>作品</span><span>ダウンロード</span></div><div class="sample-main"><p>作品 › 公式作品</p><div class="sample-card"><span class="tag">DSL 4.0 チュートリアル</span><h1>地震だ！頭を守ろう</h1><p>教室で地震の揺れを感じたときの安全行動を、具体的なポーズで練習する3場面の公式サンプルです。</p><div class="sample-actions"><button class="primary">Web版を開く</button><button>スターターをダウンロード</button><button>完成版SB3をダウンロード</button></div><h3>固定情報</h3><p>Version 4.0.0-rc.2　・　MPL-2.0　・　カメラを使用</p></div></div></div>`,
+      "P-01": () => `<div class="sample-page"><div class="sample-nav"><strong>📚 TMPose紙芝居</strong><span>トップ</span><span>ドキュメント</span><span>チュートリアル</span><span>作品</span><span>ダウンロード</span></div><div class="sample-main"><p>作品 › 公式作品</p><div class="sample-card"><span class="tag">DSL 4.0 チュートリアル</span><h1>地震だ！頭を守ろう</h1><p>教室で地震の揺れを感じたときの安全行動を、見本と達成メッセージ付きで練習する4場面の公式サンプルです。</p><div class="sample-actions"><button class="primary">Web版を開く</button><button>スターターをダウンロード</button><button>完成版SB3をダウンロード</button></div><h3>固定情報</h3><p>Version 4.0.0-rc.2　・　MPL-2.0　・　カメラを使用</p></div></div></div>`,
       "P-02": () => shell(`<div class="license"><h1>「参加型」AI紙芝居</h1><h2>Version 4.0.0-rc.2 (2026/08/12)</h2><div class="work">🏫 地震だ！頭を守ろう</div><p>本アプリのソースコードはMozilla Public License 2.0で提供されています。</p><p>教室での安全行動をポーズで練習します。</p></div>`, "タイトル"),
       "P-03": () => `<div style="width:100%;height:100%;display:grid;place-items:center;background:#000"><div class="loader"></div></div>`,
       "P-04": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, speech: "丈夫な机の下で、両手を頭へ" })}<div class="permission"><h2>カメラの使用を許可しますか？</h2><p>このサイトはポーズを判定するため、カメラを使用します。映像は端末内で処理されます。</p><div class="buttons"><button>許可しない</button><button class="primary">許可する</button></div></div></div>`, "カメラを使用"),
       "P-05": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, badges: true })}<div class="bubble">「頭を守る」のポーズ！<br><small>姿勢を低くし、両手を頭の左右へ</small></div></div>`),
       "P-06": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, badges: true })}<div class="success"><div><strong>ポーズ成功！</strong><span>「頭を守る」ポーズを確認しました</span></div></div></div>`),
-      "P-07": () => shell(`<div class="finish"><span class="done">✓ 防災ポーズを練習しました</span><h1>おしまい</h1><p>教室で揺れを感じたら、丈夫な机の下で頭を守ります。</p><div class="buttons" style="justify-content:center"><button class="primary">もう一度遊ぶ</button><button>タイトルへ戻る</button></div></div>`, "再生完了"),
+      "P-07": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, speech: "できた！ 頭を守れたね。揺れがおさまるまで、そのまま待とう。" })}<div class="watch">✓ 達成を確認</div></div>`, "達成メッセージ"),
       "C-01": () => shell(tree(false), "スターター"),
       "C-02": () => editor(`<div style="height:100%;display:grid;place-items:center"><h1>「参加型」AI紙芝居</h1></div>`),
       "C-03": () => editor(`<div class="menu-grid"><button>📁<br>ファイルを開く</button><button>↻<br>もう一度</button><button class="wide disabled">配布用SB3を作る</button><button>ⓘ<br>アプリ情報</button><button>🌐<br>言語</button></div>`),
@@ -126,7 +126,7 @@
       "C-09": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, speech: "自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！" })}<div class="watch">✓ 更新済み</div></div>`, "更新しました"),
       "C-10": () => shell(`<div style="position:relative">${stage({ quake: true, pose: true, badges: true })}<div class="badge left">見本: 頭を守る<span class="bar" style="--progress:82%"></span></div><div class="camera-note">姿勢を低くし、両手を頭の左右へ</div><div class="watch">↻</div></div>`, "ポーズ認識（合成fixture）"),
       "C-11": () => editor(`<div class="diagnostic"><strong>エラー: 不正な命令ファイル</strong><code>story.kamishibai.yaml: 37<br>K4-SCHEMA-UNKNOWN-KEY<br>Student.sya は未知の命令です。Student.say に直してください。</code></div>`),
-      "C-12": () => editor(`<div style="position:relative;height:100%">${stage({ quake: true, pose: true, speech: "できた！ 揺れがおさまるまで待とう。" })}<div class="watch">tutorial-story-built.sb3</div></div>`, "完成したSB3を読み込みました"),
+      "C-12": () => editor(`<div style="position:relative;height:100%">${stage({ quake: true, pose: true, speech: "できた！ 頭を守れたね。揺れがおさまるまで、そのまま待とう。" })}<div class="watch">tutorial-story-built.sb3</div></div>`, "完成したSB3を読み込みました"),
       "C-14": () => editor(`<div class="menu-grid"><button>📁<br>ファイルを開く</button><button>↻<br>もう一度</button><button class="wide">⬇<br>配布用SB3を作る</button><button>ⓘ<br>アプリ情報</button><button>🌐<br>言語</button></div>`),
     };
     document.getElementById("root").innerHTML = (frames[frame] || frames["P-05"])();

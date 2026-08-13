@@ -312,14 +312,27 @@ scenes:
     poseModel: SafetyPose
     actions:
       - stage: EarthquakeClassroom
+      - Student.show:
+          skin: ProtectHead
+          x: 0
+          y: -60
+          scale: 65
       - Student.pose:
           steps:
             - pose: 頭を守る
               skin: ProtectHead
               sound: SuccessSound
-      - Student.say:
-          text: できた！ 揺れがおさまるまで待とう。
-          seconds: 3
+  success:
+    - stage: EarthquakeClassroom
+    - Student.show:
+        skin: ProtectHead
+        x: 0
+        y: -60
+        scale: 65
+    - Student.say:
+        text: できた！ 頭を守れたね。揺れがおさまるまで、そのまま待とう。
+        seconds: 5
+    - wait: 1
 ```
 
 このチュートリアルでは、ポーズモデルそのものは作りません。プレビューを先頭から更新し、カメラを
@@ -383,7 +396,7 @@ _台本と素材が正常で、フォルダーの読み取り権限があると�
 _完成したSB3をTurboWarpで開き、緑の旗から再生します。画像は操作位置を示すfixtureです。_
 
 タイトルから開始し、「遊ぶ」と同じ順序で最後まで再生します。「地震だ！」という発端、教室の背景、
-具体的な安全行動の案内、「頭を守る」ポーズ場面がすべて表示されれば完成です。
+具体的な安全行動の案内、「頭を守る」ポーズの見本、認識後の達成メッセージがすべて表示されれば完成です。
 
 ## 完了チェック
 
