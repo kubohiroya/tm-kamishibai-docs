@@ -19,9 +19,9 @@ const dsl4Documents = documentationConfig.documents
 test('records the verified implementation and release state in config', () => {
   assert.deepEqual(dsl4PublicationStatus, {
     verifiedOn: '2026-08-13',
-    implementationCommit: '9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014',
+    implementationCommit: '087dfa526e967bb2cc38af3f5b5a795355de7739',
     latestPublishedRelease: 'v3.2.3',
-    publishedDsl4Prerelease: 'v4.0.0-rc.2',
+    publishedDsl4Prerelease: 'v4.0.0-rc.3',
     officialDsl4Release: null,
   });
 });
@@ -38,9 +38,9 @@ test('distinguishes implementation, release, public surfaces, and document state
 });
 
 test('shows the same release boundary on the 4.0 top and every 4.0 document', () => {
-  assert.match(dsl4Index, /4\.0\.0-rc\.2を公開しています/u);
-  assert.match(dsl4Index, /kamishibai-4\.0\.0-rc\.2\.sb3/u);
-  assert.match(dsl4Index, /tmpose-kamishibai\/v\/4\.0\.0-rc\.2/u);
+  assert.match(dsl4Index, /4\.0\.0-rc\.3を公開しています/u);
+  assert.match(dsl4Index, /kamishibai-4\.0\.0-rc\.3\.sb3/u);
+  assert.match(dsl4Index, /tmpose-kamishibai\/v\/4\.0\.0-rc\.3/u);
   assert.match(dsl4Index, /安定版<code>4\.0\.0<\/code>はまだ未公開/u);
   assert.match(dsl4Index, /最新安定版は\s*<code>v3\.2\.3<\/code>/u);
   assert.match(dsl4Index, /tutorials\//u);
@@ -48,7 +48,7 @@ test('shows the same release boundary on the 4.0 top and every 4.0 document', ()
   assert.equal(dsl4Documents.length, 16);
   for (const {collectionId, sourceFilename, source} of dsl4Documents) {
     if (collectionId === 'tutorials') {
-      assert.match(source, /4\.0\.0-rc\.2/u);
+      assert.match(source, /4\.0\.0-rc\.3/u);
       assert.match(source, /公開プレリリース/u);
       continue;
     }

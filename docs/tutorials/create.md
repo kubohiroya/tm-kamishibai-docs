@@ -2,7 +2,7 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象バージョン: `4.0.0-rc.2`（公開プレリリース）\
+対象バージョン: `4.0.0-rc.3`（公開プレリリース）\
 対象: 初めて紙芝居DSL 4.0を書く人\
 扱う台本: 4.0用のYAML台本\
 想定時間: 60〜90分
@@ -26,7 +26,7 @@ Node.js、pnpm、ターミナルは使いません。Scratchのブロックは�
 - File System Access APIに対応したChromium系ブラウザー
 - ポーズ場面を確かめるためのカメラと、全身を映せる少しの空間
 
-この手順では`4.0.0-rc.2`の非埋め込みStandard SB3を使用します。安定版`4.0.0`ではなく、
+この手順では`4.0.0-rc.3`の非埋め込みStandard SB3を使用します。安定版`4.0.0`ではなく、
 公開プレリリースを試す手順であることを理解したうえで、ほかの作品と分けた作業フォルダーで進めてください。
 
 ## 全体の流れ
@@ -55,14 +55,14 @@ Node.js、pnpm、ターミナルは使いません。Scratchのブロックは�
 次の二つをダウンロードします。
 
 - [チュートリアル用スターター](https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip)
-- [紙芝居4.0.0-rc.2のStandard SB3](https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.2.sb3)
+- [紙芝居4.0.0-rc.3のStandard SB3](https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.3.sb3)
 
 新しい作業フォルダーを作り、スターターのZIPをその中へ展開します。Standard SB3も同じ作業フォルダーへ
 保存します。インストール作業はありません。展開後の主なファイルは次の配置になります。
 
 ```text
 作業フォルダー/
-├── kamishibai-4.0.0-rc.2.sb3
+├── kamishibai-4.0.0-rc.3.sb3
 └── tutorial-story/
     ├── README.md
     ├── LICENSES.md
@@ -96,9 +96,9 @@ _スターターを開き、編集する台本と後で使う追加素材を確�
 ## 3. TurboWarpで作品フォルダーを開く
 
 1. [TurboWarp Editor](https://turbowarp.org/editor)を開く
-2. 「ファイル」から`kamishibai-4.0.0-rc.2.sb3`を読み込む
+2. 「ファイル」から`kamishibai-4.0.0-rc.3.sb3`を読み込む
 3. 緑の旗を押す
-4. タイトル画面を閉じ、メニューの「ファイルを開く」（以後「開く」）を押す
+4. タイトル画面を閉じ、メニューの「台本を開く」（以後「開く」）を押す
 5. フォルダー選択画面で、スターターを展開した`tutorial-story`フォルダーを選ぶ
 6. ブラウザーから確認を求められたら、このフォルダーの読み取りを許可する
 
@@ -113,9 +113,9 @@ _Standard SB3をTurboWarp Editorで開き、緑の旗から作者用プレビュ
 
 <!-- screenshot:C-03 -->
 
-![紙芝居メニューで「ファイルを開く」を選ぶ画面](../images/tutorials/dsl4/create/tutorial-create-03-directory-picker.png)
+![紙芝居メニューで「台本を開く」を選ぶ画面](../images/tutorials/dsl4/create/tutorial-create-03-directory-picker.png)
 
-_メニューの「ファイルを開く」を押し、続いて表示される選択画面で`tutorial-story`フォルダーを選びます。_
+_メニューの「台本を開く」を押し、続いて表示される選択画面で`tutorial-story`フォルダーを選びます。_
 
 台本と素材の読み取りが完了すると、作品が始まります。以後、選択したフォルダー内の台本と宣言済み素材が
 監視されます。通常の保存は自動で検査され、問題がなければ安全な区切りで作品へ反映されます。
@@ -400,7 +400,7 @@ _完成したSB3をTurboWarpで開き、緑の旗から再生します。画像�
 
 ## 完了チェック
 
-- [ ] `4.0.0-rc.2`のスターターと非埋め込みStandard SB3を用意した
+- [ ] `4.0.0-rc.3`のスターターと非埋め込みStandard SB3を用意した
 - [ ] TurboWarp Editorで緑の旗を押し、「開く」から作品フォルダーを選んだ
 - [ ] セリフを一行変更し、自動検査後にプレビューへ反映した
 - [ ] 新しい背景、登場人物、場面を追加した
