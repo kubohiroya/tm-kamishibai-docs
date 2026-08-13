@@ -6,7 +6,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: 初めてTMPose紙芝居を再生する人\
 想定時間: 10〜15分
 
-入口: [紙芝居チュートリアル](index.md)
+入口: [TMPose紙芝居 4.0 ドキュメント](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/)
 
 このチュートリアルでは、Webブラウザーでポーズを使うサンプル作品を開き、カメラの前でポーズを取り、
 物語を最後まで進めます。台本やプログラムの知識は必要ありません。カメラを使わない場合は、公開作品の

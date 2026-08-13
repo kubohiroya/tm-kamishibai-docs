@@ -541,6 +541,10 @@ export async function buildDocs({force = false} = {}) {
       path.join(distRoot, '4.0/index.html'),
     ),
     writeStaticSiteHtml(
+      path.join(projectRoot, 'site/4.0/tutorials/index.html'),
+      path.join(distRoot, '4.0/tutorials/index.html'),
+    ),
+    writeStaticSiteHtml(
       path.join(projectRoot, 'site/workshops/index.html'),
       path.join(distRoot, 'workshops/index.html'),
     ),

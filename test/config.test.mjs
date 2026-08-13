@@ -30,7 +30,7 @@ const expectedCollections = {
     'dsl-4.0-history.md',
     'dsl-3.2-to-4.0-conversion-guide.md',
   ],
-  tutorials: ['index.md', 'play.md', 'create.md'],
+  tutorials: ['play.md', 'create.md'],
   'developer-guides': [
     'application-materials-guide.md',
     'application-materials-guide-4.0.md',
@@ -226,6 +226,25 @@ test('publishes DSL 3.2 and 4.0 as parallel dedicated collections', () => {
   assert.equal(dsl40?.documents[0].title, '紙芝居DSL 4.0 台本作成ガイド');
 });
 
+test('names public document categories for the reader role', () => {
+  assert.equal(
+    documentCollections.find(({id}) => id === 'user-guides')?.title,
+    '紙芝居を見る人向けドキュメント',
+  );
+  assert.equal(
+    documentCollections.find(({id}) => id === 'dsl-3.2-guides')?.title,
+    '台本を作る人向けドキュメント',
+  );
+  assert.equal(
+    documentCollections.find(({id}) => id === 'dsl-4.0-guides')?.title,
+    '台本を作る人向けドキュメント',
+  );
+  assert.equal(
+    documentCollections.find(({id}) => id === 'developer-guides')?.title,
+    'アプリを開発する人向けドキュメント',
+  );
+});
+
 test('places every version-specific document below an explicit version root', () => {
   for (const document of documentationConfig.documents) {
     assert.match(document.outputDirectory, /^(?:3\.2|4\.0)\//u);
@@ -243,7 +262,7 @@ test('places every version-specific document below an explicit version root', ()
   assert.equal(staffDocumentConfig.articleHtmlFilename, 'document.html');
 });
 
-test('publishes the tutorial entry and its two child pages at the planned stable URLs', () => {
+test('publishes both tutorial task pages directly without a duplicate overview', () => {
   const tutorials = documentationConfig.documents.filter(
     ({collectionId}) => collectionId === 'tutorials',
   );
@@ -255,19 +274,14 @@ test('publishes the tutorial entry and its two child pages at the planned stable
     })),
     [
       {
-        sourceFilename: 'index.md',
-        publicationOutputDirectory: '4.0/tutorials',
-        listedOnVersionTop: true,
-      },
-      {
         sourceFilename: 'play.md',
         publicationOutputDirectory: '4.0/tutorials/play',
-        listedOnVersionTop: false,
+        listedOnVersionTop: true,
       },
       {
         sourceFilename: 'create.md',
         publicationOutputDirectory: '4.0/tutorials/create',
-        listedOnVersionTop: false,
+        listedOnVersionTop: true,
       },
     ],
   );

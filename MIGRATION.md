@@ -12,7 +12,7 @@ build・公開できる状態にします。
 
 ## 移設後の分類と対応表
 
-### 一般向けドキュメント
+### 紙芝居を見る人向けドキュメント
 
 | 現在のパス                                       | 移設先候補                                             |
 | ------------------------------------------------ | ------------------------------------------------------ |
@@ -21,7 +21,7 @@ build・公開できる状態にします。
 | `docs/general/03-user-guide.md`                  | `docs/user-guides/user-guide.md`                       |
 | `docs/general/09-application-materials-guide.md` | `docs/developer-guides/application-materials-guide.md` |
 
-### 紙芝居DSL作成者向けドキュメント
+### 台本を作る人向けドキュメント
 
 | 現在のパス                             | 移設先候補                                    |
 | -------------------------------------- | --------------------------------------------- |
@@ -29,7 +29,7 @@ build・公開できる状態にします。
 | `docs/general/05-command-reference.md` | `docs/dsl-author-guides/command-reference.md` |
 | `docs/general/history.md`              | `docs/dsl-author-guides/history.md`           |
 
-### 開発者向けドキュメント
+### アプリを開発する人向けドキュメント
 
 | 現在のパス                                  | 移設先候補                                            |
 | ------------------------------------------- | ----------------------------------------------------- |

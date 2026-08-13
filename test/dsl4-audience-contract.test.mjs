@@ -8,7 +8,6 @@ const dsl4Index = read('site/4.0/index.html');
 const adultOverview = read('docs/user-guides/executive-summary-adult-4.0.md');
 const childOverview = read('docs/user-guides/executive-summary-kids-4.0.md');
 const userGuide = read('docs/user-guides/user-guide-4.0.md');
-const tutorialIndex = read('docs/tutorials/index.md');
 const playTutorial = read('docs/tutorials/play.md');
 const createTutorial = read('docs/tutorials/create.md');
 const authorGuide = read('docs/dsl-author-guides/dsl-4.0-author-guide.md');
@@ -28,21 +27,14 @@ test('keeps implementation terms out of the general-user entry surfaces', () => 
   )?.[0];
   assert.ok(indexEntry);
 
-  for (const source of [
-    indexEntry,
-    adultOverview,
-    childOverview,
-    userGuide,
-    tutorialIndex,
-    playTutorial,
-  ]) {
+  for (const source of [indexEntry, adultOverview, childOverview, userGuide, playTutorial]) {
     assert.doesNotMatch(
       source,
       /StoryDocument|Source Graph|project\.source\.json|candidate|generation|source frontend|platform adapter|feature flag|SHA-256|[a-f0-9]{40}/iu,
     );
   }
 
-  assert.match(tutorialIndex, /カメラを使わない場合は、キーや画面のタッチ/u);
+  assert.match(playTutorial, /カメラを使わない場合は、公開作品の/u);
   assert.match(playTutorial, /カメラを使わない場合/u);
   assert.match(userGuide, /カメラを使わない場合や許可したくない場合/u);
   assert.doesNotMatch(userGuide, /checksum|issuecomment-|feature flag|surface|diagnostic code/iu);

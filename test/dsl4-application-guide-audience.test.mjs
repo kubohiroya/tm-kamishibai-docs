@@ -26,7 +26,7 @@ test('positions the guide as optional detail with purpose-specific routes', () =
   assert.match(guide, /教材・ワークショップを設計する/u);
   assert.match(guide, /制作環境と配布手順を整える/u);
   assert.match(guide, /実装を調査・保守する/u);
-  assert.match(guide, /開発者向けドキュメント/u);
+  assert.match(guide, /アプリを開発する人向けドキュメント/u);
   assert.match(guide, /教材設計者にソフトウェア実装の知識を前提とするものではありません/u);
   assert.match(guide, /作品を作る: \[紙芝居DSL 4\.0 台本作成ガイド\]/u);
   assert.match(

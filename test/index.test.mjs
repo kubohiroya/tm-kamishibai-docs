@@ -161,6 +161,32 @@ test('keeps the two version tops independent', () => {
   assert.match(dsl40Index, /href="\.\.\/3\.2\/">DSL 3\.2へ切り替える/u);
 });
 
+test('organizes both version tops by reader role and routes tutorials directly', () => {
+  for (const index of [dsl32Index, dsl40Index]) {
+    assert.match(index, />紙芝居を見る人向けドキュメント<\/h2>/u);
+    assert.match(index, />台本を作る人向けドキュメント<\/h2>/u);
+    assert.match(index, />アプリを開発する人向けドキュメント<\/h2>/u);
+    assert.doesNotMatch(index, />一般向けドキュメント<\/h2>/u);
+    assert.doesNotMatch(index, />開発者向けドキュメント<\/h2>/u);
+  }
+
+  const viewerSection = dsl40Index.match(
+    /<section aria-labelledby="user-documents">[\s\S]*?<\/section>/u,
+  )?.[0];
+  const authorSection = dsl40Index.match(
+    /<section aria-labelledby="dsl-documents">[\s\S]*?<\/section>/u,
+  )?.[0];
+  assert.ok(viewerSection);
+  assert.ok(authorSection);
+  assert.match(viewerSection, /href="tutorials\/play\/"/u);
+  assert.doesNotMatch(viewerSection, /href="tutorials\/create\/"/u);
+  assert.match(authorSection, /href="tutorials\/create\/"/u);
+  assert.doesNotMatch(authorSection, /href="tutorials\/play\/"/u);
+  assert.doesNotMatch(dsl40Index, /class="button" href="tutorials\/"/u);
+  assert.match(dsl40Index, /tutorials\/play\/publication\.json/u);
+  assert.match(dsl40Index, /tutorials\/create\/publication\.json/u);
+});
+
 test('explains how to choose between the versions on the root page', () => {
   assert.match(rootIndex, /既存作品を継続/u);
   assert.match(rootIndex, /新規制作を開始/u);

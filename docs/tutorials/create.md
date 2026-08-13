@@ -7,7 +7,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 扱う台本: 4.0用のYAML台本\
 想定時間: 60〜90分
 
-入口: [TMPose紙芝居 4.0 チュートリアル](index.md)
+入口: [TMPose紙芝居 4.0 ドキュメント](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/)
 
 このチュートリアルでは、「紙芝居を遊ぶ」で使用した作品のスターターを少しずつ変更します。台本は、
 YAML（項目を字下げして並べるテキスト形式）で書きます。SB3（TurboWarpやScratchで開ける一つの作品ファイル）

@@ -4,17 +4,23 @@
   "targetDslVersion": "4.0",
   "listing": {
     "source": "site/4.0/index.html",
-    "sectionId": "user-documents",
-    "title": "TMPose紙芝居 4.0 チュートリアル",
-    "entryCount": 1,
-    "entrySource": "index.md"
+    "entryCount": 2,
+    "entries": [
+      {
+        "sectionId": "user-documents",
+        "categoryTitle": "紙芝居を見る人向けドキュメント",
+        "title": "紙芝居を遊ぶ",
+        "entrySource": "play.md"
+      },
+      {
+        "sectionId": "dsl-documents",
+        "categoryTitle": "台本を作る人向けドキュメント",
+        "title": "紙芝居を作る",
+        "entrySource": "create.md"
+      }
+    ]
   },
   "pages": [
-    {
-      "source": "index.md",
-      "publicPath": "/4.0/tutorials/",
-      "role": "entry"
-    },
     {
       "source": "play.md",
       "publicPath": "/4.0/tutorials/play/",
@@ -24,6 +30,13 @@
       "source": "create.md",
       "publicPath": "/4.0/tutorials/create/",
       "role": "create"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "site/4.0/tutorials/index.html",
+      "from": "/4.0/tutorials/",
+      "to": "/4.0/"
     }
   ],
   "navigation": {
@@ -44,8 +57,9 @@
     "capture-environment"
   ],
   "rollback": {
-    "removeListingEntry": true,
+    "removeListingEntries": true,
     "unpublishPages": true,
+    "restoreOverviewPage": true,
     "preserveAppBar": true,
     "preserveDsl32": true
   }
