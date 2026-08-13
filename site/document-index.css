@@ -75,6 +75,17 @@ main {
   justify-content: center;
   border-right: 1px solid color-mix(in srgb, var(--version-accent) 24%, white);
   color: var(--version-accent);
+  text-decoration: none;
+  transition: background-color 160ms ease;
+}
+
+.version-banner__label:hover {
+  background: color-mix(in srgb, var(--version-accent) 8%, transparent);
+}
+
+.version-banner__label:focus-visible {
+  outline: 4px solid var(--version-accent);
+  outline-offset: -4px;
 }
 
 .version-banner__status {
@@ -98,6 +109,24 @@ main {
   margin: 0;
   font-size: 1.4rem;
   line-height: 1.4;
+}
+
+.version-banner__title-link {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, var(--version-accent) 45%, transparent);
+  text-decoration-thickness: 0.09em;
+  text-underline-offset: 0.2em;
+}
+
+.version-banner__title-link:hover {
+  color: var(--version-accent);
+  text-decoration-color: currentcolor;
+}
+
+.version-banner__title-link:focus-visible {
+  border-radius: 3px;
+  outline: 3px solid var(--version-accent);
+  outline-offset: 4px;
 }
 
 .version-banner__body > p {
