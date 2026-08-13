@@ -104,8 +104,8 @@ overlay、pose feedback、camera controlを含む公開RCの固定実装を
 で確認しています。さらに本体#555のbrowser distribution buildを公開プレリリース`4.0.0-rc.2`へ反映し、
 `browser-authoring` gateを`published`、`ready: true`として追跡します。
 
-浦島太郎、my-urashima、チュートリアル用最小作品の4.0 Web版、SB3、integrityはsamples PR #103と
-Pages deploy run `31649836275`で公開済みです。
+浦島太郎、my-urashima、チュートリアル用最小作品の4.0 Web版、SB3、integrityはsamples PR #105と
+Pages deploy run `31656477345`で公開済みです。
 公開surfaceは[操作説明書のmachine-readable manifest](../../sources/dsl4/user-guide-4.0-public-surfaces.json)へ
 固定しています。チュートリアル用starterとaddition kitも同じrelease入力から生成され、実ファイルの
 sizeとSHA-256を公開manifestと照合しました。`tutorial-sample` gateは`published`、`ready: true`です。
