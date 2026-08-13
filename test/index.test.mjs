@@ -90,6 +90,19 @@ test('publishes each document only from its version-specific top page', () => {
           'u',
         ),
       );
+      const hrefPosition = versionIndex.indexOf(`class="button" href="${localDirectory}/"`);
+      const card = versionIndex.slice(
+        versionIndex.lastIndexOf('<article>', hrefPosition),
+        versionIndex.indexOf('</article>', hrefPosition),
+      );
+      const [year, month, day] = document.updatedAt.split('-').map(Number);
+      assert.match(
+        card,
+        new RegExp(
+          `<p class="document-updated">更新日: <time datetime="${document.updatedAt}">${year}年${month}月${day}日<\\/time><\\/p>`,
+          'u',
+        ),
+      );
     } else {
       assert.doesNotMatch(versionIndex, new RegExp(`href="${localDirectory}/"`, 'u'));
     }
@@ -119,6 +132,18 @@ test('keeps publication actions on their dedicated version and workshop pages', 
   for (const [, actions] of dsl40Actions) {
     assert.deepEqual(linkLabels(actions), ['HTML', 'Vivliostyle Viewer']);
   }
+});
+
+test('styles the update date shown on every document card', () => {
+  assert.match(documentIndexCss, /\.document-updated\s*\{/u);
+  const listedDocuments = documentationConfig.documents.filter(
+    ({listedOnVersionTop}) => listedOnVersionTop !== false,
+  );
+  assert.equal(
+    (dsl32Index.match(/class="document-updated"/gu) ?? []).length +
+      (dsl40Index.match(/class="document-updated"/gu) ?? []).length,
+    listedDocuments.length,
+  );
 });
 
 test('keeps the two version tops independent', () => {
@@ -159,6 +184,11 @@ test('lists workshop material chronologically with explicit DSL families', () =>
   assert.match(workshopIndex, /現在公開中の資料はありません/u);
   assert.match(workshopIndex, /<h2 id="workshops-32">DSL 3\.2系<\/h2>/u);
   assert.match(workshopIndex, /<time datetime="2026-08-01">2026年8月1日<\/time>/u);
+  assert.equal((workshopIndex.match(/class="document-updated"/gu) ?? []).length, 2);
+  assert.equal(
+    (workshopIndex.match(/<time datetime="2026-08-04">2026年8月4日<\/time>/gu) ?? []).length,
+    2,
+  );
   assert.match(workshopIndex, /href="2026-08-01\/"/u);
   assert.match(workshopIndex, /href="2026-08-01\/staff\/"/u);
   assert.match(workshopIndex, /href="https:\/\/www\.chibanippo\.co\.jp\/articles\/1648690"/u);

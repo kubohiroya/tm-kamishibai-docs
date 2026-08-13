@@ -373,6 +373,13 @@ main {
   font-size: 0.92rem;
 }
 
+.document-updated {
+  margin: -0.35rem 0 0.8rem;
+  color: var(--site-muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
