@@ -14,7 +14,7 @@ export default defineConfig({
   entry: [
     {
       path: `${staffDocumentConfig.sourceDirectory}/${staffDocumentConfig.sourceFilename}`,
-      output: staffDocumentConfig.htmlFilename,
+      output: staffDocumentConfig.articleHtmlFilename,
     },
   ],
   theme: ['theme.css', 'staff-theme.css'],

@@ -438,7 +438,15 @@ Vivliostyle CLIの`toc`設定で
 `h2`・`h3`までを含む目次を生成します。生成後処理で通常HTMLの`index.html`へ本文と目次を
 統合し、目次を固定・展開可能な階層ツリーにします。Vivliostyle Viewerのreading orderには
 `document.html`だけを残すため、同じ本文を二重に表示しません。目次をMarkdownへ重複して
-記述しません。HTML、Vivliostyle Viewer、体験会資料のPDF、文書横断目次、画像参照、しおり、
+記述しません。
+
+参加者向け体験会資料では、Viewer／PDF用の`cover.html`、`toc.html`、本文HTMLを保ったまま、
+3つのbodyを画面用`index.html`へ統合します。スタッフ向け体験会資料では、本文HTMLの見出しから
+画面用の階層目次を作り、本文と同じ`index.html`へ統合します。スタッフ向けViewerとPDFは
+`document.html`だけを使用するため、画面用目次によってPDFのページ構成は変わりません。
+一般文書と両体験会資料は`document-toc.css`と`document-toc.js`を共有します。
+
+HTML、Vivliostyle Viewer、体験会資料のPDF、文書横断目次、画像参照、しおり、
 ライセンスをまとめて検証します。Markdownだけを確認して完了にせず、生成されたHTMLと、
 `docs/workshops/`を変更した場合のPDFも確認します。
 

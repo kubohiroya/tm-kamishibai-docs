@@ -107,6 +107,11 @@ Source Graph、preview／build toolchainで制作する場合は4.0を選びま�
 `document.html`だけを含め、統合HTMLとの二重表示を防ぎます。DSL 3系をJSON Schemaへ置き換えたり、
 DSL 4.0と同じ生成方式へ擬似的に統一したりはしません。
 
+2026年8月1日のワークショップ資料も、参加者向けは表紙・目次・本文、スタッフ向けは目次・本文を
+それぞれ通常HTMLの`index.html`へ統合します。画面用の目次ツリーは一般文書と同じCSS／JavaScriptを
+共有します。ViewerとPDFでは統合HTMLをreading orderへ入れず、参加者向けの表紙・目次・本文と、
+スタッフ向けの本文だけという既存の組版単位を維持します。
+
 「TMPose紙芝居 アプリ・教材・ツールチェインガイド」も3.2版と4.0版を別のMarkdownとして保守し、
 それぞれに通常HTML版とVivliostyle Viewer版を用意します。3.2版は`/3.2/`、4.0版は`/4.0/`以下の
 独立した開発者向けpublicationとして提供し、以前のversion番号なしURLには移転案内を残します。

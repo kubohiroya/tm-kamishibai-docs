@@ -237,6 +237,10 @@ test('places every version-specific document below an explicit version root', ()
   assert.equal(staffDocumentConfig.versionFamily, '3.2系');
   assert.equal(workshopDocumentConfig.outputDirectory, 'workshops/2026-08-01');
   assert.equal(staffDocumentConfig.outputDirectory, 'workshops/2026-08-01/staff');
+  assert.equal(workshopDocumentConfig.htmlFilename, 'index.html');
+  assert.equal(workshopDocumentConfig.coverHtmlFilename, 'cover.html');
+  assert.equal(staffDocumentConfig.htmlFilename, 'index.html');
+  assert.equal(staffDocumentConfig.articleHtmlFilename, 'document.html');
 });
 
 test('publishes the tutorial entry and its two child pages at the planned stable URLs', () => {
