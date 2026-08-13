@@ -18,6 +18,7 @@ const faviconPath = path.join(distRoot, 'favicon.png');
 const documentIndexCssPath = path.join(distRoot, 'document-index.css');
 const siteShellCssPath = path.join(distRoot, 'site-shell.css');
 const siteShellScriptPath = path.join(distRoot, 'site-shell.js');
+const documentTocCssPath = path.join(distRoot, 'document-toc.css');
 const documentTocScriptPath = path.join(distRoot, 'document-toc.js');
 const require = createRequire(import.meta.url);
 const vivliostyleRequire = createRequire(require.resolve('@vivliostyle/cli/package.json'));
@@ -246,7 +247,7 @@ async function verifyDocument(document) {
   assert(article.includes(document.title), `${basename} does not contain its configured title.`);
   assert(index.includes(document.title), `${basename} index does not contain its article.`);
   assert(
-    index.includes('<nav id="toc" class="document-toc"'),
+    index.includes('<nav id="toc" class="document-toc document-toc--css-numbered"'),
     `${basename} index does not contain the inline table of contents.`,
   );
   assert(
@@ -265,9 +266,17 @@ async function verifyDocument(document) {
     .relative(publicationDirectory, documentTocScriptPath)
     .split(path.sep)
     .join('/');
+  const tocCssReference = path
+    .relative(publicationDirectory, documentTocCssPath)
+    .split(path.sep)
+    .join('/');
   assert(
     attributeValues(index, 'script', 'src').includes(tocScriptReference),
     `${basename} index does not load the expandable tree behavior.`,
+  );
+  assert(
+    attributeValues(index, 'link', 'href').includes(tocCssReference),
+    `${basename} index does not load the expandable tree styles.`,
   );
   assert(
     manifest.readingOrder?.length === 1 &&
@@ -496,6 +505,9 @@ async function verifyLegacyNotices() {
 
 async function verifyWorkshop() {
   const workshopDirectory = path.join(distRoot, workshopDocumentConfig.outputDirectory);
+  const workshopIndexPath = path.join(workshopDirectory, workshopDocumentConfig.htmlFilename);
+  const workshopArticleFilename = workshopDocumentConfig.sourceFilename.replace(/\.md$/u, '.html');
+  const workshopArticlePath = path.join(workshopDirectory, workshopArticleFilename);
   const workshopPdf = path.join(workshopDirectory, workshopDocumentConfig.pdfFilename);
   const workshopOutputPdf = path.join(
     pdfRoot,
@@ -503,6 +515,8 @@ async function verifyWorkshop() {
     workshopDocumentConfig.pdfFilename,
   );
   const staffDirectory = path.join(distRoot, staffDocumentConfig.outputDirectory);
+  const staffIndexPath = path.join(staffDirectory, staffDocumentConfig.htmlFilename);
+  const staffArticlePath = path.join(staffDirectory, staffDocumentConfig.articleHtmlFilename);
   const staffPdf = path.join(staffDirectory, staffDocumentConfig.pdfFilename);
   const staffOutputPdf = path.join(
     pdfRoot,
@@ -510,21 +524,113 @@ async function verifyWorkshop() {
     staffDocumentConfig.pdfFilename,
   );
   await Promise.all([
+    access(workshopIndexPath),
     access(path.join(workshopDirectory, workshopDocumentConfig.coverHtmlFilename)),
     access(path.join(workshopDirectory, workshopDocumentConfig.tocHtmlFilename)),
+    access(workshopArticlePath),
     access(path.join(workshopDirectory, 'publication.json')),
-    access(path.join(staffDirectory, staffDocumentConfig.htmlFilename)),
+    access(staffIndexPath),
+    access(staffArticlePath),
+    access(path.join(staffDirectory, 'publication.json')),
   ]);
-  const [workshopPublished, workshopOutput, staffPublished, staffOutput] = await Promise.all([
+  const [
+    workshopIndex,
+    workshopManifestSource,
+    staffIndex,
+    staffManifestSource,
+    workshopPublished,
+    workshopOutput,
+    staffPublished,
+    staffOutput,
+  ] = await Promise.all([
+    readFile(workshopIndexPath, 'utf8'),
+    readFile(path.join(workshopDirectory, 'publication.json'), 'utf8'),
+    readFile(staffIndexPath, 'utf8'),
+    readFile(path.join(staffDirectory, 'publication.json'), 'utf8'),
     readFile(workshopPdf),
     readFile(workshopOutputPdf),
     readFile(staffPdf),
     readFile(staffOutputPdf),
   ]);
+  const workshopManifest = JSON.parse(workshopManifestSource);
+  const staffManifest = JSON.parse(staffManifestSource);
+  for (const [label, directory, index] of [
+    ['workshop', workshopDirectory, workshopIndex],
+    ['staff', staffDirectory, staffIndex],
+  ]) {
+    assert(
+      index.includes('<nav id="toc" class="document-toc document-toc--explicit-labels"'),
+      `The ${label} screen HTML does not contain the inline table of contents.`,
+    );
+    assert(
+      index.includes('<main id="main-content" class="document-content" tabindex="-1">'),
+      `The ${label} screen HTML does not contain the combined article.`,
+    );
+    const tocScriptReference = path
+      .relative(directory, documentTocScriptPath)
+      .split(path.sep)
+      .join('/');
+    const tocCssReference = path.relative(directory, documentTocCssPath).split(path.sep).join('/');
+    assert(
+      attributeValues(index, 'script', 'src').includes(tocScriptReference),
+      `The ${label} screen HTML does not load the tree behavior.`,
+    );
+    assert(
+      attributeValues(index, 'link', 'href').includes(tocCssReference),
+      `The ${label} screen HTML does not load the tree styles.`,
+    );
+  }
+  assert(
+    workshopIndex.includes(workshopDocumentConfig.title) &&
+      workshopIndex.includes('id="0-この教材と体験会について"'),
+    'The workshop screen HTML does not combine the cover and article.',
+  );
+  assert(
+    !new RegExp(`href="${workshopArticleFilename.replaceAll('.', '\\.')}#`, 'u').test(
+      workshopIndex,
+    ),
+    'The workshop screen table of contents links to its separate article.',
+  );
+  assert(
+    !workshopIndex.includes('class="cover-navigation"'),
+    'The workshop screen HTML keeps redundant separate-page navigation.',
+  );
+  assert(
+    workshopManifest.readingOrder?.map(({url}) => url).join(',') ===
+      [
+        workshopDocumentConfig.coverHtmlFilename,
+        workshopDocumentConfig.tocHtmlFilename,
+        workshopArticleFilename,
+      ].join(','),
+    'The workshop Viewer reading order changed.',
+  );
+  assert(
+    workshopManifest.resources?.some(
+      (entry) =>
+        (typeof entry === 'string' ? entry : entry.url) === workshopDocumentConfig.htmlFilename,
+    ),
+    'The workshop manifest does not list the combined screen HTML as a resource.',
+  );
+  assert(
+    staffIndex.includes(staffDocumentConfig.title) && staffIndex.includes('1. 体験会運営用資料'),
+    'The staff screen HTML does not combine its table of contents and article.',
+  );
+  assert(
+    staffManifest.readingOrder?.length === 1 &&
+      staffManifest.readingOrder[0].url === staffDocumentConfig.articleHtmlFilename,
+    'The staff Viewer reading order must contain only its article.',
+  );
+  assert(
+    staffManifest.resources?.some(
+      (entry) =>
+        (typeof entry === 'string' ? entry : entry.url) === staffDocumentConfig.htmlFilename,
+    ),
+    'The staff manifest does not list the combined screen HTML as a resource.',
+  );
   assert(workshopPublished.equals(workshopOutput), 'The workshop PDF copies differ.');
   assert(staffPublished.equals(staffOutput), 'The staff PDF copies differ.');
-  assert((await pdfPageCount(workshopOutputPdf)) > 0, 'The workshop PDF has no pages.');
-  assert((await pdfPageCount(staffOutputPdf)) > 0, 'The staff PDF has no pages.');
+  assert((await pdfPageCount(workshopOutputPdf)) === 52, 'The workshop PDF page count changed.');
+  assert((await pdfPageCount(staffOutputPdf)) === 8, 'The staff PDF page count changed.');
 
   const expectedPdfPaths = [
     path.join(workshopDocumentConfig.outputDirectory, workshopDocumentConfig.pdfFilename),
@@ -554,7 +660,7 @@ export async function verifyBuild() {
     readFile(documentFontPath),
     readFile(publishedFontPath),
   ]);
-  await access(documentTocScriptPath);
+  await Promise.all([access(documentTocCssPath), access(documentTocScriptPath)]);
   assert(publishedFont.equals(documentFont), 'The shared site font differs from its source.');
   for (const document of documentationConfig.documents) {
     await verifyDocument(document);

@@ -47,6 +47,7 @@ const commonPublicationInputs = [
   path.join(projectRoot, 'docs/config.mjs'),
   path.join(projectRoot, 'docs/theme.css'),
   path.join(projectRoot, 'docs/fonts'),
+  path.join(projectRoot, 'site/document-toc.css'),
   path.join(projectRoot, 'site/document-toc.js'),
   path.join(projectRoot, 'sources/tmpose-kamishibai.json'),
   path.join(projectRoot, 'package.json'),
@@ -365,6 +366,7 @@ async function buildWorkshop(grade, force) {
     markerPath: path.join(outputDirectory, 'build-info.json'),
     outputs: [
       path.join(outputDirectory, 'publication.json'),
+      path.join(outputDirectory, workshopDocumentConfig.htmlFilename),
       path.join(outputDirectory, workshopDocumentConfig.coverHtmlFilename),
       path.join(outputDirectory, workshopDocumentConfig.tocHtmlFilename),
       path.join(outputDirectory, workshopDocumentConfig.sourceFilename.replace(/\.md$/u, '.html')),
@@ -380,6 +382,19 @@ async function buildWorkshop(grade, force) {
         await applyRubygana(htmlPath, grade);
       }
       await cp(tempDirectory, outputDirectory, {recursive: true});
+      await installInlineDocumentToc({
+        publicationDirectory: outputDirectory,
+        siteRootDirectory: distRoot,
+        indexFilename: workshopDocumentConfig.htmlFilename,
+        articleFilename: workshopDocumentConfig.sourceFilename.replace(/\.md$/u, '.html'),
+        contentFilenames: [
+          workshopDocumentConfig.coverHtmlFilename,
+          workshopDocumentConfig.sourceFilename.replace(/\.md$/u, '.html'),
+        ],
+        tocFilename: workshopDocumentConfig.tocHtmlFilename,
+        labelsIncludeNumbers: true,
+        unwrapSingleDocumentRoot: false,
+      });
       await buildPdf(path.join(outputDirectory, 'publication.json'), pdfPath);
       await copyFile(pdfPath, publishedPdfPath);
       await writeBuildInfo(
@@ -401,7 +416,8 @@ async function buildStaff(force) {
   const configPath = path.join(projectRoot, 'docs/vivliostyle.staff.config.mjs');
   const tempDirectory = path.join(projectRoot, 'tmp/vivliostyle/staff');
   const outputDirectory = path.join(distRoot, staffDocumentConfig.outputDirectory);
-  const htmlPath = path.join(outputDirectory, staffDocumentConfig.htmlFilename);
+  const indexPath = path.join(outputDirectory, staffDocumentConfig.htmlFilename);
+  const articlePath = path.join(outputDirectory, staffDocumentConfig.articleHtmlFilename);
   const pdfPath = path.join(
     pdfRoot,
     staffDocumentConfig.outputDirectory,
@@ -423,14 +439,33 @@ async function buildStaff(force) {
     force,
     inputs,
     markerPath: path.join(outputDirectory, 'build-info.json'),
-    outputs: [htmlPath, pdfPath, publishedPdfPath],
+    outputs: [
+      indexPath,
+      articlePath,
+      path.join(outputDirectory, 'publication.json'),
+      pdfPath,
+      publishedPdfPath,
+    ],
     label: staffDocumentConfig.sourceFilename,
     build: async () => {
       await buildWebPublication(configPath, tempDirectory);
       await rm(outputDirectory, {recursive: true, force: true});
       await cp(tempDirectory, outputDirectory, {recursive: true});
-      await writeFile(htmlPath, normalizeWorkshopImagePaths(await readFile(htmlPath, 'utf8')));
-      await buildPdf(htmlPath, pdfPath);
+      await writeFile(
+        articlePath,
+        normalizeWorkshopImagePaths(await readFile(articlePath, 'utf8')),
+      );
+      await installInlineDocumentToc({
+        publicationDirectory: outputDirectory,
+        siteRootDirectory: distRoot,
+        indexFilename: staffDocumentConfig.htmlFilename,
+        articleFilename: staffDocumentConfig.articleHtmlFilename,
+        generateTocFromHeadings: true,
+        skipFirstHeading: true,
+        labelsIncludeNumbers: true,
+        unwrapSingleDocumentRoot: false,
+      });
+      await buildPdf(articlePath, pdfPath);
       await copyFile(pdfPath, publishedPdfPath);
       await writeBuildInfo(
         outputDirectory,
@@ -525,6 +560,10 @@ export async function buildDocs({force = false} = {}) {
     copyFileIfStale(
       path.join(projectRoot, 'site/site-shell.js'),
       path.join(distRoot, 'site-shell.js'),
+    ),
+    copyFileIfStale(
+      path.join(projectRoot, 'site/document-toc.css'),
+      path.join(distRoot, 'document-toc.css'),
     ),
     copyFileIfStale(
       path.join(projectRoot, 'site/document-toc.js'),

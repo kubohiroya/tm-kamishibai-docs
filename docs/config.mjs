@@ -350,7 +350,8 @@ export const workshopDocumentConfig = {
   outputDirectory: 'workshops/2026-08-01',
   learnedThroughGrade: 3,
   coverFilename: 'tmpose-kamishibai-cover-20260801.md',
-  coverHtmlFilename: 'index.html',
+  htmlFilename: 'index.html',
+  coverHtmlFilename: 'cover.html',
   sourceFilename: 'tmpose-kamishibai-20260801.md',
   tocHtmlFilename: 'toc.html',
   pdfFilename: 'tmpose-kamishibai-20260801.pdf',
@@ -374,6 +375,7 @@ export const staffDocumentConfig = {
   outputDirectory: 'workshops/2026-08-01/staff',
   sourceFilename: 'tmpose-kamishibai-staff-20260801.md',
   htmlFilename: 'index.html',
+  articleHtmlFilename: 'document.html',
   pdfFilename: 'tmpose-kamishibai-staff-20260801.pdf',
 };
 
