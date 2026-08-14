@@ -117,8 +117,8 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
   assert.match(dsl4SchemaReference, /v4\.0\.0-rc\.3`はprerelease/u);
   assert.match(dsl4SchemaReference, /権威関係と配布状態/u);
   assert.match(dsl4SchemaReference, /Schemaはruntime実装から生成しません/u);
-  assert.match(dsl4SchemaReference, /Schema固定commit: \[`d8b7067`\]/u);
-  assert.match(dsl4SchemaReference, /トップレベル12 field、action 24種類、Annotation 86項目/u);
+  assert.match(dsl4SchemaReference, /Schema固定commit: \[`f3c13d3`\]/u);
+  assert.match(dsl4SchemaReference, /トップレベル12 field、action 24種類、Annotation 87項目/u);
   assert.doesNotMatch(dslManual, /kamishibai: '4\.0'/u);
   assert.doesNotMatch(dsl4AuthorGuide, /DSL 3\.[12]|kamishibai=3\.[12]/u);
   assert.doesNotMatch(dsl4SchemaReference, /DSL 3\.[12]|kamishibai=3\.[12]/u);

@@ -94,8 +94,8 @@
           "pointer": "#/properties/poseRecognition",
           "order": 80,
           "title": "`poseRecognition` — ポーズ認識設定",
-          "summary": "認識中の任意の音、判定方法、feedback、プレイ中にポーズ待ちをskipできるか、camera previewの表示と任意UIをまとめます。idle音とcharge音は独立して省略できます。",
-          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nfeedback:\n  mode: presenter\nnavigation:\n  allowSkip: true\npreview:\n  mirroring: mirrored\n  controls:\n    cameraMenu:\n      position: bottom-center\n      opacity: 0.8\n      buttonAsset: CameraMenuButton",
+          "summary": "認識中の任意の音、モデル初期化、判定方法、feedback、プレイ中にポーズ待ちをskipできるか、camera previewの表示と任意UIをまとめます。idle音とcharge音は独立して省略できます。",
+          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nmodelInitialization:\n  policy: latest-needed\n  parallel: true\nfeedback:\n  mode: presenter\nnavigation:\n  allowSkip: true\npreview:\n  mirroring: mirrored\n  controls:\n    cameraMenu:\n      position: bottom-center\n      opacity: 0.8\n      buttonAsset: CameraMenuButton",
           "exampleContext": "`poseRecognition` fieldの値:"
         },
         {
@@ -293,8 +293,20 @@
           "pointer": "#/$defs/poseRecognition",
           "order": 60,
           "title": "ポーズ認識全体設定",
-          "summary": "共通音と、sequence、selection、feedback、navigation、camera previewの任意設定をまとめます。",
-          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nsequence:\n  confidenceThreshold: 0.6\nfeedback:\n  mode: scratchMirror\nnavigation:\n  allowSkip: false\npreview:\n  mirroring: mirrored"
+          "summary": "共通音と、モデル初期化、sequence、selection、feedback、navigation、camera previewの任意設定をまとめます。",
+          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nmodelInitialization:\n  policy: latest-needed\n  parallel: true\nsequence:\n  confidenceThreshold: 0.6\nfeedback:\n  mode: scratchMirror\nnavigation:\n  allowSkip: false\npreview:\n  mirroring: mirrored"
+        },
+        {
+          "pointer": "#/$defs/poseModelInitialization",
+          "order": 65,
+          "title": "Poseモデル初期化",
+          "summary": "従来互換のlegacyと、不要になった初期化をcancelして最新要求だけを準備するlatest-neededを選びます。camera準備とモデル準備の並行化も明示します。",
+          "example": "policy: latest-needed\nparallel: true",
+          "notes": [
+            "省略時はpolicyがlegacy、parallelがfalseです。",
+            "latest-neededでは重い初期化を実行中1件と最新待機1件までに制限します。",
+            "実行にはTMPose 1.10.0以降が必要です。"
+          ]
         },
         {
           "pointer": "#/$defs/poseSequenceRecognition",

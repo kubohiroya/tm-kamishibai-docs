@@ -25,7 +25,7 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
   assert.equal(actualHash, lock.schemaSha256);
   assert.equal(lock.repository, 'kubohiroya/tmpose-kamishibai');
   assert.equal(lock.sourceKind, 'commit');
-  assert.equal(lock.commit, 'd8b70676aff3d0655178c9b176ac4d764016b895');
+  assert.equal(lock.commit, 'f3c13d38b6623e9dd5ec94b02d390c3466b40e6f');
   assert.equal(
     lock.schemaUrl,
     `https://github.com/kubohiroya/tmpose-kamishibai/blob/${lock.commit}/schema/dsl-4.schema.json`,
@@ -37,7 +37,7 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
 test('covers every top-level field and every Schema action with validated annotations', () => {
   assert.deepEqual(validateReferenceInputs({schema, annotations}), {
     actionCount: 24,
-    annotationCount: 86,
+    annotationCount: 87,
     topLevelFieldCount: 12,
   });
 });

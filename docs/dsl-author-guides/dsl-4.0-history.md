@@ -68,8 +68,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 release準備mergeは4.0.0のsourceをmainへ統合したrevision、検証済みcandidateはその後のrelease catalogと
 debugger source anchorまで含むrevisionです。正式tagがないため、どちらも正式release commitとは記録しません。
 
-作者向けSchemaリファレンスは、独立したsource lockとして`d8b70676aff3d0655178c9b176ac4d764016b895`と
-SHA-256 `3642be29701310e691eeeae5e85156e8a9328d3341b2afb2efa7fc8f0431a459`を固定しています。
+作者向けSchemaリファレンスは、独立したsource lockとして`f3c13d38b6623e9dd5ec94b02d390c3466b40e6f`と
+SHA-256 `0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac136`を固定しています。
 candidate Schemaのchecksumとは役割とrevisionが異なります。正式公開時に両者が異なる場合は、履歴の値を
 書き換えて一致したことにせず、Schemaリファレンスの同期を別変更で先に完了します。
 
