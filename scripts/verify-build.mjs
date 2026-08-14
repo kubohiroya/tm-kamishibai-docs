@@ -247,6 +247,10 @@ async function verifyDocument(document) {
   assert(article.includes(document.title), `${basename} does not contain its configured title.`);
   assert(index.includes(document.title), `${basename} index does not contain its article.`);
   assert(
+    (index.match(/<body\b/giu) ?? []).length === 1,
+    `${basename} index contains duplicated document bodies.`,
+  );
+  assert(
     index.includes('<nav id="toc" class="document-toc document-toc--css-numbered"'),
     `${basename} index does not contain the inline table of contents.`,
   );

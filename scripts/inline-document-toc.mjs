@@ -118,7 +118,8 @@ export function createInlineDocumentHtml(
   const content = documents.map(bodyContent).join('\n');
   let output = documents[0].replace(
     body[0],
-    `${bodyTag}\n${renderInlineToc(tocHtml, {fragmentSourceFilenames, labelsIncludeNumbers, unwrapSingleDocumentRoot})}\n<main id="main-content" class="document-content" tabindex="-1">\n${content}\n</main>\n</body>`,
+    () =>
+      `${bodyTag}\n${renderInlineToc(tocHtml, {fragmentSourceFilenames, labelsIncludeNumbers, unwrapSingleDocumentRoot})}\n<main id="main-content" class="document-content" tabindex="-1">\n${content}\n</main>\n</body>`,
   );
   output = output.replace(
     /<\/head>/iu,
