@@ -85,7 +85,7 @@ platform port境界を維持します。
 1. sample repositoryを`dc9f662`へcheckoutし、`pnpm build`でlockと一致する`dist/`を生成する。
 2. `dist/`をlocalhostで配信し、`/stories/urashima/web-4.0/`を1280×720で開く。
 3. タイトルは上部960×300だけをcaptureし、連絡先を含めない。
-4. 閉じる操作で上演を開始し、Beach sceneを経て`Urashima.pose`待機へ到達した状態をcaptureする。
+4. 閉じる操作でプレイを開始し、Beach sceneを経て`Urashima.pose`待機へ到達した状態をcaptureする。
 5. 画像のMIME type、pixel、SHA-256を確認し、本表と差がある場合は実装・成果物・撮影条件のどれが
    変わったかを記録してから差し替える。
 

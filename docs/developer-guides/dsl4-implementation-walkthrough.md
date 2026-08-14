@@ -7,7 +7,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: 固定実装の動作と文書を追試する人\
 想定時間: 20〜30分
 
-この手順では、固定したruntimeと浦島太郎サンプルをローカルでbuildし、タイトル、上演、
+この手順では、固定したruntimeと浦島太郎サンプルをローカルでbuildし、タイトル、プレイ、
 ポーズ待機までをブラウザーで確認します。最後に同じYAMLを検証し、入力と成果物のSHA-256を照合します。
 
 これは正式公開プレイヤーの操作説明ではありません。画面内の`Version 4.0.0`は固定成果物の実装
@@ -19,7 +19,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 - 二つのrepositoryを検証済みcommitへ固定できる
 - 浦島太郎DSL 4.0 Web成果物を同じ入力から再生成できる
-- localhostでタイトル、上演、ポーズfeedbackを確認できる
+- localhostでタイトル、プレイ、ポーズfeedbackを確認できる
 - production frontendでYAMLを副作用なしに検証できる
 - YAML、SB3、Web成果物のSHA-256を記録値と照合できる
 
@@ -102,7 +102,7 @@ http://127.0.0.1:4173/stories/urashima/web-4.0/
 この画像は個人情報を含む下部を撮影範囲から外した実装スナップショットです。正式チュートリアル用の
 `P-02`ではありません。
 
-## 4. 上演を開始する
+## 4. プレイを開始する
 
 右上の閉じるボタンでタイトルを閉じ、物語を開始します。浜辺、浦島太郎、亀が表示され、吹き出しが
 進むことを確認します。
@@ -165,7 +165,7 @@ node --input-type=module -e 'import {createHash} from "node:crypto"; import {rea
 - [ ] runtimeとsampleのHEADを固定commitへ合わせた
 - [ ] lockfileを変更せず依存を導入した
 - [ ] `pnpm build`がartifact lockとWeb artifact lockを検証した
-- [ ] localhostでタイトルと上演画面を確認した
+- [ ] localhostでタイトルとプレイ画面を確認した
 - [ ] ポーズ認識度とチャージの表示へ到達した
 - [ ] `validate-dsl4`が`urashima.k4.yml: valid`を返した
 - [ ] YAML、SB3、Web HTMLのSHA-256がすべて一致した

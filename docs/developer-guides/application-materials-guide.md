@@ -10,7 +10,7 @@ TMPose紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居に
 参加者のポーズやkey・touch入力で物語を進める「参加型」AI紙芝居アプリです。
 作品はテキストの`kamishibai=3.2`台本として記述し、絵・音・動き・分岐を組み合わせます。3.2.xは既存の`kamishibai=3.1`台本も読み込めます。
 
-<figure class="application-hero"><img src="../images/image60.png" alt="参加型AI紙芝居 Version 3.1.9と表示されたTMPose紙芝居のタイトル画面"><figcaption>3.1.9時点の画面例。3.2.0でも、同じアプリに台本と素材を読み込むことで異なる物語を上演します。</figcaption></figure>
+<figure class="application-hero"><img src="../images/image60.png" alt="参加型AI紙芝居 Version 3.1.9と表示されたTMPose紙芝居のタイトル画面"><figcaption>3.1.9時点の画面例。3.2.0でも、同じアプリに台本と素材を読み込むことで異なる物語をプレイします。</figcaption></figure>
 
 <div class="application-value-grid"><section><strong>見る</strong><span>絵・台詞・音・animationで物語を伝える</span></section><section><strong>動く</strong><span>cameraの前でポーズを取り、登場人物へ働きかける</span></section><section><strong>作る</strong><span>台本と素材を差し替え、自分たちの作品へ育てる</span></section></div>
 
@@ -25,7 +25,7 @@ TMPose紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居に
 アプリ本体は汎用のSB3です。作品固有の`kamishibai=3.1`または`kamishibai=3.2`台本とassetを読み込み、
 事前検査、Loading、scene実行、入力待ち、画面更新を共通の流れで扱います。
 
-<figure class="application-flow"><figcaption>作品から上演まで</figcaption><div><span>台本・画像・音声</span><b>→</b><span>preflight検査</span><b>→</b><span>asset登録・Loading</span><b>→</b><span>scene実行</span></div></figure>
+<figure class="application-flow"><figcaption>作品からプレイまで</figcaption><div><span>台本・画像・音声</span><b>→</b><span>preflight検査</span><b>→</b><span>asset登録・Loading</span><b>→</b><span>scene実行</span></div></figure>
 
 <div class="application-columns"><section><p class="application-subhead">共通runtime</p><ul><li>Asset Managerがlocal素材とURL素材を名前で管理</li><li>Kamishibai Runtimeが実行前に台本を検査</li><li>TMPoseとAsync Inputが入力をscene遷移へ渡す</li><li>不正な台本は行番号付きSVG診断として画面表示</li></ul></section><section><p class="application-subhead">四つの成果物</p><dl><dt><code>generic</code></dt><dd>起動後に台本を選ぶ汎用版</dd><dt><code>editor</code></dt><dd>TurboWarpで編集できる版</dd><dt><code>player</code></dt><dd>作品を埋め込んだ実行専用版</dd><dt>Web版</dt><dd>browserから直接開く公開版</dd></dl></section></div>
 
@@ -40,7 +40,7 @@ TMPose紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居に
 公開サンプル「浦島太郎」では、観客がcameraの前で物語に合うポーズを取り、
 主人公や登場人物の行動に参加します。画面の「ポーズをとろう！」が、見る時間から動く時間への合図です。
 
-<figure class="application-hero application-urashima-hero"><img src="../images/image01.png" alt="カメラ映像に浦島太郎とカメを重ね、ポーズをとろう！と表示しているTMPose紙芝居のアプリ画面"><figcaption>camera映像、背景、Actor、認識UIを同じstage上へ重ねた上演画面。</figcaption></figure>
+<figure class="application-hero application-urashima-hero"><img src="../images/image01.png" alt="カメラ映像に浦島太郎とカメを重ね、ポーズをとろう！と表示しているTMPose紙芝居のアプリ画面"><figcaption>camera映像、背景、Actor、認識UIを同じstage上へ重ねたプレイ画面。</figcaption></figure>
 
 <div class="application-storyline"><span>カメを助ける</span><b>→</b><span>カメに乗る</span><b>→</b><span>竜宮城で踊る</span><b>→</b><span>玉手箱を開く</span><b>→</b><span>結末を演じる</span></div>
 
@@ -73,7 +73,7 @@ action=scene:dragon-palace</code></pre><p>scene、pose名、信頼度、遷移�
 
 2026年8月1日版の親子AIプログラミング体験会は、画像生成AI、ポーズ認識AI、
 AIではないprogramを一つの作品へ組み合わせます。何を人が決め、どこをAIが助け、
-どこをprogramが確実に実行するかを、制作と上演の両方から学ぶ教材です。
+どこをprogramが確実に実行するかを、制作とプレイの両方から学ぶ教材です。
 
 <figure class="application-workshop-overview"><img src="../images/image10.png" alt="参加型AI紙芝居を構成する画像生成AI、ポーズ認識AI、プログラムの役割を7段階で説明する体験会教材"><figcaption>教材の全体図。考える・描く・登録する・ポーズする・認識する・結果を渡す・物語が動く、を一枚で示します。</figcaption></figure>
 
@@ -81,16 +81,16 @@ AIではないprogramを一つの作品へ組み合わせます。何を人が�
 
 <p class="application-source">出典: <a href="../workshops/2026-08-01/tmpose-kamishibai-20260801.md">親子AIプログラミング体験会教材 2026年8月1日版</a></p>
 
-## 絵から上演までを一周する {#workshop-cycle .application-sheet .unnumbered}
+## 絵からプレイまでを一周する {#workshop-cycle .application-sheet .unnumbered}
 
 <p class="application-page-label">6 / 8　体験会教材説明</p>
 
 教材は完成品を眺めるだけではなく、下絵、画像生成、認識training、TurboWarpへの登録、
-台本編集、上演testまでを一つの制作のサイクルとして体験させます。
+台本編集、プレイ確認までを一つの制作のサイクルとして体験させます。
 
 <div class="application-image-grid"><figure><img src="../images/image11.png" alt="片手を上げて片膝を曲げた棒人間のポーズ下絵"><figcaption>考える・描く</figcaption></figure><figure><img src="../images/image25.png" alt="棒人間の下絵をもとに乙姫のポーズ画像を生成する画面"><figcaption>画像をつくる</figcaption></figure><figure><img src="../images/tmpose-training.png" alt="TMPoseのトレーニング進捗画面"><figcaption>ポーズを学習する</figcaption></figure><figure><img src="../images/turbowarp-costumes.png" alt="TurboWarpにPrincessとpose画像をcostumeとして登録した画面"><figcaption>costumeへ登録する</figcaption></figure></div>
 
-<div class="application-cycle"><span>poseを設計</span><b>→</b><span>人物画像を生成</span><b>→</b><span>認識modelをtraining</span><b>→</b><span>台本とassetを編集</span><b>→</b><span>上演して改善</span></div>
+<div class="application-cycle"><span>poseを設計</span><b>→</b><span>人物画像を生成</span><b>→</b><span>認識modelをtraining</span><b>→</b><span>台本とassetを編集</span><b>→</b><span>プレイして改善</span></div>
 
 <p class="application-callout"><strong>教材としての狙い:</strong> 入力画像、training data、判定閾値、台本の指定を変えると結果も変わります。うまく動かない理由を一つずつ切り分けること自体が、AIとprogramの違いを理解する学習になります。</p>
 
