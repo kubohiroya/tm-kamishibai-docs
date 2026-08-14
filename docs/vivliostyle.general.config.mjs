@@ -44,6 +44,7 @@ export function createDocumentVivliostyleConfig(sourceFilename) {
         'dsl-author-guides/**',
         'developer-guides/**',
         'tutorials/**',
+        'turbowarp-programmer-guides/**',
         'workshops/**',
       ],
     },
