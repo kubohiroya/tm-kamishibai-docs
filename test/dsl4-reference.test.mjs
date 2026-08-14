@@ -25,7 +25,7 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
   assert.equal(actualHash, lock.schemaSha256);
   assert.equal(lock.repository, 'kubohiroya/tmpose-kamishibai');
   assert.equal(lock.sourceKind, 'commit');
-  assert.equal(lock.commit, '283daadeffa5d11ab4510daa66f60168277dafea');
+  assert.equal(lock.commit, 'd8b70676aff3d0655178c9b176ac4d764016b895');
   assert.equal(
     lock.schemaUrl,
     `https://github.com/kubohiroya/tmpose-kamishibai/blob/${lock.commit}/schema/dsl-4.schema.json`,
@@ -36,8 +36,8 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
 
 test('covers every top-level field and every Schema action with validated annotations', () => {
   assert.deepEqual(validateReferenceInputs({schema, annotations}), {
-    actionCount: 19,
-    annotationCount: 73,
+    actionCount: 24,
+    annotationCount: 86,
     topLevelFieldCount: 12,
   });
 });
@@ -75,7 +75,16 @@ test('generates the checked-in reference byte-for-byte deterministically', () =>
   assert.match(generated, /camera preview操作UI/u);
   assert.match(generated, /物理device IDは台本やruntime変数へ保存しません/u);
   assert.match(generated, /`mirrored` \/ `unmirrored`/u);
-  assert.match(generated, /`speechStyles` — speech style/u);
+  assert.match(generated, /`bubbleStyles` — 吹き出しstyle/u);
+  assert.match(generated, /`broadcastMessageAndWait`/u);
+  assert.match(generated, /`debugger`/u);
+  assert.match(generated, /`Actor\.hide`/u);
+  assert.match(generated, /`Actor\.setLayer`/u);
+  assert.match(generated, /`Actor\.loop`/u);
+  assert.match(generated, /`bitmapResolution`/u);
+  assert.match(generated, /`rehearsal\.skipScene`/u);
+  assert.match(generated, /asset・sceneのliteral ID/u);
+  assert.doesNotMatch(generated, /`speechStyles`|`speechStyle`/u);
   assert.match(generated, /`Actor\.think`/u);
   assert.match(generated, /`easeInOut`/u);
   assert.match(generated, /`Actor\.setTransparency`/u);

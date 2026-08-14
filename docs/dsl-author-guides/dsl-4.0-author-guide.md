@@ -25,10 +25,10 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 ## 公開前の文書について
 
 文書状態: 固定実装基準を説明する台本作成ガイド（正式リリースの操作資料ではない）\
-調査基準: tmpose-kamishibai `7945781`、2026年8月8日
+調査基準: tmpose-kamishibai `d8b7067`、2026年8月13日
 
-> **配布状態との区別:** 2026年8月8日時点で、GitHub Releasesの最新正式リリースは`v3.2.3`で、
-> `v4.0.0`は未公開です。このガイドの例どおりに、公開アプリや配布物で操作できるとは限りません。
+> **配布状態との区別:** 2026年8月13日時点で`v4.0.0-rc.3`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。機能ごとのfeature flagは利用するreleaseで確認してください。
 
 このガイドと[紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)は、同じ完成版の実装を
 調査基準にしています。Schemaはruntime実装から生成するものではありません。公開状況や実装の追跡が
@@ -89,7 +89,7 @@ DSL 4.0は制限付きYAML 1.2で記述します。引数には名前が付き�
 
 ## 仕様・実装を確認する人向け（台本作成では読み飛ばせます）
 
-2026年8月8日の調査基準では、次の実装がtmpose-kamishibaiの`main`へ入っています。
+2026年8月13日の調査基準では、次の実装がtmpose-kamishibaiの`main`へ入っています。
 
 - 制限付きYAMLの解析、JSON Schema検証、参照関係の意味検証
 - 行・列とStory Pathを保持するSource Map、`K4-*`診断
@@ -97,9 +97,11 @@ DSL 4.0は制限付きYAML 1.2で記述します。引数には名前が付き�
 - action実行、分岐、シーン遷移、停止を扱うpure runtime controller
 - control profileの解決、キー入力adapter、時系列history reducer、runtime navigation control
 - camera previewのstory既定、scene固有の非stickyな左右反転指定、任意の操作UI
-- `Actor.say`／`Actor.think`の入力待ち、文字送り、開始音／文字音、名前付き`speechStyles`
+- `Actor.say`／`Actor.think`の入力待ち、文字送り、音、portrait、animation、名前付き`bubbleStyles`
 - `Actor.moveTo`の`linear`、`easeIn`、`easeOut`、`easeInOut`
 - `Actor.setTransparency`の即時指定、foreground／backgroundの線形変化
+- `broadcastMessageAndWait`、`debugger`、`Actor.hide`／`setLayer`／`loop`
+- rehearsal skip、bitmap論理解像度、asset／sceneのliteral ID
 - include文で複数sourceを決定的にcomposeする処理、宣言元相対asset解決、自己完結SB3 packaging
 - Web／CLI previewのtransactional reload、Source Map、packaging後のsource origin復元
 - navigation入力と作品内input actionを一つのsemantic consumerへ限定する入力arbitration
@@ -111,10 +113,10 @@ builder、TurboWarp runtime surface、browser／CLI previewを含むend-to-end�
 ### 実装根拠を確認する場合
 
 仕様の正本は、tmpose-kamishibaiリポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/schema/dsl-4.schema.json)です。
-camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)、advanced speechと
-`speechStyles`は[Issue #396](https://github.com/kubohiroya/tmpose-kamishibai/issues/396)、
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/schema/dsl-4.schema.json)です。
+camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)、
+`bubbleStyles`は[Issue #476](https://github.com/kubohiroya/tmpose-kamishibai/issues/476)以降、
 `Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tmpose-kamishibai/issues/398)、
 `Actor.setTransparency`は[Issue #406](https://github.com/kubohiroya/tmpose-kamishibai/issues/406)、
 include文の複数ファイル対応は[Issue #417](https://github.com/kubohiroya/tmpose-kamishibai/issues/417)から
@@ -275,7 +277,7 @@ compose後の台本で使用できるトップレベルキーは次のものだ�
 | `actors`          | 任意 | アクターと初期コスチュームを対応付ける            |
 | `cover`           | 任意 | 表紙の背景とBGMを指定する                         |
 | `textStyles`      | 任意 | SVG Textの名前付きスタイルを定義する              |
-| `speechStyles`    | 任意 | say／thinkの名前付き文字送りstyleを定義する       |
+| `bubbleStyles`    | 任意 | say／thinkの名前付き吹き出しstyleを定義する       |
 | `variables`       | 任意 | 物語で使う変数の初期値を定義する                  |
 | `loading`         | 任意 | 読み込み中の背景とコスチューム列を指定する        |
 | `poseRecognition` | 任意 | ポーズ認識、preview表示、任意の操作UIを設定する   |
@@ -364,7 +366,7 @@ DSL 4.0では、安全で決定的に解析するため、次の機能を禁止�
 
 ## 名前の規則
 
-アセット、アクター、スタイル、変数、分岐、シーン、`stableId`の識別子には、Unicodeの文字、数字、
+アクター、テキストスタイル、変数、分岐、`stableId`などの構文識別子には、Unicodeの文字、数字、
 `_`、`-`を使用できます。先頭は文字または`_`にします。
 
 ```yaml
@@ -377,16 +379,32 @@ assets:
 
 ```yaml
 # 先頭が数字
-1stScene: []
+actors:
+  1stActor: HeroIdle
 
 # 空白を含む
-opening scene: []
+variables:
+  player score: 0
 
 # actor actionの区切りとして予約された`.`を含む
-main.hero: []
+actors:
+  main.hero: HeroIdle
 ```
 
 日本語名はUnicode NFCで保存します。大文字と小文字は別の識別子として扱われます。
+
+アセットIDとシーンIDはScratch上の名前をそのまま保持する空でない文字列で、空白や記号も使用できます。
+値をtrim、alias化、Unicode正規化しません。YAMLとして解釈が曖昧になる名前は引用符で囲みます。
+
+```yaml
+assets:
+  "Beach / evening": backdrop
+scenes:
+  "Scene 1: opening": []
+```
+
+`bubbleStyles`の名前も内部の空白や日本語を使用できます。ただし、先頭・末尾の空白、改行、tab、制御文字は
+使用できません。
 
 ## 素材（asset）を登録する
 
@@ -444,6 +462,9 @@ assets:
 `target`が必須です。`poseModel`と`image`には`name`を使用できません。`image`はapp shellが表示する
 camera preview control icon用であり、Scratch spriteやcostumeを追加する機能ではありません。
 
+bitmapのbackdropとcostumeは`bitmapResolution: 1`または`2`で論理解像度を指定できます。省略時は`1`です。
+SVGなどのvector assetには表示上の効果がないため、元素材の種類に合わせて使用してください。
+
 `file`は宣言を書いたsourceのdirectoryを基準に解決する、安全なPOSIX相対pathです。root直下のentry
 sourceではproject root基準になります。次の値は使用できません。
 
@@ -455,9 +476,11 @@ sourceではproject root基準になります。次の値は使用できませ�
 基準仕様では、builderがfileのbyte列を成果物へ埋め込み、実行環境からのネットワーク取得を不要にします。
 include文を使う場合は、正規化後pathとsymlink実体の両方がproject root内であることをbyte列の読込前に確認します。
 
-SB3の初期容量を抑えたいposeModelは、`delivery: remote`と`source.url`で通常のTMPose directory URLを
-指定できます。このモードは取得時点のmodelを使います。内容を固定する場合はmodel directoryをlocalの
-`file`へ置き、builderでSB3へ埋め込みます。
+SB3の初期容量を抑えたいassetは、`delivery: remote`と`source.url`でHTTPS URLを指定できます。
+検証情報を省略した場合は取得時点の内容を使います。内容を固定する場合は`integrity`、`contentType`、`size`を
+三つとも指定します。一部だけの指定はSchema errorです。poseModelのURLは通常のTMPose directory、検証情報を
+指定したURLはmodel archiveを指します。ネットワークなしで固定して使う場合はlocalの`file`を指定し、builderで
+SB3へ埋め込みます。
 
 ### eagerとlazy
 
@@ -527,8 +550,9 @@ poseRecognition:
   chargeSound: Success
 ```
 
-`poseRecognition`を記述する場合は、認識待機中の`idleSound`と、認識成立時の`chargeSound`を
-どちらも指定します。参照先は音アセットでなければなりません。
+`idleSound`と`chargeSound`はそれぞれ任意です。両方を省略した無音、片方だけ、両方を指定した設定を
+受理します。指定する場合、参照先は音アセットでなければなりません。音を省略してもsequence、selection、
+feedback、navigation、previewは独立して設定できます。
 
 ### カメラ映像の表示と操作
 
@@ -594,17 +618,15 @@ textStyles:
     font: Noto Sans JP
     size: 150
     align: center
-    direction: up
 ```
 
-| 項目         | 値                            |
-| ------------ | ----------------------------- |
-| `background` | 背景色を表す文字列            |
-| `color`      | 文字色を表す文字列            |
-| `font`       | 空でないフォント名            |
-| `size`       | 0より大きい数値               |
-| `align`      | `left`、`center`、`right`     |
-| `direction`  | `up`、`down`、`left`、`right` |
+| 項目         | 値                        |
+| ------------ | ------------------------- |
+| `background` | 背景色を表す文字列        |
+| `color`      | 文字色を表す文字列        |
+| `font`       | 空でないフォント名        |
+| `size`       | 0より大きい数値           |
+| `align`      | `left`、`center`、`right` |
 
 アクター自身へテキストを表示するときは`setText`を使います。
 
@@ -616,26 +638,38 @@ textStyles:
 
 行形式のText Asset commandは4.0 core schemaにありません。`textStyles`と`Actor.setText`を使用してください。
 
-## セリフの見た目（speech style）を設定する
+## セリフの見た目（bubble style）を設定する
 
-`Actor.say`と`Actor.think`で同じ文字送り演出を再利用するときは、トップレベルの`speechStyles`へ
-名前付きstyleを定義します。
+`Actor.say`と`Actor.think`で同じ吹き出し表現を再利用するときは、トップレベルの`bubbleStyles`へ
+名前付きの部分styleを定義します。style名には内部の空白や日本語も使用できます。
 
 ```yaml
-speechStyles:
-  novel:
+bubbleStyles:
+  Typing:
     characterIntervalSeconds: 0.05
     characterSound: Typewriter
     noSoundCharacters: '「」'
     restCharacters: '、。…'
     restCharacterIntervalSeconds: 0.5
+  Hero style:
+    styles:
+      - Typing
+    textStyle: title
+    placement: FOOTER_LIKE
+    visualStyle: NARRATION
 ```
 
-`characterIntervalSeconds`は必須で、Unicode grapheme cluster一つを表示してから次を表示するまでの秒数です。
-`characterSound`は逐次表示した各文字で鳴らすsound asset、`noSoundCharacters`は文字音を鳴らさない文字、
-`restCharacters`は無音にしたうえで表示後の間隔を`restCharacterIntervalSeconds`へ置き換える文字です。
-`noSoundCharacters`を使う場合は`characterSound`、`restCharacters`を使う場合は
-`restCharacterIntervalSeconds`も指定します。
+style定義の`styles`配列で既存styleを記載順に合成し、その定義自身の値で上書きできます。循環参照、
+未定義style、同じstyleの重複指定はエラーです。各styleは部分設定にでき、文字送りの相互依存は合成後の
+effective styleに対して検査します。
+
+`characterIntervalSeconds`はUnicode grapheme cluster一つを表示してから次を表示するまでの秒数です。
+`characterSound`は各文字のsound、`noSoundCharacters`は文字音を鳴らさない文字、`restCharacters`は
+表示後の間隔を`restCharacterIntervalSeconds`へ置き換える文字です。
+
+`textStyle`、`placement`、`visualStyle`、`portrait`、`continueIndicator`で吹き出しを構成できます。
+さらに`reveal`、`audio`、`showAnimation`、`hideAnimation`、`visibleAnimations`で段階表示、音、animationを
+指定できます。各fieldの列挙値と必須条件はSchemaリファレンスの「吹き出しstyle」を参照してください。
 
 styleには本文、完了条件、吹き出し開始時の音声を含めません。`text`、`seconds`、`waitFor`、
 `startSound`はセリフごとにactionへ記述します。
@@ -692,24 +726,29 @@ controls:
   keymaps:
     development:
       Space: navigation.nextAction
+      Enter: navigation.nextScene
       ArrowLeft: history.previousAction
       ArrowUp: history.previousScene
       ArrowDown: history.nextScene
     production:
-      Space: navigation.nextAction
+      Space: rehearsal.skipPose
 ```
 
 builderは`controlProfile`を明示的に一つ選び、選択されたprofileのkeymapだけを有効にする設計です。
 profile間の継承、merge、fallbackはありません。
 
-使用できるnavigation commandは次の4つです。
+使用できるnavigation commandは次の8個です。
 
-| command                  | 動作                                 |
-| ------------------------ | ------------------------------------ |
-| `navigation.nextAction`  | 通常実行として次のアクションへ進む   |
-| `history.previousAction` | 実行履歴上の前のアクションへ移動する |
-| `history.previousScene`  | 前に訪問したシーンの先頭へ移動する   |
-| `history.nextScene`      | 次に訪問したシーンの先頭へ移動する   |
+| command                  | 動作                                           |
+| ------------------------ | ---------------------------------------------- |
+| `navigation.nextAction`  | 通常実行として次のアクションへ進む             |
+| `navigation.nextScene`   | 通常実行として次のシーンへ進む                 |
+| `rehearsal.skipPose`     | 現在のpose stepを完了する                      |
+| `rehearsal.skipAction`   | 現在のactionを最終状態へ進める                 |
+| `rehearsal.skipScene`    | 現在のsceneを安全な最終状態へ進める            |
+| `history.previousAction` | 実行履歴上の前のアクションへ移動する           |
+| `history.previousScene`  | 実行履歴上の前のシーンの先頭へ移動する         |
+| `history.nextScene`      | 実行履歴上の次のシーンの先頭へ移動する         |
 
 キー名には`KeyboardEvent.code`を使用します。`Space`、`Enter`、方向キー、`Digit0`〜`Digit9`、
 `KeyA`〜`KeyZ`、`Numpad0`〜`Numpad9`、`F1`〜`F12`などがschemaで列挙されています。
@@ -718,6 +757,10 @@ profile間の継承、merge、fallbackはありません。
 選択profileに`history.*`が一つでもある場合だけ、時系列historyを有効にします。history移動で実行位置は
 変わりますが、物語の変数や表示状態を完全に巻き戻す機能ではありません。同じ物理キーを`controls`と
 作品内の`keyInputToChangeScene`へ重ねて割り当てないでください。
+
+`rehearsal.skipPose`はpose action内の次stepへ進み、`rehearsal.skipAction`は現在のaction全体、
+`rehearsal.skipScene`は現在のsceneを完了します。これらは実行履歴を移動しません。keymapへ明示したprofileで
+だけ有効になります。
 
 ## シーンを書く
 
@@ -760,17 +803,20 @@ sceneへ指定がなければstory既定へ戻り、前sceneの値を持ち越�
 
 Global actionはアクター名を付けずに記述します。
 
-| action                    | 短形式または主な引数          | 役割                       |
-| ------------------------- | ----------------------------- | -------------------------- |
-| `stage`                   | 背景ID                        | 背景を変更する             |
-| `bgm`                     | 音ID                          | BGMの再生を依頼する        |
-| `sound`                   | 音ID                          | 効果音の再生を依頼する     |
-| `wait`                    | 0以上の秒数                   | 指定時間待つ               |
-| `transition`              | `effect`、`seconds`           | 見た目の遷移効果を実行する |
-| `goto`                    | シーンID                      | 指定シーンへ移動する       |
-| `branch`                  | 分岐ID                        | 条件分岐を評価して移動する |
-| `keyInputToChangeScene`   | キーからシーンへのmapping     | キー入力を待って移動する   |
-| `touchInputToChangeScene` | アクターからシーンへのmapping | タッチ入力を待って移動する |
+| action                    | 短形式または主な引数           | 役割                                  |
+| ------------------------- | ------------------------------ | ------------------------------------- |
+| `stage`                   | 背景ID                         | 背景を変更する                        |
+| `bgm`                     | 音ID                           | BGMの再生を依頼する                   |
+| `sound`                   | 音ID                           | 効果音の再生を依頼する                |
+| `wait`                    | 0以上の秒数                    | 指定時間待つ                          |
+| `debugger`                | `null`                         | development debugの停止境界を置く     |
+| `broadcastMessageAndWait` | message名                      | message receiverの完了を待つ          |
+| `transition`              | `effect`、`seconds`            | 見た目の遷移効果を実行する            |
+| `goto`                    | シーンID                       | 指定シーンへ移動する                  |
+| `branch`                  | 分岐ID                         | 条件分岐を評価して移動する            |
+| `keyInputToChangeScene`   | キーからシーンへのmapping      | キー入力を待って移動する              |
+| `touchInputToChangeScene` | アクターからシーンへのmapping  | タッチ入力を待って移動する            |
+| `poseInputToChangeScene`  | ポーズからシーンへのmapping    | 最初に認識したポーズで移動する        |
 
 ### 背景、音、待機
 
@@ -782,6 +828,22 @@ Global actionはアクター名を付けずに記述します。
 ```
 
 `wait`は0以上です。背景と音のIDは、使用箇所に合う`kind`のアセットを参照します。
+
+### debug停止とTurboWarp message
+
+```yaml
+- debugger:
+- broadcastMessageAndWait: playMiniGame
+- broadcastMessageAndWait:
+    stableId: endingEffects
+    message: showEndingEffects
+```
+
+`debugger`はdevelopment debug実行でaction開始前に停止する境界です。引数やactor prefixは指定できません。
+production／埋め込み作品では副作用のないno-opとして直ちに完了します。
+
+`broadcastMessageAndWait`はScratch／TurboWarpの「メッセージを送って待つ」に相当します。指定messageで開始した
+receiver threadがすべて終了してから次actionへ進みます。終了しないreceiverを持つmessageには使用しないでください。
 
 ### 画面効果
 
@@ -839,10 +901,13 @@ Actor actionは`ActorID.command`をキーにします。
 | action                     | 必須引数                                 | 役割                                       |
 | -------------------------- | ---------------------------------------- | ------------------------------------------ |
 | `Actor.show`               | `skin`、`x`、`y`、`scale`                | コスチューム、位置、倍率を指定して表示する |
+| `Actor.hide`               | なし                                     | アクターを非表示にする                     |
 | `Actor.setTransparency`    | 0〜100または`from`、`to`、`seconds`      | 幽霊効果を即時設定または線形に変化させる   |
 | `Actor.moveTo`             | `x`、`y`、`seconds`                      | 任意のeasingで指定位置へ移動する           |
 | `Actor.say`／`Actor.think` | `text`と、`seconds`／`waitFor`の一方以上 | セリフまたは思考を表示する                 |
 | `Actor.setSkin`            | コスチュームID                           | コスチュームを変更する                     |
+| `Actor.setLayer`           | `front`／`back`／相対layer数             | アクターの重なり順を変更する               |
+| `Actor.loop`               | `steps`                                  | コスチューム列を繰り返す                   |
 | `Actor.setText`            | `text`、`style`                          | SVG Textを更新する                         |
 | `Actor.pose`               | `steps`                                  | ポーズを順に認識してcostumeと音を適用する  |
 
@@ -858,6 +923,14 @@ Actor actionは`ActorID.command`をキーにします。
 
 `scale`は0より大きい数値です。`skin`は、そのアクターを`target`とするコスチュームアセットを
 指定します。
+
+### 非表示にする
+
+```yaml
+- Hero.hide: {}
+```
+
+visible stateをfalseにします。透明度effectとは別で、次の`Actor.show`が同じactorを再表示します。
 
 ### 透明度を変える
 
@@ -910,7 +983,9 @@ Actor actionは`ActorID.command`をキーにします。
     text: 助けに行こう
     seconds: 8
     waitFor: advance
-    style: novel
+    styles:
+      - Typing
+      - Hero style
     startSound: HeroGreetingVoice
 - Hero.think:
     text: どうしよう……
@@ -924,9 +999,9 @@ Actor actionは`ActorID.command`をキーにします。
 speech開始に使った同じ入力、interactive UI、IME composition、modifier shortcut、key repeatは
 advanceとして再利用しません。
 
-`style`には`speechStyles`のIDを指定します。styleを指定したactionでは、
-`characterIntervalSeconds`、`characterSound`、`noSoundCharacters`、`restCharacters`、
-`restCharacterIntervalSeconds`をinline指定できません。styleを使わない既存のinline形式は引き続き使えます。
+`styles`には`bubbleStyles`の名前を1件以上のYAML配列で指定します。記載順に合成し、最後にaction内の
+文字送りfieldを適用します。同じstyleの重複、未定義style、単数形`style`はエラーです。styleを使わない
+inline形式も使用できます。
 
 `startSound`は吹き出し表示開始時に1回再生し、speech完了、入力、timeout、cancelで停止します。
 文字送り途中に入力またはtimeoutした場合は、残り全文を文字音と文字別休止なしで即時表示して完了します。
@@ -944,7 +1019,33 @@ advanceとして再利用しません。
 - Hero.setSkin:
     stableId: heroRescueSkin
     skin: HeroHelp
+    scale: 100
 ```
+
+`scale`を指定すると、costumeを適用した後に正のサイズ百分率を設定します。
+
+### 重なり順を変える
+
+```yaml
+- Hero.setLayer: front
+- Guide.setLayer: -1
+```
+
+`front`／`back`は絶対位置、正の数値は前方、負の数値は後方への相対移動です。
+
+### コスチュームを繰り返す
+
+```yaml
+- Hero.loop:
+    steps:
+      - skin: HeroWalk1
+        seconds: 0.2
+      - skin: HeroWalk2
+        seconds: 0.2
+```
+
+先頭skinを直ちに適用し、各秒数後に次のskinへ進むbackground loopです。少なくとも一つの`seconds`は
+0より大きくします。同じactorの`setSkin`、runtime停止、environment破棄でloopを終了します。
 
 ### SVG Textを更新する
 
@@ -1040,7 +1141,7 @@ production用にbuildした自己完結SB3には、directory handle、poll timer
 
 ## 総合サンプル
 
-次の例は、アセット、表紙、SVG Text、speech style、変数、keymap、分岐、入力、ポーズ認識を一つの台本へ
+次の例は、アセット、表紙、SVG Text、bubble style、変数、keymap、分岐、入力、ポーズ認識を一つの台本へ
 まとめたものです。利用するreleaseでDSL 4.0と必要なfeature flagを有効にして実行します。
 
 ```yaml
@@ -1094,15 +1195,19 @@ textStyles:
     font: Noto Sans JP
     size: 150
     align: center
-    direction: up
 
-speechStyles:
-  novel:
+bubbleStyles:
+  Typing:
     characterIntervalSeconds: 0.05
     characterSound: Typewriter
     noSoundCharacters: '「」'
     restCharacters: '、。…'
     restCharacterIntervalSeconds: 0.5
+  Hero style:
+    styles:
+      - Typing
+    textStyle: title
+    placement: FOOTER_LIKE
 
 variables:
   score: 1
@@ -1133,7 +1238,7 @@ controls:
       ArrowUp: history.previousScene
       ArrowDown: history.nextScene
     production:
-      Space: navigation.nextAction
+      Space: rehearsal.skipPose
 
 branches:
   rescueResult:
@@ -1166,7 +1271,8 @@ scenes:
         text: 助けに行こう
         seconds: 8
         waitFor: advance
-        style: novel
+        styles:
+          - Hero style
         startSound: HeroGreetingVoice
     - keyInputToChangeScene:
         Digit1: rescue
@@ -1262,7 +1368,7 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 ## 関連資料
 
 - [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
-- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
-- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/schema/dsl-4.schema.json): 機械可読な構造仕様
-- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
-- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例
+- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
+- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/schema/dsl-4.schema.json): 機械可読な構造仕様
+- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
+- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例
