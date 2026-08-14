@@ -93,6 +93,9 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
   assert.match(dsl4AuthorGuide, /`K4-INCLUDE-CYCLE`/u);
   assert.match(dsl4AuthorGuide, /`--max-total-source-bytes`/u);
   assert.match(dsl4AuthorGuide, /宣言元を基準に/u);
+  assert.match(dsl4AuthorGuide, /実行履歴上の前のシーンの先頭へ移動する/u);
+  assert.match(dsl4AuthorGuide, /実行履歴上の次のシーンの先頭へ移動する/u);
+  assert.doesNotMatch(dsl4AuthorGuide, /[前次]に訪問したシーンの先頭へ移動する/u);
   assert.doesNotMatch(dsl4AuthorGuide, /file: assets\/ocean\.svg/u);
   assert.doesNotMatch(dsl4AuthorGuide, /file: pose-models\/rescue/u);
   assert.match(

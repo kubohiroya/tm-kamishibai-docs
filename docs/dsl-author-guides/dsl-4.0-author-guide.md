@@ -708,8 +708,8 @@ profile間の継承、merge、fallbackはありません。
 | ------------------------ | ------------------------------------ |
 | `navigation.nextAction`  | 通常実行として次のアクションへ進む   |
 | `history.previousAction` | 実行履歴上の前のアクションへ移動する |
-| `history.previousScene`  | 前に訪問したシーンの先頭へ移動する   |
-| `history.nextScene`      | 次に訪問したシーンの先頭へ移動する   |
+| `history.previousScene`  | 実行履歴上の前のシーンの先頭へ移動する |
+| `history.nextScene`      | 実行履歴上の次のシーンの先頭へ移動する |
 
 キー名には`KeyboardEvent.code`を使用します。`Space`、`Enter`、方向キー、`Digit0`〜`Digit9`、
 `KeyA`〜`KeyZ`、`Numpad0`〜`Numpad9`、`F1`〜`F12`などがschemaで列挙されています。
