@@ -68,8 +68,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 release準備mergeは4.0.0のsourceをmainへ統合したrevision、検証済みcandidateはその後のrelease catalogと
 debugger source anchorまで含むrevisionです。正式tagがないため、どちらも正式release commitとは記録しません。
 
-作者向けSchemaリファレンスは、独立したsource lockとして`283daadeffa5d11ab4510daa66f60168277dafea`と
-SHA-256 `f519c033c68be61d71cc5dcba20a8434e23255ec0279fc0dc2d6408e7f014d7e`を固定しています。
+作者向けSchemaリファレンスは、独立したsource lockとして`d8b70676aff3d0655178c9b176ac4d764016b895`と
+SHA-256 `3642be29701310e691eeeae5e85156e8a9328d3341b2afb2efa7fc8f0431a459`を固定しています。
 candidate Schemaのchecksumとは役割とrevisionが異なります。正式公開時に両者が異なる場合は、履歴の値を
 書き換えて一致したことにせず、Schemaリファレンスの同期を別変更で先に完了します。
 
@@ -91,15 +91,15 @@ source catalogの状態だけを根拠にtag、npm、Pagesも公開済みとは�
 
 ### 対応する利用・実行経路（surface）
 
-| Surface                   | 4.0.0 candidateで追跡する範囲                                  |
-| ------------------------- | -------------------------------------------------------------- |
-| YAML source／Source Graph | 厳格Schema、source位置、resource上限、optional include         |
-| Standard Runtime          | scene／action、pose、speech、asset、custom action              |
-| `validate-dsl4`           | projectとSchemaの検証、cross-surface診断                       |
-| `build-dsl4`              | 固定release sourceからの自己完結SB3 build                      |
-| `preview-dsl4 --watch`    | token付きloopback preview、source／asset監視、安全停止         |
-| Browser-owned Preview     | user gestureによるdirectory選択、transactional reload、診断    |
-| Production SB3／Web版     | title、Loading、入力、camera、pose、finished、resource cleanup |
+| Surface                | 4.0.0 candidateで追跡する範囲                                  |
+| ---------------------- | -------------------------------------------------------------- |
+| YAML source／include文 | 厳格Schema、source位置、resource上限、optional include         |
+| Standard Runtime       | scene／action、pose、speech、asset、custom action              |
+| `validate-dsl4`        | projectとSchemaの検証、cross-surface診断                       |
+| `build-dsl4`           | 固定release sourceからの自己完結SB3 build                      |
+| `preview-dsl4 --watch` | token付きloopback preview、source／asset監視、安全停止         |
+| Browser-owned Preview  | user gestureによるdirectory選択、transactional reload、診断    |
+| Production SB3／Web版  | title、Loading、入力、camera、pose、finished、resource cleanup |
 
 公開サンプルの操作方法は[紙芝居アプリ 4.0 操作説明書](../user-guides/user-guide-4.0.md)、候補の再現と
 端から端までの判定は[DSL 4.0 release smoke](../developer-guides/release-smoke-4.0.md)を正本とします。
@@ -128,7 +128,7 @@ source catalogの状態だけを根拠にtag、npm、Pagesも公開済みとは�
 ### 既知の制約
 
 - local previewはtoken付きloopbackだけを使用し、remote previewを提供しない
-- Source Graphの`include`は`dsl4SourceIncludes`、file数、個別／合計byte数、深さを明示した場合だけ有効
+- include文は`dsl4SourceIncludes`、file数、個別／合計byte数、深さを明示した場合だけ有効
 - 非埋め込みdevelopmentのtoken、handle、candidate、reload設定、dialog、debug状態、停止位置をSB3へ保存しない
 - local project assetだけの変更を独立candidateとして監視するときはCLI Previewのasset live reloadを使う
 - remote assetはHTTPS、SHA-256、media typeを指定したopt-inだけを受理する

@@ -194,7 +194,8 @@ test('explains how to choose between the versions on the root page', () => {
   assert.match(rootIndex, /<code>\.txt<\/code>/u);
   assert.match(rootIndex, /kamishibai: '4\.0'/u);
   assert.match(rootIndex, /<code>\.k4\.yml<\/code>/u);
-  assert.match(rootIndex, /Source Graph/u);
+  assert.match(rootIndex, /include文/u);
+  assert.doesNotMatch(rootIndex, /Source Graph/u);
   assert.match(documentIndexCss, /\.version-banner__primary:focus-visible/u);
   assert.match(rootIndex, /aria-labelledby="version-32-title"/u);
   assert.match(rootIndex, /aria-labelledby="version-40-title"/u);

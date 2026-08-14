@@ -25,7 +25,7 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
   assert.equal(actualHash, lock.schemaSha256);
   assert.equal(lock.repository, 'kubohiroya/tmpose-kamishibai');
   assert.equal(lock.sourceKind, 'commit');
-  assert.equal(lock.commit, '283daadeffa5d11ab4510daa66f60168277dafea');
+  assert.equal(lock.commit, 'd8b70676aff3d0655178c9b176ac4d764016b895');
   assert.equal(
     lock.schemaUrl,
     `https://github.com/kubohiroya/tmpose-kamishibai/blob/${lock.commit}/schema/dsl-4.schema.json`,
@@ -36,8 +36,8 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
 
 test('covers every top-level field and every Schema action with validated annotations', () => {
   assert.deepEqual(validateReferenceInputs({schema, annotations}), {
-    actionCount: 19,
-    annotationCount: 72,
+    actionCount: 24,
+    annotationCount: 86,
     topLevelFieldCount: 12,
   });
 });
@@ -75,11 +75,25 @@ test('generates the checked-in reference byte-for-byte deterministically', () =>
   assert.match(generated, /camera preview操作UI/u);
   assert.match(generated, /物理device IDは台本やruntime変数へ保存しません/u);
   assert.match(generated, /`mirrored` \/ `unmirrored`/u);
-  assert.match(generated, /`speechStyles` — speech style/u);
+  assert.match(generated, /`bubbleStyles` — 吹き出しstyle/u);
+  assert.match(generated, /`broadcastMessageAndWait`/u);
+  assert.match(generated, /`debugger`/u);
+  assert.match(generated, /`Actor\.hide`/u);
+  assert.match(generated, /`Actor\.setLayer`/u);
+  assert.match(generated, /`Actor\.loop`/u);
+  assert.match(generated, /`bitmapResolution`/u);
+  assert.match(generated, /`rehearsal\.skipScene`/u);
+  assert.match(generated, /asset・sceneのliteral ID/u);
+  assert.doesNotMatch(generated, /`speechStyles`|`speechStyle`/u);
   assert.match(generated, /`Actor\.think`/u);
   assert.match(generated, /`easeInOut`/u);
   assert.match(generated, /`Actor\.setTransparency`/u);
   assert.match(generated, /`0`は完全不透明、`100`は完全透明/u);
+  assert.match(generated, /## Schema検証前のinclude文/u);
+  assert.match(generated, /### `include` — 別の台本ファイルを読み込む/u);
+  assert.match(generated, /include:\n  - chapters\/opening\.k4\.yml/u);
+  assert.match(generated, /JSON Schemaのfieldではなく/u);
+  assert.match(generated, /--enable-source-includes/u);
   assert.doesNotMatch(generated, /DSL 3\.[12]|kamishibai=3\.[12]/u);
 });
 
@@ -111,5 +125,12 @@ test('rejects missing, extra, and ambiguously ordered annotations', () => {
   assert.throws(
     () => validateReferenceInputs({schema, annotations: duplicateOrder}),
     /Duplicate order/u,
+  );
+
+  const missingInclude = structuredClone(annotations);
+  missingInclude.preSchemaDirectives.pop();
+  assert.throws(
+    () => validateReferenceInputs({schema, annotations: missingInclude}),
+    /must document include exactly once/u,
   );
 });

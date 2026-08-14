@@ -24,7 +24,7 @@
 次の専用topで提供します。
 
 - `/3.2/`: TXT台本、3.2.xアプリ、既存作品・教材を保守するための文書
-- `/4.0/`: YAML project、Source Graph、preview／build toolchainで新しく制作するための文書
+- `/4.0/`: YAML project、include文、preview／build toolchainで新しく制作するための文書
 - `/workshops/`: 体験会資料を開催時期とDSL系列ごとに一覧表示する独立した入口
 
 各版固有文書の通常HTML（`index.html`）、Viewer用本文（`document.html`）、
@@ -92,7 +92,7 @@ DSL 3系とDSL 4.0では、リファレンスの正本と保守方法を分け�
 
 公開サイトではDSL 3.2とDSL 4.0を並列の正式サポート対象として扱い、版ごとの専用セクションと
 専用ページを提供します。既存のTXT台本と3.2.xを保守する場合は3.2、新しいYAML project、
-Source Graph、preview／build toolchainで制作する場合は4.0を選びます。
+include文、preview／build toolchainで制作する場合は4.0を選びます。
 
 - DSL 3系（現行実装が受理する宣言は3.1／3.2）: 過去リリースから引き継いだ手書きMarkdown
   [`docs/dsl-author-guides/command-reference.md`](docs/dsl-author-guides/command-reference.md)を、
@@ -138,7 +138,7 @@ tag、GitHub Release、npm、production Pagesの正式公開状態を分けて�
 DSL 4.0のリファレンスは、上流JSON Schemaの固定snapshot、source lock、日本語Annotationから
 決定的に生成します。現在は、規範JSON Schema、表層仕様、適合実装・testを含むDSL 4.0完成commitを
 同一revisionとして固定します。Schemaはruntime実装から生成しません。通常のbuildはnetworkへ接続せず、
-固定snapshotだけを読みます。Schema外でcompose前に処理するSource Graph／`include`の作者向け契約は、
+固定snapshotだけを読みます。Schema外でcompose前に処理するinclude文の作者向け契約は、
 固定した表層仕様と適合実装・testを根拠に台本作成ガイドで管理します。
 
 ```bash

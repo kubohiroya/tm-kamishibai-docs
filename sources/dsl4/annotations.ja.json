@@ -2,11 +2,26 @@
   "license": "CC-BY-SA-4.0",
   "copyright": "Copyright © 2026 Hiroya Kubo",
   "language": "ja",
+  "preSchemaDirectives": [
+    {
+      "name": "include",
+      "order": 10,
+      "title": "`include` — 別の台本ファイルを読み込む",
+      "summary": "台本を複数ファイルに分けるとき、現在のファイルから読み込む相対pathを指定します。一件は文字列、複数件はlistで書きます。",
+      "example": "include:\n  - chapters/opening.k4.yml\n  - chapters/ending.k4.yml",
+      "notes": [
+        "`include`はJSON Schemaのfieldではなく、Schema検証前に処理されます。",
+        "`dsl4SourceIncludes`またはCLIの`--enable-source-includes`を明示的に有効にした環境だけで使用できます。",
+        "pathは記述したファイルを基準にproject内へ解決し、循環、重複宣言、root外path、件数・byte数・深さの上限違反はエラーになります。",
+        "`kamishibai`は起点の台本だけに書きます。"
+      ]
+    }
+  ],
   "sections": [
     {
       "id": "top-level",
       "title": "トップレベル構造",
-      "description": "台本のroot mappingで使用できるfieldです。Schemaの `additionalProperties: false` により、ここにないfieldは受理されません。",
+      "description": "include文で指定したファイルを読み込み、結合した後にSchema検証へ渡すroot mappingで使用できるfieldです。Schemaの `additionalProperties: false` により、ここにないfieldは受理されません。",
       "entries": [
         {
           "pointer": "#/properties/kamishibai",
@@ -49,12 +64,12 @@
           "exampleContext": "`textStyles` fieldの値:"
         },
         {
-          "pointer": "#/properties/speechStyles",
+          "pointer": "#/properties/bubbleStyles",
           "order": 55,
-          "title": "`speechStyles` — speech style",
-          "summary": "`Actor.say`と`Actor.think`から参照する文字送り、文字効果音、無音文字、句読点休止を名前付きで再利用します。",
-          "example": "novel:\n  characterIntervalSeconds: 0.05\n  characterSound: Typewriter\n  noSoundCharacters: '「」'\n  restCharacters: '、。…'\n  restCharacterIntervalSeconds: 0.5",
-          "exampleContext": "`speechStyles` fieldの値:"
+          "title": "`bubbleStyles` — 吹き出しstyle",
+          "summary": "`Actor.say`と`Actor.think`から参照する文字送り、配置、見た目、portrait、音、animationを名前付きで再利用・合成します。",
+          "example": "Typing:\n  characterIntervalSeconds: 0.05\nHero style:\n  styles:\n    - Typing\n  placement: FOOTER_LIKE\n  visualStyle: NORMAL",
+          "exampleContext": "`bubbleStyles` fieldの値:"
         },
         {
           "pointer": "#/properties/variables",
@@ -79,7 +94,7 @@
           "pointer": "#/properties/poseRecognition",
           "order": 80,
           "title": "`poseRecognition` — ポーズ認識設定",
-          "summary": "認識中の音、判定方法、feedback、プレイ中にポーズ待ちをskipできるか、camera previewの表示と任意UIをまとめます。idle音とcharge音は必須です。",
+          "summary": "認識中の任意の音、判定方法、feedback、プレイ中にポーズ待ちをskipできるか、camera previewの表示と任意UIをまとめます。idle音とcharge音は独立して省略できます。",
           "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nfeedback:\n  mode: presenter\nnavigation:\n  allowSkip: true\npreview:\n  mirroring: mirrored\n  controls:\n    cameraMenu:\n      position: bottom-center\n      opacity: 0.8\n      buttonAsset: CameraMenuButton",
           "exampleContext": "`poseRecognition` fieldの値:"
         },
@@ -122,7 +137,7 @@
           "example": "backdrop",
           "notes": [
             "短縮形式はproject内に同名のassetがある場合に使います。",
-            "poseModelは通常のHTTPS TMPose directory URLを指定できます。それ以外のremote sourceと検証付きremote poseはSHA-256、content type、byte sizeを固定します。"
+            "remote sourceはHTTPS URLを指定し、内容を固定する場合はSHA-256、content type、byte sizeを三つとも指定します。"
           ]
         },
         {
@@ -136,8 +151,8 @@
           "pointer": "#/$defs/namedBackdrop",
           "order": 30,
           "title": "名前付き背景",
-          "summary": "背景をproject内の名前、project内相対file、または固定remote sourceから読み込みます。",
-          "example": "kind: backdrop\nfile: beach.svg\nloading: eager\nretention: story"
+          "summary": "背景をproject内の名前、project内相対file、またはremote sourceから読み込みます。bitmapでは論理解像度を1倍または2倍で指定できます。",
+          "example": "kind: backdrop\nfile: beach.png\nbitmapResolution: 2\nloading: eager\nretention: story"
         },
         {
           "pointer": "#/$defs/namedSound",
@@ -150,8 +165,8 @@
           "pointer": "#/$defs/namedCostume",
           "order": 50,
           "title": "名前付きcostume",
-          "summary": "costumeではtarget actorを必ず指定します。参照側actorとの一致も意味検証の対象です。",
-          "example": "kind: costume\ntarget: Hero\nfile: hero-happy.svg"
+          "summary": "costumeではtarget actorを必ず指定します。bitmapでは論理解像度を1倍または2倍で指定でき、参照側actorとの一致も意味検証の対象です。",
+          "example": "kind: costume\ntarget: Hero\nfile: hero-happy.png\nbitmapResolution: 2"
         },
         {
           "pointer": "#/$defs/namedPoseModel",
@@ -195,25 +210,67 @@
           "pointer": "#/$defs/textStyle",
           "order": 30,
           "title": "SVG Text style",
-          "summary": "背景色、文字色、font、size、配置、書字方向を名前付きstyleとして再利用します。",
-          "example": "background: '#00000080'\ncolor: '#ffffff'\nfont: Noto Sans JP\nsize: 28\nalign: center\ndirection: right"
+          "summary": "背景色、文字色、font、size、文字揃えを名前付きstyleとして再利用します。吹き出しの位置はbubble styleで指定します。",
+          "example": "background: '#00000080'\ncolor: '#ffffff'\nfont: Noto Sans JP\nsize: 28\nalign: center"
         },
         {
-          "pointer": "#/$defs/speechStyle",
-          "order": 35,
-          "title": "speech style",
-          "summary": "Unicode grapheme単位の文字送り間隔と、任意の文字効果音、無音文字、句読点休止を再利用可能な設定にします。",
-          "example": "characterIntervalSeconds: 0.05\ncharacterSound: Typewriter\nnoSoundCharacters: '「」'\nrestCharacters: '、。…'\nrestCharacterIntervalSeconds: 0.5",
+          "pointer": "#/$defs/bubbleStyle",
+          "order": 31,
+          "title": "吹き出しstyle",
+          "summary": "文字送り、配置、見た目、portrait、音、animationを再利用できる部分styleとして定義します。`styles`で既存styleを順に合成できます。",
+          "example": "styles:\n  - Typing\ntextStyle: caption\nplacement: FOOTER_LIKE\nvisualStyle: NARRATION\ncharacterIntervalSeconds: 0.05\ncontinueIndicator:\n  frames: [Next1, Next2]\n  frameIntervalSeconds: 0.12",
           "notes": [
-            "`characterIntervalSeconds`は必須です。`noSoundCharacters`には`characterSound`が、`restCharacters`には`restCharacterIntervalSeconds`が必要です。"
+            "各styleは部分設定として記述できます。参照先を順に合成したeffective styleに対する依存関係は意味検証で確認します。"
           ]
         },
         {
-          "pointer": "#/$defs/speechStyles",
+          "pointer": "#/$defs/bubbleStyles",
+          "order": 32,
+          "title": "吹き出しstyle mapping",
+          "summary": "人が読めるstyle名を吹き出しstyleへ対応付けます。`Actor.say`と`Actor.think`の`styles`配列から参照します。",
+          "example": "Typing:\n  characterIntervalSeconds: 0.05\nHero style:\n  styles:\n    - Typing\n  placement: FOOTER_LIKE"
+        },
+        {
+          "pointer": "#/$defs/bubbleContinueIndicator",
+          "order": 33,
+          "title": "入力待ちindicator",
+          "summary": "全文表示後にadvance入力を待っている間、2枚以上のimage assetを順番に表示します。",
+          "example": "frames: [Next1, Next2]\nframeIntervalSeconds: 0.12"
+        },
+        {
+          "pointer": "#/$defs/bubbleFrameAnimation",
+          "order": 34,
+          "title": "portrait frame animation",
+          "summary": "portraitのまばたきや口パクに使う1枚以上のimage assetと表示間隔です。",
+          "example": "frames: [EyesOpen, EyesClosed]\nframeIntervalSeconds: 0.4"
+        },
+        {
+          "pointer": "#/$defs/bubblePortrait",
+          "order": 35,
+          "title": "吹き出しportrait",
+          "summary": "基本画像と、任意のまばたき・口パクframe animationを指定します。",
+          "example": "base: HeroFace\nblink:\n  frames: [EyesOpen, EyesClosed]\n  frameIntervalSeconds: 0.4\nlipSync:\n  frames: [MouthClosed, MouthOpen]\n  frameIntervalSeconds: 0.08"
+        },
+        {
+          "pointer": "#/$defs/bubbleReveal",
           "order": 36,
-          "title": "speech style mapping",
-          "summary": "style IDをspeech styleへ対応付けます。`Actor.say`と`Actor.think`の`style`から参照します。",
-          "example": "novel:\n  characterIntervalSeconds: 0.05\n  restCharacters: '、。'\n  restCharacterIntervalSeconds: 0.4"
+          "title": "本文の段階表示",
+          "summary": "文字、単語、行、blockの単位と、layout、間隔、任意の効果音を指定します。",
+          "example": "unit: CHARACTER\nlayout: RESERVED\nintervalSeconds: 0.05\nsound: Typewriter"
+        },
+        {
+          "pointer": "#/$defs/bubbleAudio",
+          "order": 37,
+          "title": "吹き出し音声",
+          "summary": "音声、本文の段階表示、完了時に使うsound assetを個別に指定します。",
+          "example": "voice: HeroVoice\nreveal: Typewriter\nfinish: ContinueSound"
+        },
+        {
+          "pointer": "#/$defs/bubbleMotion",
+          "order": 38,
+          "title": "吹き出しanimation",
+          "summary": "表示・非表示・表示中に適用するanimation名と時間、easing、方向などを指定します。",
+          "example": "name: floatOut\ndurationSeconds: 0.15\nease: easeOut\ndirection: down"
         },
         {
           "pointer": "#/$defs/variables",
@@ -347,8 +404,22 @@
           "pointer": "#/$defs/id",
           "order": 10,
           "title": "ID",
-          "summary": "Unicode文字またはunderscoreで始まり、以降に文字、数字、underscore、hyphenを使えます。",
+          "summary": "actor、style、variable、branchなどの構文識別子です。Unicode文字またはunderscoreで始まり、以降に文字、数字、underscore、hyphenを使えます。",
           "example": "Hero_1"
+        },
+        {
+          "pointer": "#/$defs/literalId",
+          "order": 12,
+          "title": "asset・sceneのliteral ID",
+          "summary": "Scratch上の名前をそのまま保持できる空でない文字列です。空白や記号を含められ、trimやUnicode正規化を行いません。",
+          "example": "救助 Scene 1"
+        },
+        {
+          "pointer": "#/$defs/bubbleStyleName",
+          "order": 14,
+          "title": "吹き出しstyle名",
+          "summary": "内部の空白や日本語を含められる人向けの名前です。先頭・末尾の空白、改行、tab、制御文字は使用できません。",
+          "example": "日本語 ナレーション"
         },
         {
           "pointer": "#/$defs/filePath",
@@ -382,7 +453,7 @@
           "pointer": "#/$defs/remoteAssetSource",
           "order": 60,
           "title": "remote asset source",
-          "summary": "HTTPS URL、SHA-256、content type、byte sizeをすべて固定し、取得対象を決定的にします。",
+          "summary": "HTTPS URLを指定します。内容を固定する場合はSHA-256、content type、byte sizeを三つとも指定します。三項目の一部だけは指定できません。",
           "example": "url: https://example.com/audio.ogg\nintegrity: sha256-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\ncontentType: audio/ogg\nsize: 1024"
         },
         {
@@ -403,8 +474,8 @@
           "pointer": "#/$defs/navigationCommand",
           "order": 80,
           "title": "navigation command",
-          "summary": "次のaction、前のaction、前のscene、次のsceneのいずれかへ操作を割り当てます。",
-          "example": "navigation.nextAction"
+          "summary": "通常の次action／次scene、実行履歴上の前後、リハーサル用のpose／action／scene skipへ操作を割り当てます。",
+          "example": "rehearsal.skipScene"
         },
         {
           "pointer": "#/$defs/variableValue",
@@ -487,6 +558,23 @@
           "example": "wait: 1.5"
         },
         {
+          "pointer": "#/$defs/debuggerAction",
+          "order": 42,
+          "title": "`debugger`",
+          "summary": "development debug実行でaction開始前に停止する境界です。productionや埋め込み作品では副作用のないno-opです。",
+          "example": "debugger:"
+        },
+        {
+          "pointer": "#/$defs/broadcastMessageAndWaitAction",
+          "order": 45,
+          "title": "`broadcastMessageAndWait`",
+          "summary": "Scratch／TurboWarpのmessageを送り、そのmessageで開始されたreceiver threadがすべて終了するまで待ちます。",
+          "example": "broadcastMessageAndWait:\n  stableId: play-mini-game\n  message: playMiniGame",
+          "notes": [
+            "receiverが終了しない場合は台本も次のactionへ進みません。有限時間で完了する処理へ使用します。"
+          ]
+        },
+        {
           "pointer": "#/$defs/transitionAction",
           "order": 50,
           "title": "`transition`",
@@ -564,8 +652,8 @@
           "pointer": "#/$defs/sayAction",
           "order": 30,
           "title": "`Actor.say`",
-          "summary": "actorのsay吹き出しへテキストを表示し、秒数、advance入力、または両者の先着で完了します。文字送りとsoundも指定できます。",
-          "example": "Hero.say:\n  text: こんにちは！\n  seconds: 8\n  waitFor: advance\n  style: novel\n  startSound: GreetingVoice"
+          "summary": "actorのsay吹き出しへテキストを表示し、秒数、advance入力、または両者の先着で完了します。複数の吹き出しstyleを順に合成できます。",
+          "example": "Hero.say:\n  text: こんにちは！\n  seconds: 8\n  waitFor: advance\n  styles:\n    - Typing\n    - Hero style\n  startSound: GreetingVoice"
         },
         {
           "pointer": "#/$defs/thinkAction",
@@ -578,8 +666,29 @@
           "pointer": "#/$defs/setSkinAction",
           "order": 40,
           "title": "`Actor.setSkin`",
-          "summary": "actorのcostumeを切り替えます。短縮値またはstableId付きobjectを使用できます。",
-          "example": "Hero.setSkin: HeroHappy"
+          "summary": "actorのcostumeを切り替えます。短縮値、またはscaleとstableIdを持つobjectを使用できます。",
+          "example": "Hero.setSkin:\n  skin: HeroHappy\n  scale: 100"
+        },
+        {
+          "pointer": "#/$defs/hideAction",
+          "order": 42,
+          "title": "`Actor.hide`",
+          "summary": "actorのvisible stateをfalseにします。透明度とは別で、次の`Actor.show`で再表示します。",
+          "example": "Hero.hide: {}"
+        },
+        {
+          "pointer": "#/$defs/setLayerAction",
+          "order": 44,
+          "title": "`Actor.setLayer`",
+          "summary": "front／backで絶対位置へ、正負の数値で現在位置から前後のlayerへ移動します。",
+          "example": "Hero.setLayer: front"
+        },
+        {
+          "pointer": "#/$defs/loopAction",
+          "order": 46,
+          "title": "`Actor.loop`",
+          "summary": "costumeと表示秒数のstep列をbackgroundで繰り返します。少なくとも一つのstepは正の秒数にします。",
+          "example": "Hero.loop:\n  steps:\n    - skin: HeroWalk1\n      seconds: 0.2\n    - skin: HeroWalk2\n      seconds: 0.2"
         },
         {
           "pointer": "#/$defs/setTextAction",

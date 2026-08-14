@@ -39,7 +39,7 @@ activation gate、ロールバック方針の正本とします。4.0トップ�
 
 「紙芝居を作る」は、最初の作品を完成させるための最短経路です。対象読者は初めてDSL 4.0を書く方で、
 固定starterを変更し、TurboWarp Editor内のpreview、自動検証、診断修正、menu build、SB3再生までを一回通します。全構文、全action、
-Source Graph、複雑な分岐、custom action、runtimeやextensionの開発は扱いません。
+include文、複雑な分岐、custom action、runtimeやextensionの開発は扱いません。
 
 「紙芝居DSL 4.0 台本作成ガイド」は、入門後に必要な機能を調べる作者、教材作成者、授業設計者のための
 検索可能な詳細資料です。最初から全ページを通読する資料ではなく、チュートリアルの各stepから必要な節へ

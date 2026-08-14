@@ -17,8 +17,14 @@ const expectedStaticSectionPointers = {
     '#/$defs/actors',
     '#/$defs/cover',
     '#/$defs/textStyle',
-    '#/$defs/speechStyle',
-    '#/$defs/speechStyles',
+    '#/$defs/bubbleStyle',
+    '#/$defs/bubbleStyles',
+    '#/$defs/bubbleContinueIndicator',
+    '#/$defs/bubbleFrameAnimation',
+    '#/$defs/bubblePortrait',
+    '#/$defs/bubbleReveal',
+    '#/$defs/bubbleAudio',
+    '#/$defs/bubbleMotion',
     '#/$defs/variables',
     '#/$defs/loadingScreen',
     '#/$defs/poseRecognition',
@@ -37,6 +43,8 @@ const expectedStaticSectionPointers = {
   ],
   'shared-types': [
     '#/$defs/id',
+    '#/$defs/literalId',
+    '#/$defs/bubbleStyleName',
     '#/$defs/filePath',
     '#/$defs/loadingPolicy',
     '#/$defs/retentionPolicy',
@@ -237,6 +245,48 @@ function allEntries(annotations) {
   );
 }
 
+function validatePreSchemaDirectives(annotations) {
+  assert(Array.isArray(annotations.preSchemaDirectives), 'Pre-Schema directives must be an array');
+  const names = new Set();
+  const orders = new Set();
+  for (const directive of annotations.preSchemaDirectives) {
+    assert(directive.name, 'Pre-Schema directive name is missing');
+    assert(!names.has(directive.name), `Duplicate Pre-Schema directive: ${directive.name}`);
+    names.add(directive.name);
+    assert(
+      Number.isInteger(directive.order) && directive.order > 0,
+      `Invalid Pre-Schema directive order: ${directive.name}`,
+    );
+    assert(
+      !orders.has(directive.order),
+      `Duplicate Pre-Schema directive order: ${directive.order}`,
+    );
+    orders.add(directive.order);
+    assert(
+      directive.title && directive.summary,
+      `Pre-Schema directive text is missing: ${directive.name}`,
+    );
+    assert(
+      typeof directive.example === 'string' && directive.example.trim(),
+      `Pre-Schema directive example is missing: ${directive.name}`,
+    );
+    try {
+      parse(directive.example, {uniqueKeys: true});
+    } catch (error) {
+      throw new Error(
+        `Invalid YAML example for Pre-Schema directive ${directive.name}: ${error.message}`,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+  assert(
+    names.size === 1 && names.has('include'),
+    'Pre-Schema directives must document include exactly once',
+  );
+}
+
 function actionPointers(schema) {
   const references = schema.$defs.action.oneOf.map(({$ref: reference}) => reference);
   const global = [];
@@ -261,6 +311,7 @@ export function validateReferenceInputs({schema, annotations}) {
   assert(schema?.$schema === 'https://json-schema.org/draft/2020-12/schema', 'Unexpected Schema');
   assert(annotations?.license === 'CC-BY-SA-4.0', 'Annotation license must be CC-BY-SA-4.0');
   assert(Array.isArray(annotations.sections), 'Annotation sections must be an array');
+  validatePreSchemaDirectives(annotations);
 
   const sectionIds = annotations.sections.map(({id}) => id);
   assert(new Set(sectionIds).size === sectionIds.length, 'Annotation section IDs must be unique');
@@ -325,9 +376,27 @@ export function validateReferenceInputs({schema, annotations}) {
 
   return {
     actionCount: actions.global.length + actions.actor.length,
-    annotationCount: pointers.size,
+    annotationCount: pointers.size + annotations.preSchemaDirectives.length,
     topLevelFieldCount: Object.keys(schema.properties).length,
   };
+}
+
+function renderPreSchemaDirective(directive) {
+  const notes = (directive.notes ?? []).map((note) => `- ${note}`).join('\n');
+  return [
+    `### ${directive.title}`,
+    '',
+    directive.summary,
+    '',
+    'Schema位置: JSON Schema外（Schema検証前に処理）',
+    ...(notes ? ['', notes] : []),
+    '',
+    '書式例:',
+    '',
+    '```yaml',
+    directive.example.trimEnd(),
+    '```',
+  ].join('\n');
 }
 
 function renderEntry(entry, schema) {
@@ -353,6 +422,10 @@ function renderEntry(entry, schema) {
 
 export function renderReferenceDocument({schema, annotations, lock}) {
   const counts = validateReferenceInputs({schema, annotations});
+  const preSchemaDirectives = [...annotations.preSchemaDirectives]
+    .sort((left, right) => left.order - right.order)
+    .map(renderPreSchemaDirective)
+    .join('\n\n');
   const sections = annotations.sections
     .map((section) => {
       const entries = [...section.entries]
@@ -392,7 +465,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 ${snapshotLabel}\\
 Schema SHA-256: \`${lock.schemaSha256}\`
 
-> **権威関係と配布状態:** 2026年8月8日時点で\`v4.0.0\`は正式リリースされていません。
+> **権威関係と配布状態:** 2026年8月13日時点で\`v4.0.0-rc.3\`はprereleaseとして公開されていますが、
+> 正式な\`v4.0.0\`ではありません。
 > 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、
 > 適合実装・testを固定しています。Schemaはruntime実装から生成しません。公開アプリ、配布artifact、
 > feature flagがDSL 4.0を有効にしているかは利用するreleaseごとに確認してください。
@@ -401,7 +475,8 @@ Schema SHA-256: \`${lock.schemaSha256}\`
 
 この文書は、${snapshotDescription}とCC BY-SA 4.0の日本語Annotationから
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
-注意事項、例はAnnotationで管理します。Schemaと生成物が異なる場合はSchemaを優先します。
+注意事項、例はAnnotationで管理します。Schemaで定義される項目についてSchemaと生成物が異なる場合はSchemaを
+優先します。include文はSchema検証前に処理されるためJSON Schema外であり、固定した表層仕様と実装に基づいて掲載します。
 
 > **使い方:** 作成中に分からない項目や命令が出たとき、その項目の節だけを開きます。表中の「field」は
 > 台本の項目、「asset」は画像・音声などの素材、「action」は登場人物や舞台への命令を表します。
@@ -416,8 +491,17 @@ ${candidateSnapshot ? `> **候補snapshot:** このSchemaには、上流\`${sour
 - 差分確認: \`pnpm docs:dsl4:check\`
 
 表中の「必須」は、そのobjectまたは形式を選んだ場合の必須性です。\`stableId\`などの任意fieldは、
-再読み込みや診断位置の安定化に必要かを作品ごとに判断してください。例は各Schema断片を機械検証しており、
-アセットやシーン間の参照整合性は、source frontendまたはpreview／buildでも別途確認する必要があります。
+再読み込みや診断位置の安定化に必要かを作品ごとに判断してください。Schema項目の例は各Schema断片を機械検証し、
+include文の例はYAMLとして構文検証しています。アセットやシーン間の参照整合性は、source frontendまたは
+preview／buildでも別途確認する必要があります。
+
+## Schema検証前のinclude文
+
+include文は台本を複数ファイルへ分けるための構文です。JSON Schemaのトップレベルfieldではないため、
+指定したファイルを読み込んで一つの台本へ結合した後、
+include文を取り除いてSchema検証へ渡します。
+
+${preSchemaDirectives}
 
 ${sections}
 
