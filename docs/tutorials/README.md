@@ -136,7 +136,7 @@ fixtureの表示言語を`ja-JP`、motionを固定して、
 
 固定実装を追試する開発者・文書メンテナーは、
 [DSL 4.0固定実装のローカル追試](../developer-guides/dsl4-implementation-walkthrough.md)を使用します。runtime `0e7e23f`と
-sample `d2f37b9`からWeb成果物を生成し、タイトル、上演、ポーズfeedback、YAML validation、
+sample `d2f37b9`からWeb成果物を生成し、タイトル、プレイ、ポーズfeedback、YAML validation、
 SHA-256を一続きで確認できます。
 
 この追試で参照する2画像は#101の実装スナップショットです。チュートリアル画像とはIDと用途を分けます。

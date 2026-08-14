@@ -167,7 +167,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <p class="extension-spread-label">Gallery 4 / 7　TMPose 紙芝居での利用例 2 / 2</p>
 
-<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>体験会で選んだ台本や表示言語がreloadのたびに消えると、参加者は上演より再設定に時間を取られます。小さな設定と台本文字列だけを保存し、次回は前回の続きから始められるようにします。camera映像や認識途中の値は保存しません。</p></aside>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>体験会で選んだ台本や表示言語がreloadのたびに消えると、参加者は作品をプレイするより再設定に時間を取られます。小さな設定と台本文字列だけを保存し、次回は前回の続きから始められるようにします。camera映像や認識途中の値は保存しません。</p></aside>
 
 <figure class="extension-editor-example"><img src="../images/extension-editor-local-storage.png" alt="TurboWarp EditorのstartStory処理から、Local Storageの名前空間設定とscript保存だけを切り出した画面"><figcaption>名前空間を<code>kamishibai</code>に定め、runtimeのscriptをstorageへ書く、隣接した2ブロックです。</figcaption></figure>
 
@@ -204,7 +204,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <div class="extension-usage-grid"><section><strong>通常終了</strong><span>指定秒数へ達したらloopを抜ける。</span></section><section><strong>skip</strong><span>runtimeのskip状態でもloopを抜ける。</span></section><section><strong>後片付け</strong><span>どちらの終了でも名前付きtimerを削除する。</span></section></div>
 
-<p class="extension-note"><strong>設計上の要点:</strong> Scratchの長い「待つ」ブロックに任せず、短いloopでtimerとskipを同時に監視します。これにより上演中の操作へすぐ反応できます。</p>
+<p class="extension-note"><strong>設計上の要点:</strong> Scratchの長い「待つ」ブロックに任せず、短いloopでtimerとskipを同時に監視します。これによりプレイ中の操作へすぐ反応できます。</p>
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tmpose-kamishibai/blob/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/project.source.json">Version 3.2.0 project source</a>（Stage: <code>wait %s seconds</code>）</p>
 
@@ -509,7 +509,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-spread-label">アプリ内蔵 1 / 2　TMPose 紙芝居での利用例 2 / 2</p>
 
-<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>外部から読み込む台本には、綴り間違いだけでなく、存在しないsceneや素材、危険なaddressが含まれ得ます。asset取得やcamera開始の後で失敗すると、利用者には半端な画面しか残りません。上演前に止め、直す行と理由を読める形で示します。</p></aside>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>外部から読み込む台本には、綴り間違いだけでなく、存在しないsceneや素材、危険なaddressが含まれ得ます。asset取得やcamera開始の後で失敗すると、利用者には半端な画面しか残りません。プレイ前に止め、直す行と理由を読める形で示します。</p></aside>
 
 <figure class="extension-editor-example"><img src="../images/extension-editor-kamishibai-runtime.png" alt="TurboWarp EditorのstartStory処理から、Kamishibai Runtimeのvalidateと直後の初期化だけを切り出した画面"><figcaption><code>startStory</code>直後にvalidateし、成功した場合だけskip状態の初期化やcamera開始へ進む順序を示します。</figcaption></figure>
 
@@ -540,7 +540,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-spread-label">アプリ内蔵 2 / 2　TMPose 紙芝居での利用例 2 / 2</p>
 
-<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>このアプリでは、公式サイトbuttonやmenu項目からWebページへ案内します。一方、台本中の任意URLが勝手にtabを開く設計にはできません。利用者の操作をきっかけに、アプリ側で設定されたHTTPS URLだけを開くことで、案内機能と安全な上演を両立します。</p></aside>
+<aside class="extension-kamishibai-why"><strong>なぜTMPose紙芝居に必要？</strong><p>このアプリでは、公式サイトbuttonやmenu項目からWebページへ案内します。一方、台本中の任意URLが勝手にtabを開く設計にはできません。利用者の操作をきっかけに、アプリ側で設定されたHTTPS URLだけを開くことで、案内機能と安全なプレイを両立します。</p></aside>
 
 <figure class="extension-editor-example"><img src="../images/extension-editor-web-link.png" alt="TurboWarp EditorのofficialWebsiteButtonから、クリックeventとWeb Link blockだけを切り出した画面"><figcaption>buttonクリック直後に、Web Linkが公式HTTPS URLを新しいtabで開く2ブロックのstackです。</figcaption></figure>
 

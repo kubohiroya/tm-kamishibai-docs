@@ -44,13 +44,13 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 TMPose紙芝居4.0は、台本と画像・音声・ポーズ用データを読み込み、見る人がキー、タッチ、ポーズで
 参加できるデジタル紙芝居です。作品を作るときは、台本と素材を作品フォルダーへまとめ、内容を検査し、
-ブラウザーで動きを確かめてから、上映用の一つのファイルへまとめます。
+ブラウザーで動きを確かめてから、配布用の一つのファイルへまとめます。
 
 <div class="application-value-grid"><section><strong>見る</strong><span>背景、登場人物、セリフ、音、画面切り替えで物語を伝える</span></section><section><strong>参加する</strong><span>作品に合わせて、ポーズ、キー、タッチから参加方法を選ぶ</span></section><section><strong>作る</strong><span>台本と手元の素材を編集し、ブラウザーで確かめる</span></section></div>
 
-<figure class="application-flow"><figcaption>作品を作って上映するまで</figcaption><div><span>台本と素材を用意</span><b>→</b><span>問題がないか検査</span><b>→</b><span>ブラウザーで確認</span><b>→</b><span>完成ファイルで上映</span></div></figure>
+<figure class="application-flow"><figcaption>作品を作って利用するまで</figcaption><div><span>台本と素材を用意</span><b>→</b><span>問題がないか検査</span><b>→</b><span>ブラウザーで確認</span><b>→</b><span>完成ファイルをプレイ</span></div></figure>
 
-<p class="application-callout"><strong>上映前に確認:</strong> 4.0は公開準備中です。利用する版で台本の検査、ブラウザーでの確認、完成ファイルの作成が使えるかを、制作環境の担当者が確認します。</p>
+<p class="application-callout"><strong>利用前に確認:</strong> 4.0は公開準備中です。利用する版で台本の検査、ブラウザーでの確認、完成ファイルの作成が使えるかを、制作環境の担当者が確認します。</p>
 
 <p class="application-source">出典: <a href="../dsl-author-guides/dsl-4.0-author-guide.md">紙芝居DSL 4.0 台本作成ガイド</a>、<a href="../dsl-author-guides/dsl-4.0-schema-reference.md">紙芝居DSL 4.0 Schemaリファレンス</a></p>
 
@@ -151,7 +151,7 @@ DSL 4.0の教材では、物語と演出を決める人、画像やポーズモ�
 
 <div class="application-value-grid"><section><strong>人</strong><span>物語、シーン、使うポーズ、安全な操作方法を決める</span></section><section><strong>AI</strong><span>画像を生成し、カメラ映像のポーズを分類する</span></section><section><strong>プログラム</strong><span>スキーマと意味を検証し、宣言されたアクションだけを実行する</span></section></div>
 
-<p class="application-callout"><strong>教材の境界:</strong> AIの出力をそのまま上映せず、プロジェクトへ保存したソースと素材をレビューし、検証とプレビューを通した世代を使用します。</p>
+<p class="application-callout"><strong>教材の境界:</strong> AIの出力をそのまま利用せず、プロジェクトへ保存したソースと素材をレビューし、検証とプレビューを通した世代を使用します。</p>
 
 ## 編集・検証・プレビューを一周する {#application-4-cycle .application-sheet .unnumbered}
 
@@ -160,7 +160,7 @@ DSL 4.0の教材では、物語と演出を決める人、画像やポーズモ�
 作者はYAMLと素材を外部エディターで編集し、スキーマ診断、参照診断、プレビューの順に確認します。
 変更が失敗した場合、プレビューは直前の正常な世代を保ち、ソース位置付きの診断を表示します。
 
-<div class="application-cycle"><span>物語とポーズを設計</span><b>→</b><span>ソース・素材を編集</span><b>→</b><span>検証</span><b>→</b><span>Web Preview</span><b>→</b><span>上演して改善</span></div>
+<div class="application-cycle"><span>物語とポーズを設計</span><b>→</b><span>ソース・素材を編集</span><b>→</b><span>検証</span><b>→</b><span>Web Preview</span><b>→</b><span>プレイして改善</span></div>
 
 <div class="application-columns"><section><p class="application-subhead">作者が確認するもの</p><ul><li>YAML 1.2として解析できる</li><li>スキーマの型、必須フィールド、未知のキーが正しい</li><li>アセット、Actor、シーン、分岐の参照先が存在する</li><li>カメラ、音、入力の終了処理が成立する</li></ul></section><section><p class="application-subhead">プレビューが守るもの</p><ul><li>書き込み途中のソースを実行対象にしない</li><li>ローカル素材をハッシュと世代で識別する</li><li>失敗時に正常な実行状態を破壊しない</li><li>物語上の位置とソースの行・列を診断へ戻す</li></ul></section></div>
 

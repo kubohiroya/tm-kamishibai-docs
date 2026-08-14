@@ -79,7 +79,7 @@
           "pointer": "#/properties/poseRecognition",
           "order": 80,
           "title": "`poseRecognition` — ポーズ認識設定",
-          "summary": "認識中の音、判定方法、feedback、上映操作からのskip可否、camera previewの表示と任意UIをまとめます。idle音とcharge音は必須です。",
+          "summary": "認識中の音、判定方法、feedback、プレイ中にポーズ待ちをskipできるか、camera previewの表示と任意UIをまとめます。idle音とcharge音は必須です。",
           "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nfeedback:\n  mode: presenter\nnavigation:\n  allowSkip: true\npreview:\n  mirroring: mirrored\n  controls:\n    cameraMenu:\n      position: bottom-center\n      opacity: 0.8\n      buttonAsset: CameraMenuButton",
           "exampleContext": "`poseRecognition` fieldの値:"
         },
@@ -264,7 +264,7 @@
           "pointer": "#/$defs/poseNavigation",
           "order": 100,
           "title": "ポーズ中のnavigation",
-          "summary": "上映操作からポーズ待ちをskipできるかを明示します。",
+          "summary": "プレイ中にポーズ待ちをskipできるかを明示します。",
           "example": "allowSkip: true"
         },
         {

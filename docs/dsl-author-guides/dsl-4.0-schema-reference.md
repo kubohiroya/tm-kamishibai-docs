@@ -197,7 +197,7 @@ costumes:
 
 ### `poseRecognition` — ポーズ認識設定
 
-認識中の音、判定方法、feedback、上映操作からのskip可否、camera previewの表示と任意UIをまとめます。idle音とcharge音は必須です。
+認識中の音、判定方法、feedback、プレイ中にポーズ待ちをskipできるか、camera previewの表示と任意UIをまとめます。idle音とcharge音は必須です。
 
 Schema位置: `#/properties/poseRecognition`
 
@@ -690,7 +690,7 @@ mode: presenter
 
 ### ポーズ中のnavigation
 
-上映操作からポーズ待ちをskipできるかを明示します。
+プレイ中にポーズ待ちをskipできるかを明示します。
 
 Schema位置: `#/$defs/poseNavigation`
 
