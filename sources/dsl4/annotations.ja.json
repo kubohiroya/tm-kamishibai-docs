@@ -520,7 +520,12 @@
           "order": 40,
           "title": "scene mapping",
           "summary": "一つ以上のscene IDを定義します。通常実行は記述順で最初のsceneから始まります。",
-          "example": "opening:\n  - wait: 1"
+          "example": "opening:\n  - wait: 1",
+          "notes": [
+            "YAML 1.2一般ではmappingのkey順にapplication上の意味はありません（[YAML 1.2.2 Mapping Key Order](https://yaml.org/spec/1.2.2/#3221-mapping-key-order)）。DSL 4.0は固有規則として、source YAMLのserialization treeに現れるpair順をscene順として使用します。JSON Schemaはmappingのshapeを検証しますが、この順序セマンティクスは検証しません。",
+            "scene keyをsortするformatter、serializer、editorを使用しないでください。並べ替え後もSchema検証には成功しますが、台本の実行順が変わります。",
+            "現行frontendでは数字だけのscene IDをJavaScript objectへ変換すると数値順に列挙される場合があります。これは意図したDSL仕様ではない既知の実装制約であり、修正までは数字以外を含むscene IDを使用します。"
+          ]
         }
       ]
     },

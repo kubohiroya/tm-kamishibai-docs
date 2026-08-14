@@ -236,6 +236,17 @@ Source Graph経由ではさらに`sourceOrigins`が加わります。`assets`は
 `scenes`は宣言順の配列です。各sceneは`{kind: 'Scene', id, poseModel, posePreview, actions}`、
 各actionは次の形です。
 
+YAML 1.2のmappingはrepresentation model上で順序を持ちません。DSL 4.0は固有規則として、source YAMLの
+serialization treeに現れる`scenes` pairの順序を通常実行のscene順とします。source frontendはYAML nodeの
+pair列、または全scene IDで同値な順序を保証する中間表現から`StoryDocument.scenes`を構築し、JSON Schema検証用の
+native objectが持つproperty列挙順を正本にしてはいけません。formatter、converter、serializerもscene keyを
+sortせず、parse、serialize、parseのround tripで同じpair順を保持します。
+
+現行実装は`Document#toJS()`後の`scenes`を`Object.entries()`で配列化するため、ECMAScriptのarray index相当の
+scene IDではsource順を失います。例えば`"10"`、`"2"`、`"1"`の順に宣言したsceneが`"1"`、`"2"`、
+`"10"`の順になります。これは意図した契約ではなく既知の適合差です。toolはこの挙動を互換仕様として固定せず、
+YAML nodeのpair順から正規化する実装へ置換します。
+
 ```json
 {
   "kind": "Action",
