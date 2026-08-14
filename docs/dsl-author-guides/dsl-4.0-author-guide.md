@@ -157,7 +157,8 @@ scenes:
 
 `kamishibai`と`scenes`だけがトップレベルの必須項目です。`scenes`には一つ以上のシーンが必要です。
 通常実行は、`scenes`へ最初に書いたシーンから始まり、明示的な遷移がなければ記述順に次のシーンへ
-進みます。
+進みます。これはYAML mapping一般の保証ではなくDSL 4.0固有の規則です。sceneの並べ替えに関する注意は
+[「sceneの記述順を保つ」](#sceneの記述順を保つ)を参照してください。
 
 ## 作品フォルダーへファイルを配置する
 
@@ -763,6 +764,24 @@ profile間の継承、merge、fallbackはありません。
 だけ有効になります。
 
 ## シーンを書く
+
+### sceneの記述順を保つ
+
+`scenes` mappingでは、sourceへ書いたscene keyの順番が通常実行のscene順です。最初のsceneから開始し、
+`goto`、`branch`、入力action等が別sceneを選ばない限り、scene末尾では次に書いたsceneへ進みます。
+
+YAML 1.2一般ではmappingのkey順にapplication上の意味はありません（[YAML 1.2.2 Mapping Key Order](https://yaml.org/spec/1.2.2/#3221-mapping-key-order)）。
+DSL 4.0は例外として、source YAMLの
+serialization treeに現れる`scenes`のpair順を実行順に使用します。これは「YAMLをobjectへ変換すれば
+常に記述順になる」という意味ではありません。
+
+scene keyをアルファベット順や数値順へ並べ替えるYAML formatter、serializer、editorを使用しないでください。
+並べ替え後もSchema検証には成功しますが、台本の実行順が変わります。DSL 4.0対応toolは保存時にscene keyを
+sortせず、読み込みと書き出しを繰り返しても同じ順序を保持する必要があります。
+
+現行frontendはYAMLをJavaScript objectへ変換してからsceneを配列化するため、`"10"`、`"2"`等の数字だけの
+scene IDでは記述順を保証できません。これは意図したDSL仕様ではなく既知の実装制約です。修正されるまでは
+`scene10`、`scene2`のように数字以外を含むscene IDを使用してください。
 
 ### 短形式
 

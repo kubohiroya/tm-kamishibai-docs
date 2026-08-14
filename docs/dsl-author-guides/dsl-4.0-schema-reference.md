@@ -1339,6 +1339,10 @@ Schema位置: `#/$defs/scenes`
 | --- | --- | --- | --- |
 | 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`debuggerAction`） または object（`broadcastMessageAndWaitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`hideAction`） または mapping（`setLayerAction`） または mapping（`loopAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
 
+- YAML 1.2一般ではmappingのkey順にapplication上の意味はありません（[YAML 1.2.2 Mapping Key Order](https://yaml.org/spec/1.2.2/#3221-mapping-key-order)）。DSL 4.0は固有規則として、source YAMLのserialization treeに現れるpair順をscene順として使用します。JSON Schemaはmappingのshapeを検証しますが、この順序セマンティクスは検証しません。
+- scene keyをsortするformatter、serializer、editorを使用しないでください。並べ替え後もSchema検証には成功しますが、台本の実行順が変わります。
+- 現行frontendでは数字だけのscene IDをJavaScript objectへ変換すると数値順に列挙される場合があります。これは意図したDSL仕様ではない既知の実装制約であり、修正までは数字以外を含むscene IDを使用します。
+
 Schemaで検証できる値の例:
 
 ```yaml
