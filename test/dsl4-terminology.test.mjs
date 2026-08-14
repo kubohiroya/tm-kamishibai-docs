@@ -7,12 +7,16 @@ const read = (relativePath) => readFileSync(new URL(`../${relativePath}`, import
 const writingStyle = read('WRITING-STYLE.md');
 const adultOverview = read('docs/user-guides/executive-summary-adult-4.0.md');
 const applicationGuide = read('docs/developer-guides/application-materials-guide-4.0.md');
+const authorGuide = read('docs/dsl-author-guides/dsl-4.0-author-guide.md');
+const schemaReference = read('docs/dsl-author-guides/dsl-4.0-schema-reference.md');
 const developerGuide = read('docs/developer-guides/developer-guide-4.0.md');
 const dsl4Index = read('site/4.0/index.html');
 
 test('documents the Japanese prose policy without translating code identifiers', () => {
   assert.match(writingStyle, /本文の説明は日本語を基本/u);
   assert.match(writingStyle, /コード上の名前は翻訳しない/u);
+  assert.match(writingStyle, /\*\*include文\*\*:[^\n]*一般向け・作者向け文書/u);
+  assert.match(writingStyle, /Source Graph[^\n]*実装資料/u);
   assert.match(writingStyle, /Source Graph/u);
   assert.match(writingStyle, /StoryDocument/u);
   assert.match(writingStyle, /世代（generation）/u);
@@ -36,7 +40,11 @@ test('uses consistent Japanese terms in the first-read DSL 4.0 surfaces', () => 
   assert.match(adultOverview, /紙芝居を楽しむ流れ/u);
   assert.match(adultOverview, /カメラを使わないことも正式な選択肢/u);
   assert.match(applicationGuide, /プレビュー・ビルド/u);
+  assert.match(applicationGuide, /include文/u);
   assert.match(dsl4Index, /初めて知る方、作品を作る方、開発する方/u);
+  for (const source of [applicationGuide, authorGuide, schemaReference]) {
+    assert.doesNotMatch(source, /Source Graph/u);
+  }
   assert.doesNotMatch(
     dsl4Index.match(/<header class="page-intro">[\s\S]*?<\/header>/u)?.[0] ?? '',
     /Source Graph|Schema|CLI/u,

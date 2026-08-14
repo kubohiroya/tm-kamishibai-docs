@@ -78,12 +78,12 @@ TMPose紙芝居4.0は、台本と画像・音声・ポーズ用データを読�
 
 <p class="application-callout"><strong>再現性の要点:</strong> プレビューとビルドは、ソースと素材を一つの世代として安定取得します。途中保存や片側だけ新しい状態では、実行中の正常な世代を置き換えません。</p>
 
-## Source Graphで大きな物語を分割する {#application-4-source-graph .application-sheet .unnumbered}
+## include文で大きな物語を分割する {#application-4-source-graph .application-sheet .unnumbered}
 
-<p class="application-page-label">3 / 8　Source Graph</p>
+<p class="application-page-label">3 / 8　include文</p>
 
-`include`を有効にすると、起点のソースから到達する複数のYAMLを一つのSource Graphとして合成できます。
-Source Graphとは、起点のYAMLから`include`で到達する複数ソースの関係全体です。起点優先や後勝ちは行わず、
+include文を有効にすると、起点のソースから複数のYAMLを読み込み、一つの台本として合成できます。
+同じ名前の宣言が重なったときに起点優先や後勝ちは行わず、
 重複ID、重複する単一設定、循環を診断してから参照を解決します。
 
 <div class="application-columns"><section><p class="application-subhead">起点のソース</p><pre><code>include:
@@ -104,7 +104,7 @@ rescue: - stage: RescueBackground</code></pre></section></div>
 
 <figure class="application-flow"><figcaption>合成と参照解決</figcaption><div><span>起点</span><b>＋</b><span>取り込み関係</span><b>→</b><span>重複・循環検査</span><b>→</b><span>一つのStoryDocument</span></div></figure>
 
-<p class="application-callout"><strong>有限な入力:</strong> 一つのソースのバイト数、ソース件数、グラフ合計バイト数、`include`の深さ、合成後のバイト数に上限を設け、無制限に読み込みません。</p>
+<p class="application-callout"><strong>有限な入力:</strong> 一つのソースのバイト数、ソース件数、全ファイルの合計バイト数、`include`の深さ、合成後のバイト数に上限を設け、無制限に読み込みません。</p>
 
 ## 参加者の入力をシーンの出来事へ変換する {#application-4-interaction .application-sheet .unnumbered}
 
@@ -173,7 +173,7 @@ DSL 4.0の教材では、物語と演出を決める人、画像やポーズモ�
 紙芝居DSL 4.0は、YAMLのマッピングとリストでアセット、Actor、スタイル、変数、入力設定、分岐、シーン、アクションを
 構造化します。型と局所制約はJSON Schema、参照関係と実行上の制約は意味検証器が検査します。
 
-<div class="application-columns"><section><p class="application-subhead">トップレベル</p><ul><li><code>kamishibai</code>: 固定値<code>'4.0'</code></li><li><code>assets</code>: backdrop、costume、sound、poseModel、image</li><li><code>actors</code>: Actorと初期skin</li><li><code>textStyles</code>／<code>speechStyles</code>: 表示と発話</li><li><code>controls</code>／<code>branches</code>: 入力と分岐</li><li><code>scenes</code>: 実行するシーンとアクション</li></ul></section><section><p class="application-subhead">実行手順</p><ol><li>Source Graphを安定取得する</li><li>YAMLを制限付きで解析する</li><li>JSON Schemaで構造を検証する</li><li>参照と意味制約を検証する</li><li>変更不能なStoryDocumentへ正規化する</li><li>ランタイムがアクションを順に実行する</li></ol></section></div>
+<div class="application-columns"><section><p class="application-subhead">トップレベル</p><ul><li><code>kamishibai</code>: 固定値<code>'4.0'</code></li><li><code>assets</code>: backdrop、costume、sound、poseModel、image</li><li><code>actors</code>: Actorと初期skin</li><li><code>textStyles</code>／<code>speechStyles</code>: 表示と発話</li><li><code>controls</code>／<code>branches</code>: 入力と分岐</li><li><code>scenes</code>: 実行するシーンとアクション</li></ul></section><section><p class="application-subhead">実行手順</p><ol><li>include文で指定された複数ファイルを安定取得する</li><li>YAMLを制限付きで解析する</li><li>JSON Schemaで構造を検証する</li><li>参照と意味制約を検証する</li><li>変更不能なStoryDocumentへ正規化する</li><li>ランタイムがアクションを順に実行する</li></ol></section></div>
 
 <p class="application-callout"><strong>安全な失敗:</strong> 未知のキー、型違反、重複ID、存在しない参照、危険なパスは実行前に診断し、カメラや音声を開始しません。</p>
 

@@ -19,7 +19,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | 概念               | 本文で使う表記           | コード・固有名として残す例              |
 | ------------------ | ------------------------ | --------------------------------------- |
 | 作品を構成する一式 | プロジェクト             | `project.source.json`、`--project-root` |
-| 台本などの入力     | ソース                   | Source Graph、`sourceFilename`          |
+| 台本などの入力     | ソース                   | `sourceFilename`                        |
+| 複数台本の読み込み | include文                | `include`                               |
 | 画像・音・モデル   | 素材、アセット           | `assets`、`poseModel`                   |
 | 制作中の表示確認   | プレビュー               | Web Preview、`preview-dsl4`             |
 | 配布物の生成       | ビルド                   | `build-dsl4`                            |
@@ -32,7 +33,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 ## DSL 4.0の固有概念
 
-- **Source Graph**: 起点のYAMLから`include`で到達する、複数ソースの関係全体
+- **include文**: 一般向け・作者向け文書で、別の台本ファイルを読み込む構文とその処理を説明する表記
+- **Source Graph**: 実装資料で、`createDsl4SourceGraph`など内部の型・関数・データ構造を説明する必要がある場合だけ使う固有名
 - **StoryDocument**: 構文・スキーマ・参照関係の検証を終え、実行に渡せる正規化済みの台本
 - **世代（generation）**: 同じ時点で安定して取得したソースと素材の組。以後は「世代」と書く
 - **候補（candidate）**: 検証中で、まだ正常な実行状態を置き換えていない入力の組。以後は「候補」と書く

@@ -376,7 +376,7 @@ quiesce／commitし、失敗時はcurrent generationを維持します。
 | flag                               | 有効化する境界                          | 依存・OFF時のfallback              |
 | ---------------------------------- | --------------------------------------- | ---------------------------------- |
 | `dsl4Runtime`                      | DSL 4.0 runtime                         | coreを起動しない                   |
-| `dsl4SourceIncludes`               | Source Graph include                    | 単一source                         |
+| `dsl4SourceIncludes`               | include文の複数source読込               | 単一source                         |
 | `dsl4AppShell`                     | Standard app shell                      | shell／runtime hostを作らない      |
 | `dsl4WebPreviewAdapter`            | read-only Browser Web Preview           | CLI previewまたはone-shot          |
 | `dsl4WebPreviewAssetLiveReload`    | Browser asset reload                    | source reloadまたはfull rebuild    |

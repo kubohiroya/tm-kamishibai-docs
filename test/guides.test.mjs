@@ -105,7 +105,7 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
   assert.match(dsl4SchemaReference, /権威関係と配布状態/u);
   assert.match(dsl4SchemaReference, /Schemaはruntime実装から生成しません/u);
   assert.match(dsl4SchemaReference, /Schema固定commit: \[`283daad`\]/u);
-  assert.match(dsl4SchemaReference, /トップレベル12 field、action 19種類、Annotation 72項目/u);
+  assert.match(dsl4SchemaReference, /トップレベル12 field、action 19種類、Annotation 73項目/u);
   assert.doesNotMatch(dslManual, /kamishibai: '4\.0'/u);
   assert.doesNotMatch(dsl4AuthorGuide, /DSL 3\.[12]|kamishibai=3\.[12]/u);
   assert.doesNotMatch(dsl4SchemaReference, /DSL 3\.[12]|kamishibai=3\.[12]/u);
@@ -465,7 +465,8 @@ test('keeps both versioned application guides in the requested eight-page alloca
   assert.doesNotMatch(applicationGuide, /kamishibai: '4\.0'/u);
   assert.match(applicationGuide, /b3f4b9aa3ed3ede363700be815fe522f6a47df0b/u);
   assert.match(applicationGuide4, /kamishibai: '4\.0'/u);
-  assert.match(applicationGuide4, /Source Graph/u);
+  assert.match(applicationGuide4, /include文/u);
+  assert.doesNotMatch(applicationGuide4, /Source Graph/u);
   assert.match(applicationGuide4, /build-dsl4/u);
   assert.doesNotMatch(applicationGuide4, /kamishibai=3\.2/u);
   assert.match(theme, /@page application-guide\s*\{[\s\S]*size:\s*A4;/u);
