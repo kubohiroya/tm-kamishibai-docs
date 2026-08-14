@@ -20,6 +20,8 @@ export const documentUpdatedAt = Object.freeze({
   'dsl-4.0-schema-reference.md': '2026-08-12',
   'dsl-4.0-history.md': '2026-08-12',
   'dsl-3.2-to-4.0-conversion-guide.md': '2026-08-12',
+  'dsl-4.0-turbowarp-broadcast-guide.md': '2026-08-15',
+  'dsl-4.0-runtime-block-reference.md': '2026-08-15',
   'play.md': '2026-08-13',
   'create.md': '2026-08-13',
   'application-materials-guide.md': '2026-08-09',
@@ -188,6 +190,28 @@ export const documentCollections = [
         title: '紙芝居を作る',
         audience: '初めて紙芝居DSL 4.0を書く方',
         description: '公開スターターを変更し、プレビュー、検査、ビルドを経て作品を完成させます。',
+      },
+    ],
+  },
+  {
+    id: 'turbowarp-programmer-guides',
+    version: '4.0',
+    title: 'TurboWarpでプログラムを書く人向けドキュメント',
+    subtitle: 'DSL4.0ランタイムからのメッセージに応じた動作の記述',
+    documents: [
+      {
+        sourceFilename: 'dsl-4.0-turbowarp-broadcast-guide.md',
+        title: 'DSL 4.0ランタイムからのメッセージに応じた動作の記述',
+        audience: 'DSL 4.0の台本とTurboWarpプログラムを連携する方',
+        description:
+          'broadcastMessageAndWaitで台本からメッセージを送り、TurboWarp側で受け取って処理を完了するまで待たせる方法を説明します。',
+      },
+      {
+        sourceFilename: 'dsl-4.0-runtime-block-reference.md',
+        title: 'DSL 4.0ランタイム ブロックリファレンス',
+        audience: '集約ランタイムのTurboWarpブロックを調べる方',
+        description:
+          '紙芝居ランタイムと6つの機能拡張に由来する、集約パレットの公開ブロックと参照先を一覧にします。',
       },
     ],
   },

@@ -45,7 +45,7 @@ test('shows the same release boundary on the 4.0 top and every 4.0 document', ()
   assert.match(dsl4Index, /最新安定版は\s*<code>v3\.2\.3<\/code>/u);
   assert.match(dsl4Index, /tutorials\//u);
 
-  assert.equal(dsl4Documents.length, 15);
+  assert.equal(dsl4Documents.length, 17);
   for (const {collectionId, sourceFilename, source} of dsl4Documents) {
     if (collectionId === 'tutorials') {
       assert.match(source, /4\.0\.0-rc\.3/u);
