@@ -495,7 +495,7 @@ ${candidateSnapshot ? `> **候補snapshot:** このSchemaには、上流\`${sour
 include文の例はYAMLとして構文検証しています。アセットやシーン間の参照整合性は、source frontendまたは
 preview／buildでも別途確認する必要があります。
 
-## Schema検証前のinclude文
+## 前処理
 
 include文は台本を複数ファイルへ分けるための構文です。JSON Schemaのトップレベルfieldではないため、
 指定したファイルを読み込んで一つの台本へ結合した後、

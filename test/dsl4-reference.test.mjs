@@ -89,7 +89,7 @@ test('generates the checked-in reference byte-for-byte deterministically', () =>
   assert.match(generated, /`easeInOut`/u);
   assert.match(generated, /`Actor\.setTransparency`/u);
   assert.match(generated, /`0`は完全不透明、`100`は完全透明/u);
-  assert.match(generated, /## Schema検証前のinclude文/u);
+  assert.match(generated, /## 前処理/u);
   assert.match(generated, /### `include` — 別の台本ファイルを読み込む/u);
   assert.match(generated, /include:\n  - chapters\/opening\.k4\.yml/u);
   assert.match(generated, /JSON Schemaのfieldではなく/u);
