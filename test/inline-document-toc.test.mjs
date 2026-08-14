@@ -32,6 +32,17 @@ test('combines the generated table of contents and article into one HTML documen
   assert.match(combined, /href="\.\.\/\.\.\/\.\.\/document-toc\.css"/u);
 });
 
+test('preserves dollar replacement patterns in article content', () => {
+  const articleWithPattern = `<!doctype html><html lang="ja"><head><title>Guide</title></head><body><section class="level1"><h1 id="guide">Guide</h1><section class="level2"><h2 id="pattern">Pattern</h2><code>^[a-z0-9!#$&amp;^_.+-]+$</code></section></section></body></html>`;
+  const combined = createInlineDocumentHtml(articleWithPattern, toc, {
+    scriptHref: '../../../document-toc.js',
+    stylesheetHref: '../../../document-toc.css',
+  });
+
+  assert.match(combined, /<code>\^\[a-z0-9!#\$&amp;\^_\.\+-\]\+\$<\/code>/u);
+  assert.equal((combined.match(/<h1 id="guide">/gu) ?? []).length, 1);
+});
+
 test('keeps the existing main landmark when the shared AppBar is installed', () => {
   const combined = createInlineDocumentHtml(article, toc, {
     scriptHref: '../../../document-toc.js',
