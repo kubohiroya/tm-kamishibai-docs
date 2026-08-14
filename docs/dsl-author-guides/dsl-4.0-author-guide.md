@@ -25,7 +25,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 ## 公開前の文書について
 
 文書状態: 固定実装基準を説明する台本作成ガイド（正式リリースの操作資料ではない）\
-調査基準: tmpose-kamishibai `d8b7067`、2026年8月13日
+調査基準: tmpose-kamishibai `f3c13d3`、2026年8月15日
 
 > **配布状態との区別:** 2026年8月13日時点で`v4.0.0-rc.3`はprereleaseとして公開されていますが、
 > 正式な`v4.0.0`ではありません。機能ごとのfeature flagは利用するreleaseで確認してください。
@@ -113,8 +113,8 @@ builder、TurboWarp runtime surface、browser／CLI previewを含むend-to-end�
 ### 実装根拠を確認する場合
 
 仕様の正本は、tmpose-kamishibaiリポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/schema/dsl-4.schema.json)です。
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/schema/dsl-4.schema.json)です。
 camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)、
 `bubbleStyles`は[Issue #476](https://github.com/kubohiroya/tmpose-kamishibai/issues/476)以降、
 `Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tmpose-kamishibai/issues/398)、
@@ -554,6 +554,29 @@ poseRecognition:
 `idleSound`と`chargeSound`はそれぞれ任意です。両方を省略した無音、片方だけ、両方を指定した設定を
 受理します。指定する場合、参照先は音アセットでなければなりません。音を省略してもsequence、selection、
 feedback、navigation、previewは独立して設定できます。
+
+### Poseモデルの初期化方法
+
+sceneをskipしたり遷移先を変更したりする作品では、不要になったモデル初期化をcancelして、直近で必要な
+モデルだけを準備できます。
+
+```yaml
+poseRecognition:
+  modelInitialization:
+    policy: latest-needed
+    parallel: true
+```
+
+`policy: latest-needed`は重い初期化を実行中1件、最新待機1件までに制限します。Aの初期化中にB、Cの順で
+要求が変わった場合、Bを開始せず、Aを安全境界でcancelしてCだけを開始します。poseを使わないsceneへ
+skipした場合は待機要求を破棄し、新しいモデル初期化を開始しません。
+
+`parallel: true`では、cameraの起動とモデル準備、モデル記述子の復号・SHA検証とclassifier loadなど、
+依存関係のない処理を重ねます。最初の認識だけがcameraと登録済みモデルの両方を待ちます。モデル初期化の
+cancelだけでcameraは停止しません。
+
+省略時は`policy: legacy`、`parallel: false`です。これは従来動作へ設定だけで戻せる安全な既定値です。
+`latest-needed`の実行にはTMPose 1.10.0以降が必要です。
 
 ### カメラ映像の表示と操作
 
@@ -1387,7 +1410,7 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 ## 関連資料
 
 - [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
-- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
-- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/schema/dsl-4.schema.json): 機械可読な構造仕様
-- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
-- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例
+- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
+- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/schema/dsl-4.schema.json): 機械可読な構造仕様
+- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
+- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例

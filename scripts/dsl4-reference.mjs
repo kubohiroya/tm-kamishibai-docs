@@ -28,6 +28,7 @@ const expectedStaticSectionPointers = {
     '#/$defs/variables',
     '#/$defs/loadingScreen',
     '#/$defs/poseRecognition',
+    '#/$defs/poseModelInitialization',
     '#/$defs/poseSequenceRecognition',
     '#/$defs/poseSelectionRecognition',
     '#/$defs/poseFeedback',

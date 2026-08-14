@@ -11,8 +11,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 増やすときに[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)の必要な節をお読みください。
 
 文書状態: **固定実装基準を説明するSchemaリファレンス（正式リリースの操作資料ではない）**\
-Schema固定commit: [`d8b7067`](https://github.com/kubohiroya/tmpose-kamishibai/commit/d8b70676aff3d0655178c9b176ac4d764016b895)\
-Schema SHA-256: `3642be29701310e691eeeae5e85156e8a9328d3341b2afb2efa7fc8f0431a459`
+Schema固定commit: [`f3c13d3`](https://github.com/kubohiroya/tmpose-kamishibai/commit/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f)\
+Schema SHA-256: `0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac136`
 
 > **権威関係と配布状態:** 2026年8月13日時点で`v4.0.0-rc.3`はprereleaseとして公開されていますが、
 > 正式な`v4.0.0`ではありません。
@@ -22,7 +22,7 @@ Schema SHA-256: `3642be29701310e691eeeae5e85156e8a9328d3341b2afb2efa7fc8f0431a45
 
 ## このリファレンスについて
 
-この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
+この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
 注意事項、例はAnnotationで管理します。Schemaで定義される項目についてSchemaと生成物が異なる場合はSchemaを
 優先します。include文はSchema検証前に処理されるためJSON Schema外であり、固定した表層仕様と実装に基づいて掲載します。
@@ -34,8 +34,8 @@ Schema SHA-256: `3642be29701310e691eeeae5e85156e8a9328d3341b2afb2efa7fc8f0431a45
 
 - 上流repository: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai)
 - Schema path: `schema/dsl-4.schema.json`
-- 上流commit日時: `2026-08-13T11:23:46+09:00`
-- 掲載範囲: トップレベル12 field、action 24種類、Annotation 86項目
+- 上流commit日時: `2026-08-15T01:05:28+09:00`
+- 掲載範囲: トップレベル12 field、action 24種類、Annotation 87項目
 - 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>`
 - 差分確認: `pnpm docs:dsl4:check`
 
@@ -226,7 +226,7 @@ costumes:
 
 ### `poseRecognition` — ポーズ認識設定
 
-認識中の任意の音、判定方法、feedback、プレイ中にポーズ待ちをskipできるか、camera previewの表示と任意UIをまとめます。idle音とcharge音は独立して省略できます。
+認識中の任意の音、モデル初期化、判定方法、feedback、プレイ中にポーズ待ちをskipできるか、camera previewの表示と任意UIをまとめます。idle音とcharge音は独立して省略できます。
 
 Schema位置: `#/properties/poseRecognition`
 
@@ -234,6 +234,7 @@ Schema位置: `#/properties/poseRecognition`
 | --- | --- | --- | --- |
 | `idleSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
 | `chargeSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
+| `modelInitialization` | 任意 | object（`poseModelInitialization`） | 未知field不可 |
 | `sequence` | 任意 | object（`poseSequenceRecognition`） | 未知field不可 |
 | `selection` | 任意 | object（`poseSelectionRecognition`） | 未知field不可 |
 | `feedback` | 任意 | object（`poseFeedback`） | 未知field不可 |
@@ -245,6 +246,9 @@ Schema位置: `#/properties/poseRecognition`
 ```yaml
 idleSound: PoseIdle
 chargeSound: PoseCharge
+modelInitialization:
+  policy: latest-needed
+  parallel: true
 feedback:
   mode: presenter
 navigation:
@@ -786,7 +790,7 @@ costumes:
 
 ### ポーズ認識全体設定
 
-共通音と、sequence、selection、feedback、navigation、camera previewの任意設定をまとめます。
+共通音と、モデル初期化、sequence、selection、feedback、navigation、camera previewの任意設定をまとめます。
 
 Schema位置: `#/$defs/poseRecognition`
 
@@ -794,6 +798,7 @@ Schema位置: `#/$defs/poseRecognition`
 | --- | --- | --- | --- |
 | `idleSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
 | `chargeSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
+| `modelInitialization` | 任意 | object（`poseModelInitialization`） | 未知field不可 |
 | `sequence` | 任意 | object（`poseSequenceRecognition`） | 未知field不可 |
 | `selection` | 任意 | object（`poseSelectionRecognition`） | 未知field不可 |
 | `feedback` | 任意 | object（`poseFeedback`） | 未知field不可 |
@@ -805,6 +810,9 @@ Schemaで検証できる値の例:
 ```yaml
 idleSound: PoseIdle
 chargeSound: PoseCharge
+modelInitialization:
+  policy: latest-needed
+  parallel: true
 sequence:
   confidenceThreshold: 0.6
 feedback:
@@ -813,6 +821,28 @@ navigation:
   allowSkip: false
 preview:
   mirroring: mirrored
+```
+
+### Poseモデル初期化
+
+従来互換のlegacyと、不要になった初期化をcancelして最新要求だけを準備するlatest-neededを選びます。camera準備とモデル準備の並行化も明示します。
+
+Schema位置: `#/$defs/poseModelInitialization`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `policy` | 任意 | `legacy` / `latest-needed` | 既定値 `legacy` |
+| `parallel` | 任意 | 真偽値 | 既定値 `false` |
+
+- 省略時はpolicyがlegacy、parallelがfalseです。
+- latest-neededでは重い初期化を実行中1件と最新待機1件までに制限します。
+- 実行にはTMPose 1.10.0以降が必要です。
+
+Schemaで検証できる値の例:
+
+```yaml
+policy: latest-needed
+parallel: true
 ```
 
 ### sequence認識設定

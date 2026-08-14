@@ -407,6 +407,17 @@ file出力は`buildDsl4RuntimeComponentFile()`がcandidate directoryを検証し
 5. scene commitで次sceneに不要な`retention: scene` assetをreleaseする。
 6. stop、failure、disposeで全resourceを逆所有順に解放する。
 
+Poseモデルについて`poseRecognition.modelInitialization.policy`が`latest-needed`の場合、preload coordinatorの
+最新要求をTMPose 1.10.0 Compositionへ渡し、重い初期化をactive 1件＋最新pending 1件へ制限します。
+superseded requestはasset lifecycleの`AbortSignal`でcancelし、registryへ公開しません。Aの実行中にB、Cが
+要求された場合はBを開始せず、Aの安全な終了後にCだけを開始します。pose不要sceneへskipした場合はpendingを
+破棄します。
+
+camera lifecycleとmodel lifecycleは別の所有者です。`getUserMedia()`／`video.play()`はdescriptor探索、
+decode、SHA検証、TensorFlow／PoseNet初期化と並行できます。未検証byte列をTensorFlowへ渡してはならず、
+最初の推論でcamera readyとmodel registeredを同期します。model cancelだけでcameraを停止せず、stopまたは
+session disposeがcameraを解放します。既定値`legacy`／`parallel: false`はこの最適化を無効化します。
+
 remote assetは自動的に許可しません。`createDsl4RemoteAssetLifecycle()`へhost loaderを明示注入した場合だけ
 有効です。通常のposeModelはHTTPS directory URLから`model.json`、`metadata.json`、宣言されたweightsを
 lazy取得します。検証付きremoteはSHA-256 integrity、media type、sizeを再検証して同じlifecycleへ入ります。

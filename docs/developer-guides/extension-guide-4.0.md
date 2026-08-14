@@ -185,6 +185,18 @@ fallbackやHTTPへのdowngradeはありません。offlineを保証する作品�
 `src/dsl4/platform/tmpose-model-adapter.js`の`createDsl4TMPosePlatform()`は
 `@kubohiroya/turbowarp-tmpose/composition`と`createDsl4TMPoseModelAdapter()`を組み合わせます。
 adapterは検証済みmodel filesとlabel mappingを受け、session-owned model resourceを返します。
+StoryDocumentの`poseRecognition.modelInitialization`は、`policy`を
+`modelInitializationPolicy`、`parallel`を`parallelModelInitialization`へ変換してTMPose Compositionへ
+渡します。asset lifecycleの`AbortSignal`は`registerPoseModel(input, {signal})`へそのまま伝播します。
+
+TMPose 1.10.0の`latest-needed` policyは、重い初期化をactive 1件と最新pending 1件に制限します。
+Aの実行中にB、Cが要求された場合は、Aを安全境界でcancelし、Bを開始せずCだけを開始します。cancel済み
+resourceはregistryへ公開せず、遅れて完了したresourceもexactly onceで解放します。Web Cryptoや
+TensorFlow.jsで物理中断できない処理は完了を待って破棄し、後続phaseを開始しません。
+
+camera起動はモデル初期化と独立して開始できます。記述子decode、fileごとのSHA検証、classifier loadは
+依存範囲内で並行し、最初の推論だけがcamera準備とモデル登録の両方を待ちます。モデル初期化のcancelで
+cameraを停止してはいけません。`legacy`／`parallelModelInitialization: false`が既定のrollback経路です。
 
 `src/dsl4/platform/pose-action-port.js`の`createDsl4PoseActionPort()`は、`waitForPose`と
 `poseInputToChangeScene`をTMPose認識session、Async Input候補選択、`AbortSignal`へ接続します。入力は
