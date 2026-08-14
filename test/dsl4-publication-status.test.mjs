@@ -57,7 +57,7 @@ test('shows the same release boundary on the 4.0 top and every 4.0 document', ()
       assert.doesNotMatch(source, /[a-f0-9]{40}/u);
     } else {
       assert.match(source, /固定.{0,12}実装|実装基準/u);
-      assert.match(source, /2026年8月8日時点/u);
+      assert.match(source, /20\d{2}年\d{1,2}月\d{1,2}日時点/u);
       assert.match(source, /正式リリース/u);
     }
     assert.match(source, /保証しません|確認してください|保守作業を含みます|公開元|公開準備中/u);

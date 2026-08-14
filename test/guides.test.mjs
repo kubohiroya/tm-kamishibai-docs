@@ -71,7 +71,7 @@ const theme = readFileSync(new URL('../docs/general-theme.css', import.meta.url)
 test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual', () => {
   assert.match(dslManual, /対象アプリ: tmpose-kamishibai 3\.2\.x/u);
   assert.match(dsl4AuthorGuide, /固定実装基準を説明する台本作成ガイド/u);
-  assert.match(dsl4AuthorGuide, /v4\.0\.0`は未公開/u);
+  assert.match(dsl4AuthorGuide, /v4\.0\.0-rc\.3`はprerelease/u);
   assert.match(dsl4AuthorGuide, /Schemaはruntime実装から生成するものではありません/u);
   assert.match(dsl4AuthorGuide, /kamishibai: '4\.0'/u);
   assert.match(dsl4AuthorGuide, /\.kamishibai\.yaml/u);
@@ -83,6 +83,16 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
   assert.match(dsl4AuthorGuide, /手元の素材を追加・更新する/u);
   assert.match(dsl4AuthorGuide, /一つのtransactionへ束ねるatomicityは保証しません/u);
   assert.match(dsl4AuthorGuide, /Actor\.say`と`Actor\.think/u);
+  assert.match(dsl4AuthorGuide, /`bubbleStyles`/u);
+  assert.match(dsl4AuthorGuide, /`broadcastMessageAndWait`/u);
+  assert.match(dsl4AuthorGuide, /`debugger`/u);
+  assert.match(dsl4AuthorGuide, /`Actor\.hide`/u);
+  assert.match(dsl4AuthorGuide, /`Actor\.setLayer`/u);
+  assert.match(dsl4AuthorGuide, /`Actor\.loop`/u);
+  assert.match(dsl4AuthorGuide, /`rehearsal\.skipScene`/u);
+  assert.match(dsl4AuthorGuide, /`bitmapResolution: 1`または`2`/u);
+  assert.match(dsl4AuthorGuide, /アセットIDとシーンIDはScratch上の名前をそのまま保持/u);
+  assert.doesNotMatch(dsl4AuthorGuide, /`speechStyles`|`speechStyle`|direction: up/u);
   assert.match(dsl4AuthorGuide, /`seconds`だけなら表示開始から指定秒数後/u);
   assert.match(dsl4AuthorGuide, /Unicode grapheme cluster/u);
   assert.match(dsl4AuthorGuide, /`easing`は`linear`、`easeIn`、`easeOut`、`easeInOut`/u);
@@ -104,11 +114,11 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
   );
   assert.match(dsl4AuthorGuide, /前sceneの値を持ち越しません/u);
   assert.match(dsl4SchemaReference, /固定実装基準を説明するSchemaリファレンス/u);
-  assert.match(dsl4SchemaReference, /v4\.0\.0`は正式リリースされていません/u);
+  assert.match(dsl4SchemaReference, /v4\.0\.0-rc\.3`はprerelease/u);
   assert.match(dsl4SchemaReference, /権威関係と配布状態/u);
   assert.match(dsl4SchemaReference, /Schemaはruntime実装から生成しません/u);
-  assert.match(dsl4SchemaReference, /Schema固定commit: \[`283daad`\]/u);
-  assert.match(dsl4SchemaReference, /トップレベル12 field、action 19種類、Annotation 73項目/u);
+  assert.match(dsl4SchemaReference, /Schema固定commit: \[`d8b7067`\]/u);
+  assert.match(dsl4SchemaReference, /トップレベル12 field、action 24種類、Annotation 86項目/u);
   assert.doesNotMatch(dslManual, /kamishibai: '4\.0'/u);
   assert.doesNotMatch(dsl4AuthorGuide, /DSL 3\.[12]|kamishibai=3\.[12]/u);
   assert.doesNotMatch(dsl4SchemaReference, /DSL 3\.[12]|kamishibai=3\.[12]/u);

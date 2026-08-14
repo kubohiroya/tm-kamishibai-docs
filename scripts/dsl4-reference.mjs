@@ -17,8 +17,14 @@ const expectedStaticSectionPointers = {
     '#/$defs/actors',
     '#/$defs/cover',
     '#/$defs/textStyle',
-    '#/$defs/speechStyle',
-    '#/$defs/speechStyles',
+    '#/$defs/bubbleStyle',
+    '#/$defs/bubbleStyles',
+    '#/$defs/bubbleContinueIndicator',
+    '#/$defs/bubbleFrameAnimation',
+    '#/$defs/bubblePortrait',
+    '#/$defs/bubbleReveal',
+    '#/$defs/bubbleAudio',
+    '#/$defs/bubbleMotion',
     '#/$defs/variables',
     '#/$defs/loadingScreen',
     '#/$defs/poseRecognition',
@@ -37,6 +43,8 @@ const expectedStaticSectionPointers = {
   ],
   'shared-types': [
     '#/$defs/id',
+    '#/$defs/literalId',
+    '#/$defs/bubbleStyleName',
     '#/$defs/filePath',
     '#/$defs/loadingPolicy',
     '#/$defs/retentionPolicy',
@@ -457,7 +465,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 ${snapshotLabel}\\
 Schema SHA-256: \`${lock.schemaSha256}\`
 
-> **権威関係と配布状態:** 2026年8月8日時点で\`v4.0.0\`は正式リリースされていません。
+> **権威関係と配布状態:** 2026年8月13日時点で\`v4.0.0-rc.3\`はprereleaseとして公開されていますが、
+> 正式な\`v4.0.0\`ではありません。
 > 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、
 > 適合実装・testを固定しています。Schemaはruntime実装から生成しません。公開アプリ、配布artifact、
 > feature flagがDSL 4.0を有効にしているかは利用するreleaseごとに確認してください。

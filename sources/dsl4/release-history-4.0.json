@@ -27,8 +27,8 @@
       "schema": {
         "path": "schema/dsl-4.schema.json",
         "candidateSha256": "287867c36feff4d3fd7a5b266ab4f27368dd25ca0edc5b8c400fcc64ad08f230",
-        "documentationReferenceCommit": "283daadeffa5d11ab4510daa66f60168277dafea",
-        "documentationReferenceSha256": "f519c033c68be61d71cc5dcba20a8434e23255ec0279fc0dc2d6408e7f014d7e"
+        "documentationReferenceCommit": "d8b70676aff3d0655178c9b176ac4d764016b895",
+        "documentationReferenceSha256": "3642be29701310e691eeeae5e85156e8a9328d3341b2afb2efa7fc8f0431a459"
       },
       "surfaces": [
         "yaml-source",

@@ -11,17 +11,18 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 増やすときに[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)の必要な節をお読みください。
 
 文書状態: **固定実装基準を説明するSchemaリファレンス（正式リリースの操作資料ではない）**\
-Schema固定commit: [`283daad`](https://github.com/kubohiroya/tmpose-kamishibai/commit/283daadeffa5d11ab4510daa66f60168277dafea)\
-Schema SHA-256: `f519c033c68be61d71cc5dcba20a8434e23255ec0279fc0dc2d6408e7f014d7e`
+Schema固定commit: [`d8b7067`](https://github.com/kubohiroya/tmpose-kamishibai/commit/d8b70676aff3d0655178c9b176ac4d764016b895)\
+Schema SHA-256: `3642be29701310e691eeeae5e85156e8a9328d3341b2afb2efa7fc8f0431a459`
 
-> **権威関係と配布状態:** 2026年8月8日時点で`v4.0.0`は正式リリースされていません。
+> **権威関係と配布状態:** 2026年8月13日時点で`v4.0.0-rc.3`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。
 > 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、
 > 適合実装・testを固定しています。Schemaはruntime実装から生成しません。公開アプリ、配布artifact、
 > feature flagがDSL 4.0を有効にしているかは利用するreleaseごとに確認してください。
 
 ## このリファレンスについて
 
-この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/283daadeffa5d11ab4510daa66f60168277dafea/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
+この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/d8b70676aff3d0655178c9b176ac4d764016b895/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
 注意事項、例はAnnotationで管理します。Schemaで定義される項目についてSchemaと生成物が異なる場合はSchemaを
 優先します。include文はSchema検証前に処理されるためJSON Schema外であり、固定した表層仕様と実装に基づいて掲載します。
@@ -33,8 +34,8 @@ Schema SHA-256: `f519c033c68be61d71cc5dcba20a8434e23255ec0279fc0dc2d6408e7f014d7
 
 - 上流repository: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai)
 - Schema path: `schema/dsl-4.schema.json`
-- 上流commit日時: `2026-08-08T11:21:11+09:00`
-- 掲載範囲: トップレベル12 field、action 19種類、Annotation 73項目
+- 上流commit日時: `2026-08-13T11:23:46+09:00`
+- 掲載範囲: トップレベル12 field、action 24種類、Annotation 86項目
 - 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>`
 - 差分確認: `pnpm docs:dsl4:check`
 
@@ -117,7 +118,7 @@ Schema位置: `#/properties/actors`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 任意 | 文字列（`id`）（`assetId`） | — |
+| 任意のID key | 任意 | 文字列（`literalId`）（`assetId`） | — |
 
 `actors` fieldの値:
 
@@ -133,8 +134,8 @@ Schema位置: `#/properties/cover`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `backdrop` | 必須 | 文字列（`id`）（`assetId`） | — |
-| `bgm` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `backdrop` | 必須 | 文字列（`literalId`）（`assetId`） | — |
+| `bgm` | 任意 | 文字列（`literalId`）（`assetId`） | — |
 
 `cover` fieldの値:
 
@@ -162,25 +163,26 @@ caption:
   align: center
 ```
 
-### `speechStyles` — speech style
+### `bubbleStyles` — 吹き出しstyle
 
-`Actor.say`と`Actor.think`から参照する文字送り、文字効果音、無音文字、句読点休止を名前付きで再利用します。
+`Actor.say`と`Actor.think`から参照する文字送り、配置、見た目、portrait、音、animationを名前付きで再利用・合成します。
 
-Schema位置: `#/properties/speechStyles`
+Schema位置: `#/properties/bubbleStyles`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 任意 | object（`speechStyle`） | 未知field不可 |
+| 任意のID key | 任意 | object（`bubbleStyle`） | 未知field不可 |
 
-`speechStyles` fieldの値:
+`bubbleStyles` fieldの値:
 
 ```yaml
-novel:
+Typing:
   characterIntervalSeconds: 0.05
-  characterSound: Typewriter
-  noSoundCharacters: '「」'
-  restCharacters: '、。…'
-  restCharacterIntervalSeconds: 0.5
+Hero style:
+  styles:
+    - Typing
+  placement: FOOTER_LIKE
+  visualStyle: NORMAL
 ```
 
 ### `variables` — runtime変数
@@ -210,8 +212,8 @@ Schema位置: `#/properties/loading`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `backdrop` | 必須 | 文字列（`id`）（`assetId`） | — |
-| `costumes` | 必須 | 文字列（`id`）（`assetId`）の配列 | 1項目以上 |
+| `backdrop` | 必須 | 文字列（`literalId`）（`assetId`） | — |
+| `costumes` | 必須 | 文字列（`literalId`）（`assetId`）の配列 | 1項目以上 |
 
 `loading` fieldの値:
 
@@ -224,14 +226,14 @@ costumes:
 
 ### `poseRecognition` — ポーズ認識設定
 
-認識中の音、判定方法、feedback、上映操作からのskip可否、camera previewの表示と任意UIをまとめます。idle音とcharge音は必須です。
+認識中の任意の音、判定方法、feedback、上映操作からのskip可否、camera previewの表示と任意UIをまとめます。idle音とcharge音は独立して省略できます。
 
 Schema位置: `#/properties/poseRecognition`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `idleSound` | 必須 | 文字列（`id`）（`assetId`） | — |
-| `chargeSound` | 必須 | 文字列（`id`）（`assetId`） | — |
+| `idleSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
+| `chargeSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
 | `sequence` | 任意 | object（`poseSequenceRecognition`） | 未知field不可 |
 | `selection` | 任意 | object（`poseSelectionRecognition`） | 未知field不可 |
 | `feedback` | 任意 | object（`poseFeedback`） | 未知field不可 |
@@ -302,7 +304,7 @@ Schema位置: `#/properties/scenes`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
+| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`debuggerAction`） または object（`broadcastMessageAndWaitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`hideAction`） または mapping（`setLayerAction`） または mapping（`loopAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
 
 `scenes` fieldの値:
 
@@ -332,7 +334,7 @@ Schema位置: `#/$defs/asset`
 | 形式6 | いずれか一つ | object または object（`namedImage`） | 未知field不可 |
 
 - 短縮形式はproject内に同名のassetがある場合に使います。
-- poseModelは通常のHTTPS TMPose directory URLを指定できます。それ以外のremote sourceと検証付きremote poseはSHA-256、content type、byte sizeを固定します。
+- remote sourceはHTTPS URLを指定し、内容を固定する場合はSHA-256、content type、byte sizeを三つとも指定します。
 
 Schemaで検証できる値の例:
 
@@ -358,7 +360,7 @@ costume:Hero
 
 ### 名前付き背景
 
-背景をproject内の名前、project内相対file、または固定remote sourceから読み込みます。
+背景をproject内の名前、project内相対file、またはremote sourceから読み込みます。bitmapでは論理解像度を1倍または2倍で指定できます。
 
 Schema位置: `#/$defs/namedBackdrop`
 
@@ -368,6 +370,7 @@ Schema位置: `#/$defs/namedBackdrop`
 | `name` | 任意 | 文字列 | 1文字以上 |
 | `file` | 任意 | 文字列（`filePath`） | 1文字以上、pattern `^(?!/)(?![A-Za-z]:[\\/])(?![A-Za-z][A-Za-z0-9+.-]*:)[^\\\u0000]+$` |
 | `source` | 任意 | object（`remoteAssetSource`） | 未知field不可 |
+| `bitmapResolution` | 任意 | `1` / `2` | 既定値 `1` |
 | `delivery` | 任意 | `embedded` / `remote`（`deliveryPolicy`） | 既定値 `embedded` |
 | `loading` | 任意 | `eager` / `lazy`（`loadingPolicy`） | 既定値 `eager` |
 | `retention` | 任意 | `scene` / `story`（`retentionPolicy`） | — |
@@ -376,7 +379,8 @@ Schemaで検証できる値の例:
 
 ```yaml
 kind: backdrop
-file: beach.svg
+file: beach.png
+bitmapResolution: 2
 loading: eager
 retention: story
 ```
@@ -407,7 +411,7 @@ loading: lazy
 
 ### 名前付きcostume
 
-costumeではtarget actorを必ず指定します。参照側actorとの一致も意味検証の対象です。
+costumeではtarget actorを必ず指定します。bitmapでは論理解像度を1倍または2倍で指定でき、参照側actorとの一致も意味検証の対象です。
 
 Schema位置: `#/$defs/namedCostume`
 
@@ -418,6 +422,7 @@ Schema位置: `#/$defs/namedCostume`
 | `name` | 任意 | 文字列 | 1文字以上 |
 | `file` | 任意 | 文字列（`filePath`） | 1文字以上、pattern `^(?!/)(?![A-Za-z]:[\\/])(?![A-Za-z][A-Za-z0-9+.-]*:)[^\\\u0000]+$` |
 | `source` | 任意 | object（`remoteAssetSource`） | 未知field不可 |
+| `bitmapResolution` | 任意 | `1` / `2` | 既定値 `1` |
 | `delivery` | 任意 | `embedded` / `remote`（`deliveryPolicy`） | 既定値 `embedded` |
 | `loading` | 任意 | `eager` / `lazy`（`loadingPolicy`） | 既定値 `eager` |
 | `retention` | 任意 | `scene` / `story`（`retentionPolicy`） | — |
@@ -427,7 +432,8 @@ Schemaで検証できる値の例:
 ```yaml
 kind: costume
 target: Hero
-file: hero-happy.svg
+file: hero-happy.png
+bitmapResolution: 2
 ```
 
 ### 名前付きポーズモデル
@@ -492,7 +498,7 @@ Schema位置: `#/$defs/actors`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 任意 | 文字列（`id`）（`assetId`） | — |
+| 任意のID key | 任意 | 文字列（`literalId`）（`assetId`） | — |
 
 Schemaで検証できる値の例:
 
@@ -508,8 +514,8 @@ Schema位置: `#/$defs/cover`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `backdrop` | 必須 | 文字列（`id`）（`assetId`） | — |
-| `bgm` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `backdrop` | 必須 | 文字列（`literalId`）（`assetId`） | — |
+| `bgm` | 任意 | 文字列（`literalId`）（`assetId`） | — |
 
 Schemaで検証できる値の例:
 
@@ -520,7 +526,7 @@ bgm: Theme
 
 ### SVG Text style
 
-背景色、文字色、font、size、配置、書字方向を名前付きstyleとして再利用します。
+背景色、文字色、font、size、文字揃えを名前付きstyleとして再利用します。吹き出しの位置はbubble styleで指定します。
 
 Schema位置: `#/$defs/textStyle`
 
@@ -531,7 +537,6 @@ Schema位置: `#/$defs/textStyle`
 | `font` | 任意 | 文字列 | 1文字以上 |
 | `size` | 任意 | 数値 | 0より大きい |
 | `align` | 任意 | `left` / `center` / `right` | — |
-| `direction` | 任意 | `up` / `down` / `left` / `right` | — |
 
 Schemaで検証できる値の例:
 
@@ -541,52 +546,203 @@ color: '#ffffff'
 font: Noto Sans JP
 size: 28
 align: center
-direction: right
 ```
 
-### speech style
+### 吹き出しstyle
 
-Unicode grapheme単位の文字送り間隔と、任意の文字効果音、無音文字、句読点休止を再利用可能な設定にします。
+文字送り、配置、見た目、portrait、音、animationを再利用できる部分styleとして定義します。`styles`で既存styleを順に合成できます。
 
-Schema位置: `#/$defs/speechStyle`
+Schema位置: `#/$defs/bubbleStyle`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `characterIntervalSeconds` | 必須 | 数値 | 0より大きい |
-| `characterSound` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `styles` | 任意 | 文字列（`bubbleStyleName`）の配列 | 1項目以上 |
+| `textStyle` | 任意 | 文字列（`id`）（`styleId`） | — |
+| `maxWidth` | 任意 | 数値 | 0より大きい |
+| `textLocale` | 任意 | 文字列 | 1文字以上 |
+| `placement` | 任意 | `up` / `up-up-right` / `up-right` / `right-up-right` / `right` / `right-down-right` / `down-right` / `down-down-right` / `down` / `down-down-left` / `down-left` / `left-down-left` / `left` / `left-up-left` / `up-left` / `up-up-left` / `north` / `north-northeast` / `northeast` / `east-northeast` / `east` / `east-southeast` / `southeast` / `south-southeast` / `south` / `south-southwest` / `southwest` / `west-southwest` / `west` / `west-northwest` / `northwest` / `north-northwest` / `HEADER_LIKE` / `CENTER` / `FOOTER_LIKE` または 数値 | — |
+| `distance` | 任意 | 数値 | 0以上 |
+| `tailLength` | 任意 | 数値 | 0より大きい |
+| `offset` | 任意 | 使用不可の配列 または 使用不可の配列 | — |
+| `visualStyle` | 任意 | `NORMAL` / `THINKING` / `DREAMING` / `YELLING` / `OFF_PANEL` / `WAVY` / `WHISPERING` / `ANNOUNCEMENT` / `NARRATION` / `NO_BUBBLE` | — |
+| `portrait` | 任意 | object（`bubblePortrait`） | 未知field不可 |
+| `characterIntervalSeconds` | 任意 | 数値 | 0より大きい |
+| `characterSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
 | `noSoundCharacters` | 任意 | 文字列 | 1文字以上 |
 | `restCharacters` | 任意 | 文字列 | 1文字以上 |
 | `restCharacterIntervalSeconds` | 任意 | 数値 | 0より大きい |
+| `continueIndicator` | 任意 | object（`bubbleContinueIndicator`） | 未知field不可 |
+| `reveal` | 任意 | object（`bubbleReveal`） | 未知field不可 |
+| `audio` | 任意 | object（`bubbleAudio`） | 未知field不可 |
+| `showAnimation` | 任意 | object（`bubbleMotion`） | 未知field不可 |
+| `hideAnimation` | 任意 | object（`bubbleMotion`） | 未知field不可 |
+| `visibleAnimations` | 任意 | object（`bubbleMotion`）の配列 | 1項目以上 |
 
-- `characterIntervalSeconds`は必須です。`noSoundCharacters`には`characterSound`が、`restCharacters`には`restCharacterIntervalSeconds`が必要です。
+- 各styleは部分設定として記述できます。参照先を順に合成したeffective styleに対する依存関係は意味検証で確認します。
 
 Schemaで検証できる値の例:
 
 ```yaml
+styles:
+  - Typing
+textStyle: caption
+placement: FOOTER_LIKE
+visualStyle: NARRATION
 characterIntervalSeconds: 0.05
-characterSound: Typewriter
-noSoundCharacters: '「」'
-restCharacters: '、。…'
-restCharacterIntervalSeconds: 0.5
+continueIndicator:
+  frames: [Next1, Next2]
+  frameIntervalSeconds: 0.12
 ```
 
-### speech style mapping
+### 吹き出しstyle mapping
 
-style IDをspeech styleへ対応付けます。`Actor.say`と`Actor.think`の`style`から参照します。
+人が読めるstyle名を吹き出しstyleへ対応付けます。`Actor.say`と`Actor.think`の`styles`配列から参照します。
 
-Schema位置: `#/$defs/speechStyles`
+Schema位置: `#/$defs/bubbleStyles`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 任意 | object（`speechStyle`） | 未知field不可 |
+| 任意のID key | 任意 | object（`bubbleStyle`） | 未知field不可 |
 
 Schemaで検証できる値の例:
 
 ```yaml
-novel:
+Typing:
   characterIntervalSeconds: 0.05
-  restCharacters: '、。'
-  restCharacterIntervalSeconds: 0.4
+Hero style:
+  styles:
+    - Typing
+  placement: FOOTER_LIKE
+```
+
+### 入力待ちindicator
+
+全文表示後にadvance入力を待っている間、2枚以上のimage assetを順番に表示します。
+
+Schema位置: `#/$defs/bubbleContinueIndicator`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `frames` | 必須 | 文字列（`literalId`）（`assetId`）の配列 | 2項目以上 |
+| `frameIntervalSeconds` | 必須 | 数値 | 0より大きい |
+
+Schemaで検証できる値の例:
+
+```yaml
+frames: [Next1, Next2]
+frameIntervalSeconds: 0.12
+```
+
+### portrait frame animation
+
+portraitのまばたきや口パクに使う1枚以上のimage assetと表示間隔です。
+
+Schema位置: `#/$defs/bubbleFrameAnimation`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `frames` | 必須 | 文字列（`literalId`）（`assetId`）の配列 | 1項目以上 |
+| `frameIntervalSeconds` | 必須 | 数値 | 0より大きい |
+
+Schemaで検証できる値の例:
+
+```yaml
+frames: [EyesOpen, EyesClosed]
+frameIntervalSeconds: 0.4
+```
+
+### 吹き出しportrait
+
+基本画像と、任意のまばたき・口パクframe animationを指定します。
+
+Schema位置: `#/$defs/bubblePortrait`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `base` | 必須 | 文字列（`literalId`）（`assetId`） | — |
+| `blink` | 任意 | object（`bubbleFrameAnimation`） | 未知field不可 |
+| `lipSync` | 任意 | object（`bubbleFrameAnimation`） | 未知field不可 |
+
+Schemaで検証できる値の例:
+
+```yaml
+base: HeroFace
+blink:
+  frames: [EyesOpen, EyesClosed]
+  frameIntervalSeconds: 0.4
+lipSync:
+  frames: [MouthClosed, MouthOpen]
+  frameIntervalSeconds: 0.08
+```
+
+### 本文の段階表示
+
+文字、単語、行、blockの単位と、layout、間隔、任意の効果音を指定します。
+
+Schema位置: `#/$defs/bubbleReveal`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `unit` | 必須 | `CHARACTER` / `WORD` / `LINE` / `BLOCK` | — |
+| `delimiters` | 任意 | 文字列 | 1文字以上 |
+| `showDelimiters` | 任意 | 真偽値 | — |
+| `layout` | 任意 | `DYNAMIC` / `RESERVED` | — |
+| `intervalSeconds` | 任意 | 数値 | 0以上 |
+| `sound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
+
+Schemaで検証できる値の例:
+
+```yaml
+unit: CHARACTER
+layout: RESERVED
+intervalSeconds: 0.05
+sound: Typewriter
+```
+
+### 吹き出し音声
+
+音声、本文の段階表示、完了時に使うsound assetを個別に指定します。
+
+Schema位置: `#/$defs/bubbleAudio`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `voice` | 任意 | 文字列（`literalId`）（`assetId`） | — |
+| `reveal` | 任意 | 文字列（`literalId`）（`assetId`） | — |
+| `finish` | 任意 | 文字列（`literalId`）（`assetId`） | — |
+
+Schemaで検証できる値の例:
+
+```yaml
+voice: HeroVoice
+reveal: Typewriter
+finish: ContinueSound
+```
+
+### 吹き出しanimation
+
+表示・非表示・表示中に適用するanimation名と時間、easing、方向などを指定します。
+
+Schema位置: `#/$defs/bubbleMotion`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `name` | 必須 | `fadeIn` / `fadeOut` / `floatIn` / `floatOut` / `zoomIn` / `zoomOut` / `riseUp` / `sink` / `shake` / `explode` / `animateBubbleShape` | — |
+| `durationSeconds` | 任意 | 数値 | 0以上 |
+| `ease` | 任意 | `linear` / `easeIn` / `easeOut` / `easeInOut` | — |
+| `direction` | 任意 | 数値 または 文字列 | — |
+| `count` | 任意 | 整数 | 1以上 |
+| `relativeScale` | 任意 | 数値 | 0以上 |
+| `speed` | 任意 | 数値 | 0以上 |
+| `visualStyle` | 任意 | `NORMAL` / `THINKING` / `DREAMING` / `YELLING` / `OFF_PANEL` / `WAVY` / `WHISPERING` / `ANNOUNCEMENT` / `NARRATION` / `NO_BUBBLE` | — |
+
+Schemaで検証できる値の例:
+
+```yaml
+name: floatOut
+durationSeconds: 0.15
+ease: easeOut
+direction: down
 ```
 
 ### runtime変数mapping
@@ -617,8 +773,8 @@ Schema位置: `#/$defs/loadingScreen`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `backdrop` | 必須 | 文字列（`id`）（`assetId`） | — |
-| `costumes` | 必須 | 文字列（`id`）（`assetId`）の配列 | 1項目以上 |
+| `backdrop` | 必須 | 文字列（`literalId`）（`assetId`） | — |
+| `costumes` | 必須 | 文字列（`literalId`）（`assetId`）の配列 | 1項目以上 |
 
 Schemaで検証できる値の例:
 
@@ -636,8 +792,8 @@ Schema位置: `#/$defs/poseRecognition`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `idleSound` | 必須 | 文字列（`id`）（`assetId`） | — |
-| `chargeSound` | 必須 | 文字列（`id`）（`assetId`） | — |
+| `idleSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
+| `chargeSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
 | `sequence` | 任意 | object（`poseSequenceRecognition`） | 未知field不可 |
 | `selection` | 任意 | object（`poseSelectionRecognition`） | 未知field不可 |
 | `feedback` | 任意 | object（`poseFeedback`） | 未知field不可 |
@@ -835,7 +991,7 @@ Schema位置: `#/$defs/posePreviewCameraMenuControl`
 | --- | --- | --- | --- |
 | `position` | 必須 | `top-center` / `bottom-center` / `left-center` / `right-center` / `top-right` / `bottom-right` / `top-left` / `bottom-left`（`posePreviewControlPosition`） | — |
 | `opacity` | 任意 | 数値 | 既定値 `1`、0以上、1以下 |
-| `buttonAsset` | 必須 | 文字列（`id`）（`assetId`） | — |
+| `buttonAsset` | 必須 | 文字列（`literalId`）（`assetId`） | — |
 
 - menuは開くたびに利用可能なcameraを列挙します。物理device IDは台本やruntime変数へ保存しません。
 
@@ -910,7 +1066,7 @@ Schemaで検証できる値の例:
 
 ### ID
 
-Unicode文字またはunderscoreで始まり、以降に文字、数字、underscore、hyphenを使えます。
+actor、style、variable、branchなどの構文識別子です。Unicode文字またはunderscoreで始まり、以降に文字、数字、underscore、hyphenを使えます。
 
 Schema位置: `#/$defs/id`
 
@@ -922,6 +1078,38 @@ Schemaで検証できる値の例:
 
 ```yaml
 Hero_1
+```
+
+### asset・sceneのliteral ID
+
+Scratch上の名前をそのまま保持できる空でない文字列です。空白や記号を含められ、trimやUnicode正規化を行いません。
+
+Schema位置: `#/$defs/literalId`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| 値 | 必須 | 文字列 | 1文字以上 |
+
+Schemaで検証できる値の例:
+
+```yaml
+救助 Scene 1
+```
+
+### 吹き出しstyle名
+
+内部の空白や日本語を含められる人向けの名前です。先頭・末尾の空白、改行、tab、制御文字は使用できません。
+
+Schema位置: `#/$defs/bubbleStyleName`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| 値 | 必須 | 文字列 | 1文字以上、pattern `^(?!\s)(?!.*\s$)[^\p{Cc}\p{Cs}\p{Zl}\p{Zp}]+$` |
+
+Schemaで検証できる値の例:
+
+```yaml
+日本語 ナレーション
 ```
 
 ### 安全な相対file path
@@ -990,16 +1178,16 @@ remote
 
 ### remote asset source
 
-HTTPS URL、SHA-256、content type、byte sizeをすべて固定し、取得対象を決定的にします。
+HTTPS URLを指定します。内容を固定する場合はSHA-256、content type、byte sizeを三つとも指定します。三項目の一部だけは指定できません。
 
 Schema位置: `#/$defs/remoteAssetSource`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
 | `url` | 必須 | 文字列 | pattern `^https://[^\s]+$` |
-| `integrity` | 必須 | 文字列 | pattern `^sha256-[0-9a-f]{64}$` |
-| `contentType` | 必須 | 文字列 | pattern `^[a-z0-9][a-z0-9!#$&^_.+-]*/[a-z0-9][a-z0-9!#$&^_.+-]*$` |
-| `size` | 必須 | 整数 | 1以上 |
+| `integrity` | 任意 | 文字列 | pattern `^sha256-[0-9a-f]{64}$` |
+| `contentType` | 任意 | 文字列 | pattern `^[a-z0-9][a-z0-9!#$&^_.+-]*/[a-z0-9][a-z0-9!#$&^_.+-]*$` |
+| `size` | 任意 | 整数 | 1以上 |
 
 Schemaで検証できる値の例:
 
@@ -1047,18 +1235,18 @@ Space
 
 ### navigation command
 
-次のaction、前のaction、前のscene、次のsceneのいずれかへ操作を割り当てます。
+通常の次action／次scene、実行履歴上の前後、リハーサル用のpose／action／scene skipへ操作を割り当てます。
 
 Schema位置: `#/$defs/navigationCommand`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 値 | 必須 | `navigation.nextAction` / `history.previousAction` / `history.previousScene` / `history.nextScene` | — |
+| 値 | 必須 | `navigation.nextAction` / `navigation.nextScene` / `rehearsal.skipPose` / `rehearsal.skipAction` / `rehearsal.skipScene` / `history.previousAction` / `history.previousScene` / `history.nextScene` | — |
 
 Schemaで検証できる値の例:
 
 ```yaml
-navigation.nextAction
+rehearsal.skipScene
 ```
 
 ### 変数・custom引数の値
@@ -1091,7 +1279,7 @@ Schema位置: `#/$defs/actions`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 各項目 | 任意件数 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`） | — |
+| 各項目 | 任意件数 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`debuggerAction`） または object（`broadcastMessageAndWaitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`hideAction`） または mapping（`setLayerAction`） または mapping（`loopAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`） | — |
 
 Schemaで検証できる値の例:
 
@@ -1108,9 +1296,9 @@ Schema位置: `#/$defs/longScene`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `poseModel` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `poseModel` | 任意 | 文字列（`literalId`）（`assetId`） | — |
 | `posePreview` | 任意 | object（`scenePosePreview`） | 未知field不可 |
-| `actions` | 必須 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
+| `actions` | 必須 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`debuggerAction`） または object（`broadcastMessageAndWaitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`hideAction`） または mapping（`setLayerAction`） または mapping（`loopAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
 
 - `posePreview`はそのsceneだけの非stickyな上書きです。次のsceneに指定がなければstory既定へ戻ります。
 
@@ -1132,7 +1320,7 @@ Schema位置: `#/$defs/scene`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 形式1 | いずれか一つ | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
+| 形式1 | いずれか一つ | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`debuggerAction`） または object（`broadcastMessageAndWaitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`hideAction`） または mapping（`setLayerAction`） または mapping（`loopAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） | — |
 | 形式2 | いずれか一つ | object（`longScene`） | 未知field不可 |
 
 Schemaで検証できる値の例:
@@ -1149,7 +1337,7 @@ Schema位置: `#/$defs/scenes`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
+| 任意のID key | 1件以上 | object（`stageAction`） または object（`bgmAction`） または object（`soundAction`） または object（`waitAction`） または object（`debuggerAction`） または object（`broadcastMessageAndWaitAction`） または object（`transitionAction`） または object（`gotoAction`） または object（`branchAction`） または object（`keyInputAction`） または object（`touchInputAction`） または object（`poseInputAction`） または mapping（`showAction`） または mapping（`setTransparencyAction`） または mapping（`moveToAction`） または mapping（`sayAction`） または mapping（`thinkAction`） または mapping（`setSkinAction`） または mapping（`hideAction`） または mapping（`setLayerAction`） または mapping（`loopAction`） または mapping（`setTextAction`） または mapping（`poseAction`） または mapping（`customActorAction`）（`action`）の配列（`actions`） または object（`longScene`）（`scene`） | — |
 
 Schemaで検証できる値の例:
 
@@ -1170,13 +1358,13 @@ Schema位置: `#/$defs/stageAction`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `stage` | 必須 | 文字列（`id`）（`assetId`） または object（`stageArgs`） | — |
+| `stage` | 必須 | 文字列（`literalId`）（`assetId`） または object（`stageArgs`） | — |
 
 引数の詳細:
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 形式1 | いずれか一つ | 文字列（`id`）（`assetId`） | — |
+| 形式1 | いずれか一つ | 文字列（`literalId`）（`assetId`） | — |
 | 形式2 | いずれか一つ | object | 未知field不可 |
 
 Schemaで検証できる値の例:
@@ -1193,13 +1381,13 @@ Schema位置: `#/$defs/bgmAction`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `bgm` | 必須 | 文字列（`id`）（`assetId`） または object（`soundArgs`） | — |
+| `bgm` | 必須 | 文字列（`literalId`）（`assetId`） または object（`soundArgs`） | — |
 
 引数の詳細:
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 形式1 | いずれか一つ | 文字列（`id`）（`assetId`） | — |
+| 形式1 | いずれか一つ | 文字列（`literalId`）（`assetId`） | — |
 | 形式2 | いずれか一つ | object | 未知field不可 |
 
 Schemaで検証できる値の例:
@@ -1216,13 +1404,13 @@ Schema位置: `#/$defs/soundAction`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `sound` | 必須 | 文字列（`id`）（`assetId`） または object（`soundArgs`） | — |
+| `sound` | 必須 | 文字列（`literalId`）（`assetId`） または object（`soundArgs`） | — |
 
 引数の詳細:
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 形式1 | いずれか一つ | 文字列（`id`）（`assetId`） | — |
+| 形式1 | いずれか一つ | 文字列（`literalId`）（`assetId`） | — |
 | 形式2 | いずれか一つ | object | 未知field不可 |
 
 Schemaで検証できる値の例:
@@ -1254,6 +1442,49 @@ Schemaで検証できる値の例:
 
 ```yaml
 wait: 1.5
+```
+
+### `debugger`
+
+development debug実行でaction開始前に停止する境界です。productionや埋め込み作品では副作用のないno-opです。
+
+Schema位置: `#/$defs/debuggerAction`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `debugger` | 必須 | Schemaで定義された値 | — |
+
+Schemaで検証できる値の例:
+
+```yaml
+debugger:
+```
+
+### `broadcastMessageAndWait`
+
+Scratch／TurboWarpのmessageを送り、そのmessageで開始されたreceiver threadがすべて終了するまで待ちます。
+
+Schema位置: `#/$defs/broadcastMessageAndWaitAction`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `broadcastMessageAndWait` | 必須 | 文字列 または object（`broadcastMessageAndWaitArgs`） | — |
+
+引数の詳細:
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| 形式1 | いずれか一つ | 文字列 | 1文字以上 |
+| 形式2 | いずれか一つ | object | 未知field不可 |
+
+- receiverが終了しない場合は台本も次のactionへ進みません。有限時間で完了する処理へ使用します。
+
+Schemaで検証できる値の例:
+
+```yaml
+broadcastMessageAndWait:
+  stableId: play-mini-game
+  message: playMiniGame
 ```
 
 ### `transition`
@@ -1290,13 +1521,13 @@ Schema位置: `#/$defs/gotoAction`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| `goto` | 必須 | 文字列（`id`）（`sceneId`） または object（`sceneReferenceArgs`） | — |
+| `goto` | 必須 | 文字列（`literalId`）（`sceneId`） または object（`sceneReferenceArgs`） | — |
 
 引数の詳細:
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 形式1 | いずれか一つ | 文字列（`id`）（`sceneId`） | — |
+| 形式1 | いずれか一つ | 文字列（`literalId`）（`sceneId`） | — |
 | 形式2 | いずれか一つ | object | 未知field不可 |
 
 Schemaで検証できる値の例:
@@ -1422,7 +1653,7 @@ Schema位置: `#/$defs/showAction`
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
 | `stableId` | 任意 | 文字列（`id`）（`stableId`） | — |
-| `skin` | 必須 | 文字列（`id`）（`assetId`） | — |
+| `skin` | 必須 | 文字列（`literalId`）（`assetId`） | — |
 | `x` | 必須 | 数値 | — |
 | `y` | 必須 | 数値 | — |
 | `scale` | 必須 | 数値 | 0より大きい |
@@ -1500,7 +1731,7 @@ Hero.moveTo:
 
 ### `Actor.say`
 
-actorのsay吹き出しへテキストを表示し、秒数、advance入力、または両者の先着で完了します。文字送りとsoundも指定できます。
+actorのsay吹き出しへテキストを表示し、秒数、advance入力、または両者の先着で完了します。複数の吹き出しstyleを順に合成できます。
 
 Schema位置: `#/$defs/sayAction`
 
@@ -1516,10 +1747,10 @@ Schema位置: `#/$defs/sayAction`
 | `text` | 必須 | 文字列 | — |
 | `seconds` | 任意 | 数値 | 0以上 |
 | `waitFor` | 任意 | 固定値 `advance` | — |
-| `style` | 任意 | 文字列（`id`）（`styleId`） | — |
+| `styles` | 任意 | 文字列（`bubbleStyleName`）の配列 | 1項目以上 |
 | `characterIntervalSeconds` | 任意 | 数値 | 0より大きい |
-| `startSound` | 任意 | 文字列（`id`）（`assetId`） | — |
-| `characterSound` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `startSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
+| `characterSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
 | `noSoundCharacters` | 任意 | 文字列 | 1文字以上 |
 | `restCharacters` | 任意 | 文字列 | 1文字以上 |
 | `restCharacterIntervalSeconds` | 任意 | 数値 | 0より大きい |
@@ -1531,7 +1762,9 @@ Hero.say:
   text: こんにちは！
   seconds: 8
   waitFor: advance
-  style: novel
+  styles:
+    - Typing
+    - Hero style
   startSound: GreetingVoice
 ```
 
@@ -1553,10 +1786,10 @@ Schema位置: `#/$defs/thinkAction`
 | `text` | 必須 | 文字列 | — |
 | `seconds` | 任意 | 数値 | 0以上 |
 | `waitFor` | 任意 | 固定値 `advance` | — |
-| `style` | 任意 | 文字列（`id`）（`styleId`） | — |
+| `styles` | 任意 | 文字列（`bubbleStyleName`）の配列 | 1項目以上 |
 | `characterIntervalSeconds` | 任意 | 数値 | 0より大きい |
-| `startSound` | 任意 | 文字列（`id`）（`assetId`） | — |
-| `characterSound` | 任意 | 文字列（`id`）（`assetId`） | — |
+| `startSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
+| `characterSound` | 任意 | 文字列（`literalId`）（`assetId`） | — |
 | `noSoundCharacters` | 任意 | 文字列 | 1文字以上 |
 | `restCharacters` | 任意 | 文字列 | 1文字以上 |
 | `restCharacterIntervalSeconds` | 任意 | 数値 | 0より大きい |
@@ -1572,25 +1805,101 @@ Hero.think:
 
 ### `Actor.setSkin`
 
-actorのcostumeを切り替えます。短縮値またはstableId付きobjectを使用できます。
+actorのcostumeを切り替えます。短縮値、またはscaleとstableIdを持つobjectを使用できます。
 
 Schema位置: `#/$defs/setSkinAction`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.setSkin$` | 1件以上 | 文字列（`id`）（`assetId`） または object（`setSkinArgs`） | — |
+| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.setSkin$` | 1件以上 | 文字列（`literalId`）（`assetId`） または object（`setSkinArgs`） | — |
 
 引数の詳細:
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| 形式1 | いずれか一つ | 文字列（`id`）（`assetId`） | — |
+| 形式1 | いずれか一つ | 文字列（`literalId`）（`assetId`） | — |
 | 形式2 | いずれか一つ | object | 未知field不可 |
 
 Schemaで検証できる値の例:
 
 ```yaml
-Hero.setSkin: HeroHappy
+Hero.setSkin:
+  skin: HeroHappy
+  scale: 100
+```
+
+### `Actor.hide`
+
+actorのvisible stateをfalseにします。透明度とは別で、次の`Actor.show`で再表示します。
+
+Schema位置: `#/$defs/hideAction`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.hide$` | 1件以上 | object（`hideArgs`） | 未知field不可 |
+
+引数の詳細:
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `stableId` | 任意 | 文字列（`id`）（`stableId`） | — |
+
+Schemaで検証できる値の例:
+
+```yaml
+Hero.hide: {}
+```
+
+### `Actor.setLayer`
+
+front／backで絶対位置へ、正負の数値で現在位置から前後のlayerへ移動します。
+
+Schema位置: `#/$defs/setLayerAction`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.setLayer$` | 1件以上 | `front` / `back` または 数値 または object（`setLayerArgs`） | — |
+
+引数の詳細:
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| 形式1 | いずれか一つ | `front` / `back` | — |
+| 形式2 | いずれか一つ | 数値 | — |
+| 形式3 | いずれか一つ | object | 未知field不可 |
+
+Schemaで検証できる値の例:
+
+```yaml
+Hero.setLayer: front
+```
+
+### `Actor.loop`
+
+costumeと表示秒数のstep列をbackgroundで繰り返します。少なくとも一つのstepは正の秒数にします。
+
+Schema位置: `#/$defs/loopAction`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.loop$` | 1件以上 | object（`loopArgs`） | 未知field不可 |
+
+引数の詳細:
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `stableId` | 任意 | 文字列（`id`）（`stableId`） | — |
+| `steps` | 必須 | object（`loopStep`）の配列 | 1項目以上 |
+
+Schemaで検証できる値の例:
+
+```yaml
+Hero.loop:
+  steps:
+    - skin: HeroWalk1
+      seconds: 0.2
+    - skin: HeroWalk2
+      seconds: 0.2
 ```
 
 ### `Actor.setText`
@@ -1654,7 +1963,7 @@ Schema位置: `#/$defs/customActorAction`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
-| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.(?!(?:show\|setTransparency\|moveTo\|say\|think\|setSkin\|setText\|pose)$)[\p{L}_][\p{L}\p{N}_-]*$` | 1件以上 | object（`customActorActionArgs`） | 未知field不可 |
+| key pattern `^[\p{L}_][\p{L}\p{N}_-]*\.(?!(?:show\|hide\|setTransparency\|moveTo\|say\|think\|setSkin\|setLayer\|loop\|setText\|pose)$)[\p{L}_][\p{L}\p{N}_-]*$` | 1件以上 | object（`customActorActionArgs`） | 未知field不可 |
 
 引数の詳細:
 
