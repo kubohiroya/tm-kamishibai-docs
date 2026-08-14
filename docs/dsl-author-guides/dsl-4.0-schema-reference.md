@@ -23,7 +23,8 @@ Schema SHA-256: `f519c033c68be61d71cc5dcba20a8434e23255ec0279fc0dc2d6408e7f014d7
 
 この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/283daadeffa5d11ab4510daa66f60168277dafea/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
-注意事項、例はAnnotationで管理します。Schemaと生成物が異なる場合はSchemaを優先します。
+注意事項、例はAnnotationで管理します。Schemaで定義される項目についてSchemaと生成物が異なる場合はSchemaを
+優先します。include文はSchema検証前に処理されるためJSON Schema外であり、固定した表層仕様と実装に基づいて掲載します。
 
 > **使い方:** 作成中に分からない項目や命令が出たとき、その項目の節だけを開きます。表中の「field」は
 > 台本の項目、「asset」は画像・音声などの素材、「action」は登場人物や舞台への命令を表します。
@@ -33,17 +34,43 @@ Schema SHA-256: `f519c033c68be61d71cc5dcba20a8434e23255ec0279fc0dc2d6408e7f014d7
 - 上流repository: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai)
 - Schema path: `schema/dsl-4.schema.json`
 - 上流commit日時: `2026-08-08T11:21:11+09:00`
-- 掲載範囲: トップレベル12 field、action 19種類、Annotation 72項目
+- 掲載範囲: トップレベル12 field、action 19種類、Annotation 73項目
 - 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>`
 - 差分確認: `pnpm docs:dsl4:check`
 
 表中の「必須」は、そのobjectまたは形式を選んだ場合の必須性です。`stableId`などの任意fieldは、
-再読み込みや診断位置の安定化に必要かを作品ごとに判断してください。例は各Schema断片を機械検証しており、
-アセットやシーン間の参照整合性は、source frontendまたはpreview／buildでも別途確認する必要があります。
+再読み込みや診断位置の安定化に必要かを作品ごとに判断してください。Schema項目の例は各Schema断片を機械検証し、
+include文の例はYAMLとして構文検証しています。アセットやシーン間の参照整合性は、source frontendまたは
+preview／buildでも別途確認する必要があります。
+
+## Schema検証前のinclude文
+
+include文は台本を複数ファイルへ分けるための構文です。JSON Schemaのトップレベルfieldではないため、
+指定したファイルを読み込んで一つの台本へ結合した後、
+include文を取り除いてSchema検証へ渡します。
+
+### `include` — 別の台本ファイルを読み込む
+
+台本を複数ファイルに分けるとき、現在のファイルから読み込む相対pathを指定します。一件は文字列、複数件はlistで書きます。
+
+Schema位置: JSON Schema外（Schema検証前に処理）
+
+- `include`はJSON Schemaのfieldではなく、Schema検証前に処理されます。
+- `dsl4SourceIncludes`またはCLIの`--enable-source-includes`を明示的に有効にした環境だけで使用できます。
+- pathは記述したファイルを基準にproject内へ解決し、循環、重複宣言、root外path、件数・byte数・深さの上限違反はエラーになります。
+- `kamishibai`は起点の台本だけに書きます。
+
+書式例:
+
+```yaml
+include:
+  - chapters/opening.k4.yml
+  - chapters/ending.k4.yml
+```
 
 ## トップレベル構造
 
-台本のroot mappingで使用できるfieldです。Schemaの `additionalProperties: false` により、ここにないfieldは受理されません。
+include文で指定したファイルを読み込み、結合した後にSchema検証へ渡すroot mappingで使用できるfieldです。Schemaの `additionalProperties: false` により、ここにないfieldは受理されません。
 
 ### `kamishibai` — DSL version
 

@@ -100,7 +100,7 @@ DSL 4.0は制限付きYAML 1.2で記述します。引数には名前が付き�
 - `Actor.say`／`Actor.think`の入力待ち、文字送り、開始音／文字音、名前付き`speechStyles`
 - `Actor.moveTo`の`linear`、`easeIn`、`easeOut`、`easeInOut`
 - `Actor.setTransparency`の即時指定、foreground／backgroundの線形変化
-- 複数sourceを決定的にcomposeするSource Graph、宣言元相対asset解決、自己完結SB3 packaging
+- include文で複数sourceを決定的にcomposeする処理、宣言元相対asset解決、自己完結SB3 packaging
 - Web／CLI previewのtransactional reload、Source Map、packaging後のsource origin復元
 - navigation入力と作品内input actionを一つのsemantic consumerへ限定する入力arbitration
 
@@ -117,7 +117,7 @@ camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamis
 `speechStyles`は[Issue #396](https://github.com/kubohiroya/tmpose-kamishibai/issues/396)、
 `Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tmpose-kamishibai/issues/398)、
 `Actor.setTransparency`は[Issue #406](https://github.com/kubohiroya/tmpose-kamishibai/issues/406)、
-Source Graphと`include`は[Issue #417](https://github.com/kubohiroya/tmpose-kamishibai/issues/417)から
+include文の複数ファイル対応は[Issue #417](https://github.com/kubohiroya/tmpose-kamishibai/issues/417)から
 上記commitまでにmergeされています。project directory選択とYAML live reloadは
 [Issue #390](https://github.com/kubohiroya/tmpose-kamishibai/issues/390)、local assetの追加・内容更新のlive reloadは
 [Issue #391](https://github.com/kubohiroya/tmpose-kamishibai/issues/391)で実装されています。
@@ -211,8 +211,8 @@ Web Previewはroot直下の`project.source.json`を読み、次の規則でYAML�
 
 ## 台本を複数ファイルへ分ける（`include`）
 
-`dsl4SourceIncludes`を起動時に明示ONにすると、entry sourceの`include`から到達する複数sourceを
-一つのSource Graphとしてcomposeできます。`include`は一件の文字列またはlistで指定します。
+`dsl4SourceIncludes`を起動時に明示ONにすると、entry sourceのinclude文から複数sourceを読み込み、
+一つの台本としてcomposeできます。`include`は一件の文字列またはlistで指定します。
 
 ```yaml
 # story.k4.yml
@@ -244,29 +244,29 @@ scenes:
 `chapters/rescue-background.svg`へ解決されます。絶対path、URL、backslash、project root外へのescapeと
 root外symlinkは、sourceまたはassetのbyte列を読む前に拒否されます。
 
-Source Graphには次の規則があります。
+include文には次の規則があります。
 
 - `kamishibai`はentry sourceだけに書き、included sourceへ重ねて宣言しない
 - 同じnamespaceの同じIDは、内容が同じでも複数sourceへ宣言しない
-- `cover`、`loading`、`poseRecognition`、`controls`などの単一設定はgraph全体で一度だけ宣言する
+- `cover`、`loading`、`poseRecognition`、`controls`などの単一設定は読み込んだ全ファイルで一度だけ宣言する
 - root優先、include順による後勝ち、shadowingはなく、全宣言を確定してから参照を解決する
 - include cycleは経路付き`K4-INCLUDE-CYCLE`で停止する
-- 一つのsource、source件数、graph合計byte数、compose後byte数、include depthに有限上限を設ける
+- 一つのsource、source件数、全ファイルの合計byte数、compose後byte数、include depthに有限上限を設ける
 
-`include`はSchema検証の前に処理するSource Graph directiveで、compose後の台本から取り除かれます。
+`include`はSchema検証の前に処理するinclude文で、compose後の台本から取り除かれます。
 全sourceと参照するlocal assetを二回安定取得し、同じgeneration identityになった場合だけpreviewへstageします。
 途中保存、sourceだけ新しい状態、assetだけ新しい状態は実行中のgenerationを置き換えません。build成果物は
 composed source、宣言元の論理source ID／range、local assetを保持する自己完結SB3で、端末の絶対pathや
 browser file handleを保存しません。
 
-CLI previewでSource Graphを使う場合は`--enable-source-includes`を指定し、`--max-source-bytes`、
+CLI previewでinclude文を使う場合は`--enable-source-includes`を指定し、`--max-source-bytes`、
 `--max-source-files`、`--max-total-source-bytes`、`--max-include-depth`とasset上限を有限値で指定します。
 feature flagがOFFの場合は単一source経路を維持します。
 
 ## ファイル全体の構造
 
 compose後の台本で使用できるトップレベルキーは次のものだけです。表にないキーは警告ではなくエラーに
-なります。`include`は前節のSource Graph処理だけが受理し、JSON Schemaのトップレベルfieldではありません。
+なります。`include`は前節のinclude文の前処理だけが受理し、JSON Schemaのトップレベルfieldではありません。
 
 | キー              | 必須 | 役割                                              |
 | ----------------- | ---- | ------------------------------------------------- |
@@ -453,7 +453,7 @@ sourceではproject root基準になります。次の値は使用できませ�
 - `https://example.com/ocean.svg`のようなURI
 
 基準仕様では、builderがfileのbyte列を成果物へ埋め込み、実行環境からのネットワーク取得を不要にします。
-Source Graphでは正規化後pathとsymlink実体の両方がproject root内であることをbyte列の読込前に確認します。
+include文を使う場合は、正規化後pathとsymlink実体の両方がproject root内であることをbyte列の読込前に確認します。
 
 SB3の初期容量を抑えたいposeModelは、`delivery: remote`と`source.url`で通常のTMPose directory URLを
 指定できます。このモードは取得時点のmodelを使います。内容を固定する場合はmodel directoryをlocalの
@@ -1231,15 +1231,15 @@ DSL 4.0のsource frontendは、YAMLを読み込んだあと、構造と参照関
 | `K4-STABLE-ID-001`            | `stableId`が文書内で重複している              |
 | `K4-KEY-UNSUPPORTED`          | 対応外のキーやmodifierを指定した              |
 | `K4-KEY-001`                  | navigation keymapと作品内キー入力が衝突した   |
-| `K4-INCLUDE-CYCLE`            | include graphに循環がある                     |
+| `K4-INCLUDE-CYCLE`            | include文による読み込み関係に循環がある       |
 | `K4-INCLUDE-LIMIT-001`        | source件数、合計byte数、include深度の上限超過 |
 | `K4-SOURCE-SIZE-001`          | source一件のbyte数が上限を超えた              |
-| `K4-DECLARATION-DUPLICATE`    | Source Graph内で同じ宣言が重複した            |
+| `K4-DECLARATION-DUPLICATE`    | include文で読み込んだファイル内で同じ宣言が重複した |
 
 runtime接続後は、action、scene、branch、port、戻り値などの実行時エラーにも`K4-RUNTIME-*`診断を
 使用します。入力byte数、YAML node数、nesting深度、scalar長、シーン数、アクション数、アセット数、
-診断数には安全上の有限上限があります。Source Graphの各上限はpreview／buildのCLI引数とhost設定で明示し、
-一件のsourceとgraph合計／compose後sourceを別の責務として検証します。
+診断数には安全上の有限上限があります。include文の各上限はpreview／buildのCLI引数とhost設定で明示し、
+一件のsourceと全ファイルの合計／compose後sourceを別の責務として検証します。
 
 ## 作成時のチェックリスト
 
@@ -1264,5 +1264,5 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 - [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
 - [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
 - [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/schema/dsl-4.schema.json): 機械可読な構造仕様
-- [DSL 4.0 Source Graph Preview](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
+- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
 - [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例

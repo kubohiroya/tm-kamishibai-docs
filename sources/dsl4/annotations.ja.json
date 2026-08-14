@@ -2,11 +2,26 @@
   "license": "CC-BY-SA-4.0",
   "copyright": "Copyright © 2026 Hiroya Kubo",
   "language": "ja",
+  "preSchemaDirectives": [
+    {
+      "name": "include",
+      "order": 10,
+      "title": "`include` — 別の台本ファイルを読み込む",
+      "summary": "台本を複数ファイルに分けるとき、現在のファイルから読み込む相対pathを指定します。一件は文字列、複数件はlistで書きます。",
+      "example": "include:\n  - chapters/opening.k4.yml\n  - chapters/ending.k4.yml",
+      "notes": [
+        "`include`はJSON Schemaのfieldではなく、Schema検証前に処理されます。",
+        "`dsl4SourceIncludes`またはCLIの`--enable-source-includes`を明示的に有効にした環境だけで使用できます。",
+        "pathは記述したファイルを基準にproject内へ解決し、循環、重複宣言、root外path、件数・byte数・深さの上限違反はエラーになります。",
+        "`kamishibai`は起点の台本だけに書きます。"
+      ]
+    }
+  ],
   "sections": [
     {
       "id": "top-level",
       "title": "トップレベル構造",
-      "description": "台本のroot mappingで使用できるfieldです。Schemaの `additionalProperties: false` により、ここにないfieldは受理されません。",
+      "description": "include文で指定したファイルを読み込み、結合した後にSchema検証へ渡すroot mappingで使用できるfieldです。Schemaの `additionalProperties: false` により、ここにないfieldは受理されません。",
       "entries": [
         {
           "pointer": "#/properties/kamishibai",

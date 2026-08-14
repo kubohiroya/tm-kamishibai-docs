@@ -37,7 +37,7 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
 test('covers every top-level field and every Schema action with validated annotations', () => {
   assert.deepEqual(validateReferenceInputs({schema, annotations}), {
     actionCount: 19,
-    annotationCount: 72,
+    annotationCount: 73,
     topLevelFieldCount: 12,
   });
 });
@@ -80,6 +80,11 @@ test('generates the checked-in reference byte-for-byte deterministically', () =>
   assert.match(generated, /`easeInOut`/u);
   assert.match(generated, /`Actor\.setTransparency`/u);
   assert.match(generated, /`0`は完全不透明、`100`は完全透明/u);
+  assert.match(generated, /## Schema検証前のinclude文/u);
+  assert.match(generated, /### `include` — 別の台本ファイルを読み込む/u);
+  assert.match(generated, /include:\n  - chapters\/opening\.k4\.yml/u);
+  assert.match(generated, /JSON Schemaのfieldではなく/u);
+  assert.match(generated, /--enable-source-includes/u);
   assert.doesNotMatch(generated, /DSL 3\.[12]|kamishibai=3\.[12]/u);
 });
 
@@ -111,5 +116,12 @@ test('rejects missing, extra, and ambiguously ordered annotations', () => {
   assert.throws(
     () => validateReferenceInputs({schema, annotations: duplicateOrder}),
     /Duplicate order/u,
+  );
+
+  const missingInclude = structuredClone(annotations);
+  missingInclude.preSchemaDirectives.pop();
+  assert.throws(
+    () => validateReferenceInputs({schema, annotations: missingInclude}),
+    /must document include exactly once/u,
   );
 });
