@@ -2,298 +2,158 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-文書状態: 検証済みリリース候補の再現・判定手順<br />
+文書状態: 公開プレリリース`4.0.0-rc.5`の再現・公開照合・追加smoke手順<br />
 対象Issue: [tmpose-kamishibai-docs #47](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/47)
 
-本書は、リリース候補を検証して公開可否を判断する担当者向けです。アプリの遊び方、台本の作り方、
-一般的な動作確認を説明する文書ではありません。初めて4.0を知る方は
-[大人向け概要](../user-guides/executive-summary-adult-4.0.md)へ進んでください。
+本書はリリース担当者向けで、一般的な動作確認を説明する文書ではありません。一般的な使い方は
+[大人向け概要](../user-guides/executive-summary-adult-4.0.md)、実装の責務は
+[ソフトウェアメンテナンスガイド](developer-guide-4.0.md)を参照してください。
 
-この手順は、DSL 4.0のリリース候補を、ソース、Schema、package、Standard SB3、作品SB3、Web版まで
-checksum付きで一意に固定し、自動テストだけでは確認できないブラウザ経路を判定するためのものです。
-DSL 3.xのrelease smokeとは別のpublication、別URLとして保守します。
+`v4.0.0-rc.5`はnpm `next`、GitHub prerelease、PagesのStandard SB3として公開済みです。ただし、
+推奨安定版は`v3.2.3`で、正式版`v4.0.0`は未公開です。公開サンプルはrc.3基準の成果物を含むため、
+rc.5のsmoke証跡には使用しません。
 
-2026年8月8日時点の固定実装を起点にしていますが、本書の結果は`v4.0.0`の正式リリースを意味しません。
-タグ、GitHub Release、npm、production Pagesの公開状態は、公開元のリリース情報で別に確認してください。
-本書だけで公開URLが利用可能だとは保証しません。
+| 用語     | この文書での意味                                          |
+| -------- | --------------------------------------------------------- |
+| manifest | version、commit、成果物、検証結果を固定する機械可読な記録 |
+| checksum | 取得・再生成した成果物が固定byte列と一致するか確認する値  |
 
-## この手順の読み進め方
+## 固定値
 
-最初に使う用語は、次の意味です。
+正本は`sources/dsl4/release-smoke-4.0-candidate.json`です。
 
-| 用語         | 本書での意味                                                         |
-| ------------ | -------------------------------------------------------------------- |
-| リリース候補 | 正式公開してよいかを検証する、内容を固定した一組のソースと成果物     |
-| manifest     | 候補に含める版、ファイル、確認値を記録した一覧                       |
-| checksum     | ダウンロードや再生成の前後で、ファイルが同じ内容かを照合するための値 |
-| checkout     | 記録したコミットのソースを、検証できる作業フォルダーへ取り出した状態 |
-| release-stop | 条件を満たさないため、公開作業を止める判断                           |
+| 対象               | 固定値                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| candidate merge    | `9b3895638edba009ee4558a6c0594f077d9fbd6b`                                           |
+| freeze／tag commit | `f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6`                                           |
+| version            | `4.0.0-rc.5`                                                                         |
+| release source     | `release-sources/4.0.0-rc.5/app`                                                     |
+| source identity    | `sha256:a6c4be01405af1b3070f6d02dc584a55bd2b45844ae48761aa3d4141ef474ca4`            |
+| Schema SHA-256     | `0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac136`                   |
+| Standard SB3       | 6,664,571 bytes / `2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c` |
+| npm tarball        | 6,425,111 bytes / `f7e9075a0a4445367aa38b2a9a2b71a5a22ff471e7d3795c9a9b1430685c7b23` |
 
-1. 「候補を固定する」でmanifestとcheckoutが一致することを確認する
-2. 「自動検証」でソース、CLI、SB3、Web版の決定性を確認する
-3. 「ブラウザ経路」でPreviewとproduction成果物を端から端まで確認する
-4. 「release-stop」で公開を止める条件を判定する
-5. 「証跡」で個人情報を残さず結果を保存する
-
-実装の責務を調べる場合は[ソフトウェアメンテナンスガイド](developer-guide-4.0.md)、診断と安全停止は
-[DSL 4.0 台本診断・安全停止 設計レビュー](dsl-4.0-diagnostics-design.md)を参照します。台本の書き方や
-Previewの一般的な使い方は[紙芝居DSL 4.0 台本作成ガイド](../dsl-author-guides/dsl-4.0-author-guide.md)へ
-委譲し、本書では重複して説明しません。
-
-## 候補を固定する
-
-正本は`sources/dsl4/release-smoke-4.0-candidate.json`です。2026年8月12日の追試では次を固定しました。
-
-| 対象                | 固定値                                                                               |
-| ------------------- | ------------------------------------------------------------------------------------ |
-| Runtime candidate   | `tmpose-kamishibai@28d98125573f3186530fba231ecda844752bb14f`                         |
-| package version     | `4.0.0`                                                                              |
-| release source      | `release-sources/4.0.0/app` / `dc8f65eb9f9b68d778ba3b4fd9da0926b42ff4e9`             |
-| Schema SHA-256      | `287867c36feff4d3fd7a5b266ab4f27368dd25ca0edc5b8c400fcc64ad08f230`                   |
-| Standard SB3        | 7,633,722 bytes / `ab8bfefab37620538db27e4846334723d567c64bf7972d8a962287feb2a72807` |
-| npm tarball dry-run | 5,499,295 bytes / `19117725dc8fa291776087ea9250025a557f0a1db6174cab9d94c4bdf476d8b7` |
-| Sample candidate    | `tmpose-kamishibai-samples@dc9f6626de9ef85ca71312402fd139082922b867`                 |
-| Sample runtime      | `8ea06bfd100b106f559cb25a280fab5570e42919`                                           |
-| Browser             | macOS 27.0 / Chrome 151.0.7922.137                                                   |
-
-サンプルはリリース候補を端から端まで動かすfixtureです。Standard SB3の配布checksumをサンプルのchecksumで
-代用しません。sample runtime以降に追加された変更はPreview／debugger中心であり、camera／poseのcore pathに
-差分がないことを確認し、最新candidateでも自動capability smokeを再実行しています。camera／poseのcore pathが
-変わった場合、この適用判断は無効になり、実カメラ・実ポーズを含む全手順を再実行します。
-
-候補を取得します。
+固定commitを取得します。
 
 ```bash
 git clone https://github.com/kubohiroya/tmpose-kamishibai.git
-git -C tmpose-kamishibai checkout --detach 28d98125573f3186530fba231ecda844752bb14f
-git clone https://github.com/kubohiroya/tmpose-kamishibai-samples.git
-git -C tmpose-kamishibai-samples checkout --detach dc9f6626de9ef85ca71312402fd139082922b867
+git -C tmpose-kamishibai checkout --detach f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6
+git -C tmpose-kamishibai status --short
 ```
 
-`git status --short`が空で、`git rev-parse HEAD`がmanifestと一致することを先に確認します。branch名、`main`、
-手元のpackage versionだけで候補を同定しません。
+## Feature flag snapshot
 
-## Feature flagを記録する
+すべてのDSL 4.0 flagは既定OFFです。配布surfaceは起動時に次のsnapshotを明示します。
 
-DSL 4.0の実装flagはすべて既定OFFです。配布surfaceは起動時に次のsnapshotを明示します。
+| Surface               | ONにするflag                                                                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Standard production   | `dsl4Runtime`、`dsl4AppShell`、`dsl4PoseFeedbackModes`、`dsl4SpeechAdvanceTypewriter`、`dsl4TurboWarpActionSurface`            |
+| 非埋め込みdevelopment | Standard productionに加え、`dsl4WebPreviewAdapter`、`dsl4BrowserDistributionBuild`、`dsl4PreviewReloadOverlay`、`dsl4Debugger` |
 
-| Surface               | ONにするflag                                                                                   |
-| --------------------- | ---------------------------------------------------------------------------------------------- |
-| Standard production   | `dsl4Runtime`、`dsl4AppShell`、`dsl4PoseFeedbackModes`、`dsl4SpeechAdvanceTypewriter`          |
-| 非埋め込みdevelopment | Standard productionに加え、`dsl4WebPreviewAdapter`、`dsl4PreviewReloadOverlay`、`dsl4Debugger` |
-
-`include`、asset live reload、camera control等を追加でONにする場合は、候補manifestへ対象、理由、依存、戻し方を
-追記し、そのsurfaceだけでなくStandard productionへの混入がないことも再検査します。smoke中にflagの既定値を
-変更しません。
+`dsl4TurboWarpActionSurface`により、23個のcore actionを可視blockとして公開します。4個の内部制御blockは
+非表示のままです。smoke中に既定値を変更しません。
 
 ## 自動検証
-
-### Runtime、CLI、Standard SB3
 
 ```bash
 cd tmpose-kamishibai
 pnpm install --frozen-lockfile
+pnpm release:dsl4:check
 pnpm verify:full
 pnpm release:check
-shasum -a 256 dist/downloads/kamishibai-4.0.sb3
-npm pack --silent --ignore-scripts
-shasum -a 256 kubohiroya-tmpose-kamishibai-4.0.0.tgz
+shasum -a 256 dist/downloads/kamishibai-4.0.0-rc.5.sb3
 ```
 
-2026年8月12日の結果は、full test 1,148件、実Chromium 57件、site build、package smoke、npm publish
-dry-runが成功し、Standard SB3とtarballのsize／SHA-256がmanifestと一致しました。`npm publish`は実行しません。
+candidate PRの`pnpm verify:full`はNode test 1,224件、Chromium test 63件を通過しました。
+[GitHub Actionsの記録](https://github.com/kubohiroya/tmpose-kamishibai/actions/runs/31823718461/job/94842799234)を
+一次証跡とします。
 
-### 作品SB3とWeb版
+## 公開物を照合する
 
-Sample側の固定runtime commitを別checkoutとして用意し、その絶対pathを渡します。
+公開元を別々に取得し、固定値と照合します。
 
 ```bash
-cd tmpose-kamishibai-samples
-pnpm install --frozen-lockfile
-TMPOSE_KAMISHIBAI_DSL4_ROOT=/absolute/path/to/tmpose-kamishibai-8ea06bf pnpm test
-TMPOSE_KAMISHIBAI_DSL4_ROOT=/absolute/path/to/tmpose-kamishibai-8ea06bf pnpm build
-pnpm test:web
-pnpm verify
+curl -fL \
+  https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.5.sb3 \
+  -o kamishibai-4.0.0-rc.5.sb3
+shasum -a 256 kamishibai-4.0.0-rc.5.sb3
+
+npm view @kubohiroya/tmpose-kamishibai@4.0.0-rc.5 \
+  version dist.tarball dist.integrity dist.shasum
+npm view @kubohiroya/tmpose-kamishibai dist-tags
 ```
 
-結果はunit 22件、111公開file、48 source asset、DSL 3.2回帰、DSL 4.0埋め込み浦島太郎Web版、
-外部YAMLを選ぶmy-urashima Web版が成功しました。次の一致を必須とします。
+確認済みのnpm integrityは
+`sha512-RF4kHhE2e1EzKu5eYwMdV4//8uVj8OflafQ5R1GlRVmQz2ONcdVZfeY6fvB9EC/VO7irL7deH1h9Cqo08jWj7A==`です。
+`next`は`4.0.0-rc.5`、`latest`は`3.2.3`であることを確認します。
 
-| 成果物              | SHA-256                                                            |
-| ------------------- | ------------------------------------------------------------------ |
-| 浦島太郎4.0 SB3     | `a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a` |
-| 浦島太郎4.0 Web     | `6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1` |
-| my-urashima 4.0 SB3 | `e4e7fe7d9c525ef2f50a438785879e93e00468b8a9e5bd1677a6ec1a14f8359c` |
-| my-urashima 4.0 Web | `eeb01e05fdbc8df6d850a8e817d43cfb405b7ca90ab419c5ff18ae01f981f64e` |
+## TurboWarp surfaceを確認する
 
-## ValidateとBuildを確認する
+rc.5 Standard SB3をfresh TurboWarp Editorで開き、次を確認します。
 
-候補packageのCLIで同じprojectを検証し、2回buildしたSB3が同一になることを確認します。
+1. composite IDが`kubohiroyakamishibai4`である
+2. Runtimeと6つの外部機能拡張、合計7 memberの見出しと文書ボタンが表示される
+3. Runtime由来の23 core action blockが表示される
+4. TurboWarp blockからの実行がYAMLと同じregistry、Schema正規化、ActionContext、lifecycleを通る
+5. Asset Manager 0.11.0、Async Input 0.4.0、Bubble 0.7.0、Runtime Expression 0.4.0、
+   SVG Text 0.5.0、TMPose 1.10.0のexact pinと一致する
+6. remote codeを取得せず、PoseNet model dataをprojectから復元できる
 
-```bash
-pnpm exec tmpose-kamishibai validate-dsl4 \
-  --project-root stories/urashima \
-  --source-manifest stories/urashima/project.source.json \
-  --max-source-bytes 262144 \
-  --max-asset-file-bytes 8388608 \
-  --max-asset-files 128 \
-  --max-total-asset-bytes 67108864
+## Browser／CLI Previewを確認する
 
-pnpm update:dsl4-artifacts
-git diff --exit-code -- stories/urashima/dsl4-artifacts.lock.json \
-  stories/urashima/dsl4-web-artifacts.lock.json
-```
+Browser-owned Previewではuser gestureでproject directoryを選び、正常YAML、不正YAMLからの復帰、asset変更、
+reload overlay、camera control、pose feedback、停止後のresource解放を確認します。source本文、local absolute path、
+session token、file handle、camera device IDをログやSB3へ保存しません。
 
-`valid`以外、lock差分、出力hash差分、入力上限の欠落はrelease-stopです。失敗時に既存lockを書き換えて
-通過扱いにせず、候補sourceまたはbuilderの不一致として調査します。
-
-## Browser Previewを確認する
-
-Browser-owned Previewでは、Chromeのuser gestureからproject directoryを選びます。
-
-1. fresh profileまたは検証専用sessionで候補を開く
-2. project rootと`.k4.yml`を選択し、最初の有効generationが開始することを確認する
-3. YAMLの表示文だけを変更し、既存実行を壊さず自動反映されることを確認する
-4. 不正YAMLへ変更し、現在のgenerationが維持され、診断にcodeとsource位置が出ることを確認する
-5. 正常YAMLへ戻し、回復後のgenerationが一度だけ開始することを確認する
-6. asset追加、内容変更、削除を区別し、full rebuild要求時はreleaseを止める
-7. Reload UI、camera control、pose feedbackが重ならず、keyboard focusが失われないことを確認する
-
-source本文、local absolute path、session token、file handle、camera device IDをログやSB3へ保存しません。
-
-## CLI Previewを確認する
+CLI Previewは候補packageとversion付きStandard SB3を使います。
 
 ```bash
 pnpm exec tmpose-kamishibai preview-dsl4 --watch \
-  --base stories/urashima/base/kamishibai-4.0.sb3 \
-  --project-root stories/urashima \
-  --source-manifest stories/urashima/project.source.json \
+  --base /absolute/path/to/kamishibai-4.0.0-rc.5.sb3 \
+  --project-root /absolute/path/to/project \
+  --source-manifest /absolute/path/to/project/project.source.json \
   --control-profile production \
-  --channel bundled \
-  --max-source-bytes 262144 \
-  --max-asset-file-bytes 8388608 \
-  --max-asset-files 128 \
-  --max-total-asset-bytes 67108864
+  --channel bundled
 ```
 
-CLIが表示するtoken付きloopback URLだけをChromeで開きます。runtime-ready、source／asset変更、診断、
-safe stop、Ctrl+C後のsocket／watcher／timer解放を確認します。loopback以外へbindした場合、tokenがURLやログから
-再利用できる場合、root外fileを読める場合はrelease-stopです。
+token付きloopback URLだけを開き、runtime-ready、source／asset変更、診断、safe stop、Ctrl+C後の
+socket／watcher／timer解放を確認します。
 
-## Production SB3とWeb版を確認する
+## 実カメラ・実ポーズ
 
-`file:` URLではcamera権限とorigin境界を正しく確認できないため、生成した`dist/`をlocalhostから配信します。
+rc.3で実施した[Issue #510の物理確認](https://github.com/kubohiroya/tmpose-kamishibai/issues/510#issuecomment-5255177777)は、
+rc.5の合格証跡へ流用しません。rc.5ではTMPose 1.10.0、PoseNet model data、モデル初期化、AbortSignal経路が
+変わったためです。
 
-```bash
-python3 -m http.server 4173 --directory dist
-```
+現時点の判定は次のとおりです。
 
-fresh Chrome sessionで浦島太郎4.0 Web版を開き、次を端から端まで確認します。
+| 項目                       | rc.5の状態 |
+| -------------------------- | ---------- |
+| 自動test／Chromium         | 合格       |
+| npm／GitHub／Pages公開照合 | 合格       |
+| 実カメラ／実ポーズ再確認   | 未実施     |
 
-1. titleを閉じ、Loadingが終了して最初のsceneへ進む
-2. keyとstage touchがcontrol profileどおり受理される
-3. 組み込み画像・音声・pose modelが外部依存なしで準備される
-4. camera許可、preview、認識feedback、対象pose成立、次sceneへの遷移が成功する
-5. camera拒否、model不成立、asset失敗を再現した場合、安定した診断と安全停止になる
-6. 終了時にfinished状態となり、再実行でtitle／menuまたは定義済み開始位置へ戻る
-7. 終了、停止、tab closeの前にcamera track、音声、timer、watcher、cache leaseが解放される
-
-my-urashimaではtitleからmenuへ進み、`.k4.yml`のfile選択とdrag-and-dropをそれぞれ確認します。外部sourceを
-選ばない状態で勝手に物語を開始した場合、選択したroot外を読んだ場合、sourceをSB3へ永続化した場合は失敗です。
-
-## 実カメラ・実ポーズの証跡
-
-上流の[実Chrome・実カメラ手順](https://github.com/kubohiroya/tmpose-kamishibai/blob/28d98125573f3186530fba231ecda844752bb14f/docs/design/dsl-4-physical-camera-smoke.md)に沿った確認は、
-[Issue #510の完了記録](https://github.com/kubohiroya/tmpose-kamishibai/issues/510#issuecomment-5255177777)で
-2026年8月12日にユーザー検証済みです。実カメラ、実ポーズ認識、full-stage preview、認識終了後の表示、
-camera lifecycleを完了条件へ含めます。camera frameは保存せず、device labelと最初のfeedback時間は完了記録に
-保持されていないため、次回実行時に個人を識別しない測定値として補います。
-
-実カメラ確認を自動camera stubで代替しません。一方、同じ物理確認を毎回撮影して保存することも求めません。
-候補のcamera／pose core path、TMPose、PoseNet、permissionまたはCSPが変わった場合だけ、本人の同意を得た環境で
-再実行します。
-
-## 診断と安全停止
-
-少なくとも次の失敗を、候補の正式な診断surfaceで確認します。
-
-| 失敗               | 成功条件                                                   |
-| ------------------ | ---------------------------------------------------------- |
-| YAML／Schema不正   | source位置付き診断を表示し、現在の有効generationを維持する |
-| asset欠落／改竄    | 部分commitせず、取得済みresourceを解放する                 |
-| camera拒否         | 診断を表示し、入力待ち、preview、trackを残さない           |
-| pose model不成立   | timeout／cancelで安全停止し、次の実行へ状態を持ち越さない  |
-| runtime例外        | 新規入力を止め、action、音、camera、asset leaseを解放する  |
-| browser disconnect | candidateを破棄し、再接続時は新sessionとして開始する       |
-
-Console messageだけで成功・失敗を判断せず、画面の診断、runtime state、resource解放を合わせて確認します。
+物理確認ではcamera許可／拒否、preview、`legacy`と必要時の`latest-needed`、model準備の中断、認識feedback、
+scene遷移、終了時のtrack／model／timer解放を確認します。camera frameは保存しません。
 
 ## Release-stop条件
 
-次のいずれか一つでも発生したら公開を止めます。
-
-- commit、version、Schema、source lock、flag snapshot、artifact hashの不一致
+- commit、version、Schema、source identity、flag snapshot、artifact hashの不一致
+- 23 core action、7 member見出し／文書ボタン、dependency pinの不一致
 - 同じ入力から生成したSB3またはWeb版の非決定性
-- Browser Preview、CLI Preview、Production SB3、Web版の診断または挙動差
-- title、Loading、input、asset、camera、pose、finished、再実行の主要経路失敗
-- camera拒否、asset失敗、無効source、runtime例外での部分commitまたはresource残留
+- Browser Preview、CLI Preview、Standard SB3での診断または挙動差
+- camera拒否、model中断、asset失敗、無効source、runtime例外での部分commitまたはresource残留
 - production成果物へのpreview token、debug session、local path、file handleの混入
-- 外部PoseNet取得、許可していないnetwork request、CSP緩和
-- Console error、page error、終了後のcamera track／sound／timer／watcher／cache lease残留
-
-release-stopを回避するためにchecksum、lock、CSP、feature flagをその場で書き換えません。修正を別commitへ保存し、
-新しいcandidate IDで最初から再実行します。
-
-## 証跡を保存する
-
-実行ごとに次を`tmp/release-smoke-4.0/`へ生成します。
-
-```text
-tmp/release-smoke-4.0/
-├── candidate-manifest.json
-├── results.json
-├── commands.log
-├── browser-console.log
-└── network-summary.json
-```
-
-`results.json`には各項目の`pass`／`fail`、開始・終了時刻、candidate ID、browser／OS、診断code、証跡URLを
-記録します。camera frame、人物画像、音声、device ID、local absolute path、token、source本文は保存しません。
-release PRまたはIssueには、保存期間を定めたCI artifact URLとSHA-256、または個人情報を除いた要約だけを残します。
-
-## 再実行条件
-
-次の変更では全smokeを再実行します。
-
-- runtime candidate、release source、Schema、package、Standard SB3の変更
-- sample commit、base SB3、台本、asset、Packager設定の変更
-- feature flag snapshotまたはcontrol profileの変更
-- camera、pose、TMPose、PoseNet、permission、CSP、resource cleanup pathの変更
-- browser major version、対応OS、TurboWarp／Packager versionの変更
-- 一度でもrelease-stopとなったcandidateの修正
-
-文章、表記、リンクだけの文書修正は、publication buildとリンク検証を再実行し、artifact smokeを省略できます。
 
 ## Rollback
 
-公開前はcandidateを破棄し、`3.2.3`を推奨downloadとして維持します。4.0のtag、npm package、GitHub Release、
-Pagesを部分的に公開しません。
+公開済みrc.5のtag、release source、SB3、npm tarballを同じversionで差し替えません。
 
-公開後は同じversionのartifactを差し替えません。必要に応じてnpm deprecate、GitHub Releaseへの注意追記、
-`3.2.3` downloadの復元を行い、修正版を`4.0.1`以降として全smokeへ通します。文書だけを戻す場合は、本書、
-candidate manifest、`docs/config.mjs`のpublication、`site/4.0/index.html`のカード、対応testだけをrevertします。
+1. npmの`next`を`4.0.0-rc.4`へ戻す
+2. GitHub prereleaseとPagesへ影響範囲と回避策を追記する
+3. 必要ならPagesを`1708a19719fb6441040431a4d9daa36e8647407b`へ戻す
+4. 修正版を`4.0.0-rc.6`としてbuild、検証、公開する
+5. 推奨安定版`3.2.3`と過去のversion付き成果物を変更しない
 
-## 2026年8月12日の結果
-
-| 項目               | 結果                                                                                    |
-| ------------------ | --------------------------------------------------------------------------------------- |
-| candidate固定      | pass — runtime、Schema、release source、package、SB3、Webをmanifest化                   |
-| Runtime／CLI       | pass — 1,148 test、57 Chromium test、package smoke                                      |
-| Standard SB3       | pass — 7,633,722 bytes、SHA-256一致                                                     |
-| 作品SB3／Web       | pass — 22 test、111公開file、4成果物のlock一致                                          |
-| 実カメラ／実ポーズ | pass — 上流#510のユーザー検証済み記録を参照                                             |
-| privacy            | pass — camera frame、device ID、source本文、local pathを保存しない                      |
-| publication        | pass — `pnpm check`で94 test、26 publication、105 HTML、2 PDFを検証。生成HTMLも目視確認 |
-
-正式公開時は、この結果を無期限に流用せず、正式tag、npm integrity、release asset URL、Pages URLをmanifestへ
-追加し、変更された範囲のsmokeを再実行します。
+文書だけをrollbackする場合は、このMarkdown、candidate manifest、リリース履歴、`docs/config.mjs`、
+`site/4.0/index.html`、対応testを同じcommitで戻します。

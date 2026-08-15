@@ -22,12 +22,12 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | SB3の作成（ビルド） | 台本と素材を、TurboWarpやScratchで開ける一つの作品ファイルへまとめること |
 | Schemaリファレンス  | 台本の各項目について、使える値や必須条件を検索するための仕様一覧         |
 
-## 公開前の文書について
+## 公開プレリリースと文書基準
 
-文書状態: 固定実装基準を説明する台本作成ガイド（正式リリースの操作資料ではない）\
-調査基準: tmpose-kamishibai `f3c13d3`、2026年8月15日
+文書状態: 公開プレリリースrc.5の固定実装基準を説明する台本作成ガイド\
+調査基準: tmpose-kamishibai `f323a54`（`v4.0.0-rc.5`）、2026年8月15日
 
-> **配布状態との区別:** 2026年8月13日時点で`v4.0.0-rc.3`はprereleaseとして公開されていますが、
+> **配布状態との区別:** 2026年8月15日時点で`v4.0.0-rc.5`はprereleaseとして公開されていますが、
 > 正式な`v4.0.0`ではありません。機能ごとのfeature flagは利用するreleaseで確認してください。
 
 このガイドと[紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)は、同じ完成版の実装を
@@ -89,7 +89,7 @@ DSL 4.0は制限付きYAML 1.2で記述します。引数には名前が付き�
 
 ## 仕様・実装を確認する人向け（台本作成では読み飛ばせます）
 
-2026年8月13日の調査基準では、次の実装がtmpose-kamishibaiの`main`へ入っています。
+2026年8月15日のrc.5固定基準では、次の実装がtmpose-kamishibaiへ入っています。
 
 - 制限付きYAMLの解析、JSON Schema検証、参照関係の意味検証
 - 行・列とStory Pathを保持するSource Map、`K4-*`診断
@@ -113,8 +113,8 @@ builder、TurboWarp runtime surface、browser／CLI previewを含むend-to-end�
 ### 実装根拠を確認する場合
 
 仕様の正本は、tmpose-kamishibaiリポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/schema/dsl-4.schema.json)です。
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/schema/dsl-4.schema.json)です。
 camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)、
 `bubbleStyles`は[Issue #476](https://github.com/kubohiroya/tmpose-kamishibai/issues/476)以降、
 `Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tmpose-kamishibai/issues/398)、
@@ -399,9 +399,9 @@ actors:
 
 ```yaml
 assets:
-  "Beach / evening": backdrop
+  'Beach / evening': backdrop
 scenes:
-  "Scene 1: opening": []
+  'Scene 1: opening': []
 ```
 
 `bubbleStyles`の名前も内部の空白や日本語を使用できます。ただし、先頭・末尾の空白、改行、tab、制御文字は
@@ -733,6 +733,11 @@ branches:
 条件式は文字列として記述します。`if`と`goto`は同じmappingへ書き、`else`は分岐内に一つだけ、末尾へ
 置きます。すべての移動先シーンが定義済みでなければなりません。
 
+4.0.0-rc.5では、条件式は`branch` action開始時点のトップレベル`variables:`を不変snapshotとして参照します。
+ASCIIのbare nameは`score == 1`のように書けます。日本語や`-`などbare nameにできない文字を含む名前は、
+`vars["救助回数"] >= 2`のように完全一致のstring literalで指定します。Stage／sprite変数、Temporary Variables、
+`ポーズ認識`、`チャージ`は条件式へ自動では入りません。
+
 シーンから分岐を実行します。
 
 ```yaml
@@ -763,16 +768,16 @@ profile間の継承、merge、fallbackはありません。
 
 使用できるnavigation commandは次の8個です。
 
-| command                  | 動作                                           |
-| ------------------------ | ---------------------------------------------- |
-| `navigation.nextAction`  | 通常実行として次のアクションへ進む             |
-| `navigation.nextScene`   | 通常実行として次のシーンへ進む                 |
-| `rehearsal.skipPose`     | 現在のpose stepを完了する                      |
-| `rehearsal.skipAction`   | 現在のactionを最終状態へ進める                 |
-| `rehearsal.skipScene`    | 現在のsceneを安全な最終状態へ進める            |
-| `history.previousAction` | 実行履歴上の前のアクションへ移動する           |
-| `history.previousScene`  | 実行履歴上の前のシーンの先頭へ移動する         |
-| `history.nextScene`      | 実行履歴上の次のシーンの先頭へ移動する         |
+| command                  | 動作                                   |
+| ------------------------ | -------------------------------------- |
+| `navigation.nextAction`  | 通常実行として次のアクションへ進む     |
+| `navigation.nextScene`   | 通常実行として次のシーンへ進む         |
+| `rehearsal.skipPose`     | 現在のpose stepを完了する              |
+| `rehearsal.skipAction`   | 現在のactionを最終状態へ進める         |
+| `rehearsal.skipScene`    | 現在のsceneを安全な最終状態へ進める    |
+| `history.previousAction` | 実行履歴上の前のアクションへ移動する   |
+| `history.previousScene`  | 実行履歴上の前のシーンの先頭へ移動する |
+| `history.nextScene`      | 実行履歴上の次のシーンの先頭へ移動する |
 
 キー名には`KeyboardEvent.code`を使用します。`Space`、`Enter`、方向キー、`Digit0`〜`Digit9`、
 `KeyA`〜`KeyZ`、`Numpad0`〜`Numpad9`、`F1`〜`F12`などがschemaで列挙されています。
@@ -845,20 +850,20 @@ sceneへ指定がなければstory既定へ戻り、前sceneの値を持ち越�
 
 Global actionはアクター名を付けずに記述します。
 
-| action                    | 短形式または主な引数           | 役割                                  |
-| ------------------------- | ------------------------------ | ------------------------------------- |
-| `stage`                   | 背景ID                         | 背景を変更する                        |
-| `bgm`                     | 音ID                           | BGMの再生を依頼する                   |
-| `sound`                   | 音ID                           | 効果音の再生を依頼する                |
-| `wait`                    | 0以上の秒数                    | 指定時間待つ                          |
-| `debugger`                | `null`                         | development debugの停止境界を置く     |
-| `broadcastMessageAndWait` | message名                      | message receiverの完了を待つ          |
-| `transition`              | `effect`、`seconds`            | 見た目の遷移効果を実行する            |
-| `goto`                    | シーンID                       | 指定シーンへ移動する                  |
-| `branch`                  | 分岐ID                         | 条件分岐を評価して移動する            |
-| `keyInputToChangeScene`   | キーからシーンへのmapping      | キー入力を待って移動する              |
-| `touchInputToChangeScene` | アクターからシーンへのmapping  | タッチ入力を待って移動する            |
-| `poseInputToChangeScene`  | ポーズからシーンへのmapping    | 最初に認識したポーズで移動する        |
+| action                    | 短形式または主な引数          | 役割                              |
+| ------------------------- | ----------------------------- | --------------------------------- |
+| `stage`                   | 背景ID                        | 背景を変更する                    |
+| `bgm`                     | 音ID                          | BGMの再生を依頼する               |
+| `sound`                   | 音ID                          | 効果音の再生を依頼する            |
+| `wait`                    | 0以上の秒数                   | 指定時間待つ                      |
+| `debugger`                | `null`                        | development debugの停止境界を置く |
+| `broadcastMessageAndWait` | message名                     | message receiverの完了を待つ      |
+| `transition`              | `effect`、`seconds`           | 見た目の遷移効果を実行する        |
+| `goto`                    | シーンID                      | 指定シーンへ移動する              |
+| `branch`                  | 分岐ID                        | 条件分岐を評価して移動する        |
+| `keyInputToChangeScene`   | キーからシーンへのmapping     | キー入力を待って移動する          |
+| `touchInputToChangeScene` | アクターからシーンへのmapping | タッチ入力を待って移動する        |
+| `poseInputToChangeScene`  | ポーズからシーンへのmapping   | 最初に認識したポーズで移動する    |
 
 ### 背景、音、待機
 
@@ -1364,24 +1369,24 @@ scenes:
 DSL 4.0のsource frontendは、YAMLを読み込んだあと、構造と参照関係の検証が成功するまでアセット準備や
 アクション実行を始めません。診断にはcode、severity、source ID、行・列、Story Pathが含まれます。
 
-| code                          | 主な意味                                      |
-| ----------------------------- | --------------------------------------------- |
-| `K4-YAML-*`                   | YAML構文または禁止機能の使用                  |
-| `K4-VERSION-001`              | `kamishibai`が文字列`'4.0'`ではない           |
-| `K4-SCHEMA-001`               | 型、必須field、構造がschemaと一致しない       |
-| `K4-SCHEMA-UNKNOWN-KEY`       | schemaにないキーを使用した                    |
-| `K4-ID-INVALID` / `K4-ID-001` | 識別子の文字規則またはUnicode NFC違反         |
-| `K4-REF-001`                  | 参照先が未定義                                |
-| `K4-REF-002`                  | 参照先アセットの`kind`が用途と一致しない      |
-| `K4-REF-003`                  | コスチュームの`target`がアクターと一致しない  |
-| `K4-ASSET-001`                | `file`が安全なローカル相対pathではない        |
-| `K4-BRANCH-001`               | 分岐の末尾が`else`ではない                    |
-| `K4-STABLE-ID-001`            | `stableId`が文書内で重複している              |
-| `K4-KEY-UNSUPPORTED`          | 対応外のキーやmodifierを指定した              |
-| `K4-KEY-001`                  | navigation keymapと作品内キー入力が衝突した   |
-| `K4-INCLUDE-CYCLE`            | include文による読み込み関係に循環がある       |
-| `K4-INCLUDE-LIMIT-001`        | source件数、合計byte数、include深度の上限超過 |
-| `K4-SOURCE-SIZE-001`          | source一件のbyte数が上限を超えた              |
+| code                          | 主な意味                                            |
+| ----------------------------- | --------------------------------------------------- |
+| `K4-YAML-*`                   | YAML構文または禁止機能の使用                        |
+| `K4-VERSION-001`              | `kamishibai`が文字列`'4.0'`ではない                 |
+| `K4-SCHEMA-001`               | 型、必須field、構造がschemaと一致しない             |
+| `K4-SCHEMA-UNKNOWN-KEY`       | schemaにないキーを使用した                          |
+| `K4-ID-INVALID` / `K4-ID-001` | 識別子の文字規則またはUnicode NFC違反               |
+| `K4-REF-001`                  | 参照先が未定義                                      |
+| `K4-REF-002`                  | 参照先アセットの`kind`が用途と一致しない            |
+| `K4-REF-003`                  | コスチュームの`target`がアクターと一致しない        |
+| `K4-ASSET-001`                | `file`が安全なローカル相対pathではない              |
+| `K4-BRANCH-001`               | 分岐の末尾が`else`ではない                          |
+| `K4-STABLE-ID-001`            | `stableId`が文書内で重複している                    |
+| `K4-KEY-UNSUPPORTED`          | 対応外のキーやmodifierを指定した                    |
+| `K4-KEY-001`                  | navigation keymapと作品内キー入力が衝突した         |
+| `K4-INCLUDE-CYCLE`            | include文による読み込み関係に循環がある             |
+| `K4-INCLUDE-LIMIT-001`        | source件数、合計byte数、include深度の上限超過       |
+| `K4-SOURCE-SIZE-001`          | source一件のbyte数が上限を超えた                    |
 | `K4-DECLARATION-DUPLICATE`    | include文で読み込んだファイル内で同じ宣言が重複した |
 
 runtime接続後は、action、scene、branch、port、戻り値などの実行時エラーにも`K4-RUNTIME-*`診断を
@@ -1410,7 +1415,7 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 ## 関連資料
 
 - [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
-- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
-- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/schema/dsl-4.schema.json): 機械可読な構造仕様
-- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
-- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例
+- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
+- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/schema/dsl-4.schema.json): 機械可読な構造仕様
+- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
+- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例

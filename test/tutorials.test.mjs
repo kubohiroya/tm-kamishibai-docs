@@ -226,25 +226,25 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(screenshotManifest.formatVersion, 2);
   assert.equal(screenshotManifest.targetDslVersion, '4.0');
   assert.deepEqual(screenshotManifest.releaseBaseline, {
-    version: '4.0.0-rc.3',
+    version: '4.0.0-rc.5',
     channel: 'next',
     state: 'published-prerelease',
-    sourceIdentity: 'sha256:f56cc0f2b2df805cc1baebcbaa08094fa7df20b0f28b2c8b62c445d9b54e8fa3',
-    sb3Sha256: '77ac23862ef0e729ca75be93340f65f21ded9b39449fc8f9be2c904c70d4096c',
-    npmUrl: 'https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.3',
-    githubReleaseUrl: 'https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.3',
+    sourceIdentity: 'sha256:a6c4be01405af1b3070f6d02dc584a55bd2b45844ae48761aa3d4141ef474ca4',
+    sb3Sha256: '2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c',
+    npmUrl: 'https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.5',
+    githubReleaseUrl: 'https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.5',
     pagesUrl: 'https://kubohiroya.github.io/tmpose-kamishibai/downloads/',
     evidence: [
-      'https://github.com/kubohiroya/tmpose-kamishibai/issues/571',
-      'https://github.com/kubohiroya/tmpose-kamishibai/pull/574',
+      'https://github.com/kubohiroya/tmpose-kamishibai/issues/583',
+      'https://github.com/kubohiroya/tmpose-kamishibai/pull/596',
     ],
   });
   assert.equal(
     screenshotManifest.implementationBaseline.commit,
-    '087dfa526e967bb2cc38af3f5b5a795355de7739',
+    'f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6',
   );
   assert.deepEqual(screenshotManifest.browserAuthoringBaseline, {
-    version: '4.0.0-rc.3',
+    version: '4.0.0-rc.5',
     state: 'published-prerelease',
     issue: 'https://github.com/kubohiroya/tmpose-kamishibai/issues/555',
     documentationIssue: 'https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118',
@@ -254,6 +254,8 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
     screenshotManifest.sampleBaseline.commit,
     '919565243adc3800ebe8271cc4af6f7b68110ef2',
   );
+  assert.equal(screenshotManifest.sampleBaseline.runtimeVersion, '4.0.0-rc.3');
+  assert.equal(screenshotManifest.sampleBaseline.differsFromReleaseBaseline, true);
   assert.equal(screenshotManifest.sampleBaseline.pullRequestState, 'merged');
   assert.equal(
     screenshotManifest.sampleBaseline.publicationCommit,
@@ -400,9 +402,9 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(releaseGate.ready, true);
   assert.equal(releaseGate.progressStatus, 'published');
   assert.deepEqual(releaseGate.dependencies, [
-    'https://github.com/kubohiroya/tmpose-kamishibai/issues/571',
+    'https://github.com/kubohiroya/tmpose-kamishibai/issues/583',
   ]);
-  assert.match(releaseGate.description, /4\.0\.0-rc\.3/u);
+  assert.match(releaseGate.description, /4\.0\.0-rc\.5/u);
   assert.equal(releaseGate.remaining.length, 0);
   const tutorialSampleGate = screenshotManifest.gates.find(({id}) => id === 'tutorial-sample');
   assert.equal(tutorialSampleGate.ready, true);
@@ -612,25 +614,18 @@ test('keeps the reproducible implementation walkthrough in the developer guide',
     /\.\.\/developer-guides\/dsl4-implementation-walkthrough\.md/u,
   );
   assert.match(implementationWalkthrough, /開発者向け追試手順/u);
-  assert.match(implementationWalkthrough, /8ea06bfd100b106f559cb25a280fab5570e42919/u);
-  assert.match(implementationWalkthrough, /dc9f6626de9ef85ca71312402fd139082922b867/u);
-  assert.match(implementationWalkthrough, /validate-dsl4/u);
-  assert.match(implementationWalkthrough, /urashima\.k4\.yml: valid/u);
+  assert.match(implementationWalkthrough, /f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/u);
+  assert.match(implementationWalkthrough, /tmpose-kamishibai-samples`は取得・build・変更しません/u);
+  assert.match(implementationWalkthrough, /preview-dsl4 --watch/u);
+  assert.match(implementationWalkthrough, /K4-VERSION-001/u);
   assert.match(
     implementationWalkthrough,
-    /9ff92d07fb6851ddb07cc6f13d20fc9023b2c90605d2533fec89cb9fdbb1faa2/u,
-  );
-  assert.match(
-    implementationWalkthrough,
-    /a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a/u,
-  );
-  assert.match(
-    implementationWalkthrough,
-    /6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1/u,
+    /2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c/u,
   );
   for (const filename of [
-    'dsl4-implementation-title.jpg',
-    'dsl4-implementation-pose-feedback.jpg',
+    'dsl4-rc5-preview-running.png',
+    'dsl4-rc5-runtime-title.png',
+    'dsl4-rc5-preview-diagnostic.png',
   ]) {
     assert.match(implementationWalkthrough, new RegExp(`\\.\\./images/${filename}`, 'u'));
   }

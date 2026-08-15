@@ -102,7 +102,7 @@ test('uses focused rendered diagrams for relationships that span multiple stages
   ];
 
   for (const source of documentsWithDiagrams) {
-    assert.equal((source.match(/<figure class="concept-flow">/gu) ?? []).length, 1);
+    assert.equal((source.match(/<figure class="[^"]*\bconcept-flow\b[^"]*">/gu) ?? []).length, 1);
     assert.match(source, /<figcaption>.+<\/figcaption>/u);
     assert.match(source, /concept-flow__track/u);
   }
@@ -110,7 +110,10 @@ test('uses focused rendered diagrams for relationships that span multiple stages
   assert.match(adultOverview, /作品を開く[\s\S]*物語を見る[\s\S]*キー・タッチ・ポーズで参加する/u);
   assert.match(authorGuide, /最小台本[\s\S]*台本と素材を配置[\s\S]*場面と命令を追加/u);
   assert.match(conversionGuide, /3\.1／3\.2のTXT[\s\S]*convert-dsl4[\s\S]*4\.0のYAML/u);
-  assert.match(internalSpecification, /Source Graph[\s\S]*StoryDocument[\s\S]*Runtime controller/u);
+  assert.match(
+    internalSpecification,
+    /Source Graph[\s\S]*StoryDocument[\s\S]*Runtime controller/iu,
+  );
   assert.match(extensionGuide, /Port contract[\s\S]*Platform composition/u);
   assert.match(diagnosticsDesign, /validate[\s\S]*commit[\s\S]*安全停止/u);
 });

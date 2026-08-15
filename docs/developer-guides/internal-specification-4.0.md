@@ -3,10 +3,10 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 固定実装基準を説明する内部仕様（正式リリース済みの意味ではない）\
-調査基準: tmpose-kamishibai `7945781`、2026年8月8日
+調査基準: tmpose-kamishibai `f323a54`（4.0.0-rc.5）、2026年8月15日
 
-> **配布状態との区別:** 2026年8月8日時点で`v4.0.0`は正式リリースされていません。
-> 本書は固定コミットの内部構造を説明し、公開プレイヤーや配布物で利用できることを保証しません。
+> **配布状態との区別:** 2026年8月15日時点で`v4.0.0-rc.5`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。本書はrc.5固定コミットの内部構造を説明します。
 
 この文書は、TMPose紙芝居4.0のsource frontend、実行中間表現、runtime、platform adapter、
 preview transactionの責務境界を、完成実装に対応させて記録します。作者向けのYAML構文は
@@ -15,7 +15,7 @@ preview transactionの責務境界を、完成実装に対応させて記録し�
 
 対象アプリ: tmpose-kamishibai 4.0.x\
 受理するDSL宣言: `kamishibai: '4.0'`\
-実装固定commit: [`7945781`](https://github.com/kubohiroya/tmpose-kamishibai/commit/79457815f5c89b181b1a879a079a4d6a72d405ed)（2026年8月8日）
+実装固定commit: [`f323a54`](https://github.com/kubohiroya/tmpose-kamishibai/commit/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6)（2026年8月15日、`v4.0.0-rc.5`）
 
 本書のpath、型、関数、event、flagは、このcommitのsourceとtestを基準にしています。
 配布成果物を調査して推測した名称ではありません。
@@ -71,19 +71,24 @@ preview transactionの責務境界を、完成実装に対応させて記録し�
 次図は、sourceからplatform固有処理までの主な依存方向です。内側のruntimeはcameraやTurboWarpを直接扱わず、
 portを介して外側のadapterへ依頼します。
 
-<figure class="concept-flow"><figcaption>sourceからplatform adapterまでの依存方向</figcaption><div class="concept-flow__track"><span>Project source</span><b aria-hidden="true">→</b><span>Source Graph</span><b aria-hidden="true">→</b><span>Source frontend<br>parse・Schema・semantic</span><b aria-hidden="true">→</b><span>StoryDocument<br>immutable IR</span><b aria-hidden="true">→</b><span>Runtime controller</span><b aria-hidden="true">→</b><span>Port contract</span><b aria-hidden="true">→</b><span>Platform adapter<br>TurboWarp・asset・pose・DOM</span></div><p class="concept-flow__note">source frontend、runtime、adapterの各層は、失敗を共通の診断surfaceへ投影します。</p></figure>
+![Project source、immutable runtime core、platform adapter、三つの実行surfaceの依存方向](../images/dsl4-architecture.svg)
+
+_図: rc.5の実装moduleを責務ごとに配置したレイヤー構成。矢印は主な依存方向であり、各層の失敗は
+canonical diagnosticとして共通surfaceへ投影されます。_
 
 ### 固定実装の呼出し経路 {#implementation-call-path}
 
-前図を実装のexportとcomposition rootまで具体化すると、固定commit`8ea06bf`では次の経路になります。
-この追跡は、同commitから生成した浦島太郎Web成果物を実行し、タイトル、シーン、ポーズfeedbackまで
-観測した結果と突き合わせています。
+前図を実装のexportとcomposition rootまで具体化すると、固定commit`f323a54`では次の経路になります。
+この追跡は、同commitの公開rc.5 SB3をbaseにしたlocal previewを実行し、immutable sourceの稼働、
+`Version 4.0.0-rc.5`のタイトル、invalid保存時の診断とcurrent integrity維持を観測した結果と
+突き合わせています。
 
 <figure class="concept-flow dsl4-implementation-map"><figcaption>固定実装をsourceから実画面まで追う主要呼出し経路</figcaption><div class="concept-flow__track"><span><code>createDsl4SourceGraph</code><small>source-graph.js<br>entryとincludeを有限探索</small></span><b aria-hidden="true">→</b><span><code>createDsl4SourceGraphFrontend.parse</code><small>source-graph-frontend.js<br>合成後にsingle-source frontendへ委譲</small></span><b aria-hidden="true">→</b><span><code>createDsl4SourceFrontend.parse</code><small>source-frontend.js<br>YAML・Schema・semantic・Action Registry</small></span><b aria-hidden="true">→</b><span><code>createStoryDocument</code><small>story-document.js<br>正規化してdeep-freeze</small></span><b aria-hidden="true">→</b><span><code>createDsl4RuntimeStartup</code><small>runtime-startup.js<br>componentを検証しsessionを所有</small></span><b aria-hidden="true">→</b><span><code>createDsl4RuntimeController.dispatch</code><small>runtime-controller.js<br>sceneとactionを順にportへ渡す</small></span><b aria-hidden="true">→</b><span><code>createDsl4TurboWarpRuntimeEnvironment</code><small>turbowarp-runtime-host.js<br>portとlifecycleを構成</small></span></div><div class="dsl4-implementation-map__ports"><section><strong>アセットとLoading</strong><code>platform-asset-session.js</code><span>Asset Manager、背景、音、ポーズモデルをprepare・release</span></section><section><strong>表示と発話</strong><code>media-action-port.js</code><code>actor-action-port.js</code><span>Stage、Actor、Bubble、SVG Textへ反映</span></section><section><strong>入力とポーズ</strong><code>async-input-action-port.js</code><code>pose-action-port.js</code><span>キー、タッチ、TMPose、カメラ、feedbackへ接続</span></section></div><p class="concept-flow__note">runtime coreは<code>stage</code>、<code>say</code>、<code>pose</code>等のcommand名でportを呼びます。TurboWarp VM、DOM、cameraをcoreから直接参照しないため、同じ<code>StoryDocument</code>をpreviewと配布成果物で共有できます。</p></figure>
 
-実画面では、`stage`とActor系portの結果が背景・浦島太郎・亀として現れ、`say`が吹き出し、
-`pose`がTMPose compositionとpose feedbackへ分岐します。呼出し経路と画面の対応、および固定した
-成果物hashは[DSL 4.0 実装ビジュアル記録](../../DSL4-IMPLEMENTATION-VISUALS.md)を参照してください。
+実画面ではsource frontendの成功結果が`VALID: The current immutable source is running.`として表示され、
+reload監視は`Watching`になります。versionを`4.1`へ変えた一時candidateは`K4-VERSION-001`で`INVALID`となり、
+current integrityを更新しませんでした。画面との対応、撮影条件、固定した成果物hashは
+[DSL 4.0 実装ビジュアル記録](../../DSL4-IMPLEMENTATION-VISUALS.md)を参照してください。
 
 ### 正本の順序
 
@@ -121,6 +126,17 @@ Schema、semantic validator、StoryDocument、runtimeの各境界を独立test�
 platform moduleが侵入しないことを検査します。I/Oとplatform依存を注入するため、同じ
 `StoryDocument`とruntime coreを複数surfaceで共有できます。
 
+### 図と実装の追跡表
+
+| 図                          | 主な実装正本                                                                                       | 直接確認するtest                                                         |
+| --------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| レイヤー構成                | `source-graph.js`、`source-frontend.js`、`story-document.js`、`runtime-controller.js`、`platform/` | `dsl4-architecture.test.mjs`                                             |
+| source build sequence       | `source-graph-frontend.js`、`builder/dsl4-source-frontend.js`、`builder/dsl4-build.js`             | `dsl4-source-graph-frontend.test.mjs`、`dsl4-one-shot-build.test.mjs`    |
+| RuntimeStatus               | `runtime-controller.js`                                                                            | `dsl4-runtime-controller.test.mjs`                                       |
+| 通常実行sequence            | `runtime-startup.js`、`navigation-session.js`、`runtime-controller.js`                             | `dsl4-runtime-startup.test.mjs`、`dsl4-navigation-session.test.mjs`      |
+| live reload state／sequence | `live-reload-session.js`、`runtime-controller.js`                                                  | `dsl4-live-reload-session.test.mjs`、`dsl4-live-reload-quiesce.test.mjs` |
+| asset reload sequence       | `asset-reload-transaction.js`                                                                      | `dsl4-asset-reload-transaction.test.mjs`                                 |
+
 ## Source frontend {#source-frontend}
 
 ### 単一sourceの処理順
@@ -137,6 +153,11 @@ platform moduleが侵入しないことを検査します。I/Oとplatform依存
 7. `validateDsl4Semantics`で参照、asset kind、重複stable ID、scene・pose条件などを検査する。
 8. scene数、action数、asset数と、branch式の構文・上限を検査する。
 9. errorがなければ`createStoryDocument`でimmutable IRを生成する。
+
+![作者のsourceから検証済みStoryDocumentと自己完結SB3を生成するシーケンス](../images/dsl4-source-build-sequence.svg)
+
+_図: 失敗結果に部分的な`StoryDocument`を含めず、成果物出力前に埋込み後のcomponentを再読込・再検証する
+build gate。_
 
 戻り値はdiscriminated resultです。成功時は`{ok: true, canonicalSource, diagnostics,
 storyDocument}`、失敗時は`{ok: false, canonicalSource, diagnostics}`です。失敗結果に部分的な
@@ -201,6 +222,10 @@ included sourceの宣言位置は失われません。生成後の`StoryDocument
 production compositionは`createDsl4ProductionSourceFrontend`が
 `@kubohiroya/turbowarp-runtime-expression/composition`を注入します。独自parser、`eval`、
 `Function`へのfallbackはありません。preview、validate、buildはこのfrontend契約を共有します。
+
+runtimeでは`resolveBranch()`がaction contextの`variables` snapshotを`evaluateCondition()`へ渡し、一つのbranchを
+上から評価します。4.0.0-rc.5のsnapshotに含まれるのはトップレベル`variables:`だけで、Stage／sprite変数、
+Temporary Variables、controller status、pose eventをliveには読みません。
 
 ## StoryDocument {#story-document}
 
@@ -294,6 +319,15 @@ sessionはenvironmentを単独所有します。session dispose時はnavigation�
 `finished`、`stopped`です。公開snapshotは`status`、`sceneId`、`actionIndex`、`actionPath`、
 `generation`、primitiveだけの`variables`、失敗時の`diagnostic`をdeep-freezeして返します。
 
+![idle、running、paused、finished、failed、stoppedのRuntimeStatus状態遷移](../images/dsl4-runtime-state-transition.svg)
+
+_図: `start()`、`reposition()`、quiesce、`resume()`、正常終了、失敗、停止の遷移。破線はterminal状態から
+再度`start()`したときの再初期化を表します。_
+
+この図の主体は**一つの`RuntimeController`**です。「現在の一つのgenerationを、どのscene・action位置で
+どう再生しているか」だけを表します。source変更の有無、candidateの妥当性、作者がreloadを承認したかは
+`RuntimeStatus`へ混ぜません。それらは後述する`LiveReloadSession`が別の状態として持ちます。
+
 | 現在状態                                | 操作・条件                           | 次状態                  | 主なevent                                          |
 | --------------------------------------- | ------------------------------------ | ----------------------- | -------------------------------------------------- |
 | `idle`、`finished`、`failed`、`stopped` | `start()`                            | `running`               | `runtime.start`、`scene.transition`、`scene.enter` |
@@ -309,6 +343,11 @@ sessionはenvironmentを単独所有します。session dispose時はnavigation�
 
 scene transitionはtarget sceneのlazy assetをprepareしてから`transitionTo()`をpublishします。
 scene commit後に不要なscene-retained assetを解放します。準備失敗時は現在sceneを置き換えません。
+
+![runtime startupからasset準備、action dispatch、port完了、action commit、終了までのシーケンス](../images/dsl4-runtime-sequence.svg)
+
+_図: portが返す非同期operationの完了後だけ`action.commit`へ進みます。action、port、式、assetの失敗は
+current generationを無効化し、canonical diagnosticと`runtime.fail`へ収束します。_
 
 ### RuntimeEvent
 
@@ -433,12 +472,57 @@ invalid candidateはdiagnosticだけを更新し、current runtimeを維持し�
 `createDsl4LiveReloadSession()`の状態は`waiting`、`active`、`invalid`、`quiescing`、`pending`、
 `failed`、`disposed`です。
 
+![waiting、active、invalid、quiescing、pending、failed、disposedのlive reload状態遷移](../images/dsl4-live-reload-state-transition.svg)
+
+_図: `invalid`はreload表示の状態であり、current runtimeを停止する状態ではありません。quiesceの安全性を
+証明できない場合だけ`failed`へfail-closedします。_
+
+#### `RuntimeStatus`との読み分け
+
+二つの状態機械は階層が異なり、同じ時点に**併存**します。`LiveReloadSession.getState()`は外側の
+reload `status`だけでなく、`current.runtime.status`として内側の`RuntimeStatus`も保持します。
+UIやprotocolはこの二つを一つの状態へ平坦化してはなりません。
+
+| 観点               | `RuntimeStatus`                                              | `LiveReloadSession.status`                                             |
+| ------------------ | ------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| 状態を持つ主体     | 一つの`RuntimeController`                                    | 一つの`LiveReloadSession`                                              |
+| 答える問い         | current generationを今どう再生しているか                     | currentとcandidateの更新を今どう調停しているか                         |
+| 時間の単位         | 一回の`start()`と、そのgeneration内のscene・action実行       | source監視開始から複数generationのstage・defer・commitまで             |
+| 主な入力           | `start`、action完了、navigation、`resume`、`stop`、実行失敗  | parse結果、candidate、quiesce token、作者のchoice、`dispose`           |
+| 待機を表す状態     | `paused`: current runtimeが再開可能な実行境界で停止          | `pending`: candidateとreload planが揃い、作者の選択を待つ              |
+| `failed`の意味     | action・port・式・assetなど、current generationの実行失敗    | quiesceまたはcommitを安全に完了できず、更新調停をfail-closedした       |
+| 正常終了・所有終了 | `finished`: 作品の全action完了、`stopped`: currentの明示停止 | `disposed`: currentとcandidateを含むreload session全体の所有・監視終了 |
+
+特に`active`は「runtimeが`running`」という意味ではなく、**current sessionを保持し、candidateがない**
+というreload側の状態です。このため、作品が最後まで進んだ後も`finished` + `active`になり得ます。
+同様に、`invalid`と`failed`は二つの図で同じ失敗を重複表現しているのではありません。
+
+| 代表的な時点                  | `current.runtime.status` | `LiveReloadSession.status` | 二つを分ける理由                                                  |
+| ----------------------------- | ------------------------ | -------------------------- | ----------------------------------------------------------------- |
+| valid sourceを通常再生中      | `running`                | `active`                   | 実行中であり、更新候補はない                                      |
+| 保存したcandidateがinvalid    | `running`                | `invalid`                  | 診断を表示しても、検証済みcurrentの再生は止めない                 |
+| valid candidateを安全化中     | `running`→`paused`など   | `quiescing`                | action cleanupとtoken確定を待つ間も、更新処理の進捗を別に示す     |
+| reload choice待ち             | `paused`または`finished` | `pending`                  | currentの安全な位置と、candidate採用の意思決定を区別する          |
+| 作品が正常終了、監視は継続    | `finished`               | `active`                   | 再生完了後も次のsource変更を受け付けられる                        |
+| current自体のaction実行が失敗 | `failed`                 | `active`                   | 実行失敗であり、reload transactionの失敗とは限らない              |
+| quiesce／commit安全性が破綻   | `stopped`                | `failed`                   | currentをfail-closed停止し、更新失敗の原因と所有状態を外側へ残す  |
+| previewを閉じる               | currentなし              | `disposed`                 | 個別runtimeの状態ではなく、reload session全体のresource解放を表す |
+
+したがって、`RuntimeStatus`図だけではinvalid candidateを表示しながらcurrentを継続する契約を表せず、
+`LiveReloadSession`図だけではscene・actionの進行、正常終了、実行失敗を表せません。安全なlive reloadは
+「内側の実行状態」と「外側の世代交代状態」を同時に観測するため、二図を併記します。
+
 1. 最初のvalid generationは新sessionを作り、先頭から開始して`active`にする。
 2. 次のvalid generationはcandidate IDを発行し、current sessionへ`quiesce()`を要求する。
 3. `Dsl4QuiesceToken`のscene、action、variables、generationを検証する。
 4. reload plannerが`storyStart`、`currentScene`、`currentAction`の可否とfallbackを決める。
 5. `defer()`はcandidateを捨て、current sessionを`resumeQuiesce()`する。
 6. `commit()`はnext sessionを先に生成し、currentを停止・解放してから選択位置でnextをstartする。
+
+![source変更を検証し、quiesce tokenとreload planを経てdeferまたはcommitするシーケンス](../images/dsl4-live-reload-sequence.svg)
+
+_図: invalid、defer、commit、quiesce／commit failureを分けたsource generation transaction。candidateと
+currentの同時公開を避け、commit成功時だけgenerationとintegrityを切り替えます。_
 
 source session commitはcandidate生成前までcurrentを保持します。ただしcurrentを停止した後にnext startが
 失敗した場合、停止済みcurrentへ暗黙rollbackはせず`failed`にします。作者が明示的にrestartし、同じ失敗を
@@ -472,6 +556,11 @@ commitはprepare済みcandidateへ`activate()`を呼び、adapterのrevision受�
 `rollback('activation-failed')`、`release()`、adapter discardを順に試し、旧active generationを維持します。
 成功時は`preview.asset.committed` acknowledgementをpublishしてから旧generationをreleaseします。
 ack後の旧resource解放失敗はcommitを取消さず`K4-ASSET-RELEASE-001`とし、disposeで再試行します。
+
+![asset candidateをprepare、activate、acceptし、acknowledgement後に旧世代をreleaseするシーケンス](../images/dsl4-asset-reload-sequence.svg)
+
+_図: activation失敗時はcandidateをrollback・release・discardし、旧active generationを維持します。
+full rebuild分類はcandidateをprepareせず、作者へ明示します。_
 
 ## 診断と安全停止 {#diagnostics}
 
@@ -572,11 +661,11 @@ runtime側の仕様変更では、表に示した固定commitの対応testも更
 
 ## 固定実装への参照 {#implementation-links .unnumbered}
 
-- [source frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/source-frontend.js)
-- [Source Graph](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/source-graph.js)と[graph frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/source-graph-frontend.js)
-- [StoryDocument](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/story-document.js)と[semantic validator](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/semantic-validator.js)
-- [runtime controller](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/runtime-controller.js)と[navigation session](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/navigation-session.js)
-- [Action Context](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/action-context-turbowarp.js)と[custom action invocation](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/action-invocation-adapter.js)
-- [TurboWarp runtime host](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/platform/turbowarp-runtime-host.js)
-- [live reload session](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/live-reload-session.js)と[asset reload transaction](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/asset-reload-transaction.js)
-- [feature flags](https://github.com/kubohiroya/tmpose-kamishibai/blob/79457815f5c89b181b1a879a079a4d6a72d405ed/src/dsl4/feature-flags.js)
+- [source frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/source-frontend.js)
+- [Source Graph](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/source-graph.js)と[graph frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/source-graph-frontend.js)
+- [StoryDocument](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/story-document.js)と[semantic validator](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/semantic-validator.js)
+- [runtime controller](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/runtime-controller.js)と[navigation session](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/navigation-session.js)
+- [Action Context](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/action-context-turbowarp.js)と[custom action invocation](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/action-invocation-adapter.js)
+- [TurboWarp runtime host](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/platform/turbowarp-runtime-host.js)
+- [live reload session](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/live-reload-session.js)と[asset reload transaction](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/asset-reload-transaction.js)
+- [feature flags](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/feature-flags.js)

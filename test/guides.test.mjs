@@ -71,7 +71,7 @@ const theme = readFileSync(new URL('../docs/general-theme.css', import.meta.url)
 test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual', () => {
   assert.match(dslManual, /対象アプリ: tmpose-kamishibai 3\.2\.x/u);
   assert.match(dsl4AuthorGuide, /固定実装基準を説明する台本作成ガイド/u);
-  assert.match(dsl4AuthorGuide, /v4\.0\.0-rc\.3`はprerelease/u);
+  assert.match(dsl4AuthorGuide, /v4\.0\.0-rc\.5`はprerelease/u);
   assert.match(dsl4AuthorGuide, /Schemaはruntime実装から生成するものではありません/u);
   assert.match(dsl4AuthorGuide, /kamishibai: '4\.0'/u);
   assert.match(dsl4AuthorGuide, /\.kamishibai\.yaml/u);
@@ -114,10 +114,10 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
   );
   assert.match(dsl4AuthorGuide, /前sceneの値を持ち越しません/u);
   assert.match(dsl4SchemaReference, /固定実装基準を説明するSchemaリファレンス/u);
-  assert.match(dsl4SchemaReference, /v4\.0\.0-rc\.3`はprerelease/u);
+  assert.match(dsl4SchemaReference, /v4\.0\.0-rc\.5`はprerelease/u);
   assert.match(dsl4SchemaReference, /権威関係と配布状態/u);
   assert.match(dsl4SchemaReference, /Schemaはruntime実装から生成しません/u);
-  assert.match(dsl4SchemaReference, /Schema固定commit: \[`f3c13d3`\]/u);
+  assert.match(dsl4SchemaReference, /Schema固定commit: \[`f323a54`\]/u);
   assert.match(dsl4SchemaReference, /トップレベル12 field、action 24種類、Annotation 87項目/u);
   assert.doesNotMatch(dslManual, /kamishibai: '4\.0'/u);
   assert.doesNotMatch(dsl4AuthorGuide, /DSL 3\.[12]|kamishibai=3\.[12]/u);
@@ -125,7 +125,7 @@ test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual'
 });
 
 test('grounds the DSL 4.0 internal specification in the completed implementation', () => {
-  assert.match(internalSpecification4, /79457815f5c89b181b1a879a079a4d6a72d405ed/u);
+  assert.match(internalSpecification4, /f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/u);
   for (const boundary of [
     'createDsl4SourceFrontend',
     'createDsl4SourceGraph',
@@ -168,8 +168,25 @@ test('grounds the DSL 4.0 internal specification in the completed implementation
   assert.match(internalSpecification, /^# 紙芝居アプリ 3\.2 内部仕様書$/mu);
 });
 
+test('documents the rc.5 branch expression variable snapshot for authors and maintainers', () => {
+  assert.match(dsl4AuthorGuide, /`branch` action開始時点のトップレベル`variables:`を不変snapshot/u);
+  assert.match(dsl4AuthorGuide, /`vars\["救助回数"\] >= 2`/u);
+  assert.match(
+    dsl4AuthorGuide,
+    /Stage／sprite変数、Temporary Variables、[\s\S]*`ポーズ認識`、`チャージ`は条件式へ自動では入りません/u,
+  );
+  assert.match(
+    internalSpecification4,
+    /`resolveBranch\(\)`[\s\S]*action contextの`variables` snapshotを`evaluateCondition\(\)`へ渡/u,
+  );
+  assert.match(
+    internalSpecification4,
+    /Stage／sprite変数、[\s\S]*Temporary Variables、controller status、pose eventをliveには読みません/u,
+  );
+});
+
 test('documents DSL 4.0 capabilities and platform integrations from the completed implementation', () => {
-  assert.match(extensionGuide4, /79457815f5c89b181b1a879a079a4d6a72d405ed/u);
+  assert.match(extensionGuide4, /f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/u);
   assert.match(extensionGuide4, /3\.2 機能拡張ガイド/u);
   assert.match(extensionGuide4, /その文書と公開URLは変更しません/u);
   assert.match(extensionGuide4, /kubohiroyakamishibairuntime4/u);
@@ -177,11 +194,12 @@ test('documents DSL 4.0 capabilities and platform integrations from the complete
   assert.match(extensionGuide4, /source-composition/u);
 
   for (const dependency of [
-    '@kubohiroya/turbowarp-asset-manager@0.7.0',
-    '@kubohiroya/turbowarp-async-input@0.3.0',
-    '@kubohiroya/turbowarp-runtime-expression@0.3.0',
-    '@kubohiroya/turbowarp-svg-text@0.3.0',
-    '@kubohiroya/turbowarp-tmpose@1.6.1',
+    '@kubohiroya/turbowarp-asset-manager@0.11.0',
+    '@kubohiroya/turbowarp-async-input@0.4.0',
+    '@kubohiroya/turbowarp-bubble@0.7.0',
+    '@kubohiroya/turbowarp-runtime-expression@0.4.0',
+    '@kubohiroya/turbowarp-svg-text@0.5.0',
+    '@kubohiroya/turbowarp-tmpose@1.10.0',
   ]) {
     assert.match(
       extensionGuide4,
@@ -222,7 +240,7 @@ test('documents DSL 4.0 capabilities and platform integrations from the complete
 });
 
 test('reviews DSL 4.0 diagnostics and safe stopping from the completed implementation', () => {
-  assert.match(diagnosticsDesign4, /79457815f5c89b181b1a879a079a4d6a72d405ed/u);
+  assert.match(diagnosticsDesign4, /f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/u);
   for (const boundary of [
     'createDsl4SourceFrontend',
     'normalizeDsl4DiagnosticSequence',
@@ -305,7 +323,7 @@ test('keeps the DSL 3.x reference hand-authored', () => {
 });
 
 test('publishes a DSL 4.0-only software maintenance contract from the completed implementation', () => {
-  assert.match(developerGuide4, /79457815f5c89b181b1a879a079a4d6a72d405ed/u);
+  assert.match(developerGuide4, /f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/u);
   assert.match(developerGuide4, /sources\/dsl4\/source-lock\.json/u);
   assert.match(developerGuide4, /schema\/dsl-4\.schema\.json/u);
   assert.match(developerGuide4, /src\/dsl4\/source-graph-frontend\.js/u);
@@ -320,8 +338,8 @@ test('publishes a DSL 4.0-only software maintenance contract from the completed 
   assert.match(developerGuide4, /--max-total-source-bytes/u);
   assert.match(developerGuide4, /deep-frozen StoryDocument/u);
   assert.match(developerGuide4, /remote extension codeと\nremote previewは常に禁止/u);
-  assert.match(developerGuide4, /release-sources\/4\.0\.0-dev\/app/u);
-  assert.match(developerGuide4, /kamishibai-4\.0\.sb3/u);
+  assert.match(developerGuide4, /release-sources\/4\.0\.0-rc\.5\/app/u);
+  assert.match(developerGuide4, /kamishibai-4\.0\.0-rc\.5\.sb3/u);
   assert.match(developerGuide4, /pnpm verify:full/u);
   assert.match(developerGuide4, /pnpm sb3:dsl4-release:check/u);
   assert.match(developerGuide4, /npmへ公開済みのversionは上書きせず/u);

@@ -20,53 +20,57 @@ test('publishes a separate DSL 4.0 release history', () => {
   assert.equal(publication?.version, '4.0');
   assert.equal(publication?.outputDirectory, '4.0/dsl-author-guides');
   assert.match(dsl4Index, /dsl-author-guides\/dsl-4\.0-history\//u);
-  assert.match(
-    dsl4Index,
-    /vivliostyle\.org\/viewer\/#src=https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-docs\/4\.0\/dsl-author-guides\/dsl-4\.0-history\/publication\.json/u,
-  );
 });
 
-test('tracks the 4.0.0 candidate without claiming formal publication', () => {
+test('records rc.5 as a published prerelease without claiming stable 4.0.0', () => {
   assert.equal(historyManifest.series, '4.0');
-  assert.equal(entry.version, '4.0.0');
-  assert.equal(entry.publicationState, 'candidate-verified-publication-pending');
-  assert.equal(entry.formalPublication.gitTag, null);
-  assert.equal(entry.formalPublication.githubRelease, null);
-  assert.equal(entry.formalPublication.npmVersion, null);
-  assert.equal(entry.formalPublication.latestFormalRelease, 'v3.2.3');
+  assert.equal(entry.version, '4.0.0-rc.5');
+  assert.equal(entry.publicationState, 'published-prerelease');
+  assert.equal(entry.publication.gitTag, 'v4.0.0-rc.5');
+  assert.equal(entry.publication.tagCommit, sourceLock.commit);
+  assert.equal(entry.publication.npmVersion, '4.0.0-rc.5');
+  assert.equal(entry.publication.npmDistTag, 'next');
+  assert.equal(entry.publication.recommendedStableRelease, 'v3.2.3');
+  assert.equal(entry.publication.officialDsl4Release, null);
 
-  assert.match(history, /candidate検証済み・正式公開待ち/u);
-  assert.match(history, /annotated `v4\.0\.0`.*未公開/u);
-  assert.doesNotMatch(history, /v4\.0\.0.{0,20}(?:公開済み|正式リリース済み)/u);
+  assert.match(history, /状態: \*\*公開プレリリース\*\*/u);
+  assert.match(history, /正式版`v4\.0\.0`は未公開/u);
 });
 
-test('pins source, schema, artifacts, surfaces, flags, and constraints', () => {
-  assert.equal(
-    entry.source.releasePreparationMergeCommit,
-    '23739cc102a8afaaba713b0c92adb4c1c236aaee',
-  );
-  assert.equal(entry.source.verifiedCandidateCommit, candidate.runtime.candidateCommit);
-  assert.equal(entry.source.releaseSourceCommit, candidate.runtime.releaseSource.commit);
-  assert.equal(entry.schema.candidateSha256, candidate.runtime.schema.sha256);
+test('pins rc.5 source, schema, artifacts, surfaces, flags, and verification', () => {
+  assert.equal(entry.source.releasePreparationMergeCommit, candidate.runtime.candidateCommit);
+  assert.equal(entry.source.freezeMergeCommit, candidate.runtime.freezeCommit);
+  assert.equal(entry.source.sourceIdentity, candidate.runtime.releaseSource.sourceIdentity);
+  assert.equal(entry.schema.releaseSha256, candidate.runtime.schema.sha256);
   assert.equal(entry.schema.documentationReferenceCommit, sourceLock.commit);
   assert.equal(entry.schema.documentationReferenceSha256, sourceLock.schemaSha256);
   assert.deepEqual(entry.featureFlags, candidate.runtime.featureFlags);
   assert.equal(entry.artifacts.standardSb3.sha256, candidate.runtime.standardArtifact.sha256);
+  assert.equal(entry.artifacts.standardSb3.size, candidate.runtime.standardArtifact.size);
   assert.equal(entry.artifacts.npmTarball.sha256, candidate.runtime.packageTarball.sha256);
-  assert.equal(entry.verification.physicalCameraAndPose, 'passed');
-  assert(entry.surfaces.length >= 9);
-  assert(entry.knownConstraints.length >= 8);
+  assert.equal(entry.verification.physicalCameraAndPose, 'rc.5-retest-pending');
+  assert(entry.surfaces.includes('turbowarp-core-action-blocks'));
+  assert(entry.knownConstraints.includes('published-tutorial-and-sample-artifacts-remain-rc.3'));
 
   for (const value of [
     entry.source.releasePreparationMergeCommit,
-    entry.source.verifiedCandidateCommit,
-    entry.source.releaseSourceCommit,
-    entry.schema.candidateSha256,
+    entry.source.freezeMergeCommit,
+    entry.source.sourceIdentity,
+    entry.schema.releaseSha256,
     entry.artifacts.standardSb3.sha256,
     entry.artifacts.npmTarball.sha256,
   ]) {
     assert.match(history, new RegExp(value, 'u'));
   }
+});
+
+test('records the rc.5 dependency pins and immutable rollback', () => {
+  assert.equal(entry.dependencies['@kubohiroya/turbowarp-bubble'], '0.7.0');
+  assert.equal(entry.dependencies['@kubohiroya/turbowarp-tmpose'], '1.10.0');
+  assert.equal(entry.rollback.fixVersion, 'publish-4.0.0-rc.6');
+  assert.match(history, /23 core action/u);
+  assert.match(history, /rc\.5のbyte列を上書きせず/u);
+  assert.match(history, /4\.0\.0-rc\.6/u);
 });
 
 test('defines the update contract and keeps migration details out', () => {
@@ -77,8 +81,6 @@ test('defines the update contract and keeps migration details out', () => {
     'repeat-build-skip',
   ]);
   assert(historyManifest.updateContract.requiredFields.length >= 9);
-  assert.match(history, /^## 4\.0\.xを追記する$/mu);
-  assert.match(history, /tag、release、npm、Pagesのどれかが欠ける場合/u);
-  assert.match(history, /同一入力の再build skip/u);
+  assert.match(history, /^## 次のversionを追記する$/mu);
   assert.doesNotMatch(history, /convert-dsl4|kamishibai=|\.txt|^## .*移行/mu);
 });

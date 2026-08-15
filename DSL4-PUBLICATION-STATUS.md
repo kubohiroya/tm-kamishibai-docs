@@ -2,42 +2,55 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-DSL 4.0の実装、リリース、公開画面、文書の状態を混同しないため、次の語を使います。
+DSL 4.0の実装、プレリリース、安定版、公開サンプル、文書の状態を混同しないため、次の語を使います。
 
-| 状態         | 意味                                                               |
-| ------------ | ------------------------------------------------------------------ |
-| 実装基準     | 固定コミットとスキーマで、実装内容を調査・検証した基準             |
-| リリース候補 | `next`等で先行公開され、安定版としては固定されていない候補         |
-| 正式リリース | タグ、リリースノート、配布物、完全性情報が固定されたバージョン     |
-| 公開画面     | 読者が実際に利用できるプレイヤー、サンプル、ダウンロード、CLI      |
-| 文書状態     | 固定実装を説明する資料か、正式リリースの操作を説明する資料かの区別 |
+| 状態             | 意味                                                             |
+| ---------------- | ---------------------------------------------------------------- |
+| 実装基準         | 固定commitとSchemaで実装内容を調査・検証した基準                 |
+| 公開プレリリース | npm `next`、GitHub prerelease、Pages成果物として公開された候補版 |
+| 安定版           | npm `latest`と通常のダウンロード導線で推奨する版                 |
+| 公開サンプル基準 | サンプル作品、スターター、Web版を生成したruntimeの版             |
+| 文書状態         | どの実装、配布物、公開画面を説明する資料かの区別                 |
 
-## 2026年8月13日の確認結果
+## 2026年8月15日の確認結果
 
-- DSL 4.0文書の公開実装基準は`tmpose-kamishibai`のコミット`9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014`
-- `v4.0.0-rc.2`はnpmの`next`、GitHub prerelease、PagesのSB3として公開済み
-- GitHub Releasesで公開済みの最新正式リリースは`v3.2.3`
-- `v4.0.0`の正式リリースは未公開
-- 公開作品ページの4.0サンプル、Web版、チュートリアル用スターター、addition kitは利用可能
-- `4.0.0-rc.2`のCLIは利用可能だが、安定版`4.0.0`との同一性は保証しない
+- DSL 4.0文書の実装基準はannotated tag `v4.0.0-rc.5`のcommit
+  [`f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6`](https://github.com/kubohiroya/tmpose-kamishibai/commit/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6)
+- `v4.0.0-rc.5`はnpmの`next`、GitHub prerelease、PagesのStandard SB3として公開済み
+- rc.5のStandard SB3は`kamishibai-4.0.0-rc.5.sb3`、6,664,571 bytes、SHA-256
+  `2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c`
+- 安定版の推奨は`v3.2.3`で、正式版`v4.0.0`は未公開
+- 公開中の4.0サンプル作品、スターター、Web版はrc.3で作成された成果物を含む
+- rc.5の作者経路とrc.3のサンプル再生経路を、本文とmachine-readable manifestで区別する
 
-確認元: [tmpose-kamishibai Releases](https://github.com/kubohiroya/tmpose-kamishibai/releases)
+確認元:
+[v4.0.0-rc.5 GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.5)、
+[npm 4.0.0-rc.5](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.5)、
+[Pages downloads](https://kubohiroya.github.io/tmpose-kamishibai/downloads/)
 
-## 公開画面に基づき完了した課題
+## rc.5で文書へ反映する差分
 
-- [#41](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/41): 公開作品ページ、公開Web版、
-  機械可読manifest、実機証跡に基づく
-  [紙芝居アプリ 4.0 操作説明書](docs/user-guides/user-guide-4.0.md)
+- composite ID `kubohiroyakamishibai4`で全23 core actionを可視TurboWarp blockとして公開
+- 6つの外部機能拡張とcore Runtimeの計7 memberに見出しと文書ボタンを表示
+- Bubble 0.7.0、TMPose 1.10.0を含むexact dependency pin
+- `poseRecognition.modelInitialization`の`legacy`／`latest-needed`、並列初期化、AbortSignal対応
+- PoseNet model dataをruntime JavaScriptからproject dataへ移し、playback runtimeとauthoring runtimeを分離
+- Standard SB3を6,664,571 bytesへ縮小
 
-#41では正式UI画像を必須とせず、一般向け本文は操作順と失敗時の戻り方に絞ります。公開URL、版、
-checksumなどの追跡情報は`sources/dsl4/user-guide-4.0-public-surfaces.json`で固定します。
-画像を将来追加するときだけcapture gateを適用します。
+## 公開画面に基づく文書
 
-## 公開状態を明記して完了した課題
+- [紙芝居アプリ 4.0 操作説明書](docs/user-guides/user-guide-4.0.md)は公開画面を説明する
+- [紙芝居を遊ぶ](docs/tutorials/play.md)は公開サンプル成果物rc.3を対象にする
+- [紙芝居を作る](docs/tutorials/create.md)はrc.5 Standard SB3を作者環境として使い、公開starterのrc.3基準を併記する
+- 公開URL、版、checksumなどの追跡情報は
+  [`sources/dsl4/user-guide-4.0-public-surfaces.json`](sources/dsl4/user-guide-4.0-public-surfaces.json)へ固定する
 
-- [#42](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/42): release準備merge、検証candidate、
-  Schema、surface、制約と正式公開状態を分ける
-  [紙芝居DSL 4.0 リリース履歴](docs/dsl-author-guides/dsl-4.0-history.md)
+## リリース記録
+
+- [紙芝居DSL 4.0 リリース履歴](docs/dsl-author-guides/dsl-4.0-history.md)はrc.5のtag、公開URL、成果物、
+  dependencyとrollbackを記録する
+- [DSL 4.0 release smoke](docs/developer-guides/release-smoke-4.0.md)はrc.5の自動検証と公開照合を記録する
+- rc.5でTMPose、PoseNet、モデル初期化経路が変わったため、rc.3の実カメラ証跡をrc.5の合格証跡へ流用しない
 
 ## 安定版4.0.0の公開時に更新する情報
 
@@ -45,24 +58,15 @@ checksumなどの追跡情報は`sources/dsl4/user-guide-4.0-public-surfaces.jso
 - GitHub Release URL、公開日、release asset URL／size／SHA-256／provenance
 - npm 4.0.0のregistry URLとintegrity
 - production Pagesのversionとartifact checksum
+- 4.0.0で再生成したサンプル、スターター、Web版のruntime基準
 
-未公開のtag、release asset、npm情報を公開済みとして本文へ固定しません。現在は履歴項目の
-`publicationState`を`candidate-verified-publication-pending`として維持します。
-
-## リリース候補で完了した課題
-
-- [#47](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/47): checksum付き候補、配布SB3／Web、
-  Browser／CLI Preview、実カメラ・実ポーズ、release-stop、証跡、rollbackを
-  [DSL 4.0 release smoke](docs/developer-guides/release-smoke-4.0.md)として固定
-
-#47の結果はcandidateの公開可否を判定する記録であり、正式リリース済みという意味ではありません。正式tag、
-npm integrity、release asset URL、Pages URLが確定した時点でcandidate manifestとリリース履歴を更新し、
-変更範囲のsmokeを再実行します。
+未公開のtag、release asset、npm情報を公開済みとして本文へ固定しません。rc.5の公開記録と、将来の
+安定版4.0.0の状態は別の履歴項目として管理します。
 
 ## 更新手順
 
-1. GitHub Releaseのタグ、公開日時、リリースノート、配布物を一次情報で確認する
-2. 公開作品と正式リリースの状態を別々に記録する
-3. 各文書とテストを更新する
-4. 4.0トップ、文書メタデータ、本文の状態表示を同じ変更で更新する
-5. 問題があれば、未確定の公開情報を削除し、確認済みの公開画面または固定実装基準の説明へ戻す
+1. GitHub Release、npm registry、Pages成果物を一次情報で確認する
+2. 実装基準、公開プレリリース、安定版、公開サンプル基準を別々に記録する
+3. 各文書、machine-readable manifest、テストを同じ変更で更新する
+4. 4.0トップと文書メタデータを更新し、build後の公開表示を確認する
+5. 問題があれば未確認の公開情報を削除し、確認済みのversion、commit、checksumへ戻す

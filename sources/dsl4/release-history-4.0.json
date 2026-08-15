@@ -1,39 +1,50 @@
 {
   "formatVersion": 1,
   "series": "4.0",
-  "updatedAt": "2026-08-12T13:30:00+09:00",
+  "updatedAt": "2026-08-15T09:26:04+09:00",
   "entries": [
     {
-      "version": "4.0.0",
-      "publicationState": "candidate-verified-publication-pending",
-      "formalPublication": {
-        "checkedAt": "2026-08-12T13:30:00+09:00",
-        "gitTag": null,
-        "githubRelease": null,
-        "npmVersion": null,
-        "productionPagesState": "not-verified-as-v4.0.0",
-        "latestFormalRelease": "v3.2.3"
+      "version": "4.0.0-rc.5",
+      "publicationState": "published-prerelease",
+      "publication": {
+        "checkedAt": "2026-08-15T09:26:04+09:00",
+        "publishedAt": "2026-08-15T03:55:40+09:00",
+        "gitTag": "v4.0.0-rc.5",
+        "tagCommit": "f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6",
+        "githubRelease": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.5",
+        "npmVersion": "4.0.0-rc.5",
+        "npmUrl": "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.5",
+        "npmDistTag": "next",
+        "pagesUrl": "https://kubohiroya.github.io/tmpose-kamishibai/downloads/",
+        "pagesCommit": "7af1416e2f48cedae0a9a5d82c598da3b2ad9d5c",
+        "recommendedStableRelease": "v3.2.3",
+        "officialDsl4Release": null
       },
       "source": {
         "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
-        "releasePreparationPullRequest": 452,
-        "releasePreparationMergeCommit": "23739cc102a8afaaba713b0c92adb4c1c236aaee",
-        "verifiedCandidateCommit": "28d98125573f3186530fba231ecda844752bb14f",
-        "releaseSourcePath": "release-sources/4.0.0/app",
-        "releaseSourceCommit": "dc8f65eb9f9b68d778ba3b4fd9da0926b42ff4e9",
-        "releaseNotePath": "docs/releases/v4.0.0.md",
-        "sourceCatalogState": "stable-recommended"
+        "releaseIssue": 583,
+        "releasePreparationPullRequest": 593,
+        "releasePreparationMergeCommit": "9b3895638edba009ee4558a6c0594f077d9fbd6b",
+        "freezePullRequest": 594,
+        "freezeMergeCommit": "f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6",
+        "publicationPullRequest": 596,
+        "publicationMergeCommit": "f76af3b27973dad2ebab601550a585180eec1ad9",
+        "releaseSourcePath": "release-sources/4.0.0-rc.5/app",
+        "releaseNotePath": "docs/releases/v4.0.0-rc.5.md",
+        "sourceIdentity": "sha256:a6c4be01405af1b3070f6d02dc584a55bd2b45844ae48761aa3d4141ef474ca4"
       },
       "schema": {
         "path": "schema/dsl-4.schema.json",
-        "candidateSha256": "287867c36feff4d3fd7a5b266ab4f27368dd25ca0edc5b8c400fcc64ad08f230",
-        "documentationReferenceCommit": "f3c13d38b6623e9dd5ec94b02d390c3466b40e6f",
+        "releaseSha256": "0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac136",
+        "documentationReferenceCommit": "f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6",
         "documentationReferenceSha256": "0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac136"
       },
       "surfaces": [
         "yaml-source",
         "source-graph",
         "standard-runtime",
+        "turbowarp-core-action-blocks",
+        "member-documentation-buttons",
         "validate-dsl4",
         "build-dsl4",
         "preview-dsl4-watch",
@@ -47,47 +58,73 @@
           "dsl4Runtime",
           "dsl4AppShell",
           "dsl4PoseFeedbackModes",
-          "dsl4SpeechAdvanceTypewriter"
+          "dsl4SpeechAdvanceTypewriter",
+          "dsl4TurboWarpActionSurface"
         ],
         "nonEmbeddedDevelopmentAdditionalEnabled": [
           "dsl4WebPreviewAdapter",
+          "dsl4BrowserDistributionBuild",
           "dsl4PreviewReloadOverlay",
           "dsl4Debugger"
         ]
       },
+      "dependencies": {
+        "@kubohiroya/turbowarp-asset-manager": "0.11.0",
+        "@kubohiroya/turbowarp-async-input": "0.4.0",
+        "@kubohiroya/turbowarp-bubble": "0.7.0",
+        "@kubohiroya/turbowarp-runtime-expression": "0.4.0",
+        "@kubohiroya/turbowarp-svg-text": "0.5.0",
+        "@kubohiroya/turbowarp-tmpose": "1.10.0"
+      },
       "artifacts": {
         "standardSb3": {
-          "publicationState": "verified-candidate-build",
-          "size": 7633722,
-          "sha256": "ab8bfefab37620538db27e4846334723d567c64bf7972d8a962287feb2a72807"
+          "publicationState": "published",
+          "filename": "kamishibai-4.0.0-rc.5.sb3",
+          "url": "https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.5.sb3",
+          "size": 6664571,
+          "sha256": "2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c"
         },
         "npmTarball": {
-          "publicationState": "npm-publish-dry-run",
-          "filename": "kubohiroya-tmpose-kamishibai-4.0.0.tgz",
-          "size": 5499295,
-          "sha256": "19117725dc8fa291776087ea9250025a557f0a1db6174cab9d94c4bdf476d8b7"
+          "publicationState": "published",
+          "url": "https://registry.npmjs.org/@kubohiroya/tmpose-kamishibai/-/tmpose-kamishibai-4.0.0-rc.5.tgz",
+          "size": 6425111,
+          "sha256": "f7e9075a0a4445367aa38b2a9a2b71a5a22ff471e7d3795c9a9b1430685c7b23",
+          "sha1": "dfc158ff61ae7710f66701f3f3609ec13187d736",
+          "integrity": "sha512-RF4kHhE2e1EzKu5eYwMdV4//8uVj8OflafQ5R1GlRVmQz2ONcdVZfeY6fvB9EC/VO7irL7deH1h9Cqo08jWj7A=="
         }
       },
+      "changes": [
+        "all-23-core-actions-visible-as-turbowarp-blocks",
+        "seven-member-headings-and-documentation-buttons",
+        "bubble-0.7.0-measured-wrapping-native-reveal-speech-and-animation",
+        "tmpose-1.10.0-cancellable-model-initialization",
+        "pose-model-initialization-legacy-or-latest-needed",
+        "posenet-model-data-moved-out-of-runtime-javascript",
+        "playback-runtime-separated-from-authoring-runtime"
+      ],
       "knownConstraints": [
-        "loopback-preview-only",
-        "source-includes-explicit-opt-in",
-        "development-session-state-not-persisted",
-        "asset-only-watch-requires-cli-preview",
-        "remote-assets-require-https-digest-and-media-type",
-        "standard-runtime-is-not-an-extension-bundle-repack",
-        "formal-publication-pending",
-        "documentation-schema-reference-is-a-separate-pinned-snapshot"
+        "recommended-stable-remains-3.2.3",
+        "official-4.0.0-unpublished",
+        "structured-data-and-action-context-remain-default-off",
+        "default-model-initialization-is-legacy-and-non-parallel",
+        "previous-versioned-sb3-files-remain-immutable",
+        "published-tutorial-and-sample-artifacts-remain-rc.3",
+        "rc.5-physical-camera-and-pose-retest-pending"
       ],
       "verification": {
-        "candidateManifest": "sources/dsl4/release-smoke-4.0-candidate.json",
-        "commands": ["pnpm verify:full", "pnpm release:check"],
-        "unitTests": 1148,
-        "chromiumTests": 57,
-        "physicalCameraAndPose": "passed"
+        "manifest": "sources/dsl4/release-smoke-4.0-candidate.json",
+        "commands": ["pnpm release:dsl4:check", "pnpm verify:full", "pnpm release:check"],
+        "unitTests": 1224,
+        "chromiumTests": 63,
+        "githubActions": "https://github.com/kubohiroya/tmpose-kamishibai/actions/runs/31823718461/job/94842799234",
+        "publishedArtifactHashMatch": true,
+        "physicalCameraAndPose": "rc.5-retest-pending"
       },
       "rollback": {
-        "beforeFormalPublication": "discard-candidate-and-keep-v3.2.3-recommended",
-        "afterFormalPublication": "deprecate-and-annotate-then-publish-next-patch"
+        "npm": "move-next-to-4.0.0-rc.4",
+        "githubAndPages": "add-warning-without-replacing-rc.5-bytes",
+        "fixVersion": "publish-4.0.0-rc.6",
+        "pagesRollbackCommit": "1708a19719fb6441040431a4d9daa36e8647407b"
       }
     }
   ],

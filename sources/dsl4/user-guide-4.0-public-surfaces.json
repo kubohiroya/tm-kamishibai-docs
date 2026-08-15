@@ -1,13 +1,21 @@
 {
   "formatVersion": 1,
-  "verifiedAt": "2026-08-13T11:30:43+09:00",
+  "verifiedAt": "2026-08-15T09:26:04+09:00",
   "documentIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/41",
   "verificationIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/122",
   "releaseState": {
-    "runtimeVersionLabel": "Version 4.0.0 (2026/08/11)",
-    "publishedPrerelease": "v4.0.0-rc.3",
+    "runtimeVersionLabel": "Version 4.0.0-rc.5 (2026/08/15)",
+    "publishedPrerelease": "v4.0.0-rc.5",
+    "publishedPrereleaseCommit": "f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6",
+    "githubReleaseUrl": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.5",
+    "npmUrl": "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.5",
+    "standardSb3Url": "https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.5.sb3",
+    "standardSb3Size": 6664571,
+    "standardSb3Sha256": "2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c",
     "formalGitHubReleasePublished": false,
-    "latestFormalGitHubRelease": "v3.2.3"
+    "latestFormalGitHubRelease": "v3.2.3",
+    "publicSampleBaseline": "v4.0.0-rc.3",
+    "sampleBaselineDiffersFromPublishedPrerelease": true
   },
   "samples": {
     "repository": "kubohiroya/tmpose-kamishibai-samples",
@@ -92,7 +100,10 @@
     "verifiedOn": "2026-08-11",
     "camera": "passed",
     "pose": "passed",
-    "evidenceUrl": "https://github.com/kubohiroya/tmpose-kamishibai/issues/510#issuecomment-5255177777"
+    "evidenceUrl": "https://github.com/kubohiroya/tmpose-kamishibai/issues/510#issuecomment-5255177777",
+    "appliesToRuntimeVersion": "4.0.0-rc.3",
+    "appliesToPublishedPrerelease": false,
+    "rc5RetestStatus": "pending"
   },
   "visuals": {
     "formalUiCapturesIncluded": false,

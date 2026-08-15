@@ -46,7 +46,10 @@ test('introduces authoring terms before relying on them', () => {
   assert.match(createTutorial, /ローカルプレビュー（ブラウザー上で\s*変更を確かめる画面）/u);
   assert.match(createTutorial, /`project\.source\.json`は読み込む台本を\s*指定する設定ファイル/u);
 
-  const authorIntroduction = authorGuide.slice(0, authorGuide.indexOf('## 公開前の文書について'));
+  const authorIntroduction = authorGuide.slice(
+    0,
+    authorGuide.indexOf('## 公開プレリリースと文書基準'),
+  );
   for (const term of [
     'YAML台本',
     '作品フォルダー',

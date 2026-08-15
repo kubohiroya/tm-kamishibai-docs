@@ -3,17 +3,18 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 対象: DSL 4.0ランタイムをTurboWarp Editorで開き、集約されたブロックからプログラムを書く方  
-調査基準: tmpose-kamishibai 4.0.0-rc.5候補、sb3-toolchain 0.8.0、2026年8月15日
+調査基準: tmpose-kamishibai 4.0.0-rc.5（`f323a54`）、sb3-toolchain 0.8.0、2026年8月15日
 
-文書状態: 固定実装基準を説明する4.0候補版向けリファレンス  
-実装基準: 2026年8月15日時点のtmpose-kamishibai main
+文書状態: 公開プレリリース4.0.0-rc.5向けリファレンス<br />
+実装基準: annotated tag `v4.0.0-rc.5`のcommit `f323a54`
 
 この一覧は4.0の正式リリースまたは将来版で同じblock構成を保証するものではありません。利用前に
 [公開元](https://github.com/kubohiroya/tmpose-kamishibai/releases)のversionとrelease noteを確認してください。
 
 DSL 4.0のSB3には、紙芝居ランタイムと6つの機能拡張が、一つの静的な機能拡張bundleとして入っています。
 TurboWarp Editorでは一つのパレットに見えますが、見出し、アイコン、名前空間、ドキュメントボタンによって
-由来を識別できます。本書は、現行bundleでパレットに表示される121ブロックを由来別に一覧にします。
+由来を識別できます。本書は、現行bundleでパレットに表示される119ブロックと、TurboWarpの変数blockから
+参照できる2つの公開Stage変数を一覧にします。
 
 ## パレットとドキュメントボタン
 
@@ -25,20 +26,85 @@ TurboWarp Editorでは一つのパレットに見えますが、見出し、ア�
 
 ボタンを押すと、次の公開文書を開きます。リンク先のトップが英語の場合は、ページ内の「日本語」を選べます。
 
-| 由来                       | version        | member ID                      | docsURI                                                                                                                                |
-| -------------------------- | -------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Kamishibai DSL 4.0 Runtime | 4.0.0-rc.5候補 | `kubohiroyakamishibairuntime4` | [本リファレンス](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/) |
-| Asset Manager              | 0.11.0         | `kubohiroyaassetmanager`       | [Asset Manager](https://kubohiroya.github.io/turbowarp-asset-manager/)                                                                 |
-| Async Input                | 0.4.0          | `kubohiroyaasyncinput`         | [Async Input](https://kubohiroya.github.io/turbowarp-async-input/)                                                                     |
-| Bubble                     | 0.7.0          | `kubohiroyabubble`             | [Bubble](https://kubohiroya.github.io/turbowarp-bubble/)                                                                               |
-| Runtime Expression         | 0.4.0          | `kubohiroyaruntimeexpression`  | [Runtime Expression](https://kubohiroya.github.io/turbowarp-runtime-expression/)                                                       |
-| SVG Text                   | 0.5.0          | `kubohiroyasvgtext`            | [SVG Text](https://kubohiroya.github.io/turbowarp-svg-text/)                                                                           |
-| TMPose                     | 1.10.0         | `tmpose`                       | [TMPose](https://kubohiroya.github.io/turbowarp-tmpose/)                                                                               |
+| 由来                       | version    | member ID                      | docsURI                                                                                                                                |
+| -------------------------- | ---------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Kamishibai DSL 4.0 Runtime | 4.0.0-rc.5 | `kubohiroyakamishibairuntime4` | [本リファレンス](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/) |
+| Asset Manager              | 0.11.0     | `kubohiroyaassetmanager`       | [Asset Manager](https://kubohiroya.github.io/turbowarp-asset-manager/)                                                                 |
+| Async Input                | 0.4.0      | `kubohiroyaasyncinput`         | [Async Input](https://kubohiroya.github.io/turbowarp-async-input/)                                                                     |
+| Bubble                     | 0.7.0      | `kubohiroyabubble`             | [Bubble](https://kubohiroya.github.io/turbowarp-bubble/)                                                                               |
+| Runtime Expression         | 0.4.0      | `kubohiroyaruntimeexpression`  | [Runtime Expression](https://kubohiroya.github.io/turbowarp-runtime-expression/)                                                       |
+| SVG Text                   | 0.5.0      | `kubohiroyasvgtext`            | [SVG Text](https://kubohiroya.github.io/turbowarp-svg-text/)                                                                           |
+| TMPose                     | 1.10.0     | `tmpose`                       | [TMPose](https://kubohiroya.github.io/turbowarp-tmpose/)                                                                               |
+
+以下の各member章の冒頭図は、SHA-256
+`2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c`の固定
+`kamishibai-4.0.0-rc.5.sb3`をTurboWarp Editorの日本語UIで開き、集約パレットを表示して撮影しました。
+各図は`◆ member名 [member ID] ◆`から次のmemberセパレータ直前までを切り出し、ブロックの並び替えや合成は
+していません。パレット自体が固定幅のため、長いブロック文の右端は実画面どおり見切れます。完全なopcodeと役割は
+図の直後にある表を正本としてください。
 
 集約時にopcodeはmember IDを含む名前空間へ変換されるため、同名ブロックが別memberにあっても衝突しません。
 保存済みprojectでは変換後opcodeを使い、利用者が見るブロック文と実行時の意味は上流拡張の定義を保ちます。
 
+## 現状TurboWarpブロックから参照できる公開変数（2変数）
+
+4.0.0-rc.5の公開SB3には、DSL 4.0ランタイムがポーズ認識の状態を公開するためのStage変数が2つあります。
+どちらもクラウド変数ではない通常の数値変数です。TurboWarpの「変数」パレットにある変数reporter、表示／非表示、
+設定、変更の各blockから、Stageとspriteのどちらでも同じ値を参照できます。
+
+| 変数名       | 値域   | ポーズ待機中の意味                                                   | 初期値・終了時 |
+| ------------ | ------ | -------------------------------------------------------------------- | -------------- |
+| `ポーズ認識` | 0〜100 | 現在の認識対象ポーズに対するconfidenceを百分率へ変換した値           | `0`            |
+| `チャージ`   | 0〜100 | 現在のポーズ手順が成立へどこまで進んだかを百分率へ変換したprogress値 | `0`            |
+
+固定された変数IDは順に`dsl4-pose-confidence`、`dsl4-pose-progress`です。ただし、TurboWarpのblockではIDではなく
+日本語の変数名を選びます。名前を変更したり、変数またはmonitorを削除したり、クラウド変数へ置き換えたりしないでください。
+必要なStage変数とmonitorをランタイムが一意に解決できない場合は、ポーズfeedbackの開始を安全側へ停止します。
+
+### 値の更新と寿命
+
+- ランタイム起動時は両方を`0`にしてmonitorを隠します。
+- `pose` actionが`waiting`または`charging`の間は、両方を更新してmonitorを表示します。値は0〜100の範囲ですが、
+  整数だけとは限りません。
+- `pose` actionが完了またはキャンセルされたときと、ランタイムを停止・解放したときは、両方を`0`へ戻して
+  monitorを隠します。
+
+`poseRecognition.feedback.mode`によって、TurboWarp blockからの扱いが変わります。
+
+| mode             | TurboWarp blockからの参照  | TurboWarp blockからの書換え                                                          |
+| ---------------- | -------------------------- | ------------------------------------------------------------------------------------ |
+| `scratchMirror`  | できる                     | ランタイムへの入力にはならず、次の更新で投影値へ戻る。省略時の既定mode               |
+| `scratchBinding` | できる                     | できる。各ポーズtickで最後に書いた0〜100の有限数値を一度読み取り、認識処理へ反映する |
+| `presenter`      | できるが常に公開値ではない | 使用しない。専用UIへ表示し、2変数はランタイムから更新されない                        |
+
+`scratchBinding`では数値または10進数表記の文字列を使えます。空文字、16進表記、`NaN`、`Infinity`、0未満、
+100を超える値のいずれかがある組は受理せず、最後にランタイムが投影した2変数の値へ戻します。
+
+### DSLの`variables:`とは別のもの
+
+台本のトップレベル`variables:`で宣言する名前付き値は、branch式とruntime controllerが所有する物語の内部状態です。
+同名のStage変数は自動作成されず、4.0.0-rc.5の集約パレットには、その内部状態を通常のTurboWarp変数blockへ
+直接読み書きする公開blockもありません。TurboWarpの変数blockから参照できる固定名の公開変数は、上記2変数だけです。
+
+ただし、`variables:`の値はrc.5でも`branch[].if`の条件式から参照できます。ASCIIのbare nameは`score >= 10`、
+それ以外の名前は`vars["救助回数"] >= 2`の形で記述します。式評価時に渡るのは台本変数の不変snapshotであり、
+Stage変数、sprite変数、Temporary Variables、上記2つのポーズfeedback変数は自動では含まれません。
+
+これ以外の内部状態と台本変数のTurboWarp連携契約は、
+[DSL 4.0ランタイム変数 TurboWarp連携リファレンス](dsl-4.0-runtime-variable-turbowarp-reference.md)で、
+公開、条件付き公開、非公開に分けて説明しています。台本での宣言と分岐式は、
+[DSL 4.0ランタイム変数ガイド](../dsl-author-guides/dsl-4.0-runtime-variable-guide.md)を参照してください。
+追加surfaceは実装済みですが既定OFFであり、4.0.0-rc.5の現行公開APIではありません。
+
+一覧は固定commitの
+[`release-sources/4.0.0-rc.5/app/project.source.json`](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/release-sources/4.0.0-rc.5/app/project.source.json)と
+[`scratch-pose-feedback-adapter.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/src/dsl4/platform/scratch-pose-feedback-adapter.js)に基づきます。
+
 ## Kamishibai DSL 4.0 Runtime（23ブロック）
+
+![TurboWarpの集約パレットに表示されたKamishibai DSL 4.0 Runtimeの23ブロック](../images/dsl4-palette-kamishibai-runtime.jpg)
+
+_図1: Kamishibai DSL 4.0 Runtimeのmemberセパレータで切り出したパレット。_
 
 このmemberは、YAML actionと同じSchema定義で引数を検証して実行します。`SPEC`、`ROUTES`、`STEPS`はJSON文字列です。
 
@@ -73,6 +139,10 @@ YAMLからTurboWarpの受信scriptを呼ぶ場合は、
 
 ## Asset Manager 0.11.0（23ブロック）
 
+![TurboWarpの集約パレットに表示されたAsset Manager 0.11.0の23ブロック](../images/dsl4-palette-asset-manager.jpg)
+
+_図2: Asset Managerのmemberセパレータで切り出したパレット。_
+
 素材を名前で登録し、画像、文字、音声、animationへ同じ名前を渡します。外部URL、cache、costume、backdrop、
 project sound、runtime textを扱います。
 
@@ -106,25 +176,36 @@ project sound、runtime textを扱います。
 パレットには表示されません。session binary backing、verified remote cache、bitmap resolutionなどのhost APIは
 上流ガイドのComposition APIを参照してください。
 
-## Async Input 0.4.0（11ブロック）
+## Async Input 0.4.0（9ブロック）
+
+![TurboWarpの集約パレットに表示されたAsync Input 0.4.0の9ブロック](../images/dsl4-palette-async-input.jpg)
+
+_図3: Async Inputのmemberセパレータで切り出したパレット。_
 
 入力listenerは、それを登録したStage、sprite、cloneが所有します。runtime variableはTemporary Variables由来です。
 
-| opcode                       | 役割                                              |
-| ---------------------------- | ------------------------------------------------- |
-| `listenForKey`               | physical keyでruntime variableを更新する          |
-| `listenForKeyAndBroadcast`   | keyで変数を更新してmessageを送る                  |
-| `stopListeningForKey`        | 現在targetの指定key listenerを外す                |
-| `stopAllKeyListeners`        | 現在targetの全key listenerを外す                  |
-| `listenForTouch`             | 現在sprite／cloneのタッチで変数を更新する         |
-| `listenForTouchAndBroadcast` | タッチで変数を更新してmessageを送る               |
-| `stopListeningForTouch`      | 現在targetのtouch listenerを外す                  |
-| `listenForPose`              | accumulated poseで変数を更新する                  |
-| `stopListeningForPose`       | 現在targetの指定pose listenerを外す               |
-| `stopAllPoseListeners`       | 現在targetの全pose listenerを外す                 |
-| `stopAllInputListeners`      | 現在targetのkey、touch、pose listenerをすべて外す |
+| opcode                            | 役割                                               |
+| --------------------------------- | -------------------------------------------------- |
+| `listenForKey`                    | physical keyでruntime variableを更新する           |
+| `listenForKeyAndBroadcast`        | keyで変数を更新してmessageを送る                   |
+| `stopListeningForKey`             | 現在targetの指定key listenerを外す                 |
+| `stopAllKeyListeners`             | 現在targetの全key listenerを外す                   |
+| `listenForTouch`                  | 現在sprite／cloneのタッチで変数を更新する          |
+| `listenForTouchAndBroadcast`      | タッチで変数を更新してmessageを送る                |
+| `stopListeningForTouch`           | 現在targetのtouch listenerを外す                   |
+| `stopAllInputListeners`           | 現在targetのkey、touch listenerをすべて外す        |
+| `listenForActorTouchAndBroadcast` | 名前付きactorのタッチで変数を更新してmessageを送る |
+
+sourceには`listenForPose`、`stopListeningForPose`、`stopAllPoseListeners`もありますが、rc.5では
+`poseInput` feature flagが既定OFFのためパレットに表示されず、119ブロックには数えません。
+`listenForActorTouchAndBroadcast`は実装上`internalBlockDefinitions`に置かれていますが、固定rc.5の集約パレットには
+表示されるため、本リファレンスでは公開パレットblockとして扱います。
 
 ## Bubble 0.7.0（28ブロック）
+
+![TurboWarpの集約パレットに表示されたBubble 0.7.0の28ブロック](../images/dsl4-palette-bubble.jpg)
+
+_図4: Bubbleのmemberセパレータで切り出したパレット。_
 
 BubbleはSVG body、SVG Text、portrait、目パチ、口パク、音声、continue indicatorを一つの表示surfaceとして扱います。
 
@@ -161,6 +242,10 @@ BubbleはSVG body、SVG Text、portrait、目パチ、口パク、音声、conti
 
 ## Runtime Expression 0.4.0（3ブロック）
 
+![TurboWarpの集約パレットに表示されたRuntime Expression 0.4.0の3ブロック](../images/dsl4-palette-runtime-expression.jpg)
+
+_図5: Runtime Expressionのmemberセパレータで切り出したパレット。_
+
 | opcode                           | 役割                                                          |
 | -------------------------------- | ------------------------------------------------------------- |
 | `runtimeCondition`               | Temporary Variablesを使う制限付きJavaScript風条件式を評価する |
@@ -172,6 +257,10 @@ timeout、エラー時の扱いは上流ガイドを参照してください。
 
 ## SVG Text 0.5.0（2ブロック）
 
+![TurboWarpの集約パレットに表示されたSVG Text 0.5.0の2ブロック](../images/dsl4-palette-svg-text.jpg)
+
+_図6: SVG Textのmemberセパレータで切り出したパレット。_
+
 | opcode        | 役割                                                                   |
 | ------------- | ---------------------------------------------------------------------- |
 | `defineStyle` | background、文字色、font、size、alignを持つ名前付き文字styleを定義する |
@@ -180,6 +269,10 @@ timeout、エラー時の扱いは上流ガイドを参照してください。
 文字幅測定、skin所有権、target／全体解放はComposition APIで提供され、パレットblockではありません。
 
 ## TMPose 1.10.0（31ブロック）
+
+![TurboWarpの集約パレットに表示されたTMPose 1.10.0の31ブロック](../images/dsl4-palette-tmpose.jpg)
+
+_図7: TMPoseのmemberセパレータで切り出したパレット。_
 
 ### model、camera、preview
 

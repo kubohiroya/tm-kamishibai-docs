@@ -26,6 +26,7 @@ const expectedCollections = {
   'dsl-3.2-guides': ['dsl-manual.md', 'command-reference.md', 'history.md'],
   'dsl-4.0-guides': [
     'dsl-4.0-author-guide.md',
+    'dsl-4.0-runtime-variable-guide.md',
     'dsl-4.0-schema-reference.md',
     'dsl-4.0-history.md',
     'dsl-3.2-to-4.0-conversion-guide.md',
@@ -34,6 +35,7 @@ const expectedCollections = {
   'turbowarp-programmer-guides': [
     'dsl-4.0-turbowarp-broadcast-guide.md',
     'dsl-4.0-runtime-block-reference.md',
+    'dsl-4.0-runtime-variable-turbowarp-reference.md',
   ],
   'developer-guides': [
     'application-materials-guide.md',
@@ -245,7 +247,7 @@ test('names public document categories for the reader role', () => {
   );
   const turboWarpGuides = documentCollections.find(({id}) => id === 'turbowarp-programmer-guides');
   assert.equal(turboWarpGuides?.title, 'TurboWarpでプログラムを書く人向けドキュメント');
-  assert.equal(turboWarpGuides?.subtitle, 'DSL4.0ランタイムからのメッセージに応じた動作の記述');
+  assert.equal(turboWarpGuides?.subtitle, 'DSL 4.0ランタイムとのメッセージ・block・変数連携');
   assert.ok(
     documentCollections.indexOf(turboWarpGuides) >
       documentCollections.findIndex(({id}) => id === 'dsl-4.0-guides'),

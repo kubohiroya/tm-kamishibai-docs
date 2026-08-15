@@ -46,10 +46,11 @@
 | `docs/workshops/`         | 体験会の参加者、スタッフ、運営者        |
 
 具体的なファイル対応、依存境界、実施記録は[MIGRATION.md](MIGRATION.md)を参照してください。
-`docs/tutorials/`は公開済み`4.0.0-rc.3`を対象とする公開候補です。
+`docs/tutorials/`は公開済み`4.0.0-rc.5`を実行環境の基準とする公開候補です。
 `/4.0/tutorials/`系列へ配置し、4.0一覧では「紙芝居を遊ぶ」を見る人向け、「紙芝居を作る」を
 台本を作る人向けとして直接案内します。旧入口`/4.0/tutorials/`は4.0一覧へ転送します。
-公開RC、チュートリアル用サンプル、CLI、画像fixtureを固定し、全gateを完了しています。
+公開RC、CLI、画像fixtureを固定しています。チュートリアル用の公開サンプル成果物はrc.3のままなので、
+rc.5 Standard SB3の作者経路と、rc.3サンプルの再生経路を文書とmanifestで区別します。
 AppBarへ独立項目は追加せず、既存の「ドキュメント」を現在地にします。
 
 本文の用語、コード表記、固有概念の初出説明、図表の使い分けは
@@ -58,7 +59,7 @@ DSL 4.0の固定実装、正式リリース、公開画面、文書状態の区�
 [DSL 4.0 文書・公開状態の表記基準](DSL4-PUBLICATION-STATUS.md)で管理します。
 概念図の通常HTML、狭幅、印刷、フラグメントの確認結果は
 [DSL 4.0 概念図・フラグメントQA記録](DSL4-DIAGRAM-QA.md)へ記録します。
-固定成果物から再現したDSL 4.0実画面と、sourceからplatform portまでの実装追跡は
+公開rc.5から再現したDSL 4.0実画面と、source、runtime、live reload transactionの実装追跡図は
 [DSL 4.0 実装ビジュアル記録](DSL4-IMPLEMENTATION-VISUALS.md)で管理します。
 
 ## 開発

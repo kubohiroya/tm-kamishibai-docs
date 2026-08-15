@@ -528,7 +528,7 @@
       content,
       code = 'Standard SB3のブロックは\\n変更しません。\\n\\n作品の台本を外部ファイルで\\n読み込みます。',
     ) =>
-      `<div class="editor"><div class="editorbar"><strong>TurboWarp</strong><span>▶</span><span>kamishibai-4.0.0-rc.3.sb3</span></div><div class="editorgrid"><div class="panel"><h3>コード</h3><p>${code.replaceAll('\\n', '<br>')}</p></div><div class="editorstage">${content}</div><div class="panel"><h3>スプライト</h3><p>・Stage<br>・Student<br>・Loading<br>・Runtime</p></div></div></div>`;
+      `<div class="editor"><div class="editorbar"><strong>TurboWarp</strong><span>▶</span><span>kamishibai-4.0.0-rc.5.sb3</span></div><div class="editorgrid"><div class="panel"><h3>コード</h3><p>${code.replaceAll('\\n', '<br>')}</p></div><div class="editorstage">${content}</div><div class="panel"><h3>スプライト</h3><p>・Stage<br>・Student<br>・Loading<br>・Runtime</p></div></div></div>`;
     const dialog = (title, items, detail = '保存: 2026/08/13 08:20:14　✓ 検査済み') =>
       `<div class="dialog"><h2>${title}</h2><p>${detail}</p>${items.map((item, index) => `<div class="option ${index === 0 ? 'selected' : ''}">${item}</div>`).join('')}</div>`;
     const tree = (added = false) => `<div class="tree">EXPLORER
