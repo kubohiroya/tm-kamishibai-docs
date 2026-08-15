@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 790" role="img" aria-labelledby="title desc">
+  <title id="title">DSL 4.0 rc.5のレイヤー構成</title>
+  <desc id="desc">Project sourceをSource Graph、source frontend、immutable StoryDocument、runtime controller、port contract、TurboWarp adapterへ渡す依存方向と、preview・配布SB3のsurfaceを示す。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#315b72"/></marker>
+    <style>
+      text{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;fill:#172b3a}.title{font-size:30px;font-weight:700}.subtitle{font-size:16px;fill:#486272}.band{fill:#f7fafc;stroke:#b8c8d2;stroke-width:2}.box{stroke-width:2.4;rx:14}.source{fill:#e8f3fb;stroke:#2879a8}.core{fill:#e7f7f2;stroke:#25826e}.port{fill:#f3edfb;stroke:#7656a8}.platform{fill:#fff2df;stroke:#bd7522}.surface{fill:#fff;stroke:#7c8b95}.diag{fill:#fff0f0;stroke:#b64b4b}.label{font-size:19px;font-weight:700}.detail{font-size:14px;fill:#405663}.code{font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;fill:#244b60}.edge{fill:none;stroke:#315b72;stroke-width:2.2;marker-end:url(#arrow)}.dash{stroke-dasharray:7 6}.edgeLabel{font-size:13px;fill:#315b72;text-anchor:middle}.bandLabel{font-size:15px;font-weight:700;fill:#5a707e;letter-spacing:.04em}
+    </style>
+  </defs>
+  <rect width="1200" height="790" fill="#fff"/>
+  <text class="title" x="40" y="48">DSL 4.0 rc.5 アーキテクチャ</text>
+  <text class="subtitle" x="40" y="76">検証済みsourceから実画面までの一方向依存。runtime coreはTurboWarp・DOM・cameraを直接参照しない。</text>
+
+  <rect class="band" x="35" y="105" width="1130" height="145" rx="18"/>
+  <text class="bandLabel" x="55" y="132">AUTHORING / BUILD</text>
+  <rect class="box source" x="65" y="153" width="190" height="72"/>
+  <text class="label" x="160" y="181" text-anchor="middle">Project source</text><text class="detail" x="160" y="205" text-anchor="middle">entry YAML + include + assets</text>
+  <rect class="box source" x="305" y="145" width="205" height="88"/>
+  <text class="label" x="408" y="176" text-anchor="middle">Source Graph</text><text class="code" x="408" y="199" text-anchor="middle">source-graph.js</text><text class="detail" x="408" y="219" text-anchor="middle">有限探索・origin保持</text>
+  <rect class="box source" x="560" y="138" width="245" height="102"/>
+  <text class="label" x="683" y="168" text-anchor="middle">Source frontend</text><text class="code" x="683" y="192" text-anchor="middle">source-frontend.js</text><text class="detail" x="683" y="214" text-anchor="middle">restricted YAML / Schema</text><text class="detail" x="683" y="233" text-anchor="middle">semantic / expression / limits</text>
+  <rect class="box core" x="855" y="145" width="250" height="88"/>
+  <text class="label" x="980" y="176" text-anchor="middle">StoryDocument</text><text class="code" x="980" y="199" text-anchor="middle">story-document.js</text><text class="detail" x="980" y="219" text-anchor="middle">normalized + deep-frozen IR</text>
+  <path class="edge" d="M255 189H299"/><path class="edge" d="M510 189H554"/><path class="edge" d="M805 189H849"/>
+
+  <rect class="band" x="35" y="275" width="1130" height="215" rx="18"/>
+  <text class="bandLabel" x="55" y="303">RUNTIME CORE</text>
+  <rect class="box core" x="95" y="335" width="260" height="105"/>
+  <text class="label" x="225" y="367" text-anchor="middle">Runtime startup</text><text class="code" x="225" y="391" text-anchor="middle">runtime-startup.js</text><text class="detail" x="225" y="414" text-anchor="middle">component検証・session所有</text>
+  <rect class="box core" x="430" y="325" width="300" height="125"/>
+  <text class="label" x="580" y="357" text-anchor="middle">Runtime controller</text><text class="code" x="580" y="381" text-anchor="middle">runtime-controller.js</text><text class="detail" x="580" y="405" text-anchor="middle">scene / action / generation / event</text><text class="detail" x="580" y="428" text-anchor="middle">navigation・quiesce安全境界</text>
+  <rect class="box port" x="805" y="325" width="280" height="125"/>
+  <text class="label" x="945" y="357" text-anchor="middle">Port contracts</text><text class="detail" x="945" y="384" text-anchor="middle">stage・actor・say・input・pose</text><text class="detail" x="945" y="407" text-anchor="middle">asset lifecycle・condition</text><text class="code" x="945" y="431" text-anchor="middle">command → async operation</text>
+  <path class="edge" d="M980 233C980 275 225 278 225 329"/><path class="edge" d="M355 387H424"/><path class="edge" d="M730 387H799"/>
+  <text class="edgeLabel" x="391" y="377">session</text><text class="edgeLabel" x="767" y="377">dispatch</text>
+
+  <rect class="band" x="35" y="515" width="1130" height="145" rx="18"/>
+  <text class="bandLabel" x="55" y="543">PLATFORM ADAPTERS</text>
+  <rect class="box platform" x="75" y="565" width="205" height="70"/><text class="label" x="178" y="594" text-anchor="middle">Asset / Loading</text><text class="detail" x="178" y="617" text-anchor="middle">prepare・commit・release</text>
+  <rect class="box platform" x="320" y="565" width="205" height="70"/><text class="label" x="423" y="594" text-anchor="middle">Media / Actor</text><text class="detail" x="423" y="617" text-anchor="middle">Stage・Bubble・SVG Text</text>
+  <rect class="box platform" x="565" y="565" width="205" height="70"/><text class="label" x="668" y="594" text-anchor="middle">Input / Pose</text><text class="detail" x="668" y="617" text-anchor="middle">key・pointer・TMPose</text>
+  <rect class="box platform" x="810" y="565" width="285" height="70"/><text class="label" x="953" y="594" text-anchor="middle">TurboWarp runtime host</text><text class="code" x="953" y="617" text-anchor="middle">turbowarp-runtime-host.js</text>
+  <path class="edge" d="M945 450V500H178V559"/><path class="edge" d="M945 450V500H423V559"/><path class="edge" d="M945 450V500H668V559"/><path class="edge" d="M945 450V559"/>
+
+  <rect class="box surface" x="95" y="700" width="280" height="60"/><text class="label" x="235" y="727" text-anchor="middle">Browser authoring</text><text class="detail" x="235" y="748" text-anchor="middle">directory handle + browser watch</text>
+  <rect class="box surface" x="460" y="700" width="280" height="60"/><text class="label" x="600" y="727" text-anchor="middle">CLI local preview</text><text class="detail" x="600" y="748" text-anchor="middle">loopback protocol + immutable IR</text>
+  <rect class="box surface" x="825" y="700" width="280" height="60"/><text class="label" x="965" y="727" text-anchor="middle">Production SB3 / Web</text><text class="detail" x="965" y="748" text-anchor="middle">self-contained・reload stateなし</text>
+  <path class="edge dash" d="M178 635V694"/><path class="edge dash" d="M600 635V694"/><path class="edge dash" d="M953 635V694"/>
+
+  <rect class="box diag" x="1105" y="325" width="45" height="125"/>
+  <text class="detail" x="1128" y="361" text-anchor="middle"><tspan x="1128">診断</tspan><tspan x="1128" dy="24">共通</tspan><tspan x="1128" dy="24">surface</tspan></text>
+</svg>

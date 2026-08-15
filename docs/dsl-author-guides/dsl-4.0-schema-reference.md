@@ -11,10 +11,10 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 増やすときに[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)の必要な節をお読みください。
 
 文書状態: **固定実装基準を説明するSchemaリファレンス（正式リリースの操作資料ではない）**\
-Schema固定commit: [`f3c13d3`](https://github.com/kubohiroya/tmpose-kamishibai/commit/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f)\
+Schema固定commit: [`f323a54`](https://github.com/kubohiroya/tmpose-kamishibai/commit/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6)\
 Schema SHA-256: `0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac136`
 
-> **権威関係と配布状態:** 2026年8月13日時点で`v4.0.0-rc.3`はprereleaseとして公開されていますが、
+> **権威関係と配布状態:** 2026年8月15日時点で`v4.0.0-rc.5`はprereleaseとして公開されていますが、
 > 正式な`v4.0.0`ではありません。
 > 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、
 > 適合実装・testを固定しています。Schemaはruntime実装から生成しません。公開アプリ、配布artifact、
@@ -22,7 +22,7 @@ Schema SHA-256: `0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac13
 
 ## このリファレンスについて
 
-この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f3c13d38b6623e9dd5ec94b02d390c3466b40e6f/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
+この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
 注意事項、例はAnnotationで管理します。Schemaで定義される項目についてSchemaと生成物が異なる場合はSchemaを
 優先します。include文はSchema検証前に処理されるためJSON Schema外であり、固定した表層仕様と実装に基づいて掲載します。
@@ -34,7 +34,7 @@ Schema SHA-256: `0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac13
 
 - 上流repository: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai)
 - Schema path: `schema/dsl-4.schema.json`
-- 上流commit日時: `2026-08-15T01:05:28+09:00`
+- 上流commit日時: `2026-08-15T02:38:21+09:00`
 - 掲載範囲: トップレベル12 field、action 24種類、Annotation 87項目
 - 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>`
 - 差分確認: `pnpm docs:dsl4:check`

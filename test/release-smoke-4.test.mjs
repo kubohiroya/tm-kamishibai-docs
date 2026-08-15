@@ -18,81 +18,61 @@ test('publishes the DSL 4.0 smoke guide as an independent publication', () => {
   assert.equal(publication?.version, '4.0');
   assert.equal(publication?.outputDirectory, '4.0/developer-guides');
   assert.match(dsl4Index, /developer-guides\/release-smoke-4\.0\//u);
-  assert.match(
-    dsl4Index,
-    /vivliostyle\.org\/viewer\/#src=https:\/\/kubohiroya\.github\.io\/tmpose-kamishibai-docs\/4\.0\/developer-guides\/release-smoke-4\.0\/publication\.json/u,
-  );
 });
 
-test('pins the candidate and all distributable artifacts by checksum', () => {
-  assert.equal(candidate.status, 'verified-release-candidate');
+test('pins the published rc.5 source and distributable artifacts by checksum', () => {
+  assert.equal(candidate.status, 'published-prerelease-automated-verification-passed');
+  assert.equal(candidate.runtime.version, '4.0.0-rc.5');
   assert.match(candidate.runtime.candidateCommit, /^[0-9a-f]{40}$/u);
+  assert.match(candidate.runtime.freezeCommit, /^[0-9a-f]{40}$/u);
   assert.match(candidate.runtime.schema.sha256, /^[0-9a-f]{64}$/u);
+  assert.match(candidate.runtime.releaseSource.sourceIdentity, /^sha256:[0-9a-f]{64}$/u);
+  assert.equal(candidate.runtime.standardArtifact.publicationState, 'published');
   assert.match(candidate.runtime.standardArtifact.sha256, /^[0-9a-f]{64}$/u);
+  assert.equal(candidate.runtime.packageTarball.publicationState, 'published');
   assert.match(candidate.runtime.packageTarball.sha256, /^[0-9a-f]{64}$/u);
-  assert.equal(candidate.runtime.packageTarball.publicationState, 'npm-publish-dry-run');
-  assert.equal(candidate.samples.pullRequest, 91);
-
-  for (const artifact of [
-    candidate.samples.urashima.sb3,
-    candidate.samples.urashima.web,
-    candidate.samples.myUrashima.sb3,
-    candidate.samples.myUrashima.web,
-  ]) {
-    assert(artifact.size > 0);
-    assert.match(artifact.sha256, /^[0-9a-f]{64}$/u);
-  }
+  assert.match(candidate.runtime.packageTarball.integrity, /^sha512-/u);
+  assert.equal(candidate.publicSamples.version, '4.0.0-rc.3');
+  assert.match(candidate.publicSamples.status, /not-rc\.5-smoke-evidence/u);
 });
 
-test('records feature flags, physical evidence, automatic verification, and privacy', () => {
+test('records rc.5 flags, automated evidence, physical retest boundary, and privacy', () => {
   assert.equal(candidate.runtime.featureFlags.defaultState, 'all-off');
-  assert.deepEqual(candidate.runtime.featureFlags.standardProductionEnabled, [
-    'dsl4Runtime',
-    'dsl4AppShell',
-    'dsl4PoseFeedbackModes',
-    'dsl4SpeechAdvanceTypewriter',
-  ]);
-  assert.equal(candidate.evidence.physicalCameraAndPose.status, 'pass');
-  assert.match(candidate.evidence.physicalCameraAndPose.record, /issuecomment-5255177777$/u);
-  assert.equal(
-    candidate.evidence.currentCandidateApplicability.sampleRuntimeIsCandidateAncestor,
-    true,
+  assert(
+    candidate.runtime.featureFlags.standardProductionEnabled.includes('dsl4TurboWarpActionSurface'),
   );
-  assert.equal(candidate.evidence.currentCandidateApplicability.cameraPoseCorePathsChanged, false);
+  assert(
+    candidate.runtime.featureFlags.nonEmbeddedDevelopmentAdditionalEnabled.includes(
+      'dsl4BrowserDistributionBuild',
+    ),
+  );
   assert.equal(candidate.evidence.upstreamVerification.status, 'pass');
-  assert.equal(candidate.evidence.sampleVerification.status, 'pass');
-  assert.equal(candidate.evidence.documentationVerification.status, 'pass');
-  assert.equal(candidate.evidence.documentationVerification.tests, 94);
-  assert.equal(
-    candidate.evidence.documentationVerification.browserVisual.horizontalOverflow,
-    false,
-  );
-  assert.equal(candidate.evidence.documentationVerification.browserVisual.brokenImages, 0);
+  assert.equal(candidate.evidence.upstreamVerification.unitTests, 1224);
+  assert.equal(candidate.evidence.upstreamVerification.chromiumTests, 63);
+  assert.equal(candidate.evidence.publicationVerification.pagesArtifactHashMatch, true);
+  assert.equal(candidate.evidence.physicalCameraAndPose.status, 'rc.5-retest-pending');
+  assert.equal(candidate.evidence.physicalCameraAndPose.previousEvidenceAppliesToRc5, false);
   assert.equal(candidate.environment.cameraFrameStorage, false);
-  assert.equal(candidate.environment.cameraDeviceLabel, 'not-retained');
 });
 
-test('defines all manual surfaces, release stops, rerun conditions, and rollback', () => {
+test('defines rc.5 surfaces, release stops, physical rerun, and immutable rollback', () => {
   for (const heading of [
-    'Browser Preview',
-    'CLI Preview',
-    'Production SB3とWeb版',
-    '実カメラ・実ポーズの証跡',
-    '診断と安全停止',
+    '公開物を照合する',
+    'TurboWarp surfaceを確認する',
+    'Browser／CLI Previewを確認する',
+    '実カメラ・実ポーズ',
     'Release-stop条件',
-    '証跡を保存する',
-    '再実行条件',
     'Rollback',
   ]) {
     assert.match(guide, new RegExp(`^## ${heading.replaceAll('.', '\\.')}`, 'mu'));
   }
 
-  assert.match(guide, /camera frame、人物画像、音声、device ID/u);
-  assert.match(guide, /正式リリースを意味しません/u);
-  assert.match(guide, /実カメラ、実ポーズ認識/u);
-  assert.match(guide, /candidateを破棄し、`3\.2\.3`を推奨downloadとして維持/u);
+  assert.match(guide, /camera frameは保存しません/u);
+  assert.match(guide, /TMPose 1\.10\.0/u);
+  assert.match(guide, /23個のcore action/u);
+  assert.match(guide, /4\.0\.0-rc\.6/u);
   assert(candidate.releaseStops.length >= 8);
-  assert.equal(candidate.rollback.recommendedVersion, '3.2.3');
+  assert.equal(candidate.rollback.recommendedStableVersion, '3.2.3');
 });
 
 test('does not carry obsolete DSL 3.x diagnostics or flag names into the DSL 4.0 procedure', () => {

@@ -3,14 +3,14 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 固定実装基準を説明する統合ガイド（正式リリース済みの意味ではない）\
-調査基準: tmpose-kamishibai `7945781`、2026年8月8日
+調査基準: tmpose-kamishibai `f323a54`（4.0.0-rc.5）、2026年8月15日
 
-> **配布状態との区別:** 2026年8月8日時点で`v4.0.0`は正式リリースされていません。
-> 本書の統合境界は固定実装を説明し、公開プレイヤーや配布物で利用できることを保証しません。
+> **配布状態との区別:** 2026年8月15日時点で`v4.0.0-rc.5`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。本書の統合境界はrc.5固定実装を説明します。
 
 このガイドは、TMPose紙芝居4.0のruntime capability、platform adapter、外部packageとの統合境界を
 保守する開発者向けの資料です。実装基準は`kubohiroya/tmpose-kamishibai`のcommit
-[`79457815f5c89b181b1a879a079a4d6a72d405ed`](https://github.com/kubohiroya/tmpose-kamishibai/tree/79457815f5c89b181b1a879a079a4d6a72d405ed)
+[`f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6`](https://github.com/kubohiroya/tmpose-kamishibai/tree/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6)
 です。本書のpath、関数、package version、診断code、test名はこのcommitで確認しています。
 
 YAMLの記述方法は[紙芝居DSL 4.0 台本作成ガイド](../dsl-author-guides/dsl-4.0-author-guide.md)、
@@ -43,8 +43,8 @@ capabilityとplatform境界」を記録します。各providerが単体で公開
 
 ## 図版、source、licenseの境界
 
-本書では画像、editor capture、外部図版を新規使用しません。4.0 Standardには利用者が選ぶ複数の
-extension paletteがなく、画面captureでは責務境界や失敗条件を検証できないためです。代わりに、固定commitの
+本書では画像、editor capture、外部図版を新規使用しません。rc.5のStandard paletteには23個のcore action
+blockがありますが、画面captureだけでは統合責務や失敗条件を検証できないためです。代わりに、固定commitの
 実装path、export関数、契約fixture、testを表で対応させます。
 
 本書の文章は上記のCC BY-SA 4.0です。参照する本体sourceと外部capability packageはMPL-2.0、
@@ -58,25 +58,29 @@ package成果物、第三者の画像は転載していません。
 Browser Preview、CLI接続先browser、Production SB3へ届けますが、source取得やlive reloadの能力はsurfaceごとに
 異なります。
 
-<figure class="concept-flow"><figcaption>runtime coreと外部capabilityの境界</figcaption><div class="concept-flow__track"><span>Runtime controller</span><b aria-hidden="true">→</b><span>Port contract</span><b aria-hidden="true">→</b><span>Platform composition</span><b aria-hidden="true">→</b><span>Asset Manager・TMPose・SVG Text・Async Input・Expression</span><b aria-hidden="true">→</b><span>Browser／CLI／Production surface</span></div><p class="concept-flow__note">外部packageはportの外側に置き、runtime coreへbrowserやTurboWarp固有objectを持ち込みません。</p></figure>
+<figure class="concept-flow"><figcaption>runtime coreと外部capabilityの境界</figcaption><div class="concept-flow__track"><span>Runtime controller</span><b aria-hidden="true">→</b><span>Port contract</span><b aria-hidden="true">→</b><span>Platform composition</span><b aria-hidden="true">→</b><span>Asset Manager・Async Input・Bubble・Runtime Expression・SVG Text・TMPose</span><b aria-hidden="true">→</b><span>Browser／CLI／Production surface</span></div><p class="concept-flow__note">外部packageはportの外側に置き、runtime coreへbrowserやTurboWarp固有objectを持ち込みません。</p></figure>
 
 ### 登録とbundleの単位
 
-`scripts/sb3/dsl4-runtime-extension-entry.js`は、Standard 4.0で
-`kubohiroyakamishibairuntime4`を一度だけ`Scratch.extensions.register()`します。実行には
-`Scratch.extensions.unsandboxed`が必要です。paletteに表示されるblockはなく、version、status、last error、
-内部text値を扱う4 opcodeも`hideFromPalette`です。
+`scripts/sb3/dsl4-runtime-extension-entry.js`は、Standard 4.0で集約extension
+`kubohiroyakamishibai4`を一度だけ`Scratch.extensions.register()`します。core Runtimeのmember IDは
+`kubohiroyakamishibairuntime4`です。実行には
+`Scratch.extensions.unsandboxed`が必要です。Runtime memberのmanifestはDSLと同じ23個のcore actionを
+可視blockとして公開し、version、status、last error、内部text値を扱う4 control opcodeだけを
+`hideFromPalette`にします。各blockはYAML実行と同じregistry、Schema正規化、`ActionContext`、lifecycleへ入り、
+独立した実行系を作りません。
 
-5つの外部capabilityは正確なpackage versionとlockfile integrityを固定し、`./composition` exportを
+6つの外部capabilityは正確なpackage versionとlockfile integrityを固定し、`./composition` exportを
 直接importします。Structured Dataは本体repository内のfirst-party sourceです。
 
 | capability         | providerと固定version                            | Standardでの主な責務                          |
 | ------------------ | ------------------------------------------------ | --------------------------------------------- |
-| Asset Manager      | `@kubohiroya/turbowarp-asset-manager@0.7.0`      | asset byte、skin、sound、検証済みremote cache |
-| Async Input        | `@kubohiroya/turbowarp-async-input@0.3.0`        | scene遷移・skip用の候補選択                   |
-| Runtime Expression | `@kubohiroya/turbowarp-runtime-expression@0.3.0` | branch式の検証と評価                          |
-| SVG Text           | `@kubohiroya/turbowarp-svg-text@0.3.0`           | text actor、speech bubbleの描画               |
-| TMPose             | `@kubohiroya/turbowarp-tmpose@1.6.1`             | pose modelと認識lifecycle                     |
+| Asset Manager      | `@kubohiroya/turbowarp-asset-manager@0.11.0`     | asset byte、skin、sound、検証済みremote cache |
+| Async Input        | `@kubohiroya/turbowarp-async-input@0.4.0`        | scene遷移・skip用の候補選択                   |
+| Bubble             | `@kubohiroya/turbowarp-bubble@0.7.0`             | 吹き出し、折り返し、表示、音声、animation     |
+| Runtime Expression | `@kubohiroya/turbowarp-runtime-expression@0.4.0` | branch式の検証と評価                          |
+| SVG Text           | `@kubohiroya/turbowarp-svg-text@0.5.0`           | text actor、speech bubbleの描画               |
+| TMPose             | `@kubohiroya/turbowarp-tmpose@1.10.0`            | pose modelと認識lifecycle                     |
 | Structured Data    | `src/dsl4/structured-data.js`、format version 1  | view、object store、iterator、JSONPath        |
 
 Standard 4.0のbundle種別は`source-composition`です。3.2の`extensionBundles`、unbundle用

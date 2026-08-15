@@ -8,15 +8,15 @@ const theme = read('docs/general-theme.css');
 const writingStyle = read('WRITING-STYLE.md');
 const qaRecord = read('DSL4-DIAGRAM-QA.md');
 const dsl4Index = read('site/4.0/index.html');
-const diagramDocuments = [
+const conceptFlowDocuments = [
   'docs/user-guides/executive-summary-adult-4.0.md',
   'docs/user-guides/executive-summary-kids-4.0.md',
   'docs/dsl-author-guides/dsl-4.0-author-guide.md',
   'docs/dsl-author-guides/dsl-3.2-to-4.0-conversion-guide.md',
-  'docs/developer-guides/internal-specification-4.0.md',
   'docs/developer-guides/extension-guide-4.0.md',
   'docs/developer-guides/dsl-4.0-diagnostics-design.md',
 ].map(read);
+const internalSpecification = read('docs/developer-guides/internal-specification-4.0.md');
 
 test('keeps concept-flow nodes and arrows in one ordered vertical flow at every width', () => {
   assert.match(theme, /\.concept-flow__track\s*\{[\s\S]*?flex-wrap: nowrap/u);
@@ -37,7 +37,7 @@ test('keeps each concept figure together in print with readable compact labels',
 });
 
 test('provides captions, ordered labels, hidden arrows, and prose notes', () => {
-  for (const source of diagramDocuments) {
+  for (const source of conceptFlowDocuments) {
     const figure = source.match(/<figure class="concept-flow">[\s\S]*?<\/figure>/u)?.[0];
     assert.ok(figure);
     assert.match(figure, /<figcaption>[^<]+<\/figcaption>/u);
@@ -48,6 +48,14 @@ test('provides captions, ordered labels, hidden arrows, and prose notes', () => 
   }
 });
 
+test('publishes accessible rc5 implementation SVGs with prose-equivalent captions', () => {
+  const figures =
+    internalSpecification.match(/!\[[^\]]+\]\(\.\.\/images\/dsl4-[^)]+\.svg\)/gu) ?? [];
+  assert.equal(figures.length, 7);
+  assert.equal((internalSpecification.match(/^_図: [^\n]+/gmu) ?? []).length, 7);
+  assert.doesNotMatch(internalSpecification, /```mermaid/u);
+});
+
 test('documents the renderer policy and source fragment destination', () => {
   assert.match(writingStyle, /短い直線的な流れは、HTMLの`concept-flow`を使う/u);
   assert.match(writingStyle, /分岐、循環、複数経路を示す必要がある場合はMermaidを検討/u);
@@ -55,7 +63,7 @@ test('documents the renderer policy and source fragment destination', () => {
     dsl4Index,
     /href="user-guides\/executive-summary-adult-4\.0\/document\.html#作る人の流れ"/u,
   );
-  assert.match(diagramDocuments[0], /^## 作る人の流れ$/mu);
+  assert.match(conceptFlowDocuments[0], /^## 作る人の流れ$/mu);
   assert.match(qaRecord, /Vivliostyle CLI 11\.1\.0/u);
   assert.match(qaRecord, /viewport: 320×568px、1280×800px/u);
   assert.match(qaRecord, /文字と矢印の重なり、図自体の横overflowはなかった/u);

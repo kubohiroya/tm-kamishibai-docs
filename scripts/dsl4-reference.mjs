@@ -466,7 +466,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 ${snapshotLabel}\\
 Schema SHA-256: \`${lock.schemaSha256}\`
 
-> **権威関係と配布状態:** 2026年8月13日時点で\`v4.0.0-rc.3\`はprereleaseとして公開されていますが、
+> **権威関係と配布状態:** 2026年8月15日時点で\`v4.0.0-rc.5\`はprereleaseとして公開されていますが、
 > 正式な\`v4.0.0\`ではありません。
 > 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、
 > 適合実装・testを固定しています。Schemaはruntime実装から生成しません。公開アプリ、配布artifact、

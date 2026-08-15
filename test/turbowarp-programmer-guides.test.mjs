@@ -4,9 +4,13 @@ import test from 'node:test';
 
 const read = (filename) =>
   readFileSync(new URL(`../docs/turbowarp-programmer-guides/${filename}`, import.meta.url), 'utf8');
+const readAuthorGuide = (filename) =>
+  readFileSync(new URL(`../docs/dsl-author-guides/${filename}`, import.meta.url), 'utf8');
 
 const broadcastGuide = read('dsl-4.0-turbowarp-broadcast-guide.md');
 const blockReference = read('dsl-4.0-runtime-block-reference.md');
+const runtimeVariableReference = read('dsl-4.0-runtime-variable-turbowarp-reference.md');
+const runtimeVariableGuide = readAuthorGuide('dsl-4.0-runtime-variable-guide.md');
 
 const publicOpcodes = {
   runtime: [
@@ -183,4 +187,120 @@ test('distinguishes feature-gated and host-only APIs from palette blocks', () =>
   assert.match(blockReference, /latest-needed/u);
   assert.match(blockReference, /Composition API/u);
   assert.match(blockReference, /パレットには表示されません/u);
+});
+
+test('documents the two Stage variables exposed to TurboWarp blocks', () => {
+  for (const contract of [
+    /公開変数（2変数）/u,
+    /`ポーズ認識`[\s\S]*0〜100/u,
+    /`チャージ`[\s\S]*0〜100/u,
+    /dsl4-pose-confidence/u,
+    /dsl4-pose-progress/u,
+    /`scratchMirror`[\s\S]*既定mode/u,
+    /`scratchBinding`[\s\S]*0〜100/u,
+    /`presenter`[\s\S]*2変数はランタイムから更新されない/u,
+    /`variables:`[\s\S]*内部状態/u,
+    /TurboWarpの変数blockから参照できる固定名の公開変数は、上記2変数だけ/u,
+  ]) {
+    assert.match(blockReference, contract);
+  }
+});
+
+test('separates the current two Stage variables from the default-off runtime-variable surface', () => {
+  assert.match(blockReference, /現状TurboWarpブロックから参照できる公開変数（2変数）/u);
+  assert.match(blockReference, /追加surfaceは実装済みですが既定OFF/u);
+  assert.match(
+    runtimeVariableReference,
+    /文書状態: \*\*受け入れ済み・実装済み利用契約（既定OFF）\*\*/u,
+  );
+  assert.match(runtimeVariableReference, /4\.0\.0-rc\.5の現行公開APIには含まれません/u);
+});
+
+test('classifies internal runtime state and defines the implemented block contract', () => {
+  for (const contract of [
+    /`variables`[\s\S]*公開推奨（読取）/u,
+    /`status`[\s\S]*公開推奨/u,
+    /`sceneId`[\s\S]*公開推奨/u,
+    /`actionIndex`[\s\S]*表示用に変換して公開推奨/u,
+    /`diagnostic`[\s\S]*安全部分だけ公開推奨/u,
+    /`generation`[\s\S]*非公開/u,
+    /`phase`[\s\S]*公開推奨/u,
+    /`confidence`[\s\S]*既存`ポーズ認識`で公開済み/u,
+    /runtime diagnostics[\s\S]*通常paletteには非公開/u,
+  ]) {
+    assert.match(runtimeVariableReference, contract);
+  }
+
+  for (const blockText of [
+    'story variable [NAME]',
+    'story variable [NAME] exists?',
+    'story status',
+    'current scene id',
+    'current action path',
+    'last runtime error code',
+    'pose phase',
+    'Kamishibai DSL 4.0 runtime version',
+  ]) {
+    assert.ok(runtimeVariableReference.includes('`' + blockText + '`'), blockText);
+  }
+});
+
+test('keeps story-variable mutation staged, typed, cancellable, and reversible', () => {
+  for (const contract of [
+    /読取surfaceとは別のfeature flag/u,
+    /宣言済み型との完全一致/u,
+    /action境界でcommit/u,
+    /generationが変わった場合は破棄/u,
+    /`dsl4TurboWarpStateSurface`[\s\S]*既定OFF/u,
+    /`dsl4TurboWarpStoryVariableWrite`[\s\S]*既定OFF/u,
+    /現行の121 blockと2つのStage変数に\s*変更がありません/u,
+  ]) {
+    assert.match(runtimeVariableReference, contract);
+  }
+});
+
+test('makes expression evaluation a required consumer of the public runtime snapshot', () => {
+  for (const currentContract of [
+    /`branch\[\]\.if`の条件式/u,
+    /ASCIIのbare nameは`score >= 10`/u,
+    /`vars\["救助回数"\] >= 2`/u,
+    /Stage変数、sprite変数、Temporary Variables[\s\S]*自動では含まれません/u,
+  ]) {
+    assert.match(blockReference, currentContract);
+  }
+
+  for (const implementedContract of [
+    /分岐式も同じ公開snapshotを参照する/u,
+    /`runtime\["KEY"\]`構文/u,
+    /`runtime\["status"\]`[\s\S]*`story status`/u,
+    /`runtime\["pose\.phase"\]`[\s\S]*`pose phase`/u,
+    /同じ値を\s*同じ型と寿命で参照/u,
+    /全ruleで共有/u,
+    /ruleごとにStage変数やTemporary Variablesを読み直してはいけません/u,
+    /action境界でcommitされた場合にだけ次のbranch snapshotへ入ります/u,
+    /`dsl4ExpressionRuntimeState`[\s\S]*既定OFF/u,
+  ]) {
+    assert.match(runtimeVariableReference, implementedContract);
+  }
+});
+
+test('splits runtime variables by reader role and cross-links both documents', () => {
+  assert.match(runtimeVariableGuide, /「台本を作る人向けドキュメント」に属し/u);
+  assert.match(runtimeVariableGuide, /`variables:`へ初期値とともに宣言/u);
+  assert.match(runtimeVariableGuide, /`branch\[\]\.if`/u);
+  assert.match(runtimeVariableGuide, /次の`branch`は確定した値を参照/u);
+  assert.match(
+    runtimeVariableGuide,
+    /\.\.\/turbowarp-programmer-guides\/dsl-4\.0-runtime-variable-turbowarp-reference\.md/u,
+  );
+
+  assert.match(
+    runtimeVariableReference,
+    /「TurboWarpでプログラムを書く人向けドキュメント」に属し/u,
+  );
+  assert.match(runtimeVariableReference, /公開block、型付き書込、snapshotの確定時期/u);
+  assert.match(
+    runtimeVariableReference,
+    /\.\.\/dsl-author-guides\/dsl-4\.0-runtime-variable-guide\.md/u,
+  );
 });

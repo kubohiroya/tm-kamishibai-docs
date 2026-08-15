@@ -2,7 +2,7 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-文書状態: 公開プレリリース`4.0.0-rc.3`のブラウザー完結作者flow\
+文書状態: 公開プレリリース`4.0.0-rc.5`のブラウザー完結作者flowとrc.3公開サンプルの管理\
 関連Issue: [ブラウザー作者flow #118](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/118) / [本体実装 #555](https://github.com/kubohiroya/tmpose-kamishibai/issues/555) / [正式公開 #111](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/111) / [準備 #31](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/31)
 
 読者向け入口: [TMPose紙芝居 4.0 ドキュメント](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/)
@@ -10,9 +10,9 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 このREADMEは、チュートリアルを公開する人のための管理メモです。初めて紙芝居を遊ぶ人や台本を作る人は、
 上の読者向け入口から始めてください。
 
-このディレクトリは、公開プレリリース`4.0.0-rc.3`を対象とするチュートリアル本文、
-スクリーンショット台帳、4.0ドキュメント一覧への公開計画を保持します。画面名、コマンド、
-サンプルURLは、公開済みのruntimeとsample成果物へ固定します。
+このディレクトリは、公開プレリリース`4.0.0-rc.5`を作者用実行環境とするチュートリアル本文、
+スクリーンショット台帳、4.0ドキュメント一覧への公開計画を保持します。公開中のsample成果物はrc.3基準のため、
+作者用runtimeの版とsampleの版を別々に固定します。
 
 2ページを`docs/config.mjs`へ登録し、4.0トップのドキュメント一覧には「紙芝居を遊ぶ」と
 「紙芝居を作る」を、それぞれ見る人向け・台本を作る人向けの項目として直接置きます。
@@ -100,11 +100,10 @@ YAMLはコピー可能なcode blockを正本とします。画像はTurboWarp Ed
 
 ### 実装追跡
 
-2026-08-13時点では、上流のbrowser preview live reload、transactional asset live reload、共通reload
-overlay、pose feedback、camera controlを含む公開RCの固定実装を
-[`087dfa5`](https://github.com/kubohiroya/tmpose-kamishibai/commit/087dfa526e967bb2cc38af3f5b5a795355de7739)
-で確認しています。さらに本体#555のbrowser distribution buildを公開プレリリース`4.0.0-rc.3`へ反映し、
-`browser-authoring` gateを`published`、`ready: true`として追跡します。
+2026-08-15時点では、全23 core action block、browser preview、Bubble 0.7.0、TMPose 1.10.0を含む
+公開rc.5の固定実装を
+[`f323a54`](https://github.com/kubohiroya/tmpose-kamishibai/commit/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6)
+で確認しています。rc.5を対象とする`browser-authoring` gateを`published`、`ready: true`として追跡します。
 
 浦島太郎、my-urashima、チュートリアル用最小作品の4.0 Web版、SB3、integrityはsamples PR #107、
 publication commit `919565243adc3800ebe8271cc4af6f7b68110ef2`、Pages deploy run `31660773675`で
@@ -113,12 +112,12 @@ publication commit `919565243adc3800ebe8271cc4af6f7b68110ef2`、Pages deploy run
 固定しています。チュートリアル用starterとaddition kitも同じrelease入力から生成され、実ファイルの
 sizeとSHA-256を公開manifestと照合しました。`tutorial-sample` gateは`published`、`ready: true`です。
 
-DSL `4.0.0-rc.3`は公開プレリリースとして固定済みです。annotated `v4.0.0-rc.3` tag、
-[npm `next`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.3)、
-[GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.3)、
+DSL `4.0.0-rc.5`は公開プレリリースとして固定済みです。annotated `v4.0.0-rc.5` tag、
+[npm `next`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.5)、
+[GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.5)、
 [Pages](https://kubohiroya.github.io/tmpose-kamishibai/downloads/)を
-[tmpose-kamishibai #571](https://github.com/kubohiroya/tmpose-kamishibai/issues/571)で照合し、
-SB3 SHA-256を`77ac23862ef0e729ca75be93340f65f21ded9b39449fc8f9be2c904c70d4096c`へ固定しました。
+[tmpose-kamishibai #583](https://github.com/kubohiroya/tmpose-kamishibai/issues/583)で照合し、
+SB3 SHA-256を`2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c`へ固定しました。
 `dsl4-release` gateは`published`、`ready: true`です。安定版`4.0.0`ではなく、公開済みRCを
 チュートリアルの対象releaseとして扱います。
 
@@ -135,12 +134,12 @@ fixtureの表示言語を`ja-JP`、motionを固定して、
 ### 開発者向けの固定実装追試
 
 固定実装を追試する開発者・文書メンテナーは、
-[DSL 4.0固定実装のローカル追試](../developer-guides/dsl4-implementation-walkthrough.md)を使用します。runtime `0e7e23f`と
-sample `d2f37b9`からWeb成果物を生成し、タイトル、プレイ、ポーズfeedback、YAML validation、
-SHA-256を一続きで確認できます。
+[DSL 4.0 rc.5実装のローカル追試](../developer-guides/dsl4-implementation-walkthrough.md)を使用します。
+runtime `f323a54`、公開rc.5 SB3、任意の作業用projectからlocal previewを起動し、valid source、
+runtimeタイトル、invalid candidate、復旧、内部実装図を一続きで確認できます。samples repositoryは使用しません。
 
-この追試で参照する2画像は#101の実装スナップショットです。チュートリアル画像とはIDと用途を分けます。
-固定commitの追試経路も`docs/config.mjs`へ登録せず、公開AppBarからリンクしません。
+この追試で参照する3画像は#157のrc.5実装スナップショットです。チュートリアル画像とはIDと用途を分けます。
+追試経路は開発者向け資料として公開し、AppBarへ独立項目は追加しません。
 
 想定する保存先は次のとおりです。
 
@@ -191,7 +190,7 @@ docs/images/tutorials/dsl4/create/
 - [DSL 4.0 Schemaリファレンス準備 Issue #29](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/29)
 - [source channelとゼロブロック作者フロー #258](https://github.com/kubohiroya/tmpose-kamishibai/issues/258)
 - [capability・Bundle・release境界 #266](https://github.com/kubohiroya/tmpose-kamishibai/issues/266)
-- [4.0.0-rc.3の固定・公開・照合 #571](https://github.com/kubohiroya/tmpose-kamishibai/issues/571)
+- [4.0.0-rc.5の固定・公開・照合 #583](https://github.com/kubohiroya/tmpose-kamishibai/issues/583)
 - [4.0.0-rc.3のサンプル同期 #106](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/106)
 - [チュートリアル用最小作品・starter・addition kit #94](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)
 - [poseModel asset lifecycle #327](https://github.com/kubohiroya/tmpose-kamishibai/issues/327)

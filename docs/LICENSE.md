@@ -52,22 +52,32 @@ SVG text actorの使用例を同一範囲で撮影した画面キャプチャで
 block実装には、それぞれの権利者によるライセンスまたは利用条件が適用されます。
 この文書のCC BY-SA 4.0表示は、それら第三者要素を別途再許諾するものではありません。
 
-## DSL 4.0実装スナップショット
+## DSL 4.0 rc.5実装スナップショットと図
 
-次の2図版は、2026年8月12日に固定した浦島太郎DSL 4.0 Web成果物をローカルで実行し、
-1280×720のブラウザー表示から説明対象を切り出した画面キャプチャです。
+次の3図版は、2026年8月15日に`tmpose-kamishibai@v4.0.0-rc.5`のlocal previewを実行して取得した
+画面キャプチャです。
 
-- `images/dsl4-implementation-title.jpg`
-- `images/dsl4-implementation-pose-feedback.jpg`
+- `images/dsl4-rc5-preview-running.png`
+- `images/dsl4-rc5-runtime-title.png`
+- `images/dsl4-rc5-preview-diagnostic.png`
 
-runtimeは`kubohiroya/tmpose-kamishibai@8ea06bfd100b106f559cb25a280fab5570e42919`、サンプルと
-Web成果物は`kubohiroya/tmpose-kamishibai-samples@dc9f6626de9ef85ca71312402fd139082922b867`を
-基準にしています。入力・出力hash、Packager version、撮影条件と各画像hashは
-[`DSL4-IMPLEMENTATION-VISUALS.md`](../DSL4-IMPLEMENTATION-VISUALS.md)に記録しています。
+次の7図版は、同じ固定commitの実装解析から本repository向けに作成したSVGです。
 
-キャプチャ内のTMPose紙芝居ランタイム、UI、浦島太郎の台本・背景・Actor画像は、引用元の
-Mozilla Public License 2.0（MPL-2.0）の適用範囲を保持します。図版としての選択、切り出し、
-captionには本書のCC BY-SA 4.0を適用しますが、キャプチャ内のMPL-2.0対象要素を別途再許諾する
+- `images/dsl4-architecture.svg`
+- `images/dsl4-source-build-sequence.svg`
+- `images/dsl4-runtime-state-transition.svg`
+- `images/dsl4-runtime-sequence.svg`
+- `images/dsl4-live-reload-state-transition.svg`
+- `images/dsl4-live-reload-sequence.svg`
+- `images/dsl4-asset-reload-sequence.svg`
+
+runtime commit、公開SB3 hash、入力hash、撮影条件、各画像とSVGのhashは
+[`DSL4-IMPLEMENTATION-VISUALS.md`](../DSL4-IMPLEMENTATION-VISUALS.md)に記録しています。samples
+repositoryはこの撮影に使用していません。
+
+キャプチャ内のTMPose紙芝居ランタイム、UI、base runtimeとsmoke projectの素材は、引用元の
+Mozilla Public License 2.0（MPL-2.0）の適用範囲を保持します。図版としての選択、切り出し、captionと
+実装解析SVGには本書のCC BY-SA 4.0を適用しますが、キャプチャ内のMPL-2.0対象要素を別途再許諾する
 ものではありません。
 
 ## Noto Sans JP

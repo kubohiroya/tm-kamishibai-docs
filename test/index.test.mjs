@@ -186,13 +186,18 @@ test('organizes both version tops by reader role and routes tutorials directly',
   assert.match(dsl40Index, /tutorials\/play\/publication\.json/u);
   assert.match(dsl40Index, /tutorials\/create\/publication\.json/u);
   assert.match(dsl40Index, />TurboWarpでプログラムを書く人向けドキュメント\s*<\/h2>/u);
-  assert.match(dsl40Index, /DSL4\.0ランタイムからのメッセージに応じた動作の記述/u);
+  assert.match(dsl40Index, /DSL 4\.0ランタイムとのメッセージ・block・変数連携/u);
   assert.match(
     dsl40Index,
     /id="dsl-documents"[\s\S]*id="turbowarp-programmer-documents"[\s\S]*id="developer-documents"/u,
   );
   assert.match(dsl40Index, /turbowarp-programmer-guides\/dsl-4\.0-turbowarp-broadcast-guide\//u);
   assert.match(dsl40Index, /turbowarp-programmer-guides\/dsl-4\.0-runtime-block-reference\//u);
+  assert.match(dsl40Index, /dsl-author-guides\/dsl-4\.0-runtime-variable-guide\//u);
+  assert.match(
+    dsl40Index,
+    /turbowarp-programmer-guides\/dsl-4\.0-runtime-variable-turbowarp-reference\//u,
+  );
 });
 
 test('explains how to choose between the versions on the root page', () => {
