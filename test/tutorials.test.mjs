@@ -38,6 +38,10 @@ const implementationWalkthrough = readFileSync(
   path.join(projectRoot, 'docs/developer-guides/dsl4-implementation-walkthrough.md'),
   'utf8',
 );
+const tutorialScreenshotFixture = readFileSync(
+  path.join(projectRoot, 'scripts/fixtures/tutorial-screenshot.html'),
+  'utf8',
+);
 
 function screenshotMarkers(source) {
   return [...source.matchAll(/<!-- screenshot:([PC]-\d{2}) -->/gu)].map((match) => match[1]);
@@ -80,6 +84,8 @@ test('registers the tutorial publications without changing the active AppBar con
   const publicIndex = readFileSync(path.join(projectRoot, 'site/index.html'), 'utf8');
   assert.match(publicIndex, /ワークショップ<\/a/iu);
   assert.doesNotMatch(publicIndex, /チュートリアル<\/a/iu);
+  assert.match(tutorialScreenshotFixture, /<span>ワークショップ<\/span>/u);
+  assert.doesNotMatch(tutorialScreenshotFixture, /<span>チュートリアル<\/span>/u);
 });
 
 test('defines the active five-item AppBar and current-section rules', () => {
@@ -484,6 +490,7 @@ test('keeps the published prerelease reviewable with its fixed captures', () => 
     /「紙芝居を遊ぶ」を[\s\S]*「紙芝居を見る人向けドキュメント」/u,
   );
   assert.match(tutorialSources['README.md'], /「紙芝居を作る」を「台本を作る人向けドキュメント」/u);
+  assert.match(tutorialSources['README.md'], /独立カテゴリーや統合一覧カードは設けません/u);
   assert.match(tutorialSources['README.md'], /AppBarへ独立した「チュートリアル」項目は追加せず/u);
   assert.match(tutorialSources['play.md'], /## 完了チェック/u);
   assert.match(tutorialSources['create.md'], /Scratchのブロックは追加しません/u);
