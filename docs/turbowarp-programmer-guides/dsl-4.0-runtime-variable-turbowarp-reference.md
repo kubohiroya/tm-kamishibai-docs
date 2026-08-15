@@ -263,7 +263,7 @@ custom actionの名前・対象・引数・完了／失敗は、action実行中�
 6. `broadcastMessageAndWait`とのcommit順、複数書込、branch snapshot、cancel／generation変更を回帰testしています。
 7. Standard配布物で各flagをONにする判断は、release noteと公開fixtureを揃えた別の変更として行います。
 
-問題が見つかった場合は起動時固定の該当flagをOFFにします。既定OFFの間は、現行の121 blockと2つのStage変数に
+問題が見つかった場合は起動時固定の該当flagをOFFにします。既定OFFの間は、現行の119 blockと2つのStage変数に
 変更がありません。実装差分をrevertせず従来surfaceへ戻せ、書込だけをOFFにして読取を残すこともできます。
 
 ### 実装受け入れ基準

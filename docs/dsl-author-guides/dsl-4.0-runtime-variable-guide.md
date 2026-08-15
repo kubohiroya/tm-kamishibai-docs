@@ -128,7 +128,7 @@ action境界で台本変数へ反映
 - `dsl4TurboWarpStoryVariableWrite`: TurboWarpの書込block。既定OFF。
 - `dsl4ExpressionRuntimeState`: 分岐式の`runtime["KEY"]`。既定OFF。
 
-flagがOFFの配布物では、追加blockをpaletteに表示せず、`runtime["KEY"]`も受理しません。既存の121 block、Stage変数
+flagがOFFの配布物では、追加blockをpaletteに表示せず、`runtime["KEY"]`も受理しません。既存の119 block、Stage変数
 `ポーズ認識`と`チャージ`、従来の台本変数による分岐には変更がありません。有効化された配布物を確認してから本機能を使ってください。
 
 ## 関連文書

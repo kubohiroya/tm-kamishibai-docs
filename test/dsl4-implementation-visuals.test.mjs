@@ -13,6 +13,9 @@ const implementationWalkthrough = readText(
   'docs/developer-guides/dsl4-implementation-walkthrough.md',
 );
 const internalSpecification = readText('docs/developer-guides/internal-specification-4.0.md');
+const blockReference = readText(
+  'docs/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference.md',
+);
 
 const captures = [
   {
@@ -32,6 +35,51 @@ const captures = [
     width: 1280,
     height: 720,
     sha256: '0635c284d021995ce2a906758dbca389a581abcb9bd7c447bea90b95ddfc21bb',
+  },
+];
+
+const paletteCaptures = [
+  {
+    filename: 'dsl4-palette-kamishibai-runtime.jpg',
+    width: 251,
+    height: 1251,
+    sha256: '8cda702470f38ecc2e1cc4ff5620aeddc6c4137a950e23957299bc0a4f64b067',
+  },
+  {
+    filename: 'dsl4-palette-asset-manager.jpg',
+    width: 251,
+    height: 1198,
+    sha256: '2e7368e25d39ff94eed8067a9d92caa67bf70f594d229a5a4889dfbfdda30888',
+  },
+  {
+    filename: 'dsl4-palette-async-input.jpg',
+    width: 251,
+    height: 533,
+    sha256: '7c15d03fd84357fd679c6b24290c73762d75f857b1c0508064f3ff02f5211a86',
+  },
+  {
+    filename: 'dsl4-palette-bubble.jpg',
+    width: 251,
+    height: 1497,
+    sha256: '11d28c9b09668f5e4be96d5f02ef85fd35384f44df120132246c0ec62bcdb8a1',
+  },
+  {
+    filename: 'dsl4-palette-runtime-expression.jpg',
+    width: 251,
+    height: 214,
+    sha256: '8ac2b3a724b8ffc79bce9940bc83498f3be97224dcdf01b353adfa2108fd413f',
+  },
+  {
+    filename: 'dsl4-palette-svg-text.jpg',
+    width: 251,
+    height: 174,
+    sha256: 'be690017012cb1a41b40e01e6d697b9d294fb5d7bc912a53b7eab0989a4d8d75',
+  },
+  {
+    filename: 'dsl4-palette-tmpose.jpg',
+    width: 251,
+    height: 1466,
+    sha256: '24e03d3e6eee976bbc72371d47e23db35072609061300da79b61f46964eda91d',
   },
 ];
 
@@ -73,6 +121,39 @@ test('pins every rc5 implementation screenshot to valid PNG bytes', () => {
       implementationWalkthrough,
       new RegExp(capture.path.split('/').at(-1).replaceAll('.', '\\.')),
     );
+  }
+});
+
+test('pins every separator-scoped TurboWarp palette capture to valid JPEG bytes', () => {
+  for (const {filename, width, height, sha256: expectedSha256} of paletteCaptures) {
+    const path = `docs/images/${filename}`;
+    const bytes = read(path);
+    assert.deepEqual([...bytes.subarray(0, 3)], [0xff, 0xd8, 0xff]);
+
+    let offset = 2;
+    let dimensions;
+    while (offset + 8 < bytes.length) {
+      if (bytes[offset] !== 0xff) {
+        offset += 1;
+        continue;
+      }
+      const marker = bytes[offset + 1];
+      const segmentLength = bytes.readUInt16BE(offset + 2);
+      if ([0xc0, 0xc1, 0xc2].includes(marker)) {
+        dimensions = {
+          height: bytes.readUInt16BE(offset + 5),
+          width: bytes.readUInt16BE(offset + 7),
+        };
+        break;
+      }
+      offset += 2 + segmentLength;
+    }
+
+    assert.deepEqual(dimensions, {width, height}, `${filename} dimensions`);
+    assert.equal(sha256(bytes), expectedSha256);
+    assert.match(record, new RegExp(path.replaceAll('.', '\\.')));
+    assert.match(record, new RegExp(expectedSha256));
+    assert.match(blockReference, new RegExp(filename.replaceAll('.', '\\.')));
   }
 });
 

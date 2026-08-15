@@ -71,10 +71,8 @@ const publicOpcodes = {
     'listenForTouch',
     'listenForTouchAndBroadcast',
     'stopListeningForTouch',
-    'listenForPose',
-    'stopListeningForPose',
-    'stopAllPoseListeners',
     'stopAllInputListeners',
+    'listenForActorTouchAndBroadcast',
   ],
   bubble: [
     'defineBubbleStyle',
@@ -164,7 +162,7 @@ test('explains exact broadcast-and-wait behavior from YAML through TurboWarp rec
 
 test('lists every public bundled block and member documentation URI', () => {
   const allOpcodes = Object.values(publicOpcodes).flat();
-  assert.equal(allOpcodes.length, 121);
+  assert.equal(allOpcodes.length, 119);
   for (const opcode of new Set(allOpcodes)) {
     assert.ok(blockReference.includes('`' + opcode + '`'), `missing opcode ${opcode}`);
   }
@@ -178,8 +176,40 @@ test('lists every public bundled block and member documentation URI', () => {
   ]) {
     assert.match(blockReference, new RegExp(`https://kubohiroya\\.github\\.io/${slug}/`, 'u'));
   }
-  assert.match(blockReference, /121ブロック/u);
+  assert.match(blockReference, /119ブロック/u);
   assert.match(blockReference, /Open Documentation/u);
+});
+
+test('places one real palette capture at the start of every member chapter', () => {
+  const figures = [
+    ['Kamishibai DSL 4.0 Runtime', 'dsl4-palette-kamishibai-runtime.jpg'],
+    ['Asset Manager 0.11.0', 'dsl4-palette-asset-manager.jpg'],
+    ['Async Input 0.4.0', 'dsl4-palette-async-input.jpg'],
+    ['Bubble 0.7.0', 'dsl4-palette-bubble.jpg'],
+    ['Runtime Expression 0.4.0', 'dsl4-palette-runtime-expression.jpg'],
+    ['SVG Text 0.5.0', 'dsl4-palette-svg-text.jpg'],
+    ['TMPose 1.10.0', 'dsl4-palette-tmpose.jpg'],
+  ];
+
+  for (const [heading, filename] of figures) {
+    const headingIndex = blockReference.indexOf(`## ${heading}`);
+    const imagePath = `../images/${filename}`;
+    const imageIndex = blockReference.indexOf(imagePath);
+    const nextChapterIndex = blockReference.indexOf('\n## ', headingIndex + 4);
+    assert.ok(headingIndex >= 0, `missing chapter ${heading}`);
+    assert.ok(imageIndex > headingIndex, `missing chapter-opening figure ${filename}`);
+    assert.ok(
+      nextChapterIndex === -1 || imageIndex < nextChapterIndex,
+      `${filename} is outside the ${heading} chapter`,
+    );
+    assert.match(
+      blockReference.slice(headingIndex, imageIndex),
+      /^## [^\n]+\n\n!\[[^\]]+\]\($/u,
+      `${filename} must immediately follow the chapter heading`,
+    );
+  }
+
+  assert.match(blockReference, /固定幅[\s\S]*完全なopcodeと役割[\s\S]*表を正本/u);
 });
 
 test('distinguishes feature-gated and host-only APIs from palette blocks', () => {
@@ -253,7 +283,7 @@ test('keeps story-variable mutation staged, typed, cancellable, and reversible',
     /generationが変わった場合は破棄/u,
     /`dsl4TurboWarpStateSurface`[\s\S]*既定OFF/u,
     /`dsl4TurboWarpStoryVariableWrite`[\s\S]*既定OFF/u,
-    /現行の121 blockと2つのStage変数に\s*変更がありません/u,
+    /現行の119 blockと2つのStage変数に\s*変更がありません/u,
   ]) {
     assert.match(runtimeVariableReference, contract);
   }

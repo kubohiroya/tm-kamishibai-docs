@@ -13,6 +13,7 @@ sourceからruntime・live reloadまで追跡して作成した図を固定し�
 
 この更新では`tmpose-kamishibai-samples`を取得、build、変更していません。実装repositoryの既存smoke projectを
 一時directoryへcopyし、文書repositoryには画像・SVG・説明だけを収録しました。
+TurboWarpの集約パレット図版は、同じ固定SB3をTurboWarp Editorで開き、7 memberのセパレータ境界で切り出しました。
 
 ## 再現元
 
@@ -59,6 +60,29 @@ sourceからruntime・live reloadまで追跡して作成した図を固定し�
 
 ![invalid version candidateをcurrentへcommitせずK4-VERSION-001を表示したlocal preview](docs/images/dsl4-rc5-preview-diagnostic.png)
 
+## TurboWarp集約パレットのスクリーンショット
+
+- source: 上記の固定`kamishibai-4.0.0-rc.5.sb3`
+- browser surface: TurboWarp Editorの日本語UI
+- viewport: 3840×2160 px
+- capture: 集約パレットの`◆ member名 [member ID] ◆`から次のmemberセパレータ直前まで
+- pointer: パレット外へ退避
+- format: browser captureをpixel寸法を変えずJPEGへ格納
+- 内容: 表示順を変更せず、右端の見切れとscroll barを実UIのまま保持
+
+| file                                              |    pixel | blocks | SHA-256                                                            |
+| ------------------------------------------------- | -------: | -----: | ------------------------------------------------------------------ |
+| `docs/images/dsl4-palette-kamishibai-runtime.jpg` | 251×1251 |     23 | `8cda702470f38ecc2e1cc4ff5620aeddc6c4137a950e23957299bc0a4f64b067` |
+| `docs/images/dsl4-palette-asset-manager.jpg`      | 251×1198 |     23 | `2e7368e25d39ff94eed8067a9d92caa67bf70f594d229a5a4889dfbfdda30888` |
+| `docs/images/dsl4-palette-async-input.jpg`        |  251×533 |      9 | `7c15d03fd84357fd679c6b24290c73762d75f857b1c0508064f3ff02f5211a86` |
+| `docs/images/dsl4-palette-bubble.jpg`             | 251×1497 |     28 | `11d28c9b09668f5e4be96d5f02ef85fd35384f44df120132246c0ec62bcdb8a1` |
+| `docs/images/dsl4-palette-runtime-expression.jpg` |  251×214 |      3 | `8ac2b3a724b8ffc79bce9940bc83498f3be97224dcdf01b353adfa2108fd413f` |
+| `docs/images/dsl4-palette-svg-text.jpg`           |  251×174 |      2 | `be690017012cb1a41b40e01e6d697b9d294fb5d7bc912a53b7eab0989a4d8d75` |
+| `docs/images/dsl4-palette-tmpose.jpg`             | 251×1466 |     31 | `24e03d3e6eee976bbc72371d47e23db35072609061300da79b61f46964eda91d` |
+
+合計は119ブロックです。Async Inputのsourceにあるpose listener 3 blockは`poseInput`が既定OFFのため表示されず、
+`listenForActorTouchAndBroadcast`が表示されることを実パレットとDOMの両方で確認しました。
+
 ## 実装解析図
 
 図はすべて固定commit`f323a54`のsourceと対応testを直接確認して作成しました。HTMLやJavaScriptに依存しない
@@ -89,7 +113,7 @@ SVGとし、Web、狭幅表示、印刷版で同じ情報を保持します。
 
 - SVGは`xmllint`でwell-formedを確認し、InkscapeでPNGへrenderして文字切れ・要素重なりを目視確認する。
 - 内部仕様書の全SVGに`title`、`desc`、意味のあるMarkdown altを持たせる。
-- スクリーンショットはPNG signature、pixel、SHA-256を自動testで固定する。
+- スクリーンショットはPNGまたはJPEG signature、pixel、SHA-256を自動testで固定する。
 - 320 px狭幅では画像をcontent幅へ縮小し、ページ横overflowを発生させない。
 - 公開HTMLとA4組版で図の欠落、分断、captionの孤立がないことを確認する。
 
@@ -103,6 +127,8 @@ SVGとし、Web、狭幅表示、印刷版で同じ情報を保持します。
 6. copy側のversionだけを`4.1`へ変え、`K4-VERSION-001`とcurrent integrity維持をcaptureする。
 7. `4.0`へ戻して復旧を確認し、preview processを停止する。
 8. PNG pixel、SHA-256、SVG render、公開HTML、A4を再検証する。
+9. 固定SB3をTurboWarp Editorで開き、集約パレットをmemberセパレータ単位で撮影する。
+10. 7 JPEGのpointer退避、block数、pixel、SHA-256、章頭配置を再検証する。
 
 画像または図を更新するときはhashだけを書き換えず、実装commit、入力、撮影条件、図の根拠sourceとtestの
 どれが変わったかを同じcommitで記録します。
