@@ -178,6 +178,21 @@ test('lists every public bundled block and member documentation URI', () => {
   }
   assert.match(blockReference, /119ブロック/u);
   assert.match(blockReference, /Open Documentation/u);
+
+  const paletteTableHeaders = blockReference.match(
+    /^\| opcode\s+\| パレットのブロック文\s+\| 役割\s+\|$/gmu,
+  );
+  assert.equal(paletteTableHeaders?.length, 8, 'every public block table must expose palette text');
+
+  const paletteRows = [
+    ...blockReference.matchAll(/^\| `([^`]+)`\s+\| `([^`]+)`\s+\| [^\n]+\|$/gmu),
+  ];
+  assert.equal(paletteRows.length, 119, 'every public block must include non-empty palette text');
+  assert.deepEqual(
+    paletteRows.map((match) => match[1]).sort(),
+    allOpcodes.sort(),
+    'palette-text rows must match the public opcode inventory',
+  );
 });
 
 test('places one real palette capture at the start of every member chapter', () => {

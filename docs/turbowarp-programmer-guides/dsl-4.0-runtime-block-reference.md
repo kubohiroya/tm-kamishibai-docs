@@ -146,31 +146,31 @@ _図2: Asset Managerのmemberセパレータで切り出したパレット。_
 素材を名前で登録し、画像、文字、音声、animationへ同じ名前を渡します。外部URL、cache、costume、backdrop、
 project sound、runtime textを扱います。
 
-| opcode                    | 役割                                                       |
-| ------------------------- | ---------------------------------------------------------- |
-| `registerAsset`           | resourceを名前付きassetとして登録する                      |
-| `assetErrorType`          | 直近の登録失敗のstable error codeを返す                    |
-| `assetErrorLabel`         | 直近の登録失敗に関係する名前を返す                         |
-| `deleteMemoryAsset`       | 一つの登録をmemoryから解放する                             |
-| `deleteAllMemoryAssets`   | 全登録と所有するskin、animation、音声を解放する            |
-| `deleteCachedAsset`       | 一つの外部assetをIndexedDB cacheから削除する               |
-| `deleteAllCachedAssets`   | 外部asset cacheをすべて消去する                            |
-| `isLoaded`                | assetが登録済みか返す                                      |
-| `setTextValue`            | runtime text assetの値を設定する                           |
-| `setTextStyle`            | text assetのanimation、font、color、width、alignを設定する |
-| `setThisSpriteSkin`       | 現在のsprite／cloneへ画像またはtext assetを表示する        |
-| `setSpriteSkin`           | 名前付きspriteへassetを表示する互換ブロック                |
-| `startActorLoop`          | actorのasset列をbackgroundでloopする                       |
-| `startActorSequence`      | actorのasset列をbackgroundで一度再生する                   |
-| `stopActorAnimation`      | actorのloop／sequenceを停止する                            |
-| `finishAllActorSequences` | 全one-shot sequenceを最終画像まで進める                    |
-| `setStageSkin`            | Stageへ登録画像を表示する                                  |
-| `playSound`               | 登録音声を待たずに再生する                                 |
-| `playSoundUntilDone`      | 登録音声を終了まで再生する                                 |
-| `stopSound`               | 指定assetの再生だけを停止する                              |
-| `stopAllSounds`           | Asset Managerが追跡する全音声を停止する                    |
-| `getAssetMimeType`        | 登録assetの正規化済みMIME typeを返す                       |
-| `getVersion`              | Asset Managerのversionを返す                               |
+| opcode                    | パレットのブロック文                                                                    | 役割                                                       |
+| ------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| `registerAsset`           | `register resource [RESOURCE_ID] as asset [NAME]`                                       | resourceを名前付きassetとして登録する                      |
+| `assetErrorType`          | `asset registration error type`                                                         | 直近の登録失敗のstable error codeを返す                    |
+| `assetErrorLabel`         | `asset registration error label`                                                        | 直近の登録失敗に関係する名前を返す                         |
+| `deleteMemoryAsset`       | `delete asset [NAME] from memory`                                                       | 一つの登録をmemoryから解放する                             |
+| `deleteAllMemoryAssets`   | `delete all assets from memory`                                                         | 全登録と所有するskin、animation、音声を解放する            |
+| `deleteCachedAsset`       | `delete asset [NAME] from cache`                                                        | 一つの外部assetをIndexedDB cacheから削除する               |
+| `deleteAllCachedAssets`   | `delete all assets from cache`                                                          | 外部asset cacheをすべて消去する                            |
+| `isLoaded`                | `asset [NAME] is loaded`                                                                | assetが登録済みか返す                                      |
+| `setTextValue`            | `set text asset [NAME] to [VALUE]`                                                      | runtime text assetの値を設定する                           |
+| `setTextStyle`            | `set text asset [NAME] style [PROPERTY] to [VALUE]`                                     | text assetのanimation、font、color、width、alignを設定する |
+| `setThisSpriteSkin`       | `show asset [NAME] on this sprite`                                                      | 現在のsprite／cloneへ画像またはtext assetを表示する        |
+| `setSpriteSkin`           | `show asset [NAME] on [SPRITE] (compatibility)`                                         | 名前付きspriteへassetを表示する互換ブロック                |
+| `startActorLoop`          | `loop actor [ACTOR] through assets [ASSETS] for seconds [DURATIONS]`                    | actorのasset列をbackgroundでloopする                       |
+| `startActorSequence`      | `play actor [ACTOR] through assets [ASSETS] for seconds [DURATIONS] once in background` | actorのasset列をbackgroundで一度再生する                   |
+| `stopActorAnimation`      | `stop animation of actor [ACTOR]`                                                       | actorのloop／sequenceを停止する                            |
+| `finishAllActorSequences` | `finish all actor sequences`                                                            | 全one-shot sequenceを最終画像まで進める                    |
+| `setStageSkin`            | `set stage backdrop to asset [NAME]`                                                    | Stageへ登録画像を表示する                                  |
+| `playSound`               | `play asset [NAME] as sound`                                                            | 登録音声を待たずに再生する                                 |
+| `playSoundUntilDone`      | `play asset [NAME] as sound until done`                                                 | 登録音声を終了まで再生する                                 |
+| `stopSound`               | `stop asset sound [NAME]`                                                               | 指定assetの再生だけを停止する                              |
+| `stopAllSounds`           | `stop all asset sounds`                                                                 | Asset Managerが追跡する全音声を停止する                    |
+| `getAssetMimeType`        | `MIME type of asset [NAME]`                                                             | 登録assetの正規化済みMIME typeを返す                       |
+| `getVersion`              | `Asset Manager version`                                                                 | Asset Managerのversionを返す                               |
 
 `loadAsset`、loading表示用block、構造化project locator検証などは内部／互換surfaceであり、現行bundleの
 パレットには表示されません。session binary backing、verified remote cache、bitmap resolutionなどのhost APIは
@@ -184,17 +184,17 @@ _図3: Async Inputのmemberセパレータで切り出したパレット。_
 
 入力listenerは、それを登録したStage、sprite、cloneが所有します。runtime variableはTemporary Variables由来です。
 
-| opcode                            | 役割                                               |
-| --------------------------------- | -------------------------------------------------- |
-| `listenForKey`                    | physical keyでruntime variableを更新する           |
-| `listenForKeyAndBroadcast`        | keyで変数を更新してmessageを送る                   |
-| `stopListeningForKey`             | 現在targetの指定key listenerを外す                 |
-| `stopAllKeyListeners`             | 現在targetの全key listenerを外す                   |
-| `listenForTouch`                  | 現在sprite／cloneのタッチで変数を更新する          |
-| `listenForTouchAndBroadcast`      | タッチで変数を更新してmessageを送る                |
-| `stopListeningForTouch`           | 現在targetのtouch listenerを外す                   |
-| `stopAllInputListeners`           | 現在targetのkey、touch listenerをすべて外す        |
-| `listenForActorTouchAndBroadcast` | 名前付きactorのタッチで変数を更新してmessageを送る |
+| opcode                            | パレットのブロック文                                                                                 | 役割                                               |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `listenForKey`                    | `listen for key [KEY_ID] set runtime var [RUNTIME_VAR] to [VALUE]`                                   | physical keyでruntime variableを更新する           |
+| `listenForKeyAndBroadcast`        | `listen for key [KEY_ID] set runtime var [RUNTIME_VAR] to [VALUE] and broadcast [MESSAGE]`           | keyで変数を更新してmessageを送る                   |
+| `stopListeningForKey`             | `stop listening for key [KEY_ID] for this target`                                                    | 現在targetの指定key listenerを外す                 |
+| `stopAllKeyListeners`             | `stop all key listeners registered by this target`                                                   | 現在targetの全key listenerを外す                   |
+| `listenForTouch`                  | `listen for touch on this sprite set runtime var [RUNTIME_VAR] to [VALUE]`                           | 現在sprite／cloneのタッチで変数を更新する          |
+| `listenForTouchAndBroadcast`      | `listen for touch on this sprite set runtime var [RUNTIME_VAR] to [VALUE] and broadcast [MESSAGE]`   | タッチで変数を更新してmessageを送る                |
+| `stopListeningForTouch`           | `stop listening for touch on this sprite`                                                            | 現在targetのtouch listenerを外す                   |
+| `stopAllInputListeners`           | `stop all input listeners registered by this target`                                                 | 現在targetのkey、touch listenerをすべて外す        |
+| `listenForActorTouchAndBroadcast` | `listen for touch on actor [ACTOR] set runtime var [RUNTIME_VAR] to [VALUE] and broadcast [MESSAGE]` | 名前付きactorのタッチで変数を更新してmessageを送る |
 
 sourceには`listenForPose`、`stopListeningForPose`、`stopAllPoseListeners`もありますが、rc.5では
 `poseInput` feature flagが既定OFFのためパレットに表示されず、119ブロックには数えません。
@@ -209,36 +209,36 @@ _図4: Bubbleのmemberセパレータで切り出したパレット。_
 
 BubbleはSVG body、SVG Text、portrait、目パチ、口パク、音声、continue indicatorを一つの表示surfaceとして扱います。
 
-| opcode                    | 役割                                                 |
-| ------------------------- | ---------------------------------------------------- |
-| `defineBubbleStyle`       | 名前付きBubble styleとSVG Text styleの対応を定義する |
-| `setBubblePlacement`      | actor相対方向または背景相対regionを設定する          |
-| `setPortraitBase`         | portraitの基準画像assetを設定する                    |
-| `setPortraitLayout`       | portraitの辺／角、offset、zoom、角丸を設定する       |
-| `setBubbleDistance`       | actor境界からtail先端までの距離を設定する            |
-| `setBubbleVisualStyle`    | BubbleのSVG形状を設定する                            |
-| `setBubbleTailLength`     | actor相対Bubbleのtail長を設定する                    |
-| `setBubbleOffset`         | Bubble本体のoffsetとscaleを設定する                  |
-| `setBlinkFrames`          | portraitの目パチasset列と間隔を設定する              |
-| `setLipSyncFrames`        | portraitの口パクasset列と間隔を設定する              |
-| `setContinueFrames`       | 入力待ちindicatorのasset列と間隔を設定する           |
-| `setBubbleReveal`         | CHARACTER／WORD／LINE／BLOCKの逐次表示を設定する     |
-| `setBubbleWordDelimiters` | WORD表示の区切り文字と表示有無を設定する             |
-| `setBubbleRevealSound`    | 逐次表示単位ごとの効果音assetを設定する              |
-| `setBubbleVoice`          | Bubble開始時のfull-voice assetを設定する             |
-| `finishBubbleReveal`      | 残りを表示し、条件またはtimeoutを待つ                |
-| `setBubbleShowAnimation`  | 表示開始animationを設定する                          |
-| `setBubbleHideAnimation`  | 表示終了animationを設定する                          |
-| `animateBubble`           | 名前付きdisplay animationを直ちに実行する            |
-| `shakeBubble`             | Bubble surface全体を方向・回数・easing付きで揺らす   |
-| `explodeBubble`           | Bubble surface全体を相対倍率で拡縮する               |
-| `animateBubbleShape`      | Bubble形状を別visual styleへ遷移する                 |
-| `sayWithBubbleStyle`      | 現在spriteの発話Bubbleを表示する                     |
-| `thinkWithBubbleStyle`    | 現在spriteの思考Bubbleを表示する                     |
-| `setBubbleAnimationMode`  | talking／awaiting-continueなどのmodeを変える         |
-| `waitForBubbleContinue`   | Runtime Expressionの条件またはtimeoutを待つ          |
-| `closeBubble`             | Bubbleを閉じ、timer、skin、drawableを解放する        |
-| `getVersion`              | Bubbleのversionを返す                                |
+| opcode                    | パレットのブロック文                                                                                           | 役割                                                 |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `defineBubbleStyle`       | `define bubble style [STYLE] using text style [TEXT_STYLE]`                                                    | 名前付きBubble styleとSVG Text styleの対応を定義する |
+| `setBubblePlacement`      | `set bubble placement [PLACEMENT] for bubble style [STYLE]`                                                    | actor相対方向または背景相対regionを設定する          |
+| `setPortraitBase`         | `set portrait base [ASSET] for bubble style [STYLE]`                                                           | portraitの基準画像assetを設定する                    |
+| `setPortraitLayout`       | `set portrait [PLACEMENT] offset x [X] y [Y] zoom [ZOOM] % corner radius [RADIUS] px for bubble style [STYLE]` | portraitの辺／角、offset、zoom、角丸を設定する       |
+| `setBubbleDistance`       | `set bubble distance [DISTANCE] for bubble style [STYLE]`                                                      | actor境界からtail先端までの距離を設定する            |
+| `setBubbleVisualStyle`    | `set bubble visual style [VISUAL_STYLE] for bubble style [STYLE]`                                              | BubbleのSVG形状を設定する                            |
+| `setBubbleTailLength`     | `set bubble tail length [LENGTH] for bubble style [STYLE]`                                                     | actor相対Bubbleのtail長を設定する                    |
+| `setBubbleOffset`         | `set bubble offset x [X] y [Y] scale [SCALE] % for bubble style [STYLE]`                                       | Bubble本体のoffsetとscaleを設定する                  |
+| `setBlinkFrames`          | `set blink frames [ASSETS] every [SECONDS] seconds for bubble style [STYLE]`                                   | portraitの目パチasset列と間隔を設定する              |
+| `setLipSyncFrames`        | `set lip-sync frames [ASSETS] every [SECONDS] seconds for bubble style [STYLE]`                                | portraitの口パクasset列と間隔を設定する              |
+| `setContinueFrames`       | `set continue frames [ASSETS] every [SECONDS] seconds for bubble style [STYLE]`                                | 入力待ちindicatorのasset列と間隔を設定する           |
+| `setBubbleReveal`         | `set bubble reveal unit [UNIT] every [SECONDS] seconds layout [LAYOUT] for bubble style [STYLE]`               | CHARACTER／WORD／LINE／BLOCKの逐次表示を設定する     |
+| `setBubbleWordDelimiters` | `set bubble word delimiters [DELIMITERS] show [SHOW] for bubble style [STYLE]`                                 | WORD表示の区切り文字と表示有無を設定する             |
+| `setBubbleRevealSound`    | `set bubble reveal sound [ASSET] for bubble style [STYLE]`                                                     | 逐次表示単位ごとの効果音assetを設定する              |
+| `setBubbleVoice`          | `set bubble voice [ASSET] for bubble style [STYLE]`                                                            | Bubble開始時のfull-voice assetを設定する             |
+| `finishBubbleReveal`      | `finish [UNIT] with condition [CONDITION] or timeout after [TIMEOUT] seconds`                                  | 残りを表示し、条件またはtimeoutを待つ                |
+| `setBubbleShowAnimation`  | `set bubble show animation [MOTION] for [SECONDS] seconds for bubble style [STYLE]`                            | 表示開始animationを設定する                          |
+| `setBubbleHideAnimation`  | `set bubble hide animation [MOTION] for [SECONDS] seconds for bubble style [STYLE]`                            | 表示終了animationを設定する                          |
+| `animateBubble`           | `animate this bubble [MOTION]`                                                                                 | 名前付きdisplay animationを直ちに実行する            |
+| `shakeBubble`             | `shake this bubble direction [DIRECTION] count [COUNT] ease [EASE]`                                            | Bubble surface全体を方向・回数・easing付きで揺らす   |
+| `explodeBubble`           | `explode this bubble relative scale [SCALE] count [COUNT] ease [EASE]`                                         | Bubble surface全体を相対倍率で拡縮する               |
+| `animateBubbleShape`      | `animate bubble shape to [VISUAL_STYLE] speed [SPEED] for [SECONDS] seconds`                                   | Bubble形状を別visual styleへ遷移する                 |
+| `sayWithBubbleStyle`      | `say [MESSAGE] with bubble style [STYLE]`                                                                      | 現在spriteの発話Bubbleを表示する                     |
+| `thinkWithBubbleStyle`    | `think [MESSAGE] with bubble style [STYLE]`                                                                    | 現在spriteの思考Bubbleを表示する                     |
+| `setBubbleAnimationMode`  | `set this bubble animation mode [MODE]`                                                                        | talking／awaiting-continueなどのmodeを変える         |
+| `waitForBubbleContinue`   | `wait with this bubble until condition [CONDITION] or timeout after [TIMEOUT] seconds`                         | Runtime Expressionの条件またはtimeoutを待つ          |
+| `closeBubble`             | `close this bubble`                                                                                            | Bubbleを閉じ、timer、skin、drawableを解放する        |
+| `getVersion`              | `Bubble version`                                                                                               | Bubbleのversionを返す                                |
 
 ## Runtime Expression 0.4.0（3ブロック）
 
@@ -246,11 +246,11 @@ BubbleはSVG body、SVG Text、portrait、目パチ、口パク、音声、conti
 
 _図5: Runtime Expressionのmemberセパレータで切り出したパレット。_
 
-| opcode                           | 役割                                                          |
-| -------------------------------- | ------------------------------------------------------------- |
-| `runtimeCondition`               | Temporary Variablesを使う制限付きJavaScript風条件式を評価する |
-| `registerConditionalBroadcast`   | false→true／true→falseの変化でmessageを送る登録を作る         |
-| `unregisterConditionalBroadcast` | IDが一致する条件付きbroadcastを解除する                       |
+| opcode                           | パレットのブロック文                                                                                                    | 役割                                                          |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `runtimeCondition`               | `condition [EXPRESSION]`                                                                                                | Temporary Variablesを使う制限付きJavaScript風条件式を評価する |
+| `registerConditionalBroadcast`   | `register [ID] conditional broadcast [CONDITION] [MESSAGE_ON_TRUE] / [MESSAGE_ON_FALSE] with [TIMEOUT] seconds timeout` | false→true／true→falseの変化でmessageを送る登録を作る         |
+| `unregisterConditionalBroadcast` | `unregister [ID] conditional broadcast`                                                                                 | IDが一致する条件付きbroadcastを解除する                       |
 
 `validateConditionSyntax`はhost向けの非表示blockです。利用できる演算子、値の変換、式の長さ・token数・深さ・
 timeout、エラー時の扱いは上流ガイドを参照してください。
@@ -261,10 +261,10 @@ timeout、エラー時の扱いは上流ガイドを参照してください。
 
 _図6: SVG Textのmemberセパレータで切り出したパレット。_
 
-| opcode        | 役割                                                                   |
-| ------------- | ---------------------------------------------------------------------- |
-| `defineStyle` | background、文字色、font、size、alignを持つ名前付き文字styleを定義する |
-| `setText`     | 現在spriteのskinを、指定styleのresponsive SVG textへ置き換える         |
+| opcode        | パレットのブロック文                                                                                        | 役割                                                                   |
+| ------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `defineStyle` | `define text style [STYLE] background [BACKGROUND] text [TEXT_COLOR] font [FONT] size [SIZE] align [ALIGN]` | background、文字色、font、size、alignを持つ名前付き文字styleを定義する |
+| `setText`     | `set this sprite text [TEXT] with style [STYLE]`                                                            | 現在spriteのskinを、指定styleのresponsive SVG textへ置き換える         |
 
 文字幅測定、skin所有権、target／全体解放はComposition APIで提供され、パレットblockではありません。
 
@@ -276,44 +276,44 @@ _図7: TMPoseのmemberセパレータで切り出したパレット。_
 
 ### model、camera、preview
 
-| opcode                     | 役割                                          |
-| -------------------------- | --------------------------------------------- |
-| `versionReporter`          | TMPoseのversionを返す                         |
-| `setModelURL`              | Teachable Machine Pose model URLを設定する    |
-| `loadModel`                | 設定済みmodelを読み込む                       |
-| `isModelLoaded`            | modelの読込状態を返す                         |
-| `startCamera`              | cameraとpreviewを開始する                     |
-| `stopCamera`               | cameraと認識loopを停止する                    |
-| `isCameraRunning`          | cameraの実行状態を返す                        |
-| `refreshCameraList`        | 利用できるvideo input一覧を更新する           |
-| `setCameraSelection`       | default、front、back、検出済みcameraを選ぶ    |
-| `cameraCountReporter`      | 検出したcamera数を返す                        |
-| `cameraDeviceIdReporter`   | 使用中cameraのdevice IDを返す                 |
-| `cameraDeviceNameReporter` | 使用中cameraのdevice名を返す                  |
-| `showPreview`              | camera previewを表示する                      |
-| `hidePreview`              | camera previewを隠す                          |
-| `isPreviewVisible`         | previewの表示設定を返す                       |
-| `setPreviewOpacity`        | previewの不透明度を0〜1で設定する             |
-| `setPreviewPosition`       | previewのStage内位置を設定する                |
-| `setPreviewMirroring`      | 認識入力を変えずにpreviewの左右反転を設定する |
-| `previewMirroringReporter` | `mirrored`または`unmirrored`を返す            |
+| opcode                     | パレットのブロック文                        | 役割                                          |
+| -------------------------- | ------------------------------------------- | --------------------------------------------- |
+| `versionReporter`          | `TMPose version`                            | TMPoseのversionを返す                         |
+| `setModelURL`              | `set model URL to [URL]`                    | Teachable Machine Pose model URLを設定する    |
+| `loadModel`                | `load model`                                | 設定済みmodelを読み込む                       |
+| `isModelLoaded`            | `model is loaded?`                          | modelの読込状態を返す                         |
+| `startCamera`              | `start camera`                              | cameraとpreviewを開始する                     |
+| `stopCamera`               | `stop camera`                               | cameraと認識loopを停止する                    |
+| `isCameraRunning`          | `camera is running?`                        | cameraの実行状態を返す                        |
+| `refreshCameraList`        | `refresh camera list`                       | 利用できるvideo input一覧を更新する           |
+| `setCameraSelection`       | `set camera to [CAMERA]`                    | default、front、back、検出済みcameraを選ぶ    |
+| `cameraCountReporter`      | `camera count`                              | 検出したcamera数を返す                        |
+| `cameraDeviceIdReporter`   | `camera device ID`                          | 使用中cameraのdevice IDを返す                 |
+| `cameraDeviceNameReporter` | `camera device name`                        | 使用中cameraのdevice名を返す                  |
+| `showPreview`              | `show camera preview`                       | camera previewを表示する                      |
+| `hidePreview`              | `hide camera preview`                       | camera previewを隠す                          |
+| `isPreviewVisible`         | `camera preview is visible?`                | previewの表示設定を返す                       |
+| `setPreviewOpacity`        | `set camera preview opacity to [OPACITY]`   | previewの不透明度を0〜1で設定する             |
+| `setPreviewPosition`       | `set camera preview position to [POSITION]` | previewのStage内位置を設定する                |
+| `setPreviewMirroring`      | `set camera preview to [MIRRORING]`         | 認識入力を変えずにpreviewの左右反転を設定する |
+| `previewMirroringReporter` | `camera preview mirroring`                  | `mirrored`または`unmirrored`を返す            |
 
 ### 認識結果と診断
 
-| opcode                   | 役割                                   |
-| ------------------------ | -------------------------------------- |
-| `startPredict`           | ポーズ認識を開始する                   |
-| `stopPredict`            | ポーズ認識を停止する                   |
-| `isPredicting`           | 認識中か返す                           |
-| `currentPoseReporter`    | confidenceが最大のpose labelを返す     |
-| `scoreReporter`          | 現在poseのconfidenceを返す             |
-| `poseScoreReporter`      | 指定poseのconfidenceを返す             |
-| `isPose`                 | 指定poseが既定threshold 0.75以上か返す |
-| `isPoseWithThreshold`    | 指定poseが指定threshold以上か返す      |
-| `cameraMsReporter`       | camera開始時間をmsで返す               |
-| `modelLoadMsReporter`    | model読込時間をmsで返す                |
-| `firstPredictMsReporter` | 最初の認識までの時間をmsで返す         |
-| `lastErrorReporter`      | 直近のerror messageを返す              |
+| opcode                   | パレットのブロック文                                   | 役割                                   |
+| ------------------------ | ------------------------------------------------------ | -------------------------------------- |
+| `startPredict`           | `start recognition`                                    | ポーズ認識を開始する                   |
+| `stopPredict`            | `stop recognition`                                     | ポーズ認識を停止する                   |
+| `isPredicting`           | `recognition is running?`                              | 認識中か返す                           |
+| `currentPoseReporter`    | `current pose`                                         | confidenceが最大のpose labelを返す     |
+| `scoreReporter`          | `confidence`                                           | 現在poseのconfidenceを返す             |
+| `poseScoreReporter`      | `confidence of [NAME]`                                 | 指定poseのconfidenceを返す             |
+| `isPose`                 | `pose is [NAME]?`                                      | 指定poseが既定threshold 0.75以上か返す |
+| `isPoseWithThreshold`    | `pose is [NAME] with confidence at least [THRESHOLD]?` | 指定poseが指定threshold以上か返す      |
+| `cameraMsReporter`       | `camera startup time (ms)`                             | camera開始時間をmsで返す               |
+| `modelLoadMsReporter`    | `model load time (ms)`                                 | model読込時間をmsで返す                |
+| `firstPredictMsReporter` | `first recognition time (ms)`                          | 最初の認識までの時間をmsで返す         |
+| `lastErrorReporter`      | `last error`                                           | 直近のerror messageを返す              |
 
 `setAccumulatedPoseParameters`、`setAccumulatedPoseThreshold`、`resetAccumulatedPose`、
 `accumulatedPoseReporter`、`accumulatedScoreReporter`、`accumulatedPoseScoreReporter`は
