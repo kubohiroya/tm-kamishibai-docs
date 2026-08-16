@@ -3,14 +3,14 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 固定実装基準を説明する統合ガイド（正式リリース済みの意味ではない）\
-調査基準: tmpose-kamishibai `f323a54`（4.0.0-rc.5）、2026年8月15日
+調査基準: tmpose-kamishibai `4c360cd`（4.0.0-rc.6）、2026年8月16日
 
-> **配布状態との区別:** 2026年8月15日時点で`v4.0.0-rc.5`はprereleaseとして公開されていますが、
-> 正式な`v4.0.0`ではありません。本書の統合境界はrc.5固定実装を説明します。
+> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.6`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。本書の統合境界はrc.6固定実装を説明します。
 
 このガイドは、TMPose紙芝居4.0のruntime capability、platform adapter、外部packageとの統合境界を
 保守する開発者向けの資料です。実装基準は`kubohiroya/tmpose-kamishibai`のcommit
-[`f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6`](https://github.com/kubohiroya/tmpose-kamishibai/tree/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6)
+[`4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6`](https://github.com/kubohiroya/tmpose-kamishibai/tree/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6)
 です。本書のpath、関数、package version、診断code、test名はこのcommitで確認しています。
 
 YAMLの記述方法は[紙芝居DSL 4.0 台本作成ガイド](../dsl-author-guides/dsl-4.0-author-guide.md)、
@@ -43,7 +43,7 @@ capabilityとplatform境界」を記録します。各providerが単体で公開
 
 ## 図版、source、licenseの境界
 
-本書では画像、editor capture、外部図版を新規使用しません。rc.5のStandard paletteには23個のcore action
+本書では画像、editor capture、外部図版を新規使用しません。rc.6のStandard paletteには23個のcore action
 blockがありますが、画面captureだけでは統合責務や失敗条件を検証できないためです。代わりに、固定commitの
 実装path、export関数、契約fixture、testを表で対応させます。
 
@@ -80,7 +80,7 @@ Browser Preview、CLI接続先browser、Production SB3へ届けますが、sourc
 | Bubble             | `@kubohiroya/turbowarp-bubble@0.7.0`             | 吹き出し、折り返し、表示、音声、animation     |
 | Runtime Expression | `@kubohiroya/turbowarp-runtime-expression@0.4.0` | branch式の検証と評価                          |
 | SVG Text           | `@kubohiroya/turbowarp-svg-text@0.5.0`           | text actor、speech bubbleの描画               |
-| TMPose             | `@kubohiroya/turbowarp-tmpose@1.10.0`            | pose modelと認識lifecycle                     |
+| TMPose             | `@kubohiroya/turbowarp-tmpose@1.11.0`            | pose model、認識lifecycle、preview overlay    |
 | Structured Data    | `src/dsl4/structured-data.js`、format version 1  | view、object store、iterator、JSONPath        |
 
 Standard 4.0のbundle種別は`source-composition`です。3.2の`extensionBundles`、unbundle用
@@ -193,7 +193,8 @@ StoryDocumentの`poseRecognition.modelInitialization`は、`policy`を
 `modelInitializationPolicy`、`parallel`を`parallelModelInitialization`へ変換してTMPose Compositionへ
 渡します。asset lifecycleの`AbortSignal`は`registerPoseModel(input, {signal})`へそのまま伝播します。
 
-TMPose 1.10.0の`latest-needed` policyは、重い初期化をactive 1件と最新pending 1件に制限します。
+TMPose 1.11.0の`latest-needed` policyは、重い初期化をactive 1件と最新pending 1件に制限します。
+camera canvasのcontext／readbackとSVG overlay DOMはTMPoseが所有し、DSL hostは公開Composition APIだけを呼び出します。
 Aの実行中にB、Cが要求された場合は、Aを安全境界でcancelし、Bを開始せずCだけを開始します。cancel済み
 resourceはregistryへ公開せず、遅れて完了したresourceもexactly onceで解放します。Web Cryptoや
 TensorFlow.jsで物理中断できない処理は完了を待って破棄し、後続phaseを開始しません。

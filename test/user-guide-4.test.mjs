@@ -42,18 +42,21 @@ test('covers the public start-to-finish operation path', () => {
 test('keeps live-surface evidence in the machine-readable manifest', () => {
   assert.equal(surfaces.formatVersion, 1);
   assert.equal(surfaces.releaseState.formalGitHubReleasePublished, false);
-  assert.equal(surfaces.samples.pagesDeploymentRun, 31660773675);
+  assert.equal(surfaces.samples.pagesDeploymentRun, 31935960062);
   assert.equal(surfaces.releaseState.publishedPrerelease, 'v4.0.0-rc.6');
-  assert.equal(surfaces.releaseState.sampleBaselineDiffersFromPublishedPrerelease, true);
-  assert.equal(surfaces.samples.runtime.version, '4.0.0-rc.3');
-  assert.equal(surfaces.samples.runtime.commit, '087dfa526e967bb2cc38af3f5b5a795355de7739');
-  assert.equal(surfaces.samples.tutorial.version, '4.0.0-rc.3');
+  assert.equal(surfaces.releaseState.sampleBaselineDiffersFromPublishedPrerelease, false);
+  assert.equal(surfaces.samples.runtime.version, '4.0.0-rc.6');
+  assert.equal(surfaces.samples.runtime.commit, '4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6');
+  assert.equal(surfaces.samples.tutorial.version, '4.0.0-rc.6');
   assert.equal(surfaces.samples.tutorial.status, 'published');
   assert.equal(surfaces.samples.tutorial.license, 'MPL-2.0');
   assert.equal(surfaces.physicalVerification.camera, 'passed');
   assert.equal(surfaces.physicalVerification.pose, 'passed');
-  assert.equal(surfaces.physicalVerification.appliesToPublishedPrerelease, false);
-  assert.equal(surfaces.physicalVerification.rc5RetestStatus, 'pending');
+  assert.equal(surfaces.physicalVerification.appliesToPublishedPrerelease, true);
+  assert.equal(
+    surfaces.physicalVerification.rc6Verification,
+    'camera-context-measured; overlay-browser-verified',
+  );
   assert.equal(surfaces.visuals.formalUiCapturesIncluded, false);
 
   for (const sample of [surfaces.samples.urashima, surfaces.samples.myUrashima]) {
