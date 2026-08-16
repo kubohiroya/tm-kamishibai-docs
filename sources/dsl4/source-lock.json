@@ -1,11 +1,11 @@
 {
   "repository": "kubohiroya/tmpose-kamishibai",
   "sourceKind": "commit",
-  "commit": "4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6",
-  "commitDate": "2026-08-16T15:41:24+09:00",
+  "commit": "3a5f31d2519dfb2b9dab32b2c377762c774d5844",
+  "commitDate": "2026-08-16T19:36:19+09:00",
   "schemaPath": "schema/dsl-4.schema.json",
   "schemaSha256": "bb96f6fd503ee7a747b48b4cdc30db227b5d3171854c2b83a47a96c15ed7fd79",
-  "schemaUrl": "https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/schema/dsl-4.schema.json",
-  "surfaceSpecificationUrl": "https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/docs/design/dsl-4-surface.md",
+  "schemaUrl": "https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/schema/dsl-4.schema.json",
+  "surfaceSpecificationUrl": "https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/docs/design/dsl-4-surface.md",
   "snapshotLicense": "MPL-2.0"
 }

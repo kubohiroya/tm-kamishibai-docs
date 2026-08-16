@@ -7,10 +7,10 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: 教材・ワークショップ設計者、制作環境担当者、プレビュー／ビルド確認者
 
 文書状態: 固定実装基準を説明する詳細ガイド（正式リリースの操作資料ではない）\
-調査基準: tmpose-kamishibai `4c360cd`（4.0.0-rc.6）、2026年8月16日
+調査基準: tmpose-kamishibai `3a5f31d`（4.0.0-rc.7）、2026年8月16日
 
-> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.6`はprereleaseとして公開されていますが、
-> 正式な`v4.0.0`ではありません。この文書の説明はrc.6固定実装を基準とし、将来版で同じ画面や
+> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.7`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。この文書の説明はrc.7固定実装を基準とし、将来版で同じ画面や
 > ビルド結果になることは保証しません。
 
 この文書は、教材やワークショップを設計する方、制作環境を整える方、プレビュー・ビルドの役割を確認する方の
@@ -51,7 +51,7 @@ TMPose紙芝居4.0は、台本と画像・音声・ポーズ用データを読�
 
 <figure class="application-flow"><figcaption>作品を作って利用するまで</figcaption><div><span>台本と素材を用意</span><b>→</b><span>問題がないか検査</span><b>→</b><span>ブラウザーで確認</span><b>→</b><span>完成ファイルをプレイ</span></div></figure>
 
-<p class="application-callout"><strong>利用前に確認:</strong> 4.0.0-rc.6は公開プレリリースです。安定版4.0.0ではないため、利用する版で台本の検査、ブラウザーでの確認、完成ファイルの作成が使えるかを、制作環境の担当者が確認します。</p>
+<p class="application-callout"><strong>利用前に確認:</strong> 4.0.0-rc.7は公開プレリリースです。安定版4.0.0ではないため、利用する版で台本の検査、ブラウザーでの確認、完成ファイルの作成が使えるかを、制作環境の担当者が確認します。</p>
 
 <p class="application-source">出典: <a href="../dsl-author-guides/dsl-4.0-author-guide.md">紙芝居DSL 4.0 台本作成ガイド</a>、<a href="../dsl-author-guides/dsl-4.0-schema-reference.md">紙芝居DSL 4.0 Schemaリファレンス</a></p>
 

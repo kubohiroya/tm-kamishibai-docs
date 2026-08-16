@@ -3,10 +3,10 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 固定実装基準を説明する内部仕様（正式リリース済みの意味ではない）\
-調査基準: tmpose-kamishibai `4c360cd`（4.0.0-rc.6）、2026年8月16日
+調査基準: tmpose-kamishibai `3a5f31d`（4.0.0-rc.7）、2026年8月16日
 
-> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.6`はprereleaseとして公開されていますが、
-> 正式な`v4.0.0`ではありません。本書はrc.6固定コミットの内部構造を説明します。
+> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.7`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。本書はrc.7固定コミットの内部構造を説明します。
 
 この文書は、TMPose紙芝居4.0のsource frontend、実行中間表現、runtime、platform adapter、
 preview transactionの責務境界を、完成実装に対応させて記録します。作者向けのYAML構文は
@@ -15,7 +15,7 @@ preview transactionの責務境界を、完成実装に対応させて記録し�
 
 対象アプリ: tmpose-kamishibai 4.0.x\
 受理するDSL宣言: `kamishibai: '4.0'`\
-実装固定commit: [`4c360cd`](https://github.com/kubohiroya/tmpose-kamishibai/commit/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6)（2026年8月16日、`v4.0.0-rc.6`）
+実装固定commit: [`3a5f31d`](https://github.com/kubohiroya/tmpose-kamishibai/commit/3a5f31d2519dfb2b9dab32b2c377762c774d5844)（2026年8月16日、`v4.0.0-rc.7`）
 
 本書のpath、型、関数、event、flagは、このcommitのsourceとtestを基準にしています。
 配布成果物を調査して推測した名称ではありません。
@@ -73,14 +73,14 @@ portを介して外側のadapterへ依頼します。
 
 ![Project source、immutable runtime core、platform adapter、三つの実行surfaceの依存方向](../images/dsl4-architecture.svg)
 
-_図: rc.6の実装moduleを責務ごとに配置したレイヤー構成。矢印は主な依存方向であり、各層の失敗は
+_図: rc.7の実装moduleを責務ごとに配置したレイヤー構成。矢印は主な依存方向であり、各層の失敗は
 canonical diagnosticとして共通surfaceへ投影されます。_
 
 ### 固定実装の呼出し経路 {#implementation-call-path}
 
-前図を実装のexportとcomposition rootまで具体化すると、固定commit`4c360cd`では次の経路になります。
-この追跡は、同commitの公開rc.6 SB3をbaseにしたlocal previewを実行し、immutable sourceの稼働、
-`Version 4.0.0-rc.6`のタイトル、invalid保存時の診断とcurrent integrity維持を観測した結果と
+前図を実装のexportとcomposition rootまで具体化すると、固定commit`3a5f31d`では次の経路になります。
+この追跡は、同commitの公開rc.7 SB3をbaseにしたlocal previewを実行し、immutable sourceの稼働、
+`Version 4.0.0-rc.7`のタイトル、invalid保存時の診断とcurrent integrity維持を観測した結果と
 突き合わせています。
 
 <figure class="concept-flow dsl4-implementation-map"><figcaption>固定実装をsourceから実画面まで追う主要呼出し経路</figcaption><div class="concept-flow__track"><span><code>createDsl4SourceGraph</code><small>source-graph.js<br>entryとincludeを有限探索</small></span><b aria-hidden="true">→</b><span><code>createDsl4SourceGraphFrontend.parse</code><small>source-graph-frontend.js<br>合成後にsingle-source frontendへ委譲</small></span><b aria-hidden="true">→</b><span><code>createDsl4SourceFrontend.parse</code><small>source-frontend.js<br>YAML・Schema・semantic・Action Registry</small></span><b aria-hidden="true">→</b><span><code>createStoryDocument</code><small>story-document.js<br>正規化してdeep-freeze</small></span><b aria-hidden="true">→</b><span><code>createDsl4RuntimeStartup</code><small>runtime-startup.js<br>componentを検証しsessionを所有</small></span><b aria-hidden="true">→</b><span><code>createDsl4RuntimeController.dispatch</code><small>runtime-controller.js<br>sceneとactionを順にportへ渡す</small></span><b aria-hidden="true">→</b><span><code>createDsl4TurboWarpRuntimeEnvironment</code><small>turbowarp-runtime-host.js<br>portとlifecycleを構成</small></span></div><div class="dsl4-implementation-map__ports"><section><strong>アセットとLoading</strong><code>platform-asset-session.js</code><span>Asset Manager、背景、音、ポーズモデルをprepare・release</span></section><section><strong>表示と発話</strong><code>media-action-port.js</code><code>actor-action-port.js</code><span>Stage、Actor、Bubble、SVG Textへ反映</span></section><section><strong>入力とポーズ</strong><code>async-input-action-port.js</code><code>pose-action-port.js</code><span>キー、タッチ、TMPose、カメラ、feedbackへ接続</span></section></div><p class="concept-flow__note">runtime coreは<code>stage</code>、<code>say</code>、<code>pose</code>等のcommand名でportを呼びます。TurboWarp VM、DOM、cameraをcoreから直接参照しないため、同じ<code>StoryDocument</code>をpreviewと配布成果物で共有できます。</p></figure>
@@ -224,7 +224,7 @@ production compositionは`createDsl4ProductionSourceFrontend`が
 `Function`へのfallbackはありません。preview、validate、buildはこのfrontend契約を共有します。
 
 runtimeでは`resolveBranch()`がaction contextの`variables` snapshotを`evaluateCondition()`へ渡し、一つのbranchを
-上から評価します。4.0.0-rc.6のsnapshotに含まれるのはトップレベル`variables:`だけで、Stage／sprite変数、
+上から評価します。4.0.0-rc.7のsnapshotに含まれるのはトップレベル`variables:`だけで、Stage／sprite変数、
 Temporary Variables、controller status、pose eventをliveには読みません。
 
 ## StoryDocument {#story-document}
@@ -447,7 +447,7 @@ file出力は`buildDsl4RuntimeComponentFile()`がcandidate directoryを検証し
 6. stop、failure、disposeで全resourceを逆所有順に解放する。
 
 Poseモデルについて`poseRecognition.modelInitialization.policy`が`latest-needed`の場合、preload coordinatorの
-最新要求をTMPose 1.11.0 Compositionへ渡し、重い初期化をactive 1件＋最新pending 1件へ制限します。
+最新要求をTMPose 1.12.0 Compositionへ渡し、重い初期化をactive 1件＋最新pending 1件へ制限します。
 superseded requestはasset lifecycleの`AbortSignal`でcancelし、registryへ公開しません。Aの実行中にB、Cが
 要求された場合はBを開始せず、Aの安全な終了後にCだけを開始します。pose不要sceneへskipした場合はpendingを
 破棄します。
@@ -458,7 +458,7 @@ decode、SHA検証、TensorFlow／PoseNet初期化と並行できます。未検
 session disposeがcameraを解放します。既定値`legacy`／`parallel: false`はこの最適化を無効化します。
 
 `poseRecognition.preview.overlay`がある場合、hostは正規化済みの表示、joint style、bone style、最低confidence、
-confidence連動をTMPose 1.11.0の公開Composition APIへ順番に適用します。overlay専用feature flagはありません。
+confidence連動をTMPose 1.12.0の公開Composition APIへ順番に適用します。overlay専用feature flagはありません。
 camera canvas、2D context、推論readback、SVG要素はTMPoseが所有し、hostはDOMやTensorFlow.js内部経路をpatchしません。
 
 remote assetは自動的に許可しません。`createDsl4RemoteAssetLifecycle()`へhost loaderを明示注入した場合だけ
@@ -665,11 +665,11 @@ runtime側の仕様変更では、表に示した固定commitの対応testも更
 
 ## 固定実装への参照 {#implementation-links .unnumbered}
 
-- [source frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/source-frontend.js)
-- [Source Graph](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/source-graph.js)と[graph frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/source-graph-frontend.js)
-- [StoryDocument](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/story-document.js)と[semantic validator](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/semantic-validator.js)
-- [runtime controller](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/runtime-controller.js)と[navigation session](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/navigation-session.js)
-- [Action Context](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/action-context-turbowarp.js)と[custom action invocation](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/action-invocation-adapter.js)
-- [TurboWarp runtime host](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/platform/turbowarp-runtime-host.js)
-- [live reload session](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/live-reload-session.js)と[asset reload transaction](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/asset-reload-transaction.js)
-- [feature flags](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/feature-flags.js)
+- [source frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/source-frontend.js)
+- [Source Graph](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/source-graph.js)と[graph frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/source-graph-frontend.js)
+- [StoryDocument](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/story-document.js)と[semantic validator](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/semantic-validator.js)
+- [runtime controller](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/runtime-controller.js)と[navigation session](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/navigation-session.js)
+- [Action Context](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/action-context-turbowarp.js)と[custom action invocation](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/action-invocation-adapter.js)
+- [TurboWarp runtime host](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/platform/turbowarp-runtime-host.js)
+- [live reload session](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/live-reload-session.js)と[asset reload transaction](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/asset-reload-transaction.js)
+- [feature flags](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/feature-flags.js)

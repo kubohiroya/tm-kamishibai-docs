@@ -305,7 +305,7 @@
           "notes": [
             "省略時はpolicyがlegacy、parallelがfalseです。",
             "latest-neededでは重い初期化を実行中1件と最新待機1件までに制限します。",
-            "実行にはTMPose 1.10.0以降が必要です。4.0.0-rc.6はTMPose 1.11.0をexact pinします。"
+            "実行にはTMPose 1.10.0以降が必要です。4.0.0-rc.7はTMPose 1.12.0をexact pinします。"
           ]
         },
         {
@@ -352,12 +352,12 @@
           "pointer": "#/$defs/poseOverlay",
           "order": 112,
           "title": "関節とボーンのoverlay",
-          "summary": "TMPose 1.11.0のSVG overlayについて、表示、関節別style、共通bone style、最低confidence、confidence連動を宣言します。",
+          "summary": "TMPose 1.12.0のSVG overlayについて、表示、関節別style、共通bone style、最低confidence、confidence連動を宣言します。",
           "example": "visible: true\njointStyles:\n  leftWrist:\n    color: '#ff00aa'\n    opacity: 0.8\n    radius: 6\nboneStyle:\n  color: '#00e5ff'\n  opacity: 0.9\n  width: 3\nminimumConfidence: 0.5\nconfidenceScaling:\n  jointOpacity: true\n  jointRadius: false\n  boneOpacity: true\n  boneWidth: false",
           "notes": [
             "overlayを記述した場合の省略値はvisibleがtrue、minimumConfidenceが0.5です。overlay自体を省略した既存台本は非表示のままです。",
             "previewを隠すとoverlayも隠れます。overlayだけを隠しても認識は停止しません。認識停止では描画を消去し、camera停止ではSVG要素も破棄します。",
-            "実行にはTMPose 1.11.0以降が必要です。専用feature flagはなく、問題時はoverlay設定を台本から削除すると既存台本と同じ非表示へ戻ります。"
+            "実行にはTMPose 1.12.0以降が必要です。専用feature flagはなく、問題時はoverlay設定を台本から削除すると既存台本と同じ非表示へ戻ります。"
           ]
         },
         {

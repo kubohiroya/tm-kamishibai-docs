@@ -62,12 +62,12 @@ TurboWarpの集約パレット図版は、同じ固定SB3をTurboWarp Editorで�
 
 ## TurboWarp集約パレットのスクリーンショット
 
-- source: 上記の固定`kamishibai-4.0.0-rc.5.sb3`
-- browser surface: TurboWarp Editorの日本語UI
-- viewport: 3840×2160 px
+- source: TMPose以外は上記の固定`kamishibai-4.0.0-rc.5.sb3`。TMPoseは公開`kamishibai-4.0.0-rc.7.sb3`
+- browser surface: TurboWarp Editor。TMPoseのblock labelはextension原文の英語表示
+- viewport: rc.5は3840×2160 px、TMPose rc.7は3840×2416 px
 - capture: 集約パレットの`◆ member名 [member ID] ◆`から次のmemberセパレータ直前まで
 - pointer: パレット外へ退避
-- format: browser captureをpixel寸法を変えずJPEGへ格納
+- format: browser captureをpixel寸法を変えず格納。TMPose rc.7はPNG、既存rc.5証跡はJPEG
 - 内容: 表示順を変更せず、右端の見切れとscroll barを実UIのまま保持
 
 | file                                              |    pixel | blocks | SHA-256                                                            |
@@ -78,9 +78,9 @@ TurboWarpの集約パレット図版は、同じ固定SB3をTurboWarp Editorで�
 | `docs/images/dsl4-palette-bubble.jpg`             | 251×1497 |     28 | `11d28c9b09668f5e4be96d5f02ef85fd35384f44df120132246c0ec62bcdb8a1` |
 | `docs/images/dsl4-palette-runtime-expression.jpg` |  251×214 |      3 | `8ac2b3a724b8ffc79bce9940bc83498f3be97224dcdf01b353adfa2108fd413f` |
 | `docs/images/dsl4-palette-svg-text.jpg`           |  251×174 |      2 | `be690017012cb1a41b40e01e6d697b9d294fb5d7bc912a53b7eab0989a4d8d75` |
-| `docs/images/dsl4-palette-tmpose.jpg`             | 251×1466 |     31 | `24e03d3e6eee976bbc72371d47e23db35072609061300da79b61f46964eda91d` |
+| `docs/images/dsl4-palette-tmpose.png`             | 251×1761 |     37 | `3c80c64adcd01e9af2d04e968caebfeb0081f84a7a349cbdb88c66a8422cec26` |
 
-合計は119ブロックです。Async Inputのsourceにあるpose listener 3 blockは`poseInput`が既定OFFのため表示されず、
+合計は125ブロックです。Async Inputのsourceにあるpose listener 3 blockは`poseInput`が既定OFFのため表示されず、
 `listenForActorTouchAndBroadcast`が表示されることを実パレットとDOMの両方で確認しました。
 
 ## 実装解析図

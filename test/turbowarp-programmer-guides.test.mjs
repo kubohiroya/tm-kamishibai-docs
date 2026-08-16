@@ -136,9 +136,9 @@ const publicOpcodes = {
     'setPoseConfidenceScaling',
     'loadModel',
     'isModelLoaded',
-    'startPredict',
-    'stopPredict',
-    'isPredicting',
+    'startRecognition',
+    'stopRecognition',
+    'isRecognizing',
     'currentPoseReporter',
     'scoreReporter',
     'poseScoreReporter',
@@ -146,7 +146,7 @@ const publicOpcodes = {
     'isPoseWithThreshold',
     'cameraMsReporter',
     'modelLoadMsReporter',
-    'firstPredictMsReporter',
+    'firstRecognitionMsReporter',
     'lastErrorReporter',
   ],
 };
@@ -209,7 +209,7 @@ test('places one real palette capture at the start of every member chapter', () 
     ['Bubble 0.7.0', 'dsl4-palette-bubble.jpg'],
     ['Runtime Expression 0.4.0', 'dsl4-palette-runtime-expression.jpg'],
     ['SVG Text 0.5.0', 'dsl4-palette-svg-text.jpg'],
-    ['TMPose 1.11.0', 'dsl4-palette-tmpose.jpg'],
+    ['TMPose 1.12.0', 'dsl4-palette-tmpose.png'],
   ];
 
   for (const [heading, filename] of figures) {
@@ -238,6 +238,10 @@ test('distinguishes feature-gated and host-only APIs from palette blocks', () =>
   assert.match(blockReference, /latest-needed/u);
   assert.match(blockReference, /Composition API/u);
   assert.match(blockReference, /パレットには表示されません/u);
+  assert.doesNotMatch(
+    blockReference,
+    /startPredict|stopPredict|isPredicting|firstPredictMsReporter/u,
+  );
 });
 
 test('documents the two Stage variables exposed to TurboWarp blocks', () => {
@@ -264,7 +268,7 @@ test('separates the current two Stage variables from the default-off runtime-var
     runtimeVariableReference,
     /文書状態: \*\*受け入れ済み・実装済み利用契約（既定OFF）\*\*/u,
   );
-  assert.match(runtimeVariableReference, /4\.0\.0-rc\.6の現行公開APIには含まれません/u);
+  assert.match(runtimeVariableReference, /4\.0\.0-rc\.7の現行公開APIには含まれません/u);
 });
 
 test('classifies internal runtime state and defines the implemented block contract', () => {
