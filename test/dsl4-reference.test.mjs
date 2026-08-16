@@ -25,7 +25,7 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
   assert.equal(actualHash, lock.schemaSha256);
   assert.equal(lock.repository, 'kubohiroya/tmpose-kamishibai');
   assert.equal(lock.sourceKind, 'commit');
-  assert.equal(lock.commit, '4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6');
+  assert.equal(lock.commit, '3a5f31d2519dfb2b9dab32b2c377762c774d5844');
   assert.equal(
     lock.schemaUrl,
     `https://github.com/kubohiroya/tmpose-kamishibai/blob/${lock.commit}/schema/dsl-4.schema.json`,
@@ -74,7 +74,7 @@ test('generates the checked-in reference byte-for-byte deterministically', () =>
   assert.match(generated, new RegExp(lock.schemaSha256, 'u'));
   assert.match(generated, /camera preview操作UI/u);
   assert.match(generated, /関節とボーンのoverlay/u);
-  assert.match(generated, /TMPose 1\.11\.0/u);
+  assert.match(generated, /TMPose 1\.12\.0/u);
   assert.match(generated, /物理device IDは台本やruntime変数へ保存しません/u);
   assert.match(generated, /`mirrored` \/ `unmirrored`/u);
   assert.match(generated, /`bubbleStyles` — 吹き出しstyle/u);

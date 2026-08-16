@@ -5,13 +5,13 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: DSL 3.1／3.2の既存台本をDSL 4.0へ移行する方\
 対象コマンド: `tmpose-kamishibai convert-dsl4`\
 文書状態: 固定実装基準を説明する変換ガイド（正式リリースの操作資料ではない）\
-調査基準: tmpose-kamishibai `4c360cd`（4.0.0-rc.6）、2026年8月16日
+調査基準: tmpose-kamishibai `3a5f31d`（4.0.0-rc.7）、2026年8月16日
 
 このガイドは、すでに3.1／3.2の台本を持っている方のための移行手順です。初めてTMPose紙芝居を使う方や、
 4.0で最初の作品を作る方は、先に[大人向け概要](../user-guides/executive-summary-adult-4.0.md)と
 [「紙芝居を作る」チュートリアル](../tutorials/create.md)をお読みください。
 
-> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.6`はprereleaseとして公開されていますが、
+> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.7`はprereleaseとして公開されていますが、
 > 正式な`v4.0.0`ではありません。
 > `convert-dsl4`を含むpackage releaseを使用し、利用中のpackageで`pnpm exec tmpose-kamishibai --help`を
 > 実行して、コマンド一覧に`convert-dsl4`があることを確認してください。

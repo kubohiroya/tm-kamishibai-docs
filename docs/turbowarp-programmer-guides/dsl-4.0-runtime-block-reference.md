@@ -3,10 +3,10 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 対象: DSL 4.0ランタイムをTurboWarp Editorで開き、集約されたブロックからプログラムを書く方  
-調査基準: tmpose-kamishibai 4.0.0-rc.6（`4c360cd`）、sb3-toolchain 0.8.0、2026年8月16日
+調査基準: tmpose-kamishibai 4.0.0-rc.7（`3a5f31d`）、sb3-toolchain 0.8.0、2026年8月16日
 
-文書状態: 公開プレリリース4.0.0-rc.6向けリファレンス<br />
-実装基準: annotated tag `v4.0.0-rc.6`のcommit `4c360cd`
+文書状態: 公開プレリリース4.0.0-rc.7向けリファレンス<br />
+実装基準: annotated tag `v4.0.0-rc.7`のcommit `3a5f31d`
 
 この一覧は4.0の正式リリースまたは将来版で同じblock構成を保証するものではありません。利用前に
 [公開元](https://github.com/kubohiroya/tmpose-kamishibai/releases)のversionとrelease noteを確認してください。
@@ -28,13 +28,13 @@ TurboWarp Editorでは一つのパレットに見えますが、見出し、ア�
 
 | 由来                       | version    | member ID                      | docsURI                                                                                                                                |
 | -------------------------- | ---------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Kamishibai DSL 4.0 Runtime | 4.0.0-rc.6 | `kubohiroyakamishibairuntime4` | [本リファレンス](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/) |
+| Kamishibai DSL 4.0 Runtime | 4.0.0-rc.7 | `kubohiroyakamishibairuntime4` | [本リファレンス](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/) |
 | Asset Manager              | 0.11.0     | `kubohiroyaassetmanager`       | [Asset Manager](https://kubohiroya.github.io/turbowarp-asset-manager/)                                                                 |
 | Async Input                | 0.4.0      | `kubohiroyaasyncinput`         | [Async Input](https://kubohiroya.github.io/turbowarp-async-input/)                                                                     |
 | Bubble                     | 0.7.0      | `kubohiroyabubble`             | [Bubble](https://kubohiroya.github.io/turbowarp-bubble/)                                                                               |
 | Runtime Expression         | 0.4.0      | `kubohiroyaruntimeexpression`  | [Runtime Expression](https://kubohiroya.github.io/turbowarp-runtime-expression/)                                                       |
 | SVG Text                   | 0.5.0      | `kubohiroyasvgtext`            | [SVG Text](https://kubohiroya.github.io/turbowarp-svg-text/)                                                                           |
-| TMPose                     | 1.11.0     | `tmpose`                       | [TMPose](https://kubohiroya.github.io/turbowarp-tmpose/)                                                                               |
+| TMPose                     | 1.12.0     | `tmpose`                       | [TMPose](https://kubohiroya.github.io/turbowarp-tmpose/)                                                                               |
 
 以下の各member章の冒頭図は、SHA-256
 `2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c`の固定
@@ -43,7 +43,7 @@ TurboWarp Editorでは一つのパレットに見えますが、見出し、ア�
 していません。パレット自体が固定幅のため、長いブロック文の右端は実画面どおり見切れます。完全なopcodeと役割は
 図の直後にある表を正本としてください。
 
-図はrc.5／TMPose 1.10.0で撮影した固定証跡です。rc.6で追加されたoverlay 6ブロックは画像へ後付けせず、
+図はrc.5／TMPose 1.10.0で撮影した固定証跡です。rc.7で追加されたoverlay 6ブロックは画像へ後付けせず、
 下のopcode表を現行の正本とします。
 
 集約時にopcodeはmember IDを含む名前空間へ変換されるため、同名ブロックが別memberにあっても衝突しません。
@@ -51,7 +51,7 @@ TurboWarp Editorでは一つのパレットに見えますが、見出し、ア�
 
 ## 現状TurboWarpブロックから参照できる公開変数（2変数）
 
-4.0.0-rc.6の公開SB3には、DSL 4.0ランタイムがポーズ認識の状態を公開するためのStage変数が2つあります。
+4.0.0-rc.7の公開SB3には、DSL 4.0ランタイムがポーズ認識の状態を公開するためのStage変数が2つあります。
 どちらもクラウド変数ではない通常の数値変数です。TurboWarpの「変数」パレットにある変数reporter、表示／非表示、
 設定、変更の各blockから、Stageとspriteのどちらでも同じ値を参照できます。
 
@@ -86,10 +86,10 @@ TurboWarp Editorでは一つのパレットに見えますが、見出し、ア�
 ### DSLの`variables:`とは別のもの
 
 台本のトップレベル`variables:`で宣言する名前付き値は、branch式とruntime controllerが所有する物語の内部状態です。
-同名のStage変数は自動作成されず、4.0.0-rc.6の集約パレットには、その内部状態を通常のTurboWarp変数blockへ
+同名のStage変数は自動作成されず、4.0.0-rc.7の集約パレットには、その内部状態を通常のTurboWarp変数blockへ
 直接読み書きする公開blockもありません。TurboWarpの変数blockから参照できる固定名の公開変数は、上記2変数だけです。
 
-ただし、`variables:`の値はrc.6でも`branch[].if`の条件式から参照できます。ASCIIのbare nameは`score >= 10`、
+ただし、`variables:`の値はrc.7でも`branch[].if`の条件式から参照できます。ASCIIのbare nameは`score >= 10`、
 それ以外の名前は`vars["救助回数"] >= 2`の形で記述します。式評価時に渡るのは台本変数の不変snapshotであり、
 Stage変数、sprite変数、Temporary Variables、上記2つのポーズfeedback変数は自動では含まれません。
 
@@ -97,10 +97,10 @@ Stage変数、sprite変数、Temporary Variables、上記2つのポーズfeedbac
 [DSL 4.0ランタイム変数 TurboWarp連携リファレンス](dsl-4.0-runtime-variable-turbowarp-reference.md)で、
 公開、条件付き公開、非公開に分けて説明しています。台本での宣言と分岐式は、
 [DSL 4.0ランタイム変数ガイド](../dsl-author-guides/dsl-4.0-runtime-variable-guide.md)を参照してください。
-追加surfaceは実装済みですが既定OFFであり、4.0.0-rc.6の現行公開APIではありません。
+追加surfaceは実装済みですが既定OFFであり、4.0.0-rc.7の現行公開APIではありません。
 
-一覧はtag `v4.0.0-rc.6`の公開SB3と
-[`scratch-pose-feedback-adapter.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/platform/scratch-pose-feedback-adapter.js)に基づきます。
+一覧はtag `v4.0.0-rc.7`の公開SB3と
+[`scratch-pose-feedback-adapter.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/platform/scratch-pose-feedback-adapter.js)に基づきます。
 
 ## Kamishibai DSL 4.0 Runtime（23ブロック）
 
@@ -198,9 +198,9 @@ _図3: Async Inputのmemberセパレータで切り出したパレット。_
 | `stopAllInputListeners`           | `stop all input listeners registered by this target`                                                 | 現在targetのkey、touch listenerをすべて外す        |
 | `listenForActorTouchAndBroadcast` | `listen for touch on actor [ACTOR] set runtime var [RUNTIME_VAR] to [VALUE] and broadcast [MESSAGE]` | 名前付きactorのタッチで変数を更新してmessageを送る |
 
-sourceには`listenForPose`、`stopListeningForPose`、`stopAllPoseListeners`もありますが、rc.6では
+sourceには`listenForPose`、`stopListeningForPose`、`stopAllPoseListeners`もありますが、rc.7では
 `poseInput` feature flagが既定OFFのためパレットに表示されず、125ブロックには数えません。
-`listenForActorTouchAndBroadcast`は実装上`internalBlockDefinitions`に置かれていますが、固定rc.6の集約パレットには
+`listenForActorTouchAndBroadcast`は実装上`internalBlockDefinitions`に置かれていますが、固定rc.7の集約パレットには
 表示されるため、本リファレンスでは公開パレットblockとして扱います。
 
 ## Bubble 0.7.0（28ブロック）
@@ -270,14 +270,13 @@ _図6: SVG Textのmemberセパレータで切り出したパレット。_
 
 文字幅測定、skin所有権、target／全体解放はComposition APIで提供され、パレットblockではありません。
 
-## TMPose 1.11.0（37ブロック）
+## TMPose 1.12.0（37ブロック）
 
-![TurboWarpの集約パレットに表示されたTMPose 1.10.0の31ブロック](../images/dsl4-palette-tmpose.jpg)
+![TurboWarpの集約パレットに表示されたTMPose 1.12.0の37ブロック](../images/dsl4-palette-tmpose.png)
 
-_図7: TMPoseのmemberセパレータで切り出したパレット。_
+_図7: 公開rc.7 Standard SB3をTurboWarp Editorで開き、TMPose 1.12.0のmemberセパレータから37ブロックを切り出したパレット。_
 
-この図はTMPose 1.10.0の31ブロックを撮影した歴史的画像です。TMPose 1.11.0では次のoverlay 6ブロックが
-追加され、合計37ブロックです。
+TMPose 1.12.0で追加されたoverlay 6ブロックと、`recognition`へ統一された公開opcodeを含む実パレットです。
 
 ### model、camera、preview
 
@@ -316,27 +315,27 @@ _図7: TMPoseのmemberセパレータで切り出したパレット。_
 
 ### 認識結果と診断
 
-| opcode                   | パレットのブロック文                                   | 役割                                   |
-| ------------------------ | ------------------------------------------------------ | -------------------------------------- |
-| `startPredict`           | `start recognition`                                    | ポーズ認識を開始する                   |
-| `stopPredict`            | `stop recognition`                                     | ポーズ認識を停止する                   |
-| `isPredicting`           | `recognition is running?`                              | 認識中か返す                           |
-| `currentPoseReporter`    | `current pose`                                         | confidenceが最大のpose labelを返す     |
-| `scoreReporter`          | `confidence`                                           | 現在poseのconfidenceを返す             |
-| `poseScoreReporter`      | `confidence of [NAME]`                                 | 指定poseのconfidenceを返す             |
-| `isPose`                 | `pose is [NAME]?`                                      | 指定poseが既定threshold 0.75以上か返す |
-| `isPoseWithThreshold`    | `pose is [NAME] with confidence at least [THRESHOLD]?` | 指定poseが指定threshold以上か返す      |
-| `cameraMsReporter`       | `camera startup time (ms)`                             | camera開始時間をmsで返す               |
-| `modelLoadMsReporter`    | `model load time (ms)`                                 | model読込時間をmsで返す                |
-| `firstPredictMsReporter` | `first recognition time (ms)`                          | 最初の認識までの時間をmsで返す         |
-| `lastErrorReporter`      | `last error`                                           | 直近のerror messageを返す              |
+| opcode                       | パレットのブロック文                                   | 役割                                   |
+| ---------------------------- | ------------------------------------------------------ | -------------------------------------- |
+| `startRecognition`           | `start recognition`                                    | ポーズ認識を開始する                   |
+| `stopRecognition`            | `stop recognition`                                     | ポーズ認識を停止する                   |
+| `isRecognizing`              | `recognition is running?`                              | 認識中か返す                           |
+| `currentPoseReporter`        | `current pose`                                         | confidenceが最大のpose labelを返す     |
+| `scoreReporter`              | `confidence`                                           | 現在poseのconfidenceを返す             |
+| `poseScoreReporter`          | `confidence of [NAME]`                                 | 指定poseのconfidenceを返す             |
+| `isPose`                     | `pose is [NAME]?`                                      | 指定poseが既定threshold 0.75以上か返す |
+| `isPoseWithThreshold`        | `pose is [NAME] with confidence at least [THRESHOLD]?` | 指定poseが指定threshold以上か返す      |
+| `cameraMsReporter`           | `camera startup time (ms)`                             | camera開始時間をmsで返す               |
+| `modelLoadMsReporter`        | `model load time (ms)`                                 | model読込時間をmsで返す                |
+| `firstRecognitionMsReporter` | `first recognition time (ms)`                          | 最初の認識までの時間をmsで返す         |
+| `lastErrorReporter`          | `last error`                                           | 直近のerror messageを返す              |
 
 `setAccumulatedPoseParameters`、`setAccumulatedPoseThreshold`、`resetAccumulatedPose`、
 `accumulatedPoseReporter`、`accumulatedScoreReporter`、`accumulatedPoseScoreReporter`は
 `temporalPoseScoring`が既定OFFのため、現行の集約パレットには表示されません。DSL 4.0内部は
 TMPose Composition APIの時間累積機能を、作品実行の契約に従って利用します。
 
-TMPose 1.11.0の`latest-needed` model初期化、`AbortSignal`、実行中1件＋最新待機1件、cancelled modelを
+TMPose 1.12.0の`latest-needed` model初期化、`AbortSignal`、実行中1件＋最新待機1件、cancelled modelを
 registryへ公開しない契約もComposition API側の機能であり、TurboWarp blockとしては追加されません。
 
 ## 互換性と安全な使い方

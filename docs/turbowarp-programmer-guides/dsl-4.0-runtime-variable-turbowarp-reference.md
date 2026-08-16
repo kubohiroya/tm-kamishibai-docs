@@ -3,10 +3,10 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 対象: DSL 4.0のランタイム変数をTurboWarp blockから利用する方\
-現行公開仕様の基準: tmpose-kamishibai 4.0.0-rc.6（`4c360cd`）、2026年8月16日
+現行公開仕様の基準: tmpose-kamishibai 4.0.0-rc.7（`3a5f31d`）、2026年8月16日
 
 文書状態: **受け入れ済み・実装済み利用契約（既定OFF）**。[実装Issue #597](https://github.com/kubohiroya/tmpose-kamishibai/issues/597)で
-source実装とtestを追加しています。3つのfeature flagは既定OFFのため、追加surfaceは4.0.0-rc.6の現行公開APIには含まれません。\
+source実装とtestを追加しています。3つのfeature flagは既定OFFのため、追加surfaceは4.0.0-rc.7の現行公開APIには含まれません。\
 現行仕様: [DSL 4.0ランタイム ブロックリファレンス](dsl-4.0-runtime-block-reference.md)
 
 この文書は「TurboWarpでプログラムを書く人向けドキュメント」に属し、公開block、型付き書込、snapshotの確定時期、
@@ -33,7 +33,7 @@ live reload、履歴配列、camera／cache／binary backingなどの実装状�
 
 ## 現在の公開状態
 
-4.0.0-rc.6でTurboWarpの通常の変数blockから参照できるランタイム所有のStage変数は、次の2つだけです。
+4.0.0-rc.7でTurboWarpの通常の変数blockから参照できるランタイム所有のStage変数は、次の2つだけです。
 
 | Stage変数    | 内部の元データ           | 公開値 |
 | ------------ | ------------------------ | ------ |
@@ -42,7 +42,7 @@ live reload、履歴配列、camera／cache／binary backingなどの実装状�
 
 詳しい更新時期、feedback mode別の書換え可否、初期化条件は
 [現行リファレンス](dsl-4.0-runtime-block-reference.md#現状turbowarpブロックから参照できる公開変数2変数)を参照してください。
-台本トップレベルの`variables:`はこの2変数とは別で、rc.6にはTurboWarpから直接参照する公開blockがありません。
+台本トップレベルの`variables:`はこの2変数とは別で、rc.7にはTurboWarpから直接参照する公開blockがありません。
 
 ## 固定実装から棚卸しした内部状態
 
@@ -87,12 +87,12 @@ snapshot外にもeventの`sequence`、内部`runId`、event `trace`、quiesce要
 | navigation mode／移動可否             | live/historyと現在cursorから導出できる状態                 | `前へ戻れる?`などのBooleanだけ条件付き公開 |
 | history entries／scene visits／cursor | action、sceneの履歴配列と位置                              | 配列そのものは非公開                       |
 | application status                    | `ready/title/menu/starting/running/building/error/stopped` | 物語`status`と別名にして条件付き公開       |
-| extension version                     | rc.6に非表示reporterが存在                                 | 公開推奨                                   |
-| last error                            | rc.6に生のmessageを返す非表示reporterが存在                | 生messageは非公開                          |
+| extension version                     | rc.7に非表示reporterが存在                                 | 公開推奨                                   |
+| last error                            | rc.7に生のmessageを返す非表示reporterが存在                | 生messageは非公開                          |
 | runtime diagnostics                   | shell、runtime、resource、backingを含むJSON                | 開発診断専用。通常paletteには非公開        |
 | binary backing／resource状態          | session backing、cache、登録model数など                    | 作品APIには非公開                          |
 
-rc.6の非表示`statusReporter`はapplication shellの状態を返し、controllerの物語`status`とは意味が異なります。
+rc.7の非表示`statusReporter`はapplication shellの状態を返し、controllerの物語`status`とは意味が異なります。
 既存reporterをそのまま表示すると同じ「runtime status」に2種類の意味が混在するため、公開時は名前とopcodeを分けます。
 
 ## 公開読取block
@@ -140,9 +140,9 @@ block、型、値がない場合の戻り値を次のように固定します。
 公開状態はTurboWarp blockだけの便宜機能ではありません。値を評価してsceneを選ぶ`branch[].if`も、同じ値を
 同じ型と寿命で参照できる必要があります。block reporterと式評価器が別々のcopyやlive値を読む設計にはしません。
 
-### rc.6で式から参照できる現在の値
+### rc.7で式から参照できる現在の値
 
-4.0.0-rc.6のcontrollerは、`branch` actionを開始したときのトップレベル`variables:`を不変snapshotにして
+4.0.0-rc.7のcontrollerは、`branch` actionを開始したときのトップレベル`variables:`を不変snapshotにして
 Runtime Expressionへ渡します。ASCIIのbare nameとして書ける名前は`score >= 10`のように参照し、それ以外の名前は
 `vars["救助回数"] >= 2`のように完全一致で参照できます。
 
@@ -153,7 +153,7 @@ Runtime Expressionへ渡します。ASCIIのbare nameとして書ける名前は
 - Temporary Variablesが所有するruntime variable
 - controllerの`status`、scene、action、diagnostic、pose eventなどのシステム状態
 
-したがって、rc.6では「台本`variables:`は式で参照できるが、TurboWarp blockからは直接参照できない」という非対称が
+したがって、rc.7では「台本`variables:`は式で参照できるが、TurboWarp blockからは直接参照できない」という非対称が
 あります。公開読取／書込blockはこの台本変数と同じcontroller snapshotへ接続します。
 
 ### 予約済み`runtime[...]`namespace
@@ -278,8 +278,8 @@ custom actionの名前・対象・引数・完了／失敗は、action実行中�
 
 ## 調査根拠
 
-- [`runtime-controller.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/runtime-controller.js): snapshot、台本変数、generation、診断、event
-- [`pose-feedback-policy.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/pose-feedback-policy.js): pose state eventの6 field
-- [`navigation-session.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/navigation-session.js): navigation snapshot
-- [`dsl4-runtime-extension-entry.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/scripts/sb3/dsl4-runtime-extension-entry.js): rc.6の非表示reporter
-- [`release-metadata/4.0.0-rc.6.json`](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/release-metadata/4.0.0-rc.6.json): 現行SB3の固定versionとartifact metadata
+- [`runtime-controller.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/runtime-controller.js): snapshot、台本変数、generation、診断、event
+- [`pose-feedback-policy.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/pose-feedback-policy.js): pose state eventの6 field
+- [`navigation-session.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/navigation-session.js): navigation snapshot
+- [`dsl4-runtime-extension-entry.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/scripts/sb3/dsl4-runtime-extension-entry.js): rc.7の非表示reporter
+- [`release-metadata/4.0.0-rc.7.json`](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/release-metadata/4.0.0-rc.7.json): 現行SB3の固定versionとartifact metadata

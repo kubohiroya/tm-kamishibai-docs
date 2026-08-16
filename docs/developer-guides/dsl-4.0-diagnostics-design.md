@@ -3,15 +3,15 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 固定実装基準を説明する設計レビュー（正式リリース済みの意味ではない）\
-調査基準: tmpose-kamishibai `4c360cd`（4.0.0-rc.6）、2026年8月16日
+調査基準: tmpose-kamishibai `3a5f31d`（4.0.0-rc.7）、2026年8月16日
 
-> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.6`はprereleaseとして公開されていますが、
-> 正式な`v4.0.0`ではありません。本書はrc.6固定コミットの失敗経路を説明します。
+> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.7`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。本書はrc.7固定コミットの失敗経路を説明します。
 
 この文書は、DSL 4.0のYAML読込からproduction実行まで、失敗をどこで分類し、どの状態をcommitせず、
 どのresourceを停止・解放するかを実装からレビューできるようにまとめたものです。対象となる完成実装は
 `kubohiroya/tmpose-kamishibai`のcommit
-[`4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6`](https://github.com/kubohiroya/tmpose-kamishibai/commit/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6)
+[`3a5f31d2519dfb2b9dab32b2c377762c774d5844`](https://github.com/kubohiroya/tmpose-kamishibai/commit/3a5f31d2519dfb2b9dab32b2c377762c774d5844)
 です。本文のpath、関数、code、event、testはこのcommitで確認しています。
 
 対象アプリ: tmpose-kamishibai 4.0.x
@@ -384,11 +384,11 @@ producerだけへ追加せず`diagnostic-sequence-policy.js`、projection、wire
 
 ## 固定実装への参照
 
-- [source frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/source-frontend.js)と[diagnostic sequence policy](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/diagnostic-sequence-policy.js)
-- [diagnostic projection](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/diagnostic-projection.js)と[expression diagnostics](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/expression-diagnostics.js)
-- [Source Graph](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/source-graph.js)と[graph frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/source-graph-frontend.js)
-- [live reload session](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/live-reload-session.js)と[asset reload transaction](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/asset-reload-transaction.js)
-- [runtime controller](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/runtime-controller.js)と[runtime startup](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/runtime-startup.js)
-- [TurboWarp runtime host](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/platform/turbowarp-runtime-host.js)と[preview session](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/platform/turbowarp-preview-session.js)
-- [preview generation wire](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/dsl4/preview-source-generation-wire.js)
-- [production build](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/builder/dsl4-build.js)と[atomic output](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/src/builder/atomic-output.js)
+- [source frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/source-frontend.js)と[diagnostic sequence policy](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/diagnostic-sequence-policy.js)
+- [diagnostic projection](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/diagnostic-projection.js)と[expression diagnostics](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/expression-diagnostics.js)
+- [Source Graph](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/source-graph.js)と[graph frontend](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/source-graph-frontend.js)
+- [live reload session](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/live-reload-session.js)と[asset reload transaction](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/asset-reload-transaction.js)
+- [runtime controller](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/runtime-controller.js)と[runtime startup](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/runtime-startup.js)
+- [TurboWarp runtime host](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/platform/turbowarp-runtime-host.js)と[preview session](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/platform/turbowarp-preview-session.js)
+- [preview generation wire](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/preview-source-generation-wire.js)
+- [production build](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/builder/dsl4-build.js)と[atomic output](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/builder/atomic-output.js)

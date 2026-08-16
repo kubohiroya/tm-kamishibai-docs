@@ -76,10 +76,10 @@ const paletteCaptures = [
     sha256: 'be690017012cb1a41b40e01e6d697b9d294fb5d7bc912a53b7eab0989a4d8d75',
   },
   {
-    filename: 'dsl4-palette-tmpose.jpg',
+    filename: 'dsl4-palette-tmpose.png',
     width: 251,
-    height: 1466,
-    sha256: '24e03d3e6eee976bbc72371d47e23db35072609061300da79b61f46964eda91d',
+    height: 1761,
+    sha256: '3c80c64adcd01e9af2d04e968caebfeb0081f84a7a349cbdb88c66a8422cec26',
   },
 ];
 
@@ -124,29 +124,33 @@ test('pins every rc5 implementation screenshot to valid PNG bytes', () => {
   }
 });
 
-test('pins every separator-scoped TurboWarp palette capture to valid JPEG bytes', () => {
+test('pins every separator-scoped TurboWarp palette capture to valid image bytes', () => {
   for (const {filename, width, height, sha256: expectedSha256} of paletteCaptures) {
     const path = `docs/images/${filename}`;
     const bytes = read(path);
-    assert.deepEqual([...bytes.subarray(0, 3)], [0xff, 0xd8, 0xff]);
-
-    let offset = 2;
     let dimensions;
-    while (offset + 8 < bytes.length) {
-      if (bytes[offset] !== 0xff) {
-        offset += 1;
-        continue;
+    if (filename.endsWith('.png')) {
+      assert.deepEqual([...bytes.subarray(0, 8)], [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+      dimensions = {width: bytes.readUInt32BE(16), height: bytes.readUInt32BE(20)};
+    } else {
+      assert.deepEqual([...bytes.subarray(0, 3)], [0xff, 0xd8, 0xff]);
+      let offset = 2;
+      while (offset + 8 < bytes.length) {
+        if (bytes[offset] !== 0xff) {
+          offset += 1;
+          continue;
+        }
+        const marker = bytes[offset + 1];
+        const segmentLength = bytes.readUInt16BE(offset + 2);
+        if ([0xc0, 0xc1, 0xc2].includes(marker)) {
+          dimensions = {
+            height: bytes.readUInt16BE(offset + 5),
+            width: bytes.readUInt16BE(offset + 7),
+          };
+          break;
+        }
+        offset += 2 + segmentLength;
       }
-      const marker = bytes[offset + 1];
-      const segmentLength = bytes.readUInt16BE(offset + 2);
-      if ([0xc0, 0xc1, 0xc2].includes(marker)) {
-        dimensions = {
-          height: bytes.readUInt16BE(offset + 5),
-          width: bytes.readUInt16BE(offset + 7),
-        };
-        break;
-      }
-      offset += 2 + segmentLength;
     }
 
     assert.deepEqual(dimensions, {width, height}, `${filename} dimensions`);
@@ -171,11 +175,11 @@ test('pins accessible implementation-analysis SVGs and publishes every diagram',
   }
 });
 
-test('preserves rc5 visual evidence while the walkthrough targets rc6', () => {
+test('preserves rc5 visual evidence while the walkthrough targets rc7', () => {
   assert.match(record, /公開プレリリース`v4\.0\.0-rc\.5`/u);
   assert.match(record, /f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/u);
   assert.match(record, /\| samples repository\s+\| 使用せず/u);
-  assert.match(implementationWalkthrough, /公開プレリリース`4\.0\.0-rc\.6`/u);
+  assert.match(implementationWalkthrough, /公開プレリリース`4\.0\.0-rc\.7`/u);
   assert.match(implementationWalkthrough, /tmpose-kamishibai-samples`は取得・build・変更しません/u);
   assert.doesNotMatch(record, /8ea06bfd|dc9f6626/u);
 });
