@@ -11,18 +11,17 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 増やすときに[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)の必要な節をお読みください。
 
 文書状態: **固定実装基準を説明するSchemaリファレンス（正式リリースの操作資料ではない）**\
-Schema固定commit: [`f323a54`](https://github.com/kubohiroya/tmpose-kamishibai/commit/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6)\
-Schema SHA-256: `0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac136`
+Schema固定commit: [`4c360cd`](https://github.com/kubohiroya/tmpose-kamishibai/commit/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6)\
+Schema SHA-256: `bb96f6fd503ee7a747b48b4cdc30db227b5d3171854c2b83a47a96c15ed7fd79`
 
-> **権威関係と配布状態:** 2026年8月15日時点で`v4.0.0-rc.5`はprereleaseとして公開されていますが、
+> **権威関係と配布状態:** 2026年8月16日時点で`v4.0.0-rc.6`はprereleaseとして公開されていますが、
 > 正式な`v4.0.0`ではありません。
-> 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、
-> 適合実装・testを固定しています。Schemaはruntime実装から生成しません。公開アプリ、配布artifact、
+> 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、適合実装・testを固定しています。 Schemaはruntime実装から生成しません。公開アプリ、配布artifact、
 > feature flagがDSL 4.0を有効にしているかは利用するreleaseごとに確認してください。
 
 ## このリファレンスについて
 
-この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
+この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
 注意事項、例はAnnotationで管理します。Schemaで定義される項目についてSchemaと生成物が異なる場合はSchemaを
 優先します。include文はSchema検証前に処理されるためJSON Schema外であり、固定した表層仕様と実装に基づいて掲載します。
@@ -34,8 +33,8 @@ Schema SHA-256: `0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac13
 
 - 上流repository: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai)
 - Schema path: `schema/dsl-4.schema.json`
-- 上流commit日時: `2026-08-15T02:38:21+09:00`
-- 掲載範囲: トップレベル12 field、action 24種類、Annotation 87項目
+- 上流commit日時: `2026-08-16T15:41:24+09:00`
+- 掲載範囲: トップレベル12 field、action 24種類、Annotation 92項目
 - 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>`
 - 差分確認: `pnpm docs:dsl4:check`
 
@@ -255,6 +254,9 @@ navigation:
   allowSkip: true
 preview:
   mirroring: mirrored
+  overlay:
+    visible: true
+    minimumConfidence: 0.5
   controls:
     cameraMenu:
       position: bottom-center
@@ -821,6 +823,8 @@ navigation:
   allowSkip: false
 preview:
   mirroring: mirrored
+  overlay:
+    visible: true
 ```
 
 ### Poseモデル初期化
@@ -919,29 +923,41 @@ allowSkip: true
 
 ### camera previewのstory設定
 
-preview canvasの左右反転をstory既定として指定し、必要な場合だけapp shell所有の操作UIを構成します。
+preview canvasの左右反転と任意の関節・ボーンoverlayをstory既定として指定し、必要な場合だけapp shell所有の操作UIを構成します。
 
 Schema位置: `#/$defs/posePreview`
 
 | field／形式 | 必須性 | 型 | 既定値・制約 |
 | --- | --- | --- | --- |
 | `mirroring` | 必須 | `mirrored` / `unmirrored` | — |
+| `overlay` | 任意 | object（`poseOverlay`） | 1 field以上、未知field不可 |
 | `controls` | 任意 | object（`posePreviewControls`） | 1 field以上、未知field不可 |
 
-引数の詳細:
-
-| field／形式 | 必須性 | 型 | 既定値・制約 |
-| --- | --- | --- | --- |
-| `mirroring` | 任意 | object（`posePreviewMirroringControl`） | 未知field不可 |
-| `cameraMenu` | 任意 | object（`posePreviewCameraMenuControl`） | 未知field不可 |
-
 - `mirroring`の省略時は`mirrored`です。操作UIは`controls`を省略すると生成されません。
+- `overlay`を省略した既存台本では関節とボーンを表示しません。
 - この設定はpreview canvasの表示だけを変更し、認識frame、confidence、sequence／selection判定には影響しません。
 
 Schemaで検証できる値の例:
 
 ```yaml
 mirroring: mirrored
+overlay:
+  visible: true
+  jointStyles:
+    leftWrist:
+      color: '#ff00aa'
+      opacity: 0.8
+      radius: 6
+  boneStyle:
+    color: '#00e5ff'
+    opacity: 0.9
+    width: 3
+  minimumConfidence: 0.5
+  confidenceScaling:
+    jointOpacity: true
+    jointRadius: false
+    boneOpacity: true
+    boneWidth: false
 controls:
   mirroring:
     position: top-center
@@ -949,10 +965,131 @@ controls:
     assets:
       showMirrored: ShowMirroredButton
       showUnmirrored: ShowUnmirroredButton
-  cameraMenu:
-    position: bottom-center
+```
+
+### 関節とボーンのoverlay
+
+TMPose 1.11.0のSVG overlayについて、表示、関節別style、共通bone style、最低confidence、confidence連動を宣言します。
+
+Schema位置: `#/$defs/poseOverlay`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `visible` | 任意 | 真偽値 | 既定値 `true` |
+| `jointStyles` | 任意 | mapping | 1 field以上 |
+| `boneStyle` | 任意 | object（`poseBoneStyle`） | 1 field以上、未知field不可 |
+| `minimumConfidence` | 任意 | 数値 | 既定値 `0.5`、0以上、1以下 |
+| `confidenceScaling` | 任意 | object（`poseOverlayConfidenceScaling`） | 1 field以上、未知field不可 |
+
+- overlayを記述した場合の省略値はvisibleがtrue、minimumConfidenceが0.5です。overlay自体を省略した既存台本は非表示のままです。
+- previewを隠すとoverlayも隠れます。overlayだけを隠しても認識は停止しません。認識停止では描画を消去し、camera停止ではSVG要素も破棄します。
+- 実行にはTMPose 1.11.0以降が必要です。専用feature flagはなく、問題時はoverlay設定を台本から削除すると既存台本と同じ非表示へ戻ります。
+
+Schemaで検証できる値の例:
+
+```yaml
+visible: true
+jointStyles:
+  leftWrist:
+    color: '#ff00aa'
     opacity: 0.8
-    buttonAsset: CameraMenuButton
+    radius: 6
+boneStyle:
+  color: '#00e5ff'
+  opacity: 0.9
+  width: 3
+minimumConfidence: 0.5
+confidenceScaling:
+  jointOpacity: true
+  jointRadius: false
+  boneOpacity: true
+  boneWidth: false
+```
+
+### 関節別style
+
+一つのPoseNet関節を描く円のCSS color、opacity、radiusから一つ以上を上書きします。
+
+Schema位置: `#/$defs/poseJointStyle`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `color` | 任意 | 文字列 | 既定値 `#00e5ff`、pattern `\S` |
+| `opacity` | 任意 | 数値 | 既定値 `1`、0以上、1以下 |
+| `radius` | 任意 | 数値 | 既定値 `4`、0以上 |
+
+- 省略値はcolorが#00e5ff、opacityが1、radiusが4です。opacityは0〜1、radiusは0以上の有限値です。
+
+Schemaで検証できる値の例:
+
+```yaml
+color: '#ff00aa'
+opacity: 0.8
+radius: 6
+```
+
+### ボーン共通style
+
+12本の標準PoseNet bone connectionで共有するCSS color、opacity、線幅から一つ以上を上書きします。
+
+Schema位置: `#/$defs/poseBoneStyle`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `color` | 任意 | 文字列 | 既定値 `#00e5ff`、pattern `\S` |
+| `opacity` | 任意 | 数値 | 既定値 `0.9`、0以上、1以下 |
+| `width` | 任意 | 数値 | 既定値 `3`、0以上 |
+
+- 省略値はcolorが#00e5ff、opacityが0.9、widthが3です。opacityは0〜1、widthは0以上の有限値です。
+
+Schemaで検証できる値の例:
+
+```yaml
+color: '#00e5ff'
+opacity: 0.9
+width: 3
+```
+
+### confidenceによる見た目の拡縮
+
+関節のopacityとradius、boneのopacityとwidthをconfidenceに応じて個別に0から設定値まで変化させます。
+
+Schema位置: `#/$defs/poseOverlayConfidenceScaling`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| `jointOpacity` | 任意 | 真偽値 | 既定値 `false` |
+| `jointRadius` | 任意 | 真偽値 | 既定値 `false` |
+| `boneOpacity` | 任意 | 真偽値 | 既定値 `false` |
+| `boneWidth` | 任意 | 真偽値 | 既定値 `false` |
+
+- 四項目の省略値はすべてfalseです。関節はその関節のconfidence、boneは両端のうち低いconfidenceを倍率に使います。
+
+Schemaで検証できる値の例:
+
+```yaml
+jointOpacity: true
+jointRadius: false
+boneOpacity: true
+boneWidth: false
+```
+
+### PoseNet関節名
+
+jointStylesのkeyに指定できる17個のPoseNet関節名です。
+
+Schema位置: `#/$defs/poseKeypointName`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| 値 | 必須 | `nose` / `leftEye` / `rightEye` / `leftEar` / `rightEar` / `leftShoulder` / `rightShoulder` / `leftElbow` / `rightElbow` / `leftWrist` / `rightWrist` / `leftHip` / `rightHip` / `leftKnee` / `rightKnee` / `leftAnkle` / `rightAnkle` | — |
+
+- nose、leftEye、rightEye、leftEar、rightEar、leftShoulder、rightShoulder、leftElbow、rightElbow、leftWrist、rightWrist、leftHip、rightHip、leftKnee、rightKnee、leftAnkle、rightAnkleを指定できます。
+
+Schemaで検証できる値の例:
+
+```yaml
+leftWrist
 ```
 
 ### scene固有のpreview表示

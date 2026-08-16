@@ -1,8 +1,8 @@
 export const dsl4PublicationStatus = Object.freeze({
-  verifiedOn: '2026-08-15',
-  implementationCommit: 'f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6',
+  verifiedOn: '2026-08-16',
+  implementationCommit: '4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6',
   latestPublishedRelease: 'v3.2.3',
-  publishedDsl4Prerelease: 'v4.0.0-rc.5',
+  publishedDsl4Prerelease: 'v4.0.0-rc.6',
   officialDsl4Release: null,
 });
 
@@ -12,12 +12,12 @@ export const documentUpdatedAt = Object.freeze({
   'executive-summary-kids.md': '2026-08-08',
   'executive-summary-kids-4.0.md': '2026-08-15',
   'user-guide.md': '2026-08-08',
-  'user-guide-4.0.md': '2026-08-15',
+  'user-guide-4.0.md': '2026-08-16',
   'dsl-manual.md': '2026-08-08',
   'command-reference.md': '2026-08-08',
   'history.md': '2026-08-04',
-  'dsl-4.0-author-guide.md': '2026-08-15',
-  'dsl-4.0-schema-reference.md': '2026-08-15',
+  'dsl-4.0-author-guide.md': '2026-08-16',
+  'dsl-4.0-schema-reference.md': '2026-08-16',
   'dsl-4.0-history.md': '2026-08-15',
   'dsl-3.2-to-4.0-conversion-guide.md': '2026-08-15',
   'dsl-4.0-turbowarp-broadcast-guide.md': '2026-08-15',
