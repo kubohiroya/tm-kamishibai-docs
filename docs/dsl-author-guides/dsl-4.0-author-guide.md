@@ -24,11 +24,11 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 ## 公開プレリリースと文書基準
 
-文書状態: 公開プレリリースrc.5の固定実装基準を説明する台本作成ガイド\
-調査基準: tmpose-kamishibai `f323a54`（`v4.0.0-rc.5`）、2026年8月15日
+文書状態: 公開プレリリースrc.6の固定実装基準を説明する台本作成ガイド\
+調査基準: tmpose-kamishibai `4c360cd`（`v4.0.0-rc.6`）、2026年8月16日
 
-> **配布状態との区別:** 2026年8月15日時点で`v4.0.0-rc.5`はprereleaseとして公開されていますが、
-> 正式な`v4.0.0`ではありません。機能ごとのfeature flagは利用するreleaseで確認してください。
+> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.6`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。ポーズoverlayはrc.6と、同版がexact pinするTMPose 1.11.0で利用できます。
 
 このガイドと[紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)は、同じ完成版の実装を
 調査基準にしています。Schemaはruntime実装から生成するものではありません。公開状況や実装の追跡が
@@ -89,7 +89,7 @@ DSL 4.0は制限付きYAML 1.2で記述します。引数には名前が付き�
 
 ## 仕様・実装を確認する人向け（台本作成では読み飛ばせます）
 
-2026年8月15日のrc.5固定基準では、次の実装がtmpose-kamishibaiへ入っています。
+2026年8月16日のrc.6固定基準では、次の実装がtmpose-kamishibaiへ入っています。
 
 - 制限付きYAMLの解析、JSON Schema検証、参照関係の意味検証
 - 行・列とStory Pathを保持するSource Map、`K4-*`診断
@@ -97,6 +97,7 @@ DSL 4.0は制限付きYAML 1.2で記述します。引数には名前が付き�
 - action実行、分岐、シーン遷移、停止を扱うpure runtime controller
 - control profileの解決、キー入力adapter、時系列history reducer、runtime navigation control
 - camera previewのstory既定、scene固有の非stickyな左右反転指定、任意の操作UI
+- TMPose 1.11.0を使う、関節とボーンのSVG overlay設定
 - `Actor.say`／`Actor.think`の入力待ち、文字送り、音、portrait、animation、名前付き`bubbleStyles`
 - `Actor.moveTo`の`linear`、`easeIn`、`easeOut`、`easeInOut`
 - `Actor.setTransparency`の即時指定、foreground／backgroundの線形変化
@@ -113,9 +114,10 @@ builder、TurboWarp runtime surface、browser／CLI previewを含むend-to-end�
 ### 実装根拠を確認する場合
 
 仕様の正本は、tmpose-kamishibaiリポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/schema/dsl-4.schema.json)です。
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/schema/dsl-4.schema.json)です。
 camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)、
+ポーズoverlayは[Issue #624](https://github.com/kubohiroya/tmpose-kamishibai/issues/624)、
 `bubbleStyles`は[Issue #476](https://github.com/kubohiroya/tmpose-kamishibai/issues/476)以降、
 `Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tmpose-kamishibai/issues/398)、
 `Actor.setTransparency`は[Issue #406](https://github.com/kubohiroya/tmpose-kamishibai/issues/406)、
@@ -630,6 +632,61 @@ UIの選択状態はapp shellがsession内だけで保持し、camera切替失�
 起動時固定・既定OFFの`dsl4CameraPreviewControls`がOFFならcontrol画像、DOM、listener、上流camera APIへ
 接続しません。
 
+#### ポーズの関節とボーンを重ねる
+
+認識中の17関節と12本の標準ボーンをcamera previewへ重ねる場合は、
+`poseRecognition.preview.overlay`を記述します。
+
+```yaml
+poseRecognition:
+  preview:
+    mirroring: mirrored
+    overlay:
+      visible: true
+      jointStyles:
+        leftWrist:
+          color: '#ff00aa'
+          opacity: 0.8
+          radius: 6
+        rightWrist:
+          color: '#ff00aa'
+          radius: 6
+      boneStyle:
+        color: '#00e5ff'
+        opacity: 0.9
+        width: 3
+      minimumConfidence: 0.5
+      confidenceScaling:
+        jointOpacity: true
+        jointRadius: false
+        boneOpacity: true
+        boneWidth: false
+```
+
+`jointStyles`では次の17個のPoseNet関節名をkeyにし、円の`color`、`opacity`、`radius`から必要な値だけを
+上書きします。
+
+`nose`、`leftEye`、`rightEye`、`leftEar`、`rightEar`、`leftShoulder`、`rightShoulder`、
+`leftElbow`、`rightElbow`、`leftWrist`、`rightWrist`、`leftHip`、`rightHip`、`leftKnee`、
+`rightKnee`、`leftAnkle`、`rightAnkle`
+
+関節の既定値は`color: '#00e5ff'`、`opacity: 1`、`radius: 4`です。`boneStyle`は12本で共通し、
+既定値は`color: '#00e5ff'`、`opacity: 0.9`、`width: 3`です。opacityは0〜1、radiusとwidthは
+0以上の有限値にします。空白だけのcolorは使用できません。
+
+`minimumConfidence`は0〜1で、省略時は`0.5`です。関節は自身のconfidenceがこの値未満なら隠れ、
+ボーンは両端のどちらか一方でも未満なら隠れます。`confidenceScaling`の四項目は省略時にすべて`false`です。
+`true`にした関節のopacity／radiusはその関節のconfidenceを、ボーンのopacity／widthは両端のうち低い
+confidenceを倍率として、0から設定値まで変化します。この表示設定は認識入力や判定値を変更しません。
+
+`overlay`を書いた場合の`visible`は省略時に`true`です。一方、`overlay`自体を省略した既存のDSL 4.0台本は
+従来互換で非表示になります。overlayだけを隠しても認識は継続します。camera previewを隠すとoverlayも隠れ、
+認識停止では描画が消え、camera停止ではSVG要素も破棄されます。表示はpreviewの配置と左右反転に追従します。
+
+実行にはTMPose 1.11.0以降が必要です。DSL runtimeは同版のcomposition APIだけを呼び、独自の描画実装を
+持ちません。専用feature flagはなく、すべてのruntime profileで同じように利用できます。問題時は
+`overlay`設定を台本から削除すると、既存台本と同じ非表示へ戻せます。
+
 ## SVG Textを設定する
 
 DSL 4.0の標準テキスト表現はSVG Textです。最初に`textStyles`で名前付きスタイルを定義します。
@@ -733,7 +790,7 @@ branches:
 条件式は文字列として記述します。`if`と`goto`は同じmappingへ書き、`else`は分岐内に一つだけ、末尾へ
 置きます。すべての移動先シーンが定義済みでなければなりません。
 
-4.0.0-rc.5では、条件式は`branch` action開始時点のトップレベル`variables:`を不変snapshotとして参照します。
+4.0.0-rc.6では、条件式は`branch` action開始時点のトップレベル`variables:`を不変snapshotとして参照します。
 ASCIIのbare nameは`score == 1`のように書けます。日本語や`-`などbare nameにできない文字を含む名前は、
 `vars["救助回数"] >= 2`のように完全一致のstring literalで指定します。Stage／sprite変数、Temporary Variables、
 `ポーズ認識`、`チャージ`は条件式へ自動では入りません。
@@ -1265,6 +1322,13 @@ poseRecognition:
   chargeSound: Success
   preview:
     mirroring: mirrored
+    overlay:
+      visible: true
+      boneStyle:
+        color: '#00e5ff'
+        opacity: 0.9
+        width: 3
+      minimumConfidence: 0.5
     controls:
       mirroring:
         position: top-center
@@ -1402,6 +1466,7 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 - [ ] インデントに空白を使い、一つのaction itemへ命令を一つだけ書いた
 - [ ] IDが文字または`_`で始まり、Unicode NFCになっている
 - [ ] 背景、音、コスチューム、ポーズモデルの`kind`が参照箇所と一致している
+- [ ] ポーズoverlayを使う場合、関節名、opacity、radius、width、minimumConfidenceが範囲内である
 - [ ] コスチュームの`target`が使用するアクターと一致している
 - [ ] `file`が宣言元sourceからproject内へ解決できる安全な相対pathになっている
 - [ ] `include`にcycle、root外path、同じnamespaceの重複宣言がない
@@ -1415,7 +1480,8 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 ## 関連資料
 
 - [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
-- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
-- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/schema/dsl-4.schema.json): 機械可読な構造仕様
-- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
-- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例
+- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
+- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/schema/dsl-4.schema.json): 機械可読な構造仕様
+- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
+- [DSL 4.0 ポーズoverlay実装 Issue #624](https://github.com/kubohiroya/tmpose-kamishibai/issues/624): Schema、TMPose 1.11.0 composition API mapping、YAML opt-in、rollback
+- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例

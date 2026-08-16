@@ -95,7 +95,7 @@
           "order": 80,
           "title": "`poseRecognition` — ポーズ認識設定",
           "summary": "認識中の任意の音、モデル初期化、判定方法、feedback、プレイ中にポーズ待ちをskipできるか、camera previewの表示と任意UIをまとめます。idle音とcharge音は独立して省略できます。",
-          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nmodelInitialization:\n  policy: latest-needed\n  parallel: true\nfeedback:\n  mode: presenter\nnavigation:\n  allowSkip: true\npreview:\n  mirroring: mirrored\n  controls:\n    cameraMenu:\n      position: bottom-center\n      opacity: 0.8\n      buttonAsset: CameraMenuButton",
+          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nmodelInitialization:\n  policy: latest-needed\n  parallel: true\nfeedback:\n  mode: presenter\nnavigation:\n  allowSkip: true\npreview:\n  mirroring: mirrored\n  overlay:\n    visible: true\n    minimumConfidence: 0.5\n  controls:\n    cameraMenu:\n      position: bottom-center\n      opacity: 0.8\n      buttonAsset: CameraMenuButton",
           "exampleContext": "`poseRecognition` fieldの値:"
         },
         {
@@ -294,7 +294,7 @@
           "order": 60,
           "title": "ポーズ認識全体設定",
           "summary": "共通音と、モデル初期化、sequence、selection、feedback、navigation、camera previewの任意設定をまとめます。",
-          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nmodelInitialization:\n  policy: latest-needed\n  parallel: true\nsequence:\n  confidenceThreshold: 0.6\nfeedback:\n  mode: scratchMirror\nnavigation:\n  allowSkip: false\npreview:\n  mirroring: mirrored"
+          "example": "idleSound: PoseIdle\nchargeSound: PoseCharge\nmodelInitialization:\n  policy: latest-needed\n  parallel: true\nsequence:\n  confidenceThreshold: 0.6\nfeedback:\n  mode: scratchMirror\nnavigation:\n  allowSkip: false\npreview:\n  mirroring: mirrored\n  overlay:\n    visible: true"
         },
         {
           "pointer": "#/$defs/poseModelInitialization",
@@ -340,11 +340,64 @@
           "pointer": "#/$defs/posePreview",
           "order": 110,
           "title": "camera previewのstory設定",
-          "summary": "preview canvasの左右反転をstory既定として指定し、必要な場合だけapp shell所有の操作UIを構成します。",
-          "example": "mirroring: mirrored\ncontrols:\n  mirroring:\n    position: top-center\n    opacity: 0.8\n    assets:\n      showMirrored: ShowMirroredButton\n      showUnmirrored: ShowUnmirroredButton\n  cameraMenu:\n    position: bottom-center\n    opacity: 0.8\n    buttonAsset: CameraMenuButton",
+          "summary": "preview canvasの左右反転と任意の関節・ボーンoverlayをstory既定として指定し、必要な場合だけapp shell所有の操作UIを構成します。",
+          "example": "mirroring: mirrored\noverlay:\n  visible: true\n  jointStyles:\n    leftWrist:\n      color: '#ff00aa'\n      opacity: 0.8\n      radius: 6\n  boneStyle:\n    color: '#00e5ff'\n    opacity: 0.9\n    width: 3\n  minimumConfidence: 0.5\n  confidenceScaling:\n    jointOpacity: true\n    jointRadius: false\n    boneOpacity: true\n    boneWidth: false\ncontrols:\n  mirroring:\n    position: top-center\n    opacity: 0.8\n    assets:\n      showMirrored: ShowMirroredButton\n      showUnmirrored: ShowUnmirroredButton",
           "notes": [
             "`mirroring`の省略時は`mirrored`です。操作UIは`controls`を省略すると生成されません。",
+            "`overlay`を省略した既存台本では関節とボーンを表示しません。",
             "この設定はpreview canvasの表示だけを変更し、認識frame、confidence、sequence／selection判定には影響しません。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/poseOverlay",
+          "order": 112,
+          "title": "関節とボーンのoverlay",
+          "summary": "TMPose 1.11.0のSVG overlayについて、表示、関節別style、共通bone style、最低confidence、confidence連動を宣言します。",
+          "example": "visible: true\njointStyles:\n  leftWrist:\n    color: '#ff00aa'\n    opacity: 0.8\n    radius: 6\nboneStyle:\n  color: '#00e5ff'\n  opacity: 0.9\n  width: 3\nminimumConfidence: 0.5\nconfidenceScaling:\n  jointOpacity: true\n  jointRadius: false\n  boneOpacity: true\n  boneWidth: false",
+          "notes": [
+            "overlayを記述した場合の省略値はvisibleがtrue、minimumConfidenceが0.5です。overlay自体を省略した既存台本は非表示のままです。",
+            "previewを隠すとoverlayも隠れます。overlayだけを隠しても認識は停止しません。認識停止では描画を消去し、camera停止ではSVG要素も破棄します。",
+            "実行にはTMPose 1.11.0以降が必要です。専用feature flagはなく、問題時はoverlay設定を台本から削除すると既存台本と同じ非表示へ戻ります。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/poseJointStyle",
+          "order": 114,
+          "title": "関節別style",
+          "summary": "一つのPoseNet関節を描く円のCSS color、opacity、radiusから一つ以上を上書きします。",
+          "example": "color: '#ff00aa'\nopacity: 0.8\nradius: 6",
+          "notes": [
+            "省略値はcolorが#00e5ff、opacityが1、radiusが4です。opacityは0〜1、radiusは0以上の有限値です。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/poseBoneStyle",
+          "order": 116,
+          "title": "ボーン共通style",
+          "summary": "12本の標準PoseNet bone connectionで共有するCSS color、opacity、線幅から一つ以上を上書きします。",
+          "example": "color: '#00e5ff'\nopacity: 0.9\nwidth: 3",
+          "notes": [
+            "省略値はcolorが#00e5ff、opacityが0.9、widthが3です。opacityは0〜1、widthは0以上の有限値です。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/poseOverlayConfidenceScaling",
+          "order": 118,
+          "title": "confidenceによる見た目の拡縮",
+          "summary": "関節のopacityとradius、boneのopacityとwidthをconfidenceに応じて個別に0から設定値まで変化させます。",
+          "example": "jointOpacity: true\njointRadius: false\nboneOpacity: true\nboneWidth: false",
+          "notes": [
+            "四項目の省略値はすべてfalseです。関節はその関節のconfidence、boneは両端のうち低いconfidenceを倍率に使います。"
+          ]
+        },
+        {
+          "pointer": "#/$defs/poseKeypointName",
+          "order": 119,
+          "title": "PoseNet関節名",
+          "summary": "jointStylesのkeyに指定できる17個のPoseNet関節名です。",
+          "example": "leftWrist",
+          "notes": [
+            "nose、leftEye、rightEye、leftEar、rightEar、leftShoulder、rightShoulder、leftElbow、rightElbow、leftWrist、rightWrist、leftHip、rightHip、leftKnee、rightKnee、leftAnkle、rightAnkleを指定できます。"
           ]
         },
         {

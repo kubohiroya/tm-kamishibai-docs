@@ -27,7 +27,7 @@ test('records rc.5 as a published prerelease without claiming stable 4.0.0', () 
   assert.equal(entry.version, '4.0.0-rc.5');
   assert.equal(entry.publicationState, 'published-prerelease');
   assert.equal(entry.publication.gitTag, 'v4.0.0-rc.5');
-  assert.equal(entry.publication.tagCommit, sourceLock.commit);
+  assert.equal(entry.publication.tagCommit, 'f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6');
   assert.equal(entry.publication.npmVersion, '4.0.0-rc.5');
   assert.equal(entry.publication.npmDistTag, 'next');
   assert.equal(entry.publication.recommendedStableRelease, 'v3.2.3');
@@ -42,8 +42,12 @@ test('pins rc.5 source, schema, artifacts, surfaces, flags, and verification', (
   assert.equal(entry.source.freezeMergeCommit, candidate.runtime.freezeCommit);
   assert.equal(entry.source.sourceIdentity, candidate.runtime.releaseSource.sourceIdentity);
   assert.equal(entry.schema.releaseSha256, candidate.runtime.schema.sha256);
-  assert.equal(entry.schema.documentationReferenceCommit, sourceLock.commit);
-  assert.equal(entry.schema.documentationReferenceSha256, sourceLock.schemaSha256);
+  assert.equal(entry.schema.documentationReferenceCommit, entry.publication.tagCommit);
+  assert.equal(
+    entry.schema.documentationReferenceSha256,
+    '0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac136',
+  );
+  assert.notEqual(entry.schema.documentationReferenceSha256, sourceLock.schemaSha256);
   assert.deepEqual(entry.featureFlags, candidate.runtime.featureFlags);
   assert.equal(entry.artifacts.standardSb3.sha256, candidate.runtime.standardArtifact.sha256);
   assert.equal(entry.artifacts.standardSb3.size, candidate.runtime.standardArtifact.size);
