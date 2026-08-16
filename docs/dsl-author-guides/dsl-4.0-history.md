@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 公開プレリリースと安定版を区別する4.0系列の履歴<br />
-対象Issue: [tmpose-kamishibai-docs #42](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/42)
+対象Issue: [tmpose-kamishibai-docs #42](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/42)、[#163](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/163)
 
 この文書は開発・リリース担当者向けで、アプリの使い方や台本作成の
 入門書ではありません。初めて使う方は
@@ -19,9 +19,76 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | 安定版           | npm `latest`と通常のダウンロード導線で推奨する版                 |
 | 公開サンプル基準 | サンプル作品、starter、Web版を生成したruntimeの版                |
 
-2026年8月15日現在、`v4.0.0-rc.5`は公開プレリリースです。推奨安定版は`v3.2.3`で、
-正式版`v4.0.0`は未公開です。公開中のチュートリアルとサンプル成果物にはrc.3で作成されたものがあるため、
-rc.5のStandard Runtimeと同一成果物として扱いません。
+2026年8月16日現在、`v4.0.0-rc.6`は公開プレリリースです。推奨安定版は`v3.2.3`で、
+正式版`v4.0.0`は未公開です。チュートリアルとサンプル成果物は、公開rc.6のSB3とfreeze commitを
+入力として再生成し、作品ごとのlockに完全性情報を記録します。
+
+## 4.0.0-rc.6
+
+状態: **公開プレリリース**<br />
+公開日時: 2026年8月16日 16:08 JST
+
+### 固定revisionと公開先
+
+| 対象                  | 固定値                                                                                                                                                                            |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 追跡Issue             | [`#624`](https://github.com/kubohiroya/tmpose-kamishibai/issues/624)                                                                                                              |
+| candidate PR          | [`#625`](https://github.com/kubohiroya/tmpose-kamishibai/pull/625) / `4efec1963af04b50c080bef7095f598da928ac84`                                                                   |
+| freeze PR／tag commit | [`#626`](https://github.com/kubohiroya/tmpose-kamishibai/pull/626) / [`4c360cd`](https://github.com/kubohiroya/tmpose-kamishibai/commit/4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6) |
+| 公開記録PR            | [`#627`](https://github.com/kubohiroya/tmpose-kamishibai/pull/627) / `72cf2fa8c5a989169cd3929614cf61e77eef25af`                                                                   |
+| release source        | tag `v4.0.0-rc.6`。現行branchへ展開copyを保持しない                                                                                                                               |
+| source identity       | `sha256:ebdde314be4d929894bce9eb511f340c61879b2b9ff8366ae31cabbb00bfbf10`                                                                                                         |
+| Schema SHA-256        | `bb96f6fd503ee7a747b48b4cdc30db227b5d3171854c2b83a47a96c15ed7fd79`                                                                                                                |
+| GitHub prerelease     | [`v4.0.0-rc.6`](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.6)                                                                                         |
+| npm                   | [`4.0.0-rc.6`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.6)、dist-tag `next`                                                                         |
+| Pages                 | [download一覧](https://kubohiroya.github.io/tmpose-kamishibai/downloads/)                                                                                                         |
+
+作者向けSchemaリファレンスはtag commit `4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6`と同じ
+Schema SHA-256を固定します。
+
+### rc.5からの変更
+
+- TMPoseを1.11.0へexact pinし、camera canvasのcontext／readback責務をTMPose上流へ集約
+- `poseRecognition.preview.overlay`からSVGの関節とボーンを表示し、style、最低confidence、confidence連動を設定可能にした
+- overlay専用feature flagを設けず、DSL 4.0 runtimeでSchemaに設定があれば公開Composition APIへ接続
+- scratch-renderとPackagerへ警告抑制patchを当てず、実測に基づく上流責務を維持
+- project source manifestを任意化し、唯一の`.k4.yml`を自動選択できるようにした
+- 公開SB3の正本をGitHub Releasesへ移し、旧`release-sources/`の展開copyを廃止
+
+### exact dependency pin
+
+| package                                    | version |
+| ------------------------------------------ | ------- |
+| `@kubohiroya/turbowarp-asset-manager`      | 0.11.0  |
+| `@kubohiroya/turbowarp-async-input`        | 0.4.0   |
+| `@kubohiroya/turbowarp-bubble`             | 0.7.0   |
+| `@kubohiroya/turbowarp-runtime-expression` | 0.4.0   |
+| `@kubohiroya/turbowarp-svg-text`           | 0.5.0   |
+| `@kubohiroya/turbowarp-tmpose`             | 1.11.0  |
+
+### 公開成果物
+
+| 成果物                                                                                                                  | byte      | 完全性情報                                                                 |
+| ----------------------------------------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------- |
+| [Standard SB3](https://github.com/kubohiroya/tmpose-kamishibai/releases/download/v4.0.0-rc.6/kamishibai-4.0.0-rc.6.sb3) | 6,684,010 | SHA-256 `be0e38d6179873894db2363751955ccd68b971a829a5b09c048e54986fbd7796` |
+| [npm tarball](https://registry.npmjs.org/@kubohiroya/tmpose-kamishibai/-/tmpose-kamishibai-4.0.0-rc.6.tgz)              | 6,446,010 | SHA-256 `6581c73b61f90762383bc8284699bb994dc396951ae3bfdd271249a362c99eba` |
+
+npm registry integrityは
+`sha512-q4amPLLmVrsh60ZhNo6sjtCYLwBVH8nosmElbh/LGdX4/4gVBw4oohcgIgAZLm5G0VmgWxfj3NJ0fxHLe+C7bg==`です。
+GitHub ReleaseとPagesのSB3は同じbyte数とSHA-256です。
+
+### 検証、制約、rollback
+
+freeze PRの`pnpm verify:full`はNode系1,212件とChromium 13件を通過しました。記録は
+[GitHub Actions](https://github.com/kubohiroya/tmpose-kamishibai/actions/runs/31931898431/job/95127903375)で確認できます。
+物理cameraの測定では通常Canvas2D contextに再現性のある劣化がなく、CPU推論時のChromium readback警告は
+性能根拠のない抑制をせず許容します。camera frameは保存していません。
+
+- DSL document versionは引き続き`kamishibai: "4.0"`
+- `overlay`省略時は非表示、記述して`visible`省略時は表示
+- rc.5以前のversion付きSB3とtagを差し替えない
+- 問題時はnpm `next`を`4.0.0-rc.5`へ戻し、公開済みrc.6のbyte列を上書きしない
+- 修正版は`4.0.0-rc.7`として公開する
 
 ## 4.0.0-rc.5
 
@@ -109,8 +176,8 @@ rc.3で行った実カメラ・実ポーズ確認は、TMPose、PoseNet model da
 上流での確認例です。
 
 ```bash
-git show --no-patch v4.0.0-rc.5
-gh release view v4.0.0-rc.5 --repo kubohiroya/tmpose-kamishibai
-npm view @kubohiroya/tmpose-kamishibai@4.0.0-rc.5 version dist.integrity
-shasum -a 256 kamishibai-4.0.0-rc.5.sb3
+git show --no-patch v4.0.0-rc.6
+gh release view v4.0.0-rc.6 --repo kubohiroya/tmpose-kamishibai
+npm view @kubohiroya/tmpose-kamishibai@4.0.0-rc.6 version dist.integrity
+shasum -a 256 kamishibai-4.0.0-rc.6.sb3
 ```

@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "verifiedAt": "2026-08-16T16:21:22+09:00",
+  "verifiedAt": "2026-08-16T17:14:41+09:00",
   "documentIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/41",
   "verificationIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/122",
   "releaseState": {
@@ -14,20 +14,20 @@
     "standardSb3Sha256": "be0e38d6179873894db2363751955ccd68b971a829a5b09c048e54986fbd7796",
     "formalGitHubReleasePublished": false,
     "latestFormalGitHubRelease": "v3.2.3",
-    "publicSampleBaseline": "v4.0.0-rc.3",
-    "sampleBaselineDiffersFromPublishedPrerelease": true
+    "publicSampleBaseline": "v4.0.0-rc.6",
+    "sampleBaselineDiffersFromPublishedPrerelease": false
   },
   "samples": {
     "repository": "kubohiroya/tmpose-kamishibai-samples",
-    "publicationCommit": "919565243adc3800ebe8271cc4af6f7b68110ef2",
-    "publicationPullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/107",
-    "pagesDeploymentRun": 31660773675,
+    "publicationCommit": "7b9175a50331b4a89c549262fde8ebf9a8bb59e2",
+    "publicationPullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/122",
+    "pagesDeploymentRun": 31935960062,
     "runtime": {
-      "version": "4.0.0-rc.3",
-      "commit": "087dfa526e967bb2cc38af3f5b5a795355de7739",
-      "sourceIdentity": "sha256:f56cc0f2b2df805cc1baebcbaa08094fa7df20b0f28b2c8b62c445d9b54e8fa3",
-      "standardSb3Size": 7652780,
-      "standardSb3Sha256": "77ac23862ef0e729ca75be93340f65f21ded9b39449fc8f9be2c904c70d4096c"
+      "version": "4.0.0-rc.6",
+      "commit": "4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6",
+      "sourceIdentity": "sha256:ebdde314be4d929894bce9eb511f340c61879b2b9ff8366ae31cabbb00bfbf10",
+      "standardSb3Size": 6684010,
+      "standardSb3Sha256": "be0e38d6179873894db2363751955ccd68b971a829a5b09c048e54986fbd7796"
     },
     "urashima": {
       "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/",
@@ -35,12 +35,12 @@
       "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.k4.yml",
       "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima-4.0.sb3",
       "sb3": {
-        "size": 42549501,
-        "sha256": "4516f543c25fe8d96edfa639cf789a174fd898199c5e34a1a29e079ceecbc6cb"
+        "size": 34143507,
+        "sha256": "87bdcde5ef30f23253f54512d27561cf48f0849a7ebb4f35a60a57b002ed9daf"
       },
       "web": {
-        "size": 67534503,
-        "sha256": "d0a605d0f7838fd52f1ceb71507ad0385435d0ad32cd7ebc8ae4798bed8e37ce",
+        "size": 48415319,
+        "sha256": "7d11aa8ef47045b585b4f7edc1b4d4b600fe7dc0adfbd740dd74474581f4b270",
         "networkDependencies": [],
         "runtimeCapabilities": ["camera", "audio"]
       }
@@ -49,21 +49,21 @@
       "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
       "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/web-4.0/",
       "sb3": {
-        "size": 22519252,
-        "sha256": "7cbb6084b42d11c61473649db45950e293cf806ce1f54bace61f9c17ad7f33f3"
+        "size": 16029168,
+        "sha256": "0bb4aa27465572294329ef27f060186c4c891330f6798997b1fa5a50849bf196"
       },
       "web": {
-        "size": 43223344,
-        "sha256": "c1952f90e1cd25502d0dfcbe379f9493183d8af308c6338e1afe716540404c10",
+        "size": 26674130,
+        "sha256": "ee4c735c8562f7cdecac5652f6226b4e9398a62f065a7eaad664b24c858cdd76",
         "projectInput": "external-yaml",
         "runtimeCapabilities": ["file-picker", "camera", "audio"],
         "allowedNetworkPrefixes": ["https://sqs.prof.cuc.ac.jp/kamishibai/20260630/"]
       }
     },
     "tutorial": {
-      "version": "4.0.0-rc.3",
+      "version": "4.0.0-rc.6",
       "status": "published",
-      "sourceIdentity": "e2790f97486e2f2049cd8639ce7a00bdccdeffce38e60af1aa823d62616bdfbf",
+      "sourceIdentity": "11498663759497697ddc47013a162a76df1e3fefae3df039d31ec4b457517a40",
       "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
       "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
       "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
@@ -73,37 +73,37 @@
       "manifestUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json",
       "license": "MPL-2.0",
       "source": {
-        "size": 1721,
-        "sha256": "62b940b68b7177628a0dcd29d84754fcbaff911a9a9a955c58ffe727f59fdb57"
+        "size": 2174,
+        "sha256": "6be02d8ab351364a09436f7d2436906edabe4101b68d9c07d2a9d7b1681aa77c"
       },
       "sb3": {
-        "size": 13659675,
-        "sha256": "518fe92750a2e05a4711d8c9ad646256e9b21b9fa7161275174d12cca3a4dc7b"
+        "size": 12585353,
+        "sha256": "3ecc7f9de4f4c2f030f27e916363af7537d4dc8547acf40a9b6438a2792b4fe1"
       },
       "web": {
-        "size": 32016775,
-        "sha256": "ff9553c797e4b613f8c03dbbe5c9cdec1b3493e927b13df8ddf975666a6ec513"
+        "size": 21927767,
+        "sha256": "81fd90b4188cd3b60f5cd859af7e45c6e1d98b11a16f13b3db9721b588d064dc"
       },
       "starter": {
-        "size": 5914350,
-        "sha256": "bf0ad3b250f79d6fb49cb7584a4559d7e979e75e4b2d46923effae4b183fdfb8"
+        "size": 5914519,
+        "sha256": "3789c96c61bbb89beb10b95d456a8f5885999163319fb4c974b3c784c36b7d4b"
       },
       "additionKit": {
-        "size": 5369,
-        "sha256": "fb3f7bbb7eb4c136d189a7a1bd3e6484146f42fc7ab4b87795d2f5892a7f3c81"
+        "size": 5538,
+        "sha256": "4e8b6c76cd850fd924806739a337a639b13eaac3ccdbb7cd7e9ef0e727a5fa38"
       }
     },
     "packager": "TurboWarp Packager 3.13.0",
     "webPublicationFeatureFlagDefault": false
   },
   "physicalVerification": {
-    "verifiedOn": "2026-08-11",
+    "verifiedOn": "2026-08-16",
     "camera": "passed",
     "pose": "passed",
     "evidenceUrl": "https://github.com/kubohiroya/tmpose-kamishibai/issues/510#issuecomment-5255177777",
-    "appliesToRuntimeVersion": "4.0.0-rc.3",
-    "appliesToPublishedPrerelease": false,
-    "rc5RetestStatus": "pending"
+    "appliesToRuntimeVersion": "4.0.0-rc.6",
+    "appliesToPublishedPrerelease": true,
+    "rc6Verification": "camera-context-measured; overlay-browser-verified"
   },
   "visuals": {
     "formalUiCapturesIncluded": false,

@@ -2,8 +2,8 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-作者用実行環境: `4.0.0-rc.5`（公開プレリリース）\
-スターター基準: `4.0.0-rc.3`（公開中の既存成果物）\
+作者用実行環境: `4.0.0-rc.6`（公開プレリリース）\
+スターター基準: `4.0.0-rc.6`（公開成果物）\
 対象: 初めて紙芝居DSL 4.0を書く人\
 扱う台本: 4.0用のYAML台本\
 想定時間: 60〜90分
@@ -27,8 +27,8 @@ Node.js、pnpm、ターミナルは使いません。Scratchのブロックは�
 - File System Access APIに対応したChromium系ブラウザー
 - ポーズ場面を確かめるためのカメラと、全身を映せる少しの空間
 
-この手順では`4.0.0-rc.5`の非埋め込みStandard SB3を使用します。スターターはrc.3で公開された既存成果物ですが、
-台本と素材をrc.5の作者用runtimeから開きます。安定版`4.0.0`ではないため、ほかの作品と分けた作業フォルダーで
+この手順では`4.0.0-rc.6`の非埋め込みStandard SB3と、同じrelease入力から生成したスターターを使用します。
+安定版`4.0.0`ではないため、ほかの作品と分けた作業フォルダーで
 進めてください。
 
 ## 全体の流れ
@@ -57,14 +57,14 @@ Node.js、pnpm、ターミナルは使いません。Scratchのブロックは�
 次の二つをダウンロードします。
 
 - [チュートリアル用スターター](https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip)
-- [紙芝居4.0.0-rc.5のStandard SB3](https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.5.sb3)
+- [紙芝居4.0.0-rc.6のStandard SB3](https://github.com/kubohiroya/tmpose-kamishibai/releases/download/v4.0.0-rc.6/kamishibai-4.0.0-rc.6.sb3)
 
 新しい作業フォルダーを作り、スターターのZIPをその中へ展開します。Standard SB3も同じ作業フォルダーへ
 保存します。インストール作業はありません。展開後の主なファイルは次の配置になります。
 
 ```text
 作業フォルダー/
-├── kamishibai-4.0.0-rc.5.sb3
+├── kamishibai-4.0.0-rc.6.sb3
 └── tutorial-story/
     ├── README.md
     ├── LICENSES.md
@@ -98,7 +98,7 @@ _スターターを開き、編集する台本と後で使う追加素材を確�
 ## 3. TurboWarpで作品フォルダーを開く
 
 1. [TurboWarp Editor](https://turbowarp.org/editor)を開く
-2. 「ファイル」から`kamishibai-4.0.0-rc.5.sb3`を読み込む
+2. 「ファイル」から`kamishibai-4.0.0-rc.6.sb3`を読み込む
 3. 緑の旗を押す
 4. タイトル画面を閉じ、メニューの「台本を開く」（以後「開く」）を押す
 5. フォルダー選択画面で、スターターを展開した`tutorial-story`フォルダーを選ぶ
@@ -294,6 +294,31 @@ assets:
 ```
 
 ```yaml
+poseRecognition:
+  navigation:
+    allowSkip: true
+  preview:
+    mirroring: mirrored
+    overlay:
+      visible: true
+      jointStyles:
+        leftWrist:
+          color: '#ff00aa'
+          opacity: 0.8
+          radius: 6
+        rightWrist:
+          color: '#ff00aa'
+          opacity: 0.8
+          radius: 6
+      boneStyle:
+        color: '#00e5ff'
+        opacity: 0.9
+        width: 3
+      minimumConfidence: 0.5
+      confidenceScaling:
+        jointOpacity: true
+        boneOpacity: true
+
 scenes:
   earthquake:
     - stage: Classroom
@@ -337,8 +362,9 @@ scenes:
     - wait: 1
 ```
 
-このチュートリアルでは、ポーズモデルそのものは作りません。プレビューを先頭から更新し、カメラを
-許可します。見本のポーズ、カメラ映像、進み具合が表示され、ポーズを保つと次へ進むことを確認します。
+このチュートリアルでは、ポーズモデルそのものは作りません。`overlay`では手首の関節をピンク、ボーンを水色で
+カメラ映像へ重ね、confidenceが低い部分を薄くします。プレビューを先頭から更新し、カメラを許可します。
+見本のポーズ、カメラ映像、関節とボーン、進み具合が表示され、ポーズを保つと次へ進むことを確認します。
 
 <!-- screenshot:C-10 -->
 
@@ -402,7 +428,7 @@ _完成したSB3をTurboWarpで開き、緑の旗から再生します。画像�
 
 ## 完了チェック
 
-- [ ] rc.3基準の公開スターターと`4.0.0-rc.5`の非埋め込みStandard SB3を用意した
+- [ ] rc.6基準の公開スターターと`4.0.0-rc.6`の非埋め込みStandard SB3を用意した
 - [ ] TurboWarp Editorで緑の旗を押し、「開く」から作品フォルダーを選んだ
 - [ ] セリフを一行変更し、自動検査後にプレビューへ反映した
 - [ ] 新しい背景、登場人物、場面を追加した

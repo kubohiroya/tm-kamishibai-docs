@@ -21,9 +21,6 @@ const screenshotManifest = JSON.parse(
 const publicationPlan = JSON.parse(
   readFileSync(path.join(tutorialRoot, 'publication-plan.json'), 'utf8'),
 );
-const publicSurfaces = JSON.parse(
-  readFileSync(path.join(projectRoot, 'sources/dsl4/user-guide-4.0-public-surfaces.json'), 'utf8'),
-);
 const packageManifest = JSON.parse(readFileSync(path.join(projectRoot, 'package.json'), 'utf8'));
 const dsl4Schema = JSON.parse(
   readFileSync(path.join(projectRoot, 'sources/dsl4/dsl-4.schema.json'), 'utf8'),
@@ -259,43 +256,50 @@ test('maps every planned screenshot to a draft marker and a release gate', () =>
   assert.equal(screenshotManifest.sampleBaseline.pullRequestState, 'merged');
   assert.equal(
     screenshotManifest.sampleBaseline.publicationCommit,
-    publicSurfaces.samples.publicationCommit,
+    '919565243adc3800ebe8271cc4af6f7b68110ef2',
   );
   assert.equal(screenshotManifest.sampleBaseline.status, 'tutorial-sample-published');
   assert.deepEqual(screenshotManifest.sampleBaseline.publicSamples, {
     urashima: {
-      detailUrl: publicSurfaces.samples.urashima.detailUrl,
-      webUrl: publicSurfaces.samples.urashima.webUrl,
-      yamlUrl: publicSurfaces.samples.urashima.yamlUrl,
-      sb3Url: publicSurfaces.samples.urashima.sb3Url,
-      sb3Sha256: publicSurfaces.samples.urashima.sb3.sha256,
-      webSha256: publicSurfaces.samples.urashima.web.sha256,
+      detailUrl: 'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/',
+      webUrl: 'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/web-4.0/',
+      yamlUrl:
+        'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.k4.yml',
+      sb3Url:
+        'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima-4.0.sb3',
+      sb3Sha256: '4516f543c25fe8d96edfa639cf789a174fd898199c5e34a1a29e079ceecbc6cb',
+      webSha256: 'd0a605d0f7838fd52f1ceb71507ad0385435d0ad32cd7ebc8ae4798bed8e37ce',
     },
     myUrashima: {
-      detailUrl: publicSurfaces.samples.myUrashima.detailUrl,
-      webUrl: publicSurfaces.samples.myUrashima.webUrl,
-      sb3Sha256: publicSurfaces.samples.myUrashima.sb3.sha256,
-      webSha256: publicSurfaces.samples.myUrashima.web.sha256,
+      detailUrl: 'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/',
+      webUrl: 'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/web-4.0/',
+      sb3Sha256: '7cbb6084b42d11c61473649db45950e293cf806ce1f54bace61f9c17ad7f33f3',
+      webSha256: 'c1952f90e1cd25502d0dfcbe379f9493183d8af308c6338e1afe716540404c10',
     },
     tutorial: {
-      detailUrl: publicSurfaces.samples.tutorial.detailUrl,
-      webUrl: publicSurfaces.samples.tutorial.webUrl,
-      yamlUrl: publicSurfaces.samples.tutorial.yamlUrl,
-      sb3Url: publicSurfaces.samples.tutorial.sb3Url,
-      starterUrl: publicSurfaces.samples.tutorial.starterUrl,
-      additionKitUrl: publicSurfaces.samples.tutorial.additionKitUrl,
-      manifestUrl: publicSurfaces.samples.tutorial.manifestUrl,
-      sb3Sha256: publicSurfaces.samples.tutorial.sb3.sha256,
-      webSha256: publicSurfaces.samples.tutorial.web.sha256,
+      detailUrl: 'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/',
+      webUrl: 'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/',
+      yamlUrl:
+        'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/story.kamishibai.yaml',
+      sb3Url:
+        'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-4.0.sb3',
+      starterUrl:
+        'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip',
+      additionKitUrl:
+        'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip',
+      manifestUrl:
+        'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json',
+      sb3Sha256: '518fe92750a2e05a4711d8c9ad646256e9b21b9fa7161275174d12cca3a4dc7b',
+      webSha256: 'ff9553c797e4b613f8c03dbbe5c9cdec1b3493e927b13df8ddf975666a6ec513',
     },
   });
   assert.equal(
     screenshotManifest.sampleBaseline.sb3Sha256,
-    publicSurfaces.samples.tutorial.sb3.sha256,
+    '518fe92750a2e05a4711d8c9ad646256e9b21b9fa7161275174d12cca3a4dc7b',
   );
   assert.equal(
     screenshotManifest.sampleBaseline.webSha256,
-    publicSurfaces.samples.tutorial.web.sha256,
+    'ff9553c797e4b613f8c03dbbe5c9cdec1b3493e927b13df8ddf975666a6ec513',
   );
   assert.equal(screenshotManifest.sampleBaseline.formalCaptureReuse, true);
   assert.equal(
@@ -500,7 +504,7 @@ test('keeps the published prerelease reviewable with its fixed captures', () => 
   assert.match(tutorialSources['create.md'], /preview-dsl4 --help/u);
   assert.match(tutorialSources['create.md'], /validate-dsl4/u);
   assert.match(tutorialSources['create.md'], /build-dsl4/u);
-  assert.match(tutorialSources['create.md'], /4\.0\.0-rc\.3/u);
+  assert.match(tutorialSources['create.md'], /4\.0\.0-rc\.6/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/earthquake-classroom\.svg/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/add-pose-scene\.yml\.txt/u);
   assert.match(tutorialSources['create.md'], /file: classroom\.svg/u);
@@ -508,6 +512,7 @@ test('keeps the published prerelease reviewable with its fixed captures', () => 
   assert.match(tutorialSources['create.md'], /file: earthquake-classroom\.svg/u);
   assert.match(tutorialSources['create.md'], /更新状態ボタン[\s\S]*再開位置[\s\S]*再開方針/u);
   assert.match(tutorialSources['create.md'], /poseModel: SafetyPose/u);
+  assert.match(tutorialSources['create.md'], /overlay:[\s\S]*boneStyle:[\s\S]*width: 3/u);
   assert.match(tutorialSources['create.md'], /Student\.show:[\s\S]*skin: ProtectHead/u);
   assert.match(tutorialSources['create.md'], /success:[\s\S]*できた！ 頭を守れたね/u);
   assert.match(tutorialSources['play.md'], /メニューへ戻る前[\s\S]*できたこと/u);
@@ -614,13 +619,13 @@ test('keeps the reproducible implementation walkthrough in the developer guide',
     /\.\.\/developer-guides\/dsl4-implementation-walkthrough\.md/u,
   );
   assert.match(implementationWalkthrough, /開発者向け追試手順/u);
-  assert.match(implementationWalkthrough, /f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6/u);
+  assert.match(implementationWalkthrough, /4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6/u);
   assert.match(implementationWalkthrough, /tmpose-kamishibai-samples`は取得・build・変更しません/u);
   assert.match(implementationWalkthrough, /preview-dsl4 --watch/u);
   assert.match(implementationWalkthrough, /K4-VERSION-001/u);
   assert.match(
     implementationWalkthrough,
-    /2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c/u,
+    /be0e38d6179873894db2363751955ccd68b971a829a5b09c048e54986fbd7796/u,
   );
   for (const filename of [
     'dsl4-rc5-preview-running.png',

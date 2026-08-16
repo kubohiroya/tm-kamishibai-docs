@@ -840,7 +840,7 @@ Schema位置: `#/$defs/poseModelInitialization`
 
 - 省略時はpolicyがlegacy、parallelがfalseです。
 - latest-neededでは重い初期化を実行中1件と最新待機1件までに制限します。
-- 実行にはTMPose 1.10.0以降が必要です。
+- 実行にはTMPose 1.10.0以降が必要です。4.0.0-rc.6はTMPose 1.11.0をexact pinします。
 
 Schemaで検証できる値の例:
 

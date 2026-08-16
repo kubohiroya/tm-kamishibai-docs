@@ -20,8 +20,8 @@ DSL 4.0の実装、プレリリース、安定版、公開サンプル、文書�
 - rc.6のStandard SB3は`kamishibai-4.0.0-rc.6.sb3`、6,684,010 bytes、SHA-256
   `be0e38d6179873894db2363751955ccd68b971a829a5b09c048e54986fbd7796`
 - 安定版の推奨は`v3.2.3`で、正式版`v4.0.0`は未公開
-- 公開中の4.0サンプル作品、スターター、Web版はrc.3で作成された成果物を含む
-- rc.6の作者経路とrc.3のサンプル再生経路を、本文とmachine-readable manifestで区別する
+- 公開中の4.0サンプル作品、スターター、Web版はrc.6から再生成した成果物
+- rc.6の作者経路とサンプル再生経路を、本文とmachine-readable manifestで同じruntime基準へ固定する
 
 確認元:
 [v4.0.0-rc.6 GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.6)、
@@ -38,18 +38,18 @@ DSL 4.0の実装、プレリリース、安定版、公開サンプル、文書�
 ## 公開画面に基づく文書
 
 - [紙芝居アプリ 4.0 操作説明書](docs/user-guides/user-guide-4.0.md)は公開画面を説明する
-- [紙芝居を遊ぶ](docs/tutorials/play.md)は公開サンプル成果物rc.3を対象にする
+- [紙芝居を遊ぶ](docs/tutorials/play.md)は公開サンプル成果物rc.6を対象にする
 - [紙芝居DSL 4.0 台本作成ガイド](docs/dsl-author-guides/dsl-4.0-author-guide.md)はrc.6 Standard SB3の
-  overlay設定を説明し、公開starterのrc.3基準とは区別する
+  overlay設定を説明し、公開starterと同じ設定例を使う
 - 公開URL、版、checksumなどの追跡情報は
   [`sources/dsl4/user-guide-4.0-public-surfaces.json`](sources/dsl4/user-guide-4.0-public-surfaces.json)へ固定する
 
 ## リリース記録
 
-- [紙芝居DSL 4.0 リリース履歴](docs/dsl-author-guides/dsl-4.0-history.md)はrc.5のtag、公開URL、成果物、
+- [紙芝居DSL 4.0 リリース履歴](docs/dsl-author-guides/dsl-4.0-history.md)はrc.6のtag、公開URL、成果物、
   dependencyとrollbackを記録する
-- [DSL 4.0 release smoke](docs/developer-guides/release-smoke-4.0.md)はrc.5の自動検証と公開照合を記録する
-- rc.5でTMPose、PoseNet、モデル初期化経路が変わったため、rc.3の実カメラ証跡をrc.5の合格証跡へ流用しない
+- [DSL 4.0 release smoke](docs/developer-guides/release-smoke-4.0.md)はrc.6の自動検証と公開照合を記録する
+- rc.6のcamera context方針とoverlay cleanupはTMPose 1.11.0の上流検証と、公開サンプルのbrowser検証を分けて記録する
 
 ## 安定版4.0.0の公開時に更新する情報
 

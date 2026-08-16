@@ -33,14 +33,14 @@ test('distinguishes rc.6, stable, sample baseline, and document state', () => {
 
   assert.match(statusPolicy, /v4\.0\.0.*未公開/u);
   assert.match(statusPolicy, /v4\.0\.0-rc\.6/u);
-  assert.match(statusPolicy, /rc\.3.*サンプル/u);
+  assert.match(statusPolicy, /サンプル作品、スターター、Web版はrc\.6/u);
 });
 
-test('shows rc.6 on the 4.0 top and distinguishes rc.3 sample artifacts', () => {
+test('shows rc.6 on the 4.0 top and aligns the public samples', () => {
   assert.match(dsl4Index, /4\.0\.0-rc\.6を公開しています/u);
   assert.match(dsl4Index, /kamishibai-4\.0\.0-rc\.6\.sb3/u);
   assert.match(dsl4Index, /tmpose-kamishibai\/v\/4\.0\.0-rc\.6/u);
-  assert.match(dsl4Index, /rc\.3.*作成された/u);
+  assert.match(dsl4Index, /rc\.6.*再生成/u);
   assert.match(dsl4Index, /安定版<code>4\.0\.0<\/code>はまだ未公開/u);
   assert.match(dsl4Index, /最新安定版は\s*<code>v3\.2\.3<\/code>/u);
 

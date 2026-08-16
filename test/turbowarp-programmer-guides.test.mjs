@@ -128,6 +128,12 @@ const publicOpcodes = {
     'setPreviewPosition',
     'setPreviewMirroring',
     'previewMirroringReporter',
+    'setPoseOverlayVisibility',
+    'isPoseOverlayVisible',
+    'setPoseJointStyle',
+    'setPoseBoneStyle',
+    'setPoseOverlayMinimumConfidence',
+    'setPoseConfidenceScaling',
     'loadModel',
     'isModelLoaded',
     'startPredict',
@@ -162,7 +168,7 @@ test('explains exact broadcast-and-wait behavior from YAML through TurboWarp rec
 
 test('lists every public bundled block and member documentation URI', () => {
   const allOpcodes = Object.values(publicOpcodes).flat();
-  assert.equal(allOpcodes.length, 119);
+  assert.equal(allOpcodes.length, 125);
   for (const opcode of new Set(allOpcodes)) {
     assert.ok(blockReference.includes('`' + opcode + '`'), `missing opcode ${opcode}`);
   }
@@ -176,18 +182,18 @@ test('lists every public bundled block and member documentation URI', () => {
   ]) {
     assert.match(blockReference, new RegExp(`https://kubohiroya\\.github\\.io/${slug}/`, 'u'));
   }
-  assert.match(blockReference, /119ブロック/u);
+  assert.match(blockReference, /125ブロック/u);
   assert.match(blockReference, /Open Documentation/u);
 
   const paletteTableHeaders = blockReference.match(
     /^\| opcode\s+\| パレットのブロック文\s+\| 役割\s+\|$/gmu,
   );
-  assert.equal(paletteTableHeaders?.length, 8, 'every public block table must expose palette text');
+  assert.equal(paletteTableHeaders?.length, 9, 'every public block table must expose palette text');
 
   const paletteRows = [
     ...blockReference.matchAll(/^\| `([^`]+)`\s+\| `([^`]+)`\s+\| [^\n]+\|$/gmu),
   ];
-  assert.equal(paletteRows.length, 119, 'every public block must include non-empty palette text');
+  assert.equal(paletteRows.length, 125, 'every public block must include non-empty palette text');
   assert.deepEqual(
     paletteRows.map((match) => match[1]).sort(),
     allOpcodes.sort(),
@@ -203,7 +209,7 @@ test('places one real palette capture at the start of every member chapter', () 
     ['Bubble 0.7.0', 'dsl4-palette-bubble.jpg'],
     ['Runtime Expression 0.4.0', 'dsl4-palette-runtime-expression.jpg'],
     ['SVG Text 0.5.0', 'dsl4-palette-svg-text.jpg'],
-    ['TMPose 1.10.0', 'dsl4-palette-tmpose.jpg'],
+    ['TMPose 1.11.0', 'dsl4-palette-tmpose.jpg'],
   ];
 
   for (const [heading, filename] of figures) {
@@ -258,7 +264,7 @@ test('separates the current two Stage variables from the default-off runtime-var
     runtimeVariableReference,
     /文書状態: \*\*受け入れ済み・実装済み利用契約（既定OFF）\*\*/u,
   );
-  assert.match(runtimeVariableReference, /4\.0\.0-rc\.5の現行公開APIには含まれません/u);
+  assert.match(runtimeVariableReference, /4\.0\.0-rc\.6の現行公開APIには含まれません/u);
 });
 
 test('classifies internal runtime state and defines the implemented block contract', () => {
@@ -298,7 +304,7 @@ test('keeps story-variable mutation staged, typed, cancellable, and reversible',
     /generationが変わった場合は破棄/u,
     /`dsl4TurboWarpStateSurface`[\s\S]*既定OFF/u,
     /`dsl4TurboWarpStoryVariableWrite`[\s\S]*既定OFF/u,
-    /現行の119 blockと2つのStage変数に\s*変更がありません/u,
+    /現行の125 blockと2つのStage変数に\s*変更がありません/u,
   ]) {
     assert.match(runtimeVariableReference, contract);
   }

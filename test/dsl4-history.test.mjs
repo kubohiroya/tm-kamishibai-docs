@@ -11,6 +11,7 @@ const read = (relativePath) => readFileSync(new URL(`../${relativePath}`, import
 const history = read('docs/dsl-author-guides/dsl-4.0-history.md');
 const dsl4Index = read('site/4.0/index.html');
 const entry = historyManifest.entries[0];
+const previousEntry = historyManifest.entries[1];
 
 test('publishes a separate DSL 4.0 release history', () => {
   const publication = documentationConfig.documents.find(
@@ -22,13 +23,13 @@ test('publishes a separate DSL 4.0 release history', () => {
   assert.match(dsl4Index, /dsl-author-guides\/dsl-4\.0-history\//u);
 });
 
-test('records rc.5 as a published prerelease without claiming stable 4.0.0', () => {
+test('records rc.6 as a published prerelease without claiming stable 4.0.0', () => {
   assert.equal(historyManifest.series, '4.0');
-  assert.equal(entry.version, '4.0.0-rc.5');
+  assert.equal(entry.version, '4.0.0-rc.6');
   assert.equal(entry.publicationState, 'published-prerelease');
-  assert.equal(entry.publication.gitTag, 'v4.0.0-rc.5');
-  assert.equal(entry.publication.tagCommit, 'f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6');
-  assert.equal(entry.publication.npmVersion, '4.0.0-rc.5');
+  assert.equal(entry.publication.gitTag, 'v4.0.0-rc.6');
+  assert.equal(entry.publication.tagCommit, '4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6');
+  assert.equal(entry.publication.npmVersion, '4.0.0-rc.6');
   assert.equal(entry.publication.npmDistTag, 'next');
   assert.equal(entry.publication.recommendedStableRelease, 'v3.2.3');
   assert.equal(entry.publication.officialDsl4Release, null);
@@ -37,7 +38,7 @@ test('records rc.5 as a published prerelease without claiming stable 4.0.0', () 
   assert.match(history, /正式版`v4\.0\.0`は未公開/u);
 });
 
-test('pins rc.5 source, schema, artifacts, surfaces, flags, and verification', () => {
+test('pins rc.6 source, schema, artifacts, surfaces, flags, and verification', () => {
   assert.equal(entry.source.releasePreparationMergeCommit, candidate.runtime.candidateCommit);
   assert.equal(entry.source.freezeMergeCommit, candidate.runtime.freezeCommit);
   assert.equal(entry.source.sourceIdentity, candidate.runtime.releaseSource.sourceIdentity);
@@ -45,16 +46,19 @@ test('pins rc.5 source, schema, artifacts, surfaces, flags, and verification', (
   assert.equal(entry.schema.documentationReferenceCommit, entry.publication.tagCommit);
   assert.equal(
     entry.schema.documentationReferenceSha256,
-    '0d6bc7f58f849560f3e9125a660a2b5efc5d91f34d533963b9777d6f467ac136',
+    'bb96f6fd503ee7a747b48b4cdc30db227b5d3171854c2b83a47a96c15ed7fd79',
   );
-  assert.notEqual(entry.schema.documentationReferenceSha256, sourceLock.schemaSha256);
+  assert.equal(entry.schema.documentationReferenceSha256, sourceLock.schemaSha256);
   assert.deepEqual(entry.featureFlags, candidate.runtime.featureFlags);
   assert.equal(entry.artifacts.standardSb3.sha256, candidate.runtime.standardArtifact.sha256);
   assert.equal(entry.artifacts.standardSb3.size, candidate.runtime.standardArtifact.size);
   assert.equal(entry.artifacts.npmTarball.sha256, candidate.runtime.packageTarball.sha256);
-  assert.equal(entry.verification.physicalCameraAndPose, 'rc.5-retest-pending');
+  assert.equal(
+    entry.verification.physicalCameraAndPose,
+    'camera-context-measured; overlay-browser-verified',
+  );
   assert(entry.surfaces.includes('turbowarp-core-action-blocks'));
-  assert(entry.knownConstraints.includes('published-tutorial-and-sample-artifacts-remain-rc.3'));
+  assert(entry.surfaces.includes('pose-preview-overlay'));
 
   for (const value of [
     entry.source.releasePreparationMergeCommit,
@@ -68,13 +72,15 @@ test('pins rc.5 source, schema, artifacts, surfaces, flags, and verification', (
   }
 });
 
-test('records the rc.5 dependency pins and immutable rollback', () => {
+test('records the rc.6 dependency pins and immutable rollback while preserving rc.5 history', () => {
   assert.equal(entry.dependencies['@kubohiroya/turbowarp-bubble'], '0.7.0');
-  assert.equal(entry.dependencies['@kubohiroya/turbowarp-tmpose'], '1.10.0');
-  assert.equal(entry.rollback.fixVersion, 'publish-4.0.0-rc.6');
+  assert.equal(entry.dependencies['@kubohiroya/turbowarp-tmpose'], '1.11.0');
+  assert.equal(entry.rollback.fixVersion, 'publish-4.0.0-rc.7');
+  assert.equal(previousEntry.version, '4.0.0-rc.5');
+  assert.equal(previousEntry.dependencies['@kubohiroya/turbowarp-tmpose'], '1.10.0');
   assert.match(history, /23 core action/u);
   assert.match(history, /rc\.5のbyte列を上書きせず/u);
-  assert.match(history, /4\.0\.0-rc\.6/u);
+  assert.match(history, /4\.0\.0-rc\.7/u);
 });
 
 test('defines the update contract and keeps migration details out', () => {

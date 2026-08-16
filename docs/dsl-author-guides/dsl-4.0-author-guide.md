@@ -578,7 +578,7 @@ skipした場合は待機要求を破棄し、新しいモデル初期化を開�
 cancelだけでcameraは停止しません。
 
 省略時は`policy: legacy`、`parallel: false`です。これは従来動作へ設定だけで戻せる安全な既定値です。
-`latest-needed`の実行にはTMPose 1.10.0以降が必要です。
+`latest-needed`の実行にはTMPose 1.10.0以降が必要です。公開プレリリース4.0.0-rc.6はTMPose 1.11.0をexact pinします。
 
 ### カメラ映像の表示と操作
 
