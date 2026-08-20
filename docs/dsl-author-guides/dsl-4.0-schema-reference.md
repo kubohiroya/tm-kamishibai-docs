@@ -11,17 +11,17 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 増やすときに[紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md)の必要な節をお読みください。
 
 文書状態: **固定実装基準を説明するSchemaリファレンス（正式リリースの操作資料ではない）**\
-Schema固定commit: [`3a5f31d`](https://github.com/kubohiroya/tmpose-kamishibai/commit/3a5f31d2519dfb2b9dab32b2c377762c774d5844)\
-Schema SHA-256: `bb96f6fd503ee7a747b48b4cdc30db227b5d3171854c2b83a47a96c15ed7fd79`
+Schema固定commit: [`29c0dea`](https://github.com/kubohiroya/tmpose-kamishibai/commit/29c0deadcb98badf94a0244c479ca896dc71f842)\
+Schema SHA-256: `54b851cb1d4f28caefbdd8f95032c52e8e8fbf5ac68ae313e5a70753e2624878`
 
-> **権威関係と配布状態:** 2026年8月16日時点で`v4.0.0-rc.7`はprereleaseとして公開されていますが、
+> **権威関係と配布状態:** 2026年8月20日時点で`v4.0.0-rc.8`はprereleaseとして公開されていますが、
 > 正式な`v4.0.0`ではありません。
 > 同一の上流完成commitに含まれる規範JSON Schema、表層仕様、適合実装・testを固定しています。 Schemaはruntime実装から生成しません。公開アプリ、配布artifact、
 > feature flagがDSL 4.0を有効にしているかは利用するreleaseごとに確認してください。
 
 ## このリファレンスについて
 
-この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
+この文書は、固定snapshotの[DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/schema/dsl-4.schema.json)とCC BY-SA 4.0の日本語Annotationから
 決定的に生成しています。型、必須性、既定値、数値範囲、列挙値、patternはSchemaから取得し、説明、掲載順、
 注意事項、例はAnnotationで管理します。Schemaで定義される項目についてSchemaと生成物が異なる場合はSchemaを
 優先します。include文はSchema検証前に処理されるためJSON Schema外であり、固定した表層仕様と実装に基づいて掲載します。
@@ -33,8 +33,8 @@ Schema SHA-256: `bb96f6fd503ee7a747b48b4cdc30db227b5d3171854c2b83a47a96c15ed7fd7
 
 - 上流repository: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai)
 - Schema path: `schema/dsl-4.schema.json`
-- 上流commit日時: `2026-08-16T19:36:19+09:00`
-- 掲載範囲: トップレベル12 field、action 24種類、Annotation 92項目
+- 上流commit日時: `2026-08-20T20:09:38+09:00`
+- 掲載範囲: トップレベル13 field、action 24種類、Annotation 93項目
 - 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>`
 - 差分確認: `pnpm docs:dsl4:check`
 
@@ -182,6 +182,32 @@ Hero style:
     - Typing
   placement: FOOTER_LIKE
   visualStyle: NORMAL
+```
+
+### `bubbleClosePolicies` — 吹き出し終了条件
+
+`Actor.say`と`Actor.think`から参照する終了条件を名前付きで登録します。秒数、advance入力、または両者の先着を再利用できます。
+
+Schema位置: `#/properties/bubbleClosePolicies`
+
+| field／形式 | 必須性 | 型 | 既定値・制約 |
+| --- | --- | --- | --- |
+| 任意のID key | 任意 | object（`bubbleClosePolicy`） | 未知field不可 |
+
+- `waitFor: advance`はステージのprimary pointer／tapまたは修飾キーを伴わないキー入力で完了します。
+- `seconds`と`waitFor`を両方指定すると、先に成立した方で吹き出しを閉じます。
+- policyの継承・合成は行わず、actionは`closePolicy`で1件だけ参照します。
+
+`bubbleClosePolicies` fieldの値:
+
+```yaml
+after-3-seconds:
+  seconds: 3
+user-advance:
+  waitFor: advance
+advance-or-timeout:
+  seconds: 10
+  waitFor: advance
 ```
 
 ### `variables` — runtime変数
@@ -840,7 +866,7 @@ Schema位置: `#/$defs/poseModelInitialization`
 
 - 省略時はpolicyがlegacy、parallelがfalseです。
 - latest-neededでは重い初期化を実行中1件と最新待機1件までに制限します。
-- 実行にはTMPose 1.10.0以降が必要です。4.0.0-rc.7はTMPose 1.12.0をexact pinします。
+- 実行にはTMPose 1.10.0以降が必要です。4.0.0-rc.8はTMPose 1.12.0をexact pinします。
 
 Schemaで検証できる値の例:
 
@@ -1902,7 +1928,7 @@ Hero.moveTo:
 
 ### `Actor.say`
 
-actorのsay吹き出しへテキストを表示し、秒数、advance入力、または両者の先着で完了します。複数の吹き出しstyleを順に合成できます。
+actorのsay吹き出しへテキストを表示し、名前付き`closePolicy`またはinlineの秒数／advance入力で完了します。複数の吹き出しstyleを順に合成できます。
 
 Schema位置: `#/$defs/sayAction`
 
@@ -1916,6 +1942,7 @@ Schema位置: `#/$defs/sayAction`
 | --- | --- | --- | --- |
 | `stableId` | 任意 | 文字列（`id`）（`stableId`） | — |
 | `text` | 必須 | 文字列 | — |
+| `closePolicy` | 任意 | 文字列（`bubbleStyleName`）（`bubbleClosePolicyName`） | — |
 | `seconds` | 任意 | 数値 | 0以上 |
 | `waitFor` | 任意 | 固定値 `advance` | — |
 | `styles` | 任意 | 文字列（`bubbleStyleName`）の配列 | 1項目以上 |
@@ -1926,13 +1953,15 @@ Schema位置: `#/$defs/sayAction`
 | `restCharacters` | 任意 | 文字列 | 1文字以上 |
 | `restCharacterIntervalSeconds` | 任意 | 数値 | 0より大きい |
 
+- `closePolicy`とaction内の`seconds`／`waitFor`は併用できません。
+- `closePolicy`はトップレベルの`bubbleClosePolicies`に存在する名前を参照します。
+
 Schemaで検証できる値の例:
 
 ```yaml
 Hero.say:
   text: こんにちは！
-  seconds: 8
-  waitFor: advance
+  closePolicy: advance-or-timeout
   styles:
     - Typing
     - Hero style
@@ -1955,6 +1984,7 @@ Schema位置: `#/$defs/thinkAction`
 | --- | --- | --- | --- |
 | `stableId` | 任意 | 文字列（`id`）（`stableId`） | — |
 | `text` | 必須 | 文字列 | — |
+| `closePolicy` | 任意 | 文字列（`bubbleStyleName`）（`bubbleClosePolicyName`） | — |
 | `seconds` | 任意 | 数値 | 0以上 |
 | `waitFor` | 任意 | 固定値 `advance` | — |
 | `styles` | 任意 | 文字列（`bubbleStyleName`）の配列 | 1項目以上 |

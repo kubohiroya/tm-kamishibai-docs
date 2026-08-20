@@ -23,13 +23,13 @@ test('publishes a separate DSL 4.0 release history', () => {
   assert.match(dsl4Index, /dsl-author-guides\/dsl-4\.0-history\//u);
 });
 
-test('records rc.7 as a published prerelease without claiming stable 4.0.0', () => {
+test('records rc.8 as a published prerelease without claiming stable 4.0.0', () => {
   assert.equal(historyManifest.series, '4.0');
-  assert.equal(entry.version, '4.0.0-rc.7');
+  assert.equal(entry.version, '4.0.0-rc.8');
   assert.equal(entry.publicationState, 'published-prerelease');
-  assert.equal(entry.publication.gitTag, 'v4.0.0-rc.7');
-  assert.equal(entry.publication.tagCommit, '3a5f31d2519dfb2b9dab32b2c377762c774d5844');
-  assert.equal(entry.publication.npmVersion, '4.0.0-rc.7');
+  assert.equal(entry.publication.gitTag, 'v4.0.0-rc.8');
+  assert.equal(entry.publication.tagCommit, '29c0deadcb98badf94a0244c479ca896dc71f842');
+  assert.equal(entry.publication.npmVersion, '4.0.0-rc.8');
   assert.equal(entry.publication.npmDistTag, 'next');
   assert.equal(entry.publication.recommendedStableRelease, 'v3.2.3');
   assert.equal(entry.publication.officialDsl4Release, null);
@@ -38,7 +38,7 @@ test('records rc.7 as a published prerelease without claiming stable 4.0.0', () 
   assert.match(history, /正式版`v4\.0\.0`は未公開/u);
 });
 
-test('pins rc.7 source, schema, artifacts, surfaces, flags, and verification', () => {
+test('pins rc.8 source, schema, artifacts, surfaces, flags, and verification', () => {
   assert.equal(entry.source.releasePreparationMergeCommit, candidate.runtime.candidateCommit);
   assert.equal(entry.source.freezeMergeCommit, candidate.runtime.freezeCommit);
   assert.equal(entry.source.sourceIdentity, candidate.runtime.releaseSource.sourceIdentity);
@@ -46,7 +46,7 @@ test('pins rc.7 source, schema, artifacts, surfaces, flags, and verification', (
   assert.equal(entry.schema.documentationReferenceCommit, entry.publication.tagCommit);
   assert.equal(
     entry.schema.documentationReferenceSha256,
-    'bb96f6fd503ee7a747b48b4cdc30db227b5d3171854c2b83a47a96c15ed7fd79',
+    '54b851cb1d4f28caefbdd8f95032c52e8e8fbf5ac68ae313e5a70753e2624878',
   );
   assert.equal(entry.schema.documentationReferenceSha256, sourceLock.schemaSha256);
   assert.deepEqual(entry.featureFlags, candidate.runtime.featureFlags);
@@ -55,10 +55,11 @@ test('pins rc.7 source, schema, artifacts, surfaces, flags, and verification', (
   assert.equal(entry.artifacts.npmTarball.sha256, candidate.runtime.packageTarball.sha256);
   assert.equal(
     entry.verification.physicalCameraAndPose,
-    'camera-context-measured; recognition-and-overlay-browser-verified',
+    'previous-camera-context-measurement; recognition-and-overlay-browser-verified',
   );
   assert(entry.surfaces.includes('turbowarp-core-action-blocks'));
   assert(entry.surfaces.includes('pose-preview-overlay'));
+  assert(entry.surfaces.includes('named-bubble-close-policies'));
 
   for (const value of [
     entry.source.releasePreparationMergeCommit,
@@ -72,15 +73,16 @@ test('pins rc.7 source, schema, artifacts, surfaces, flags, and verification', (
   }
 });
 
-test('records the rc.7 dependency pins and immutable rollback while preserving rc.6 history', () => {
-  assert.equal(entry.dependencies['@kubohiroya/turbowarp-bubble'], '0.7.0');
+test('records the rc.8 dependency pins and immutable rollback while preserving rc.7 history', () => {
+  assert.equal(entry.dependencies['@kubohiroya/turbowarp-bubble'], '0.10.0');
   assert.equal(entry.dependencies['@kubohiroya/turbowarp-tmpose'], '1.12.0');
-  assert.equal(entry.rollback.fixVersion, 'publish-4.0.0-rc.8');
-  assert.equal(previousEntry.version, '4.0.0-rc.6');
-  assert.equal(previousEntry.dependencies['@kubohiroya/turbowarp-tmpose'], '1.11.0');
+  assert.equal(entry.rollback.fixVersion, 'publish-4.0.0-rc.9');
+  assert.equal(previousEntry.version, '4.0.0-rc.7');
+  assert.equal(previousEntry.dependencies['@kubohiroya/turbowarp-bubble'], '0.7.0');
+  assert.equal(previousEntry.dependencies['@kubohiroya/turbowarp-tmpose'], '1.12.0');
   assert.match(history, /23 core action/u);
   assert.match(history, /rc\.6以前のversion付きSB3/u);
-  assert.match(history, /4\.0\.0-rc\.8/u);
+  assert.match(history, /4\.0\.0-rc\.9/u);
 });
 
 test('defines the update contract and keeps migration details out', () => {

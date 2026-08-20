@@ -20,9 +20,9 @@ test('publishes the DSL 4.0 smoke guide as an independent publication', () => {
   assert.match(dsl4Index, /developer-guides\/release-smoke-4\.0\//u);
 });
 
-test('pins the published rc.7 source and distributable artifacts by checksum', () => {
+test('pins the published rc.8 source and distributable artifacts by checksum', () => {
   assert.equal(candidate.status, 'published-prerelease-automated-verification-passed');
-  assert.equal(candidate.runtime.version, '4.0.0-rc.7');
+  assert.equal(candidate.runtime.version, '4.0.0-rc.8');
   assert.match(candidate.runtime.candidateCommit, /^[0-9a-f]{40}$/u);
   assert.match(candidate.runtime.freezeCommit, /^[0-9a-f]{40}$/u);
   assert.match(candidate.runtime.schema.sha256, /^[0-9a-f]{64}$/u);
@@ -32,11 +32,17 @@ test('pins the published rc.7 source and distributable artifacts by checksum', (
   assert.equal(candidate.runtime.packageTarball.publicationState, 'published');
   assert.match(candidate.runtime.packageTarball.sha256, /^[0-9a-f]{64}$/u);
   assert.match(candidate.runtime.packageTarball.integrity, /^sha512-/u);
-  assert.equal(candidate.publicSamples.version, '4.0.0-rc.7');
-  assert.match(candidate.publicSamples.status, /rc\.7-derived-artifacts/u);
+  assert.equal(candidate.publicSamples.version, '4.0.0-rc.8');
+  assert.match(candidate.publicSamples.status, /rc\.8-derived-artifacts/u);
+  assert.match(candidate.publicSamples.pullRequest, /tmpose-kamishibai-samples\/pull\/126/u);
+  assert.equal(
+    candidate.publicSamples.publicationCommit,
+    '236fe4ac09e17aaaaa0fb0fd1f8ebdc173073c7f',
+  );
+  assert.match(candidate.publicSamples.pagesDeploymentRun, /actions\/runs\/32368656029/u);
 });
 
-test('records rc.7 flags, automated evidence, physical measurement, and privacy', () => {
+test('records rc.8 flags, automated evidence, physical measurement, and privacy', () => {
   assert.equal(candidate.runtime.featureFlags.defaultState, 'all-off');
   assert(
     candidate.runtime.featureFlags.standardProductionEnabled.includes('dsl4TurboWarpActionSurface'),
@@ -49,18 +55,18 @@ test('records rc.7 flags, automated evidence, physical measurement, and privacy'
   assert.doesNotMatch(JSON.stringify(candidate.runtime.featureFlags), /dsl4PoseOverlay/u);
   assert.match(guide, /ポーズoverlayには専用flagがなく/u);
   assert.equal(candidate.evidence.upstreamVerification.status, 'pass');
-  assert.equal(candidate.evidence.upstreamVerification.unitTests, 1159);
+  assert.equal(candidate.evidence.upstreamVerification.unitTests, 1161);
   assert.equal(candidate.evidence.upstreamVerification.chromiumTests, 13);
   assert.equal(candidate.evidence.publicationVerification.pagesArtifactHashMatch, true);
   assert.equal(
     candidate.evidence.physicalCameraAndPose.status,
     'camera-context-measured-overlay-browser-verified',
   );
-  assert.equal(candidate.evidence.physicalCameraAndPose.previousEvidenceAppliesToRc7, true);
+  assert.equal(candidate.evidence.physicalCameraAndPose.previousEvidenceAppliesToRc8, true);
   assert.equal(candidate.environment.cameraFrameStorage, false);
 });
 
-test('defines rc.7 surfaces, release stops, physical rerun, and immutable rollback', () => {
+test('defines rc.8 surfaces, release stops, physical rerun, and immutable rollback', () => {
   for (const heading of [
     '公開物を照合する',
     'TurboWarp surfaceを確認する',
@@ -74,8 +80,10 @@ test('defines rc.7 surfaces, release stops, physical rerun, and immutable rollba
 
   assert.match(guide, /camera frameは保存しません/u);
   assert.match(guide, /TMPose 1\.12\.0/u);
+  assert.match(guide, /Bubble 0\.10\.0/u);
+  assert.match(guide, /bubbleClosePolicies/u);
   assert.match(guide, /23個のcore action/u);
-  assert.match(guide, /4\.0\.0-rc\.7/u);
+  assert.match(guide, /4\.0\.0-rc\.8/u);
   assert(candidate.releaseStops.length >= 8);
   assert.equal(candidate.rollback.recommendedStableVersion, '3.2.3');
 });

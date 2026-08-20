@@ -2,10 +2,10 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-文書状態: 公開プレリリース`4.0.0-rc.7`の固定実装基準を説明する保守資料\
-調査基準: tmpose-kamishibai `3a5f31d`、2026年8月16日
+文書状態: 公開プレリリース`4.0.0-rc.8`の固定実装基準を説明する保守資料\
+調査基準: tmpose-kamishibai `29c0dea`、2026年8月20日
 
-> **配布状態との区別:** `v4.0.0-rc.7`はnpm `next`、GitHub prerelease、Pagesのダウンロード導線として
+> **配布状態との区別:** `v4.0.0-rc.8`はnpm `next`、GitHub prerelease、Pagesのダウンロード導線として
 > 公開済みです。安定版の推奨は`3.2.3`で、正式版`v4.0.0`は未公開です。
 
 本書はソフトウェアを変更・公開する開発者向けであり、アプリの使い方や台本作成の入門書ではありません。
@@ -16,7 +16,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 このガイドは、TMPose紙芝居のDSL 4.0 source frontend、runtime、platform adapter、preview、build、
 releaseを変更・検証・公開するソフトウェア開発者向けの作業資料です。対象となる実装基準は
 `kubohiroya/tmpose-kamishibai`のcommit
-[`3a5f31d2519dfb2b9dab32b2c377762c774d5844`](https://github.com/kubohiroya/tmpose-kamishibai/tree/3a5f31d2519dfb2b9dab32b2c377762c774d5844)
+[`29c0deadcb98badf94a0244c479ca896dc71f842`](https://github.com/kubohiroya/tmpose-kamishibai/tree/29c0deadcb98badf94a0244c479ca896dc71f842)
 です。本書中のpath、command、artifact名は、このcommitで確認しています。
 
 本書では、`kubohiroya/tmpose-kamishibai`を「本体リポジトリ」、
@@ -84,7 +84,7 @@ DSL 4.0の構造仕様は、本体リポジトリの`schema/dsl-4.schema.json`�
 ```bash
 pnpm docs:dsl4:sync -- \
   --repository ../tmpose-kamishibai \
-  --commit 3a5f31d2519dfb2b9dab32b2c377762c774d5844
+  --commit 29c0deadcb98badf94a0244c479ca896dc71f842
 pnpm docs:dsl4:check
 git diff -- \
   sources/dsl4/source-lock.json \
@@ -143,9 +143,9 @@ pnpm test
 | `src/builder/dsl4-local-preview-command.js`  | `preview-dsl4 --watch`のlifecycle                              |
 | `src/builder/dsl4-local-preview-host.js`     | loopback transport、session token、watcher                     |
 | `bin/tmpose-kamishibai.mjs`                  | 公開CLI entrypoint                                             |
-| `release-metadata/4.0.0-rc.7.json`           | rc.7の状態、source identity、artifact、公開先                  |
+| `release-metadata/4.0.0-rc.8.json`           | rc.8の状態、source identity、artifact、公開先                  |
 | `scripts/sb3/dsl4-downloadable-release.mjs`  | Standard Runtime release sourceの決定的生成と検査              |
-| `scripts/download-catalog.mjs`               | `kamishibai-4.0.0-rc.7.sb3`のversion、source identity、SHA-256 |
+| `scripts/download-catalog.mjs`               | `kamishibai-4.0.0-rc.8.sb3`のversion、source identity、SHA-256 |
 | `test/fixtures/dsl4/`                        | Schema、adapter、release契約のfixture                          |
 
 文書リポジトリでは、次の境界を保ちます。
@@ -316,7 +316,7 @@ remote previewは常に禁止します。
 
 ### TMPose上流との責務境界
 
-rc.7は`@kubohiroya/turbowarp-tmpose@1.12.0`をexact pinします。camera canvas、Canvas2D context、
+rc.8は`@kubohiroya/turbowarp-tmpose@1.12.0`をexact pinします。camera canvas、Canvas2D context、
 TensorFlow.jsへのreadback、SVG overlay要素はTMPoseが所有します。DSL runtimeは公開Composition APIへ
 正規化済みoverlay設定を渡すだけで、TMPoseのDOM、canvas、TensorFlow.js内部実装を検査・patchしません。
 CPU推論時のChromium readback警告は性能根拠のない抑制をせず許容し、回帰判定は実時間、動作、解放で行います。
@@ -381,7 +381,7 @@ SVG Text、pose、asset lifecycleを注入し、`browser-turbowarp-platform.js`�
 | CLI Preview host／transport                 | `node --test test/dsl4-local-preview-cli.test.mjs test/dsl4-local-preview-host.test.mjs test/dsl4-preview-transport-policy.test.mjs`                                                                                      | runtime-ready、SIGINT、browser切断、full rebuild       |
 | camera、pose、feedback、overlay             | `node --test test/dsl4-camera-preview-controls.test.mjs test/dsl4-pose-action-port.test.mjs test/dsl4-pose-feedback-presenter.test.mjs test/dsl4-tmpose-model-adapter.test.mjs test/dsl4-platform-asset-session.test.mjs` | camera許可、mirroring、overlay、model解放              |
 | build、component storage、自己完結SB3       | `node --test test/dsl4-build-cli.test.mjs test/dsl4-one-shot-build.test.mjs test/dsl4-packaged-runtime-component.test.mjs test/dsl4-source-sb3-storage.test.mjs`                                                          | networkなしでembedded作品を起動                        |
-| Standard Runtime、capability pin、release   | `node --test test/dsl4-capability-bundle-release-contract.test.mjs test/dsl4-extension-pins.test.mjs test/dsl4-downloadable-release.test.mjs`                                                                             | `kamishibai-4.0.0-rc.7.sb3`のchecksumとTurboWarp起動   |
+| Standard Runtime、capability pin、release   | `node --test test/dsl4-capability-bundle-release-contract.test.mjs test/dsl4-extension-pins.test.mjs test/dsl4-downloadable-release.test.mjs`                                                                             | `kamishibai-4.0.0-rc.8.sb3`のchecksumとTurboWarp起動   |
 | Web Preview E2E                             | `pnpm e2e`                                                                                                                                                                                                                | Chromiumでsource変更、asset変更、overlay、cleanup      |
 | npm package surface                         | `pnpm pack:check`、`pnpm release:check`                                                                                                                                                                                   | tarballに`src/builder/`、`src/dsl4/*.js`、Schemaを確認 |
 | 文書、publication、公開導線                 | 文書リポジトリで`pnpm check`                                                                                                                                                                                              | `/4.0/`のHTMLとVivliostyle Viewerを開く                |
@@ -403,8 +403,8 @@ pnpm verify:full
 同書は作成したcandidateを公開してよいか判定する手順を担当します。
 
 DSL 4.0 Standard Runtimeは、source-composedされた`kubohiroyakamishibairuntime4`と、完全固定したcapability
-packageから作ります。rc.7ではtag、`release-metadata/4.0.0-rc.7.json`、GitHub Releaseの
-`kamishibai-4.0.0-rc.7.sb3`を不変の公開記録として管理します。現行branchへ展開済みrelease sourceを重複保持しません。
+packageから作ります。rc.8ではtag、`release-metadata/4.0.0-rc.8.json`、GitHub Releaseの
+`kamishibai-4.0.0-rc.8.sb3`を不変の公開記録として管理します。現行branchへ展開済みrelease sourceを重複保持しません。
 composite IDは`kubohiroyakamishibai4`で、23個のcore actionは
 可視blockとして、4個の内部制御blockは非表示で登録されます。
 
@@ -422,13 +422,13 @@ releaseは次の順で行います。
 10. `pnpm release:check`でnpm publish内容をdry runする
 11. GitHub Actions、download、package、Pagesの公開結果を確認してからIssueを完了する
 
-rc.7のrelease metadataと成果物を検査するcommandは次です。公開済みartifactを再生成して差し替えません。
+rc.8のrelease metadataと成果物を検査するcommandは次です。公開済みartifactを再生成して差し替えません。
 
 ```bash
 pnpm release:dsl4:check
 pnpm verify:full
 pnpm release:check
-git diff --exit-code -- release-metadata/4.0.0-rc.7.json
+git diff --exit-code -- release-metadata/4.0.0-rc.8.json
 ```
 
 安定版へ進める場合は、generator内のrelease directory、package version、download catalogを同じversionへ更新して
@@ -438,7 +438,7 @@ PRには少なくとも次を記録します。
 
 - 上流commitと変更したSchema／source／adapter path
 - 実行したtargeted testと`pnpm verify:full`の結果
-- `kamishibai-4.0.0-rc.7.sb3`のSHA-256とsource identity
+- `kamishibai-4.0.0-rc.8.sb3`のSHA-256とsource identity
 - Browser／CLI Preview、camera、pose、offline smokeの対象
 - feature flagの既定値とrollback方法
 - package、artifact、Pagesの公開順
@@ -453,7 +453,7 @@ PRには少なくとも次を記録します。
 1. 問題のあるsurfaceのflagを起動時snapshotでOFFにする
 2. npmの`next`を直前版へ戻し、PagesとGitHub prereleaseへ注意事項を追加する
 3. packageとlockfileを直前のexact pinへ戻す
-4. 公開済みrc.7は上書きせず、修正版を新しいversionとしてbuildする
+4. 公開済みrc.8は上書きせず、修正版を新しいversionとしてbuildする
 5. `pnpm verify:full`と代表smokeを再実行する
 6. Pagesを再公開し、Issueとrelease noteへ影響範囲を記録する
 

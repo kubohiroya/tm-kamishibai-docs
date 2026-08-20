@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 公開プレリリースと安定版を区別する4.0系列の履歴<br />
-対象Issue: [tmpose-kamishibai-docs #42](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/42)、[#167](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/167)
+対象Issue: [tmpose-kamishibai-docs #42](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/42)、[#169](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/169)
 
 この文書は開発・リリース担当者向けで、アプリの使い方や台本作成の
 入門書ではありません。初めて使う方は
@@ -19,9 +19,78 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | 安定版           | npm `latest`と通常のダウンロード導線で推奨する版                 |
 | 公開サンプル基準 | サンプル作品、starter、Web版を生成したruntimeの版                |
 
-2026年8月16日現在、`v4.0.0-rc.7`は公開プレリリースです。推奨安定版は`v3.2.3`で、
-正式版`v4.0.0`は未公開です。チュートリアルとサンプル成果物は、公開rc.7のSB3とfreeze commitを
+2026年8月20日現在、`v4.0.0-rc.8`は公開プレリリースです。推奨安定版は`v3.2.3`で、
+正式版`v4.0.0`は未公開です。チュートリアルとサンプル成果物は、公開rc.8のSB3とfreeze commitを
 入力として再生成し、作品ごとのlockに完全性情報を記録します。
+
+## 4.0.0-rc.8
+
+状態: **公開プレリリース**<br />
+公開日時: 2026年8月20日 21:02 JST
+
+### 固定revisionと公開先
+
+| 対象                  | 固定値                                                                                                                                                                            |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 追跡Issue             | [`#647`](https://github.com/kubohiroya/tmpose-kamishibai/issues/647)                                                                                                              |
+| candidate PR          | [`#648`](https://github.com/kubohiroya/tmpose-kamishibai/pull/648) / `ad244910b6bf579b8eb7c7af70d72b7ca4b1fff6`                                                                   |
+| freeze PR／tag commit | [`#649`](https://github.com/kubohiroya/tmpose-kamishibai/pull/649) / [`29c0dea`](https://github.com/kubohiroya/tmpose-kamishibai/commit/29c0deadcb98badf94a0244c479ca896dc71f842) |
+| 公開記録PR            | [`#650`](https://github.com/kubohiroya/tmpose-kamishibai/pull/650) / `36b4d3bb4c1c809004dab9b0327857b394727a58`                                                                   |
+| release source        | tag `v4.0.0-rc.8`。現行branchへ展開copyを保持しない                                                                                                                               |
+| source identity       | `sha256:8edbc02a06b3770cce0a89cf658367df129d974d53f401258b69f0713762014a`                                                                                                         |
+| Schema SHA-256        | `54b851cb1d4f28caefbdd8f95032c52e8e8fbf5ac68ae313e5a70753e2624878`                                                                                                                |
+| GitHub prerelease     | [`v4.0.0-rc.8`](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.8)                                                                                         |
+| npm                   | [`4.0.0-rc.8`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.8)、dist-tag `next`                                                                         |
+| Pages                 | [download一覧](https://kubohiroya.github.io/tmpose-kamishibai/downloads/) / `ff3867cfe32b3ff7c0c7cc9314e71459df55419d`                                                            |
+
+作者向けSchemaリファレンスはtag commit `29c0deadcb98badf94a0244c479ca896dc71f842`と同じ
+Schema SHA-256を固定します。
+
+### rc.7からの変更
+
+- トップレベルの`bubbleClosePolicies`へ、秒数、`waitFor: advance`、または両方を名前付きで定義可能にした
+- `Actor.say`／`Actor.think`の`closePolicy`でpolicyを1件参照し、既存のspeech lifecycleへ展開する
+- `closePolicy`とaction内の`seconds`／`waitFor`の同時指定、未定義policyを決定的な診断で拒否する
+- 従来のinline `seconds`／`waitFor`は互換経路として維持する
+- Bubbleを0.10.0へexact pinし、Scratch互換の組み込み`say`／`think` styleとclose-policy blockをbundleする
+- 公開サンプルのSB3、Web版、lockをrc.8 freeze commitから再生成する
+
+### exact dependency pin
+
+| package                                    | version |
+| ------------------------------------------ | ------- |
+| `@kubohiroya/turbowarp-asset-manager`      | 0.11.0  |
+| `@kubohiroya/turbowarp-async-input`        | 0.4.0   |
+| `@kubohiroya/turbowarp-bubble`             | 0.10.0  |
+| `@kubohiroya/turbowarp-runtime-expression` | 0.4.0   |
+| `@kubohiroya/turbowarp-svg-text`           | 0.5.0   |
+| `@kubohiroya/turbowarp-tmpose`             | 1.12.0  |
+
+### 公開成果物
+
+| 成果物                                                                                                                  | byte      | 完全性情報                                                                 |
+| ----------------------------------------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------- |
+| [Standard SB3](https://github.com/kubohiroya/tmpose-kamishibai/releases/download/v4.0.0-rc.8/kamishibai-4.0.0-rc.8.sb3) | 6,749,955 | SHA-256 `91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041` |
+| [npm tarball](https://registry.npmjs.org/@kubohiroya/tmpose-kamishibai/-/tmpose-kamishibai-4.0.0-rc.8.tgz)              | 6,492,990 | SHA-256 `a7b91378e6345c530515cc4e8f82314c3c5f2a19d3e136de5e4fe8bff8d24c5e` |
+
+npm registry integrityは
+`sha512-nQmvHakwLWZioi1gOUZatKwyLe2nD3GPJbEBrqDqm5mzqQhbbLEMGl3znJQpVs0JRfzyeLI1JDTcGrePiIpjUg==`です。
+GitHub ReleaseとPagesのSB3は同じbyte数とSHA-256です。
+
+### 検証、公開サンプル、rollback
+
+candidate PRの`pnpm verify:full`はNode系1,161件とChromium 13件を通過しました。記録は
+[GitHub Actions](https://github.com/kubohiroya/tmpose-kamishibai/actions/runs/32361658847/job/96402336784)で確認できます。
+公開サンプルは[samples PR #126](https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/126)で
+rc.8 freeze commitから再生成し、[Pages deployment](https://github.com/kubohiroya/tmpose-kamishibai-samples/actions/runs/32368656029)と
+公開manifestを照合しました。camera contextの既存物理測定を維持し、rc.8のrecognitionとoverlayは公開Web版で
+起動・停止・cleanupを確認しています。
+
+- DSL document versionは引き続き`kamishibai: "4.0"`
+- `closePolicy`を使わないrc.7以前のDSL 4台本は変更不要
+- rc.7以前のversion付きSB3とtagを差し替えない
+- 問題時はnpm `next`を`4.0.0-rc.7`へ戻し、公開済みrc.8のbyte列を上書きしない
+- 修正版は`4.0.0-rc.9`以降として公開する
 
 ## 4.0.0-rc.7
 

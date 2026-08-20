@@ -504,7 +504,7 @@ test('keeps the published prerelease reviewable with its fixed captures', () => 
   assert.match(tutorialSources['create.md'], /preview-dsl4 --help/u);
   assert.match(tutorialSources['create.md'], /validate-dsl4/u);
   assert.match(tutorialSources['create.md'], /build-dsl4/u);
-  assert.match(tutorialSources['create.md'], /4\.0\.0-rc\.7/u);
+  assert.match(tutorialSources['create.md'], /4\.0\.0-rc\.8/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/earthquake-classroom\.svg/u);
   assert.match(tutorialSources['create.md'], /addition-kit\/add-pose-scene\.yml\.txt/u);
   assert.match(tutorialSources['create.md'], /file: classroom\.svg/u);
@@ -619,13 +619,13 @@ test('keeps the reproducible implementation walkthrough in the developer guide',
     /\.\.\/developer-guides\/dsl4-implementation-walkthrough\.md/u,
   );
   assert.match(implementationWalkthrough, /開発者向け追試手順/u);
-  assert.match(implementationWalkthrough, /3a5f31d2519dfb2b9dab32b2c377762c774d5844/u);
+  assert.match(implementationWalkthrough, /29c0deadcb98badf94a0244c479ca896dc71f842/u);
   assert.match(implementationWalkthrough, /tmpose-kamishibai-samples`は取得・build・変更しません/u);
   assert.match(implementationWalkthrough, /preview-dsl4 --watch/u);
   assert.match(implementationWalkthrough, /K4-VERSION-001/u);
   assert.match(
     implementationWalkthrough,
-    /3ad25911b9255d51273b37f24fa0d056e6ec72418f314e97c743ad52300380f8/u,
+    /91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041/u,
   );
   for (const filename of [
     'dsl4-rc5-preview-running.png',

@@ -72,6 +72,19 @@
           "exampleContext": "`bubbleStyles` fieldの値:"
         },
         {
+          "pointer": "#/properties/bubbleClosePolicies",
+          "order": 57,
+          "title": "`bubbleClosePolicies` — 吹き出し終了条件",
+          "summary": "`Actor.say`と`Actor.think`から参照する終了条件を名前付きで登録します。秒数、advance入力、または両者の先着を再利用できます。",
+          "example": "after-3-seconds:\n  seconds: 3\nuser-advance:\n  waitFor: advance\nadvance-or-timeout:\n  seconds: 10\n  waitFor: advance",
+          "exampleContext": "`bubbleClosePolicies` fieldの値:",
+          "notes": [
+            "`waitFor: advance`はステージのprimary pointer／tapまたは修飾キーを伴わないキー入力で完了します。",
+            "`seconds`と`waitFor`を両方指定すると、先に成立した方で吹き出しを閉じます。",
+            "policyの継承・合成は行わず、actionは`closePolicy`で1件だけ参照します。"
+          ]
+        },
+        {
           "pointer": "#/properties/variables",
           "order": 60,
           "title": "`variables` — runtime変数",
@@ -305,7 +318,7 @@
           "notes": [
             "省略時はpolicyがlegacy、parallelがfalseです。",
             "latest-neededでは重い初期化を実行中1件と最新待機1件までに制限します。",
-            "実行にはTMPose 1.10.0以降が必要です。4.0.0-rc.7はTMPose 1.12.0をexact pinします。"
+            "実行にはTMPose 1.10.0以降が必要です。4.0.0-rc.8はTMPose 1.12.0をexact pinします。"
           ]
         },
         {
@@ -722,8 +735,12 @@
           "pointer": "#/$defs/sayAction",
           "order": 30,
           "title": "`Actor.say`",
-          "summary": "actorのsay吹き出しへテキストを表示し、秒数、advance入力、または両者の先着で完了します。複数の吹き出しstyleを順に合成できます。",
-          "example": "Hero.say:\n  text: こんにちは！\n  seconds: 8\n  waitFor: advance\n  styles:\n    - Typing\n    - Hero style\n  startSound: GreetingVoice"
+          "summary": "actorのsay吹き出しへテキストを表示し、名前付き`closePolicy`またはinlineの秒数／advance入力で完了します。複数の吹き出しstyleを順に合成できます。",
+          "example": "Hero.say:\n  text: こんにちは！\n  closePolicy: advance-or-timeout\n  styles:\n    - Typing\n    - Hero style\n  startSound: GreetingVoice",
+          "notes": [
+            "`closePolicy`とaction内の`seconds`／`waitFor`は併用できません。",
+            "`closePolicy`はトップレベルの`bubbleClosePolicies`に存在する名前を参照します。"
+          ]
         },
         {
           "pointer": "#/$defs/thinkAction",

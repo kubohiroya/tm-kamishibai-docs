@@ -5,8 +5,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: DSL 4.0の台本と、TurboWarp Editorで作るプログラムを連携する方  
 前提: YAML台本のsceneとaction、およびTurboWarpの「メッセージを受け取ったとき」を使えること
 
-文書状態: 公開プレリリース4.0.0-rc.7向けガイド<br />
-実装基準: annotated tag `v4.0.0-rc.7`のcommit `3a5f31d`
+文書状態: 公開プレリリース4.0.0-rc.8向けガイド<br />
+実装基準: annotated tag `v4.0.0-rc.8`のcommit `29c0dea`
 
 この文書は4.0の正式リリースを保証するものではありません。利用するSB3に
 `broadcastMessageAndWait`が含まれることを[公開元](https://github.com/kubohiroya/tmpose-kamishibai/releases)で

@@ -25,7 +25,7 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
   assert.equal(actualHash, lock.schemaSha256);
   assert.equal(lock.repository, 'kubohiroya/tmpose-kamishibai');
   assert.equal(lock.sourceKind, 'commit');
-  assert.equal(lock.commit, '3a5f31d2519dfb2b9dab32b2c377762c774d5844');
+  assert.equal(lock.commit, '29c0deadcb98badf94a0244c479ca896dc71f842');
   assert.equal(
     lock.schemaUrl,
     `https://github.com/kubohiroya/tmpose-kamishibai/blob/${lock.commit}/schema/dsl-4.schema.json`,
@@ -37,8 +37,8 @@ test('pins the upstream DSL 4.0 Schema with its source and SHA-256', () => {
 test('covers every top-level field and every Schema action with validated annotations', () => {
   assert.deepEqual(validateReferenceInputs({schema, annotations}), {
     actionCount: 24,
-    annotationCount: 92,
-    topLevelFieldCount: 12,
+    annotationCount: 93,
+    topLevelFieldCount: 13,
   });
 });
 
@@ -78,6 +78,8 @@ test('generates the checked-in reference byte-for-byte deterministically', () =>
   assert.match(generated, /物理device IDは台本やruntime変数へ保存しません/u);
   assert.match(generated, /`mirrored` \/ `unmirrored`/u);
   assert.match(generated, /`bubbleStyles` — 吹き出しstyle/u);
+  assert.match(generated, /`bubbleClosePolicies` — 吹き出し終了条件/u);
+  assert.match(generated, /`closePolicy`/u);
   assert.match(generated, /`broadcastMessageAndWait`/u);
   assert.match(generated, /`debugger`/u);
   assert.match(generated, /`Actor\.hide`/u);

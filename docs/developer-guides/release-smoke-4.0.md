@@ -2,14 +2,14 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-文書状態: 公開プレリリース`4.0.0-rc.7`の再現・公開照合・追加smoke手順<br />
-対象Issue: [tmpose-kamishibai-docs #47](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/47)、[#163](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/163)
+文書状態: 公開プレリリース`4.0.0-rc.8`の再現・公開照合・追加smoke手順<br />
+対象Issue: [tmpose-kamishibai-docs #47](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/47)、[#169](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/169)
 
 本書はリリース担当者向けで、一般的な動作確認を説明する文書ではありません。一般的な使い方は
 [大人向け概要](../user-guides/executive-summary-adult-4.0.md)、実装の責務は
 [ソフトウェアメンテナンスガイド](developer-guide-4.0.md)を参照してください。
 
-`v4.0.0-rc.7`はnpm `next`、GitHub prerelease、Pagesのダウンロード導線として公開済みです。ただし、
+`v4.0.0-rc.8`はnpm `next`、GitHub prerelease、Pagesのダウンロード導線として公開済みです。ただし、
 推奨安定版は`v3.2.3`で、正式版`v4.0.0`は未公開です。Standard SB3の配布正本はGitHub Releaseです。
 公開サンプルは、この公開SB3とfreeze commitから再生成したlockを別途照合します。
 
@@ -24,20 +24,20 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 | 対象               | 固定値                                                                               |
 | ------------------ | ------------------------------------------------------------------------------------ |
-| candidate merge    | `449eea670e4616b4ea155e9f42cae4742ba1cd1a`                                           |
-| freeze／tag commit | `3a5f31d2519dfb2b9dab32b2c377762c774d5844`                                           |
-| version            | `4.0.0-rc.7`                                                                         |
-| release source     | tag `v4.0.0-rc.7`（現行branchへ展開copyを保持しない）                                |
-| source identity    | `sha256:838e82d33a9ecb67da81eafdc115afd4fd856db2721d1160ee601a389b6a96a7`            |
-| Schema SHA-256     | `bb96f6fd503ee7a747b48b4cdc30db227b5d3171854c2b83a47a96c15ed7fd79`                   |
-| Standard SB3       | 6,684,157 bytes / `3ad25911b9255d51273b37f24fa0d056e6ec72418f314e97c743ad52300380f8` |
-| npm tarball        | 6,446,348 bytes / `9f0055694521f60abcc7c0a072b251489b9c9ac48b6760b6cff773a22977c38a` |
+| candidate merge    | `ad244910b6bf579b8eb7c7af70d72b7ca4b1fff6`                                           |
+| freeze／tag commit | `29c0deadcb98badf94a0244c479ca896dc71f842`                                           |
+| version            | `4.0.0-rc.8`                                                                         |
+| release source     | tag `v4.0.0-rc.8`（現行branchへ展開copyを保持しない）                                |
+| source identity    | `sha256:8edbc02a06b3770cce0a89cf658367df129d974d53f401258b69f0713762014a`            |
+| Schema SHA-256     | `54b851cb1d4f28caefbdd8f95032c52e8e8fbf5ac68ae313e5a70753e2624878`                   |
+| Standard SB3       | 6,749,955 bytes / `91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041` |
+| npm tarball        | 6,492,990 bytes / `a7b91378e6345c530515cc4e8f82314c3c5f2a19d3e136de5e4fe8bff8d24c5e` |
 
 固定commitを取得します。
 
 ```bash
 git clone https://github.com/kubohiroya/tmpose-kamishibai.git
-git -C tmpose-kamishibai checkout --detach 3a5f31d2519dfb2b9dab32b2c377762c774d5844
+git -C tmpose-kamishibai checkout --detach 29c0deadcb98badf94a0244c479ca896dc71f842
 git -C tmpose-kamishibai status --short
 ```
 
@@ -62,11 +62,11 @@ pnpm install --frozen-lockfile
 pnpm release:dsl4:check
 pnpm verify:full
 pnpm release:check
-shasum -a 256 dist/downloads/kamishibai-4.0.0-rc.7.sb3
+shasum -a 256 dist/downloads/kamishibai-4.0.0-rc.8.sb3
 ```
 
-candidate PRの`pnpm verify:full`はNode系test 1,159件、Chromium test 13件を通過しました。
-[GitHub Actionsの記録](https://github.com/kubohiroya/tmpose-kamishibai/actions/runs/31941807053/job/95151986429)を
+candidate PRの`pnpm verify:full`はNode系test 1,161件、Chromium test 13件を通過しました。
+[GitHub Actionsの記録](https://github.com/kubohiroya/tmpose-kamishibai/actions/runs/32361658847/job/96402336784)を
 一次証跡とします。
 
 ## 公開物を照合する
@@ -75,31 +75,34 @@ candidate PRの`pnpm verify:full`はNode系test 1,159件、Chromium test 13件�
 
 ```bash
 curl -fL \
-  https://github.com/kubohiroya/tmpose-kamishibai/releases/download/v4.0.0-rc.7/kamishibai-4.0.0-rc.7.sb3 \
-  -o kamishibai-4.0.0-rc.7.sb3
-shasum -a 256 kamishibai-4.0.0-rc.7.sb3
+  https://github.com/kubohiroya/tmpose-kamishibai/releases/download/v4.0.0-rc.8/kamishibai-4.0.0-rc.8.sb3 \
+  -o kamishibai-4.0.0-rc.8.sb3
+shasum -a 256 kamishibai-4.0.0-rc.8.sb3
 
-npm view @kubohiroya/tmpose-kamishibai@4.0.0-rc.7 \
+npm view @kubohiroya/tmpose-kamishibai@4.0.0-rc.8 \
   version dist.tarball dist.integrity dist.shasum
 npm view @kubohiroya/tmpose-kamishibai dist-tags
 ```
 
 確認済みのnpm integrityは
-`sha512-LfXNBg2ORGRex8j31NyDBEg0Zn/X7tosecX+B1Bav1V6S6gd4eqJAnYblOHlXYX+wvSiptMndwo22uWbPTCX8A==`です。
-`next`は`4.0.0-rc.7`、`latest`は`3.2.3`であることを確認します。
+`sha512-nQmvHakwLWZioi1gOUZatKwyLe2nD3GPJbEBrqDqm5mzqQhbbLEMGl3znJQpVs0JRfzyeLI1JDTcGrePiIpjUg==`です。
+`next`は`4.0.0-rc.8`、`latest`は`3.2.3`であることを確認します。
 
 ## TurboWarp surfaceを確認する
 
-rc.7 Standard SB3をfresh TurboWarp Editorで開き、次を確認します。
+rc.8 Standard SB3をfresh TurboWarp Editorで開き、次を確認します。
 
 1. composite IDが`kubohiroyakamishibai4`である
 2. Runtimeと6つの外部機能拡張、合計7 memberの見出しと文書ボタンが表示される
 3. Runtime由来の23 core action blockが表示される
 4. TurboWarp blockからの実行がYAMLと同じregistry、Schema正規化、ActionContext、lifecycleを通る
-5. Asset Manager 0.11.0、Async Input 0.4.0、Bubble 0.7.0、Runtime Expression 0.4.0、
+5. Asset Manager 0.11.0、Async Input 0.4.0、Bubble 0.10.0、Runtime Expression 0.4.0、
    SVG Text 0.5.0、TMPose 1.12.0のexact pinと一致する
 6. remote codeを取得せず、PoseNet model dataをprojectから復元できる
 7. `poseRecognition.preview.overlay`設定時にSVGの関節とボーンが表示され、省略時は非表示になる
+8. Bubble 0.10.0由来の31個の可視blockと、組み込み`say`／`think` styleが表示される
+9. `bubbleClosePolicies`の秒数、入力待ち、両者のraceが、inline指定と同じspeech lifecycleで完了する
+10. 未定義`closePolicy`と、`closePolicy`＋inline `seconds`／`waitFor`の競合をbuild前に拒否する
 
 ## Browser／CLI Previewを確認する
 
@@ -111,7 +114,7 @@ CLI Previewは候補packageとversion付きStandard SB3を使います。
 
 ```bash
 pnpm exec tmpose-kamishibai preview-dsl4 --watch \
-  --base /absolute/path/to/kamishibai-4.0.0-rc.7.sb3 \
+  --base /absolute/path/to/kamishibai-4.0.0-rc.8.sb3 \
   --project-root /absolute/path/to/project \
   --source-manifest /absolute/path/to/project/project.source.json \
   --control-profile production \
@@ -130,7 +133,7 @@ CPU推論時にChromiumのreadback警告が1回出る場合がありますが、
 
 現時点の判定は次のとおりです。
 
-| 項目                       | rc.7の状態 |
+| 項目                       | rc.8の状態 |
 | -------------------------- | ---------- |
 | 自動test／Chromium         | 合格       |
 | npm／GitHub／Pages公開照合 | 合格       |
@@ -144,6 +147,7 @@ overlayの位置合わせ、scene遷移、終了時のtrack／model／timer解�
 
 - commit、version、Schema、source identity、flag snapshot、artifact hashの不一致
 - 23 core action、7 member見出し／文書ボタン、dependency pinの不一致
+- 名前付きclose policyとinline終了条件で、入力購読、timeout、cancel、Bubble cleanupが一致しない
 - 同じ入力から生成したSB3またはWeb版の非決定性
 - Browser Preview、CLI Preview、Standard SB3での診断または挙動差
 - camera拒否、model中断、asset失敗、無効source、runtime例外での部分commitまたはresource残留
@@ -151,12 +155,12 @@ overlayの位置合わせ、scene遷移、終了時のtrack／model／timer解�
 
 ## Rollback
 
-公開済みrc.7のtag、SB3、npm tarballを同じversionで差し替えません。
+公開済みrc.8のtag、SB3、npm tarballを同じversionで差し替えません。
 
-1. npmの`next`を`4.0.0-rc.6`へ戻す
+1. npmの`next`を`4.0.0-rc.7`へ戻す
 2. GitHub prereleaseとPagesへ影響範囲と回避策を追記する
-3. 必要ならPagesを`bc922280f022f3f894d51079b7571cce3170136d`へ戻す
-4. 修正版を`4.0.0-rc.8`としてbuild、検証、公開する
+3. 必要ならPagesを`a7f377d4675a9bf9acc8691a11d269ff3d78118b`へ戻す
+4. 修正版を`4.0.0-rc.9`としてbuild、検証、公開する
 5. 推奨安定版`3.2.3`と過去のversion付き成果物を変更しない
 
 文書だけをrollbackする場合は、このMarkdown、candidate manifest、リリース履歴、`docs/config.mjs`、
