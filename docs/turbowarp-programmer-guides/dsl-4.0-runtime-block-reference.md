@@ -3,17 +3,17 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 対象: DSL 4.0ランタイムをTurboWarp Editorで開き、集約されたブロックからプログラムを書く方  
-調査基準: tmpose-kamishibai 4.0.0-rc.7（`3a5f31d`）、sb3-toolchain 0.8.0、2026年8月16日
+調査基準: tmpose-kamishibai 4.0.0-rc.8（`29c0dea`）、sb3-toolchain 0.8.0、2026年8月20日
 
-文書状態: 公開プレリリース4.0.0-rc.7向けリファレンス<br />
-実装基準: annotated tag `v4.0.0-rc.7`のcommit `3a5f31d`
+文書状態: 公開プレリリース4.0.0-rc.8向けリファレンス<br />
+実装基準: annotated tag `v4.0.0-rc.8`のcommit `29c0dea`
 
 この一覧は4.0の正式リリースまたは将来版で同じblock構成を保証するものではありません。利用前に
 [公開元](https://github.com/kubohiroya/tmpose-kamishibai/releases)のversionとrelease noteを確認してください。
 
 DSL 4.0のSB3には、紙芝居ランタイムと6つの機能拡張が、一つの静的な機能拡張bundleとして入っています。
 TurboWarp Editorでは一つのパレットに見えますが、見出し、アイコン、名前空間、ドキュメントボタンによって
-由来を識別できます。本書は、現行bundleでパレットに表示される125ブロックと、TurboWarpの変数blockから
+由来を識別できます。本書は、現行bundleでパレットに表示される128ブロックと、TurboWarpの変数blockから
 参照できる2つの公開Stage変数を一覧にします。
 
 ## パレットとドキュメントボタン
@@ -28,30 +28,30 @@ TurboWarp Editorでは一つのパレットに見えますが、見出し、ア�
 
 | 由来                       | version    | member ID                      | docsURI                                                                                                                                |
 | -------------------------- | ---------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Kamishibai DSL 4.0 Runtime | 4.0.0-rc.7 | `kubohiroyakamishibairuntime4` | [本リファレンス](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/) |
+| Kamishibai DSL 4.0 Runtime | 4.0.0-rc.8 | `kubohiroyakamishibairuntime4` | [本リファレンス](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/) |
 | Asset Manager              | 0.11.0     | `kubohiroyaassetmanager`       | [Asset Manager](https://kubohiroya.github.io/turbowarp-asset-manager/)                                                                 |
 | Async Input                | 0.4.0      | `kubohiroyaasyncinput`         | [Async Input](https://kubohiroya.github.io/turbowarp-async-input/)                                                                     |
-| Bubble                     | 0.7.0      | `kubohiroyabubble`             | [Bubble](https://kubohiroya.github.io/turbowarp-bubble/)                                                                               |
+| Bubble                     | 0.10.0     | `kubohiroyabubble`             | [Bubble](https://kubohiroya.github.io/turbowarp-bubble/)                                                                               |
 | Runtime Expression         | 0.4.0      | `kubohiroyaruntimeexpression`  | [Runtime Expression](https://kubohiroya.github.io/turbowarp-runtime-expression/)                                                       |
 | SVG Text                   | 0.5.0      | `kubohiroyasvgtext`            | [SVG Text](https://kubohiroya.github.io/turbowarp-svg-text/)                                                                           |
 | TMPose                     | 1.12.0     | `tmpose`                       | [TMPose](https://kubohiroya.github.io/turbowarp-tmpose/)                                                                               |
 
-以下の各member章の冒頭図は、SHA-256
+以下の各member章の冒頭図のうち図1〜6は、SHA-256
 `2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c`の固定
-`kamishibai-4.0.0-rc.5.sb3`をTurboWarp Editorの日本語UIで開き、集約パレットを表示して撮影しました。
-各図は`◆ member名 [member ID] ◆`から次のmemberセパレータ直前までを切り出し、ブロックの並び替えや合成は
+`kamishibai-4.0.0-rc.5.sb3`、図7は公開`kamishibai-4.0.0-rc.7.sb3`をTurboWarp Editorで開いて
+撮影した履歴画像です。各図は`◆ member名 [member ID] ◆`から次のmemberセパレータ直前までを切り出し、ブロックの並び替えや合成は
 していません。パレット自体が固定幅のため、長いブロック文の右端は実画面どおり見切れます。完全なopcodeと役割は
 図の直後にある表を正本としてください。
 
-図はrc.5／TMPose 1.10.0で撮影した固定証跡です。rc.7で追加されたoverlay 6ブロックは画像へ後付けせず、
-下のopcode表を現行の正本とします。
+図1〜6はrc.5、図7はrc.7の固定証跡です。rc.8で変わったBubble blockは画像へ後付けせず、下のopcode表を
+現行の正本とします。
 
 集約時にopcodeはmember IDを含む名前空間へ変換されるため、同名ブロックが別memberにあっても衝突しません。
 保存済みprojectでは変換後opcodeを使い、利用者が見るブロック文と実行時の意味は上流拡張の定義を保ちます。
 
 ## 現状TurboWarpブロックから参照できる公開変数（2変数）
 
-4.0.0-rc.7の公開SB3には、DSL 4.0ランタイムがポーズ認識の状態を公開するためのStage変数が2つあります。
+4.0.0-rc.8の公開SB3には、DSL 4.0ランタイムがポーズ認識の状態を公開するためのStage変数が2つあります。
 どちらもクラウド変数ではない通常の数値変数です。TurboWarpの「変数」パレットにある変数reporter、表示／非表示、
 設定、変更の各blockから、Stageとspriteのどちらでも同じ値を参照できます。
 
@@ -86,10 +86,10 @@ TurboWarp Editorでは一つのパレットに見えますが、見出し、ア�
 ### DSLの`variables:`とは別のもの
 
 台本のトップレベル`variables:`で宣言する名前付き値は、branch式とruntime controllerが所有する物語の内部状態です。
-同名のStage変数は自動作成されず、4.0.0-rc.7の集約パレットには、その内部状態を通常のTurboWarp変数blockへ
+同名のStage変数は自動作成されず、4.0.0-rc.8の集約パレットには、その内部状態を通常のTurboWarp変数blockへ
 直接読み書きする公開blockもありません。TurboWarpの変数blockから参照できる固定名の公開変数は、上記2変数だけです。
 
-ただし、`variables:`の値はrc.7でも`branch[].if`の条件式から参照できます。ASCIIのbare nameは`score >= 10`、
+ただし、`variables:`の値はrc.8でも`branch[].if`の条件式から参照できます。ASCIIのbare nameは`score >= 10`、
 それ以外の名前は`vars["救助回数"] >= 2`の形で記述します。式評価時に渡るのは台本変数の不変snapshotであり、
 Stage変数、sprite変数、Temporary Variables、上記2つのポーズfeedback変数は自動では含まれません。
 
@@ -97,10 +97,10 @@ Stage変数、sprite変数、Temporary Variables、上記2つのポーズfeedbac
 [DSL 4.0ランタイム変数 TurboWarp連携リファレンス](dsl-4.0-runtime-variable-turbowarp-reference.md)で、
 公開、条件付き公開、非公開に分けて説明しています。台本での宣言と分岐式は、
 [DSL 4.0ランタイム変数ガイド](../dsl-author-guides/dsl-4.0-runtime-variable-guide.md)を参照してください。
-追加surfaceは実装済みですが既定OFFであり、4.0.0-rc.7の現行公開APIではありません。
+追加surfaceは実装済みですが既定OFFであり、4.0.0-rc.8の現行公開APIではありません。
 
-一覧はtag `v4.0.0-rc.7`の公開SB3と
-[`scratch-pose-feedback-adapter.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/src/dsl4/platform/scratch-pose-feedback-adapter.js)に基づきます。
+一覧はtag `v4.0.0-rc.8`の公開SB3と
+[`scratch-pose-feedback-adapter.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/src/dsl4/platform/scratch-pose-feedback-adapter.js)に基づきます。
 
 ## Kamishibai DSL 4.0 Runtime（23ブロック）
 
@@ -198,49 +198,64 @@ _図3: Async Inputのmemberセパレータで切り出したパレット。_
 | `stopAllInputListeners`           | `stop all input listeners registered by this target`                                                 | 現在targetのkey、touch listenerをすべて外す        |
 | `listenForActorTouchAndBroadcast` | `listen for touch on actor [ACTOR] set runtime var [RUNTIME_VAR] to [VALUE] and broadcast [MESSAGE]` | 名前付きactorのタッチで変数を更新してmessageを送る |
 
-sourceには`listenForPose`、`stopListeningForPose`、`stopAllPoseListeners`もありますが、rc.7では
-`poseInput` feature flagが既定OFFのためパレットに表示されず、125ブロックには数えません。
-`listenForActorTouchAndBroadcast`は実装上`internalBlockDefinitions`に置かれていますが、固定rc.7の集約パレットには
+sourceには`listenForPose`、`stopListeningForPose`、`stopAllPoseListeners`もありますが、rc.8では
+`poseInput` feature flagが既定OFFのためパレットに表示されず、128ブロックには数えません。
+`listenForActorTouchAndBroadcast`は実装上`internalBlockDefinitions`に置かれていますが、固定rc.8の集約パレットには
 表示されるため、本リファレンスでは公開パレットblockとして扱います。
 
-## Bubble 0.7.0（28ブロック）
+## Bubble 0.10.0（31ブロック）
 
 ![TurboWarpの集約パレットに表示されたBubble 0.7.0の28ブロック](../images/dsl4-palette-bubble.jpg)
 
-_図4: Bubbleのmemberセパレータで切り出したパレット。_
+_図4: rc.5／Bubble 0.7.0で取得したmemberセパレータと旧28ブロックの履歴画像。rc.8／0.10.0の
+現行31ブロックは、直下の表を正本とします。_
 
 BubbleはSVG body、SVG Text、portrait、目パチ、口パク、音声、continue indicatorを一つの表示surfaceとして扱います。
+組み込みBubble style `say`はspeech本体とspeech tail、`think`はthought本体とround trailを一組で持ちます。
+本体とtail／trailは別々の設定ではなく、`setBubbleVisualStyle`で不可分なvisual styleとして選びます。両styleは
+TurboWarp標準と同じ基本profileを持つ予約text profile `default`を使用します。
+`default`は14px Helvetica、16px line height、最大行幅170px、最小text幅50px、padding 10px、corner 16px、
+白いfill、Scratchの文字色／輪郭色です。4pxのSVG strokeをfillより先に描いて内側半分を隠すため、画面上で見える
+輪郭はTurboWarp標準と同じ細さです。内容に合わせてサイズを変え、actor右側を優先し、収まる場合だけ左へ反転します。
 
-| opcode                    | パレットのブロック文                                                                                           | 役割                                                 |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| `defineBubbleStyle`       | `define bubble style [STYLE] using text style [TEXT_STYLE]`                                                    | 名前付きBubble styleとSVG Text styleの対応を定義する |
-| `setBubblePlacement`      | `set bubble placement [PLACEMENT] for bubble style [STYLE]`                                                    | actor相対方向または背景相対regionを設定する          |
-| `setPortraitBase`         | `set portrait base [ASSET] for bubble style [STYLE]`                                                           | portraitの基準画像assetを設定する                    |
-| `setPortraitLayout`       | `set portrait [PLACEMENT] offset x [X] y [Y] zoom [ZOOM] % corner radius [RADIUS] px for bubble style [STYLE]` | portraitの辺／角、offset、zoom、角丸を設定する       |
-| `setBubbleDistance`       | `set bubble distance [DISTANCE] for bubble style [STYLE]`                                                      | actor境界からtail先端までの距離を設定する            |
-| `setBubbleVisualStyle`    | `set bubble visual style [VISUAL_STYLE] for bubble style [STYLE]`                                              | BubbleのSVG形状を設定する                            |
-| `setBubbleTailLength`     | `set bubble tail length [LENGTH] for bubble style [STYLE]`                                                     | actor相対Bubbleのtail長を設定する                    |
-| `setBubbleOffset`         | `set bubble offset x [X] y [Y] scale [SCALE] % for bubble style [STYLE]`                                       | Bubble本体のoffsetとscaleを設定する                  |
-| `setBlinkFrames`          | `set blink frames [ASSETS] every [SECONDS] seconds for bubble style [STYLE]`                                   | portraitの目パチasset列と間隔を設定する              |
-| `setLipSyncFrames`        | `set lip-sync frames [ASSETS] every [SECONDS] seconds for bubble style [STYLE]`                                | portraitの口パクasset列と間隔を設定する              |
-| `setContinueFrames`       | `set continue frames [ASSETS] every [SECONDS] seconds for bubble style [STYLE]`                                | 入力待ちindicatorのasset列と間隔を設定する           |
-| `setBubbleReveal`         | `set bubble reveal unit [UNIT] every [SECONDS] seconds layout [LAYOUT] for bubble style [STYLE]`               | CHARACTER／WORD／LINE／BLOCKの逐次表示を設定する     |
-| `setBubbleWordDelimiters` | `set bubble word delimiters [DELIMITERS] show [SHOW] for bubble style [STYLE]`                                 | WORD表示の区切り文字と表示有無を設定する             |
-| `setBubbleRevealSound`    | `set bubble reveal sound [ASSET] for bubble style [STYLE]`                                                     | 逐次表示単位ごとの効果音assetを設定する              |
-| `setBubbleVoice`          | `set bubble voice [ASSET] for bubble style [STYLE]`                                                            | Bubble開始時のfull-voice assetを設定する             |
-| `finishBubbleReveal`      | `finish [UNIT] with condition [CONDITION] or timeout after [TIMEOUT] seconds`                                  | 残りを表示し、条件またはtimeoutを待つ                |
-| `setBubbleShowAnimation`  | `set bubble show animation [MOTION] for [SECONDS] seconds for bubble style [STYLE]`                            | 表示開始animationを設定する                          |
-| `setBubbleHideAnimation`  | `set bubble hide animation [MOTION] for [SECONDS] seconds for bubble style [STYLE]`                            | 表示終了animationを設定する                          |
-| `animateBubble`           | `animate this bubble [MOTION]`                                                                                 | 名前付きdisplay animationを直ちに実行する            |
-| `shakeBubble`             | `shake this bubble direction [DIRECTION] count [COUNT] ease [EASE]`                                            | Bubble surface全体を方向・回数・easing付きで揺らす   |
-| `explodeBubble`           | `explode this bubble relative scale [SCALE] count [COUNT] ease [EASE]`                                         | Bubble surface全体を相対倍率で拡縮する               |
-| `animateBubbleShape`      | `animate bubble shape to [VISUAL_STYLE] speed [SPEED] for [SECONDS] seconds`                                   | Bubble形状を別visual styleへ遷移する                 |
-| `sayWithBubbleStyle`      | `say [MESSAGE] with bubble style [STYLE]`                                                                      | 現在spriteの発話Bubbleを表示する                     |
-| `thinkWithBubbleStyle`    | `think [MESSAGE] with bubble style [STYLE]`                                                                    | 現在spriteの思考Bubbleを表示する                     |
-| `setBubbleAnimationMode`  | `set this bubble animation mode [MODE]`                                                                        | talking／awaiting-continueなどのmodeを変える         |
-| `waitForBubbleContinue`   | `wait with this bubble until condition [CONDITION] or timeout after [TIMEOUT] seconds`                         | Runtime Expressionの条件またはtimeoutを待つ          |
-| `closeBubble`             | `close this bubble`                                                                                            | Bubbleを閉じ、timer、skin、drawableを解放する        |
-| `getVersion`              | `Bubble version`                                                                                               | Bubbleのversionを返す                                |
+| opcode                         | パレットのブロック文                                                                                           | 役割                                                  |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `defineBubbleStyle`            | `define bubble style [STYLE] using text style [TEXT_STYLE]`                                                    | 名前付きBubble styleとSVG Text styleの対応を定義する  |
+| `defineBubbleClosePolicy`      | `define bubble close policy [POLICY] trigger [TRIGGER] condition [CONDITION] timeout [TIMEOUT] seconds`        | 名前付きの終了条件を定義または置換する                |
+| `setBubblePlacement`           | `set bubble placement [PLACEMENT] for bubble style [STYLE]`                                                    | actor相対方向または背景相対regionを設定する           |
+| `setPortraitBase`              | `set portrait base [ASSET] for bubble style [STYLE]`                                                           | portraitの基準画像assetを設定する                     |
+| `setPortraitLayout`            | `set portrait [PLACEMENT] offset x [X] y [Y] zoom [ZOOM] % corner radius [RADIUS] px for bubble style [STYLE]` | portraitの辺／角、offset、zoom、角丸を設定する        |
+| `setBubbleDistance`            | `set bubble distance [DISTANCE] for bubble style [STYLE]`                                                      | actor境界からtail先端までの距離を設定する             |
+| `setBubbleVisualStyle`         | `set bubble visual style [VISUAL_STYLE] for bubble style [STYLE]`                                              | 本体とtail／trailの不可分なSVG形状を設定する          |
+| `setBubbleTailLength`          | `set bubble tail length [LENGTH] for bubble style [STYLE]`                                                     | actor相対Bubbleのtail長を設定する                     |
+| `setBubbleOffset`              | `set bubble offset x [X] y [Y] scale [SCALE] % for bubble style [STYLE]`                                       | Bubble本体のoffsetとscaleを設定する                   |
+| `setBlinkFrames`               | `set blink frames [ASSETS] every [SECONDS] seconds for bubble style [STYLE]`                                   | portraitの目パチasset列と間隔を設定する               |
+| `setLipSyncFrames`             | `set lip-sync frames [ASSETS] every [SECONDS] seconds for bubble style [STYLE]`                                | portraitの口パクasset列と間隔を設定する               |
+| `setContinueFrames`            | `set continue frames [ASSETS] every [SECONDS] seconds for bubble style [STYLE]`                                | 入力待ちindicatorのasset列と間隔を設定する            |
+| `setBubbleReveal`              | `set bubble reveal unit [UNIT] every [SECONDS] seconds layout [LAYOUT] for bubble style [STYLE]`               | CHARACTER／WORD／LINE／BLOCKの逐次表示を設定する      |
+| `setBubbleWordDelimiters`      | `set bubble word delimiters [DELIMITERS] show [SHOW] for bubble style [STYLE]`                                 | WORD表示の区切り文字と表示有無を設定する              |
+| `setBubbleRevealSound`         | `set bubble reveal sound [ASSET] for bubble style [STYLE]`                                                     | 逐次表示単位ごとの効果音assetを設定する               |
+| `setBubbleVoice`               | `set bubble voice [ASSET] for bubble style [STYLE]`                                                            | Bubble開始時のfull-voice assetを設定する              |
+| `finishBubbleReveal`           | `finish [UNIT] with condition [CONDITION] or timeout after [TIMEOUT] seconds`                                  | 残りを表示し、条件またはtimeoutを待つ                 |
+| `setBubbleShowAnimation`       | `set bubble show animation [MOTION] for [SECONDS] seconds for bubble style [STYLE]`                            | 表示開始animationを設定する                           |
+| `setBubbleHideAnimation`       | `set bubble hide animation [MOTION] for [SECONDS] seconds for bubble style [STYLE]`                            | 表示終了animationを設定する                           |
+| `animateBubble`                | `animate this bubble [MOTION]`                                                                                 | 名前付きdisplay animationを直ちに実行する             |
+| `shakeBubble`                  | `shake this bubble direction [DIRECTION] count [COUNT] ease [EASE]`                                            | Bubble surface全体を方向・回数・easing付きで揺らす    |
+| `explodeBubble`                | `explode this bubble relative scale [SCALE] count [COUNT] ease [EASE]`                                         | Bubble surface全体を相対倍率で拡縮する                |
+| `animateBubbleShape`           | `animate bubble shape to [VISUAL_STYLE] speed [SPEED] for [SECONDS] seconds`                                   | Bubble形状を別visual styleへ遷移する                  |
+| `say`                          | `say [MESSAGE]`                                                                                                | 組み込みstyle `say`で標準互換の発話Bubbleを表示する   |
+| `think`                        | `think [MESSAGE]`                                                                                              | 組み込みstyle `think`で標準互換の思考Bubbleを表示する |
+| `showWithBubbleStyle`          | `show [MESSAGE] with bubble style [STYLE]`                                                                     | 選んだ名前付きstyleでBubbleを表示する                 |
+| `setBubbleAnimationMode`       | `set this bubble animation mode [MODE]`                                                                        | talking／awaiting-continueなどのmodeを変える          |
+| `waitForBubbleContinue`        | `wait with this bubble until condition [CONDITION] or timeout after [TIMEOUT] seconds`                         | Runtime Expressionの条件またはtimeoutを待つ           |
+| `waitAndCloseBubbleWithPolicy` | `wait and close this bubble using close policy [POLICY]`                                                       | policyをsnapshotし、成立後にBubbleを閉じる            |
+| `closeBubble`                  | `close this bubble`                                                                                            | Bubbleを閉じ、timer、skin、drawableを解放する         |
+| `getVersion`                   | `Bubble version`                                                                                               | Bubbleのversionを返す                                 |
+
+0.10.0には、保存済みprojectを読み込むための`sayWithBubbleStyle`／`thinkWithBubbleStyle`定義も残りますが、
+パレットには表示されないため31ブロックには数えません。終了条件のpolicyは表示styleではありません。
+DSL 4.0の`bubbleClosePolicies`はruntime controllerが`seconds`／`waitFor`へ展開してからActor portへ渡し、
+Bubble側のblock registryを直接参照しません。
 
 ## Runtime Expression 0.4.0（3ブロック）
 

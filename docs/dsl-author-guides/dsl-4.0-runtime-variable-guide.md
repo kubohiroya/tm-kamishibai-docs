@@ -3,10 +3,10 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 対象: 変数と条件分岐を使うDSL 4.0紙芝居制作者\
-現行公開仕様の基準: tmpose-kamishibai 4.0.0-rc.7（`3a5f31d`）、2026年8月16日
+現行公開仕様の基準: tmpose-kamishibai 4.0.0-rc.8（`29c0dea`）、2026年8月20日
 
 文書状態: **受け入れ済み・実装済み利用契約（既定OFF）**。[実装Issue #597](https://github.com/kubohiroya/tmpose-kamishibai/issues/597)で
-source実装とtestを追加しています。追加機能はfeature flagが既定OFFのため、4.0.0-rc.7の現行公開APIには含まれません。
+source実装とtestを追加しています。追加機能はfeature flagが既定OFFのため、4.0.0-rc.8の現行公開APIには含まれません。
 
 この文書は「台本を作る人向けドキュメント」に属し、台本変数の宣言、分岐式での参照、TurboWarpからの書込が
 台本へ反映される時期を説明します。公開blockの正確な名前、戻り値、書込条件、feature flagは、
@@ -134,5 +134,5 @@ flagがOFFの配布物では、追加blockをpaletteに表示せず、`runtime["
 ## 関連文書
 
 - [DSL 4.0ランタイム変数 TurboWarp連携リファレンス](../turbowarp-programmer-guides/dsl-4.0-runtime-variable-turbowarp-reference.md): 公開block、snapshot、型付き書込、非公開境界
-- [DSL 4.0ランタイム ブロックリファレンス](../turbowarp-programmer-guides/dsl-4.0-runtime-block-reference.md): 4.0.0-rc.7で現在公開されているblockとStage変数
+- [DSL 4.0ランタイム ブロックリファレンス](../turbowarp-programmer-guides/dsl-4.0-runtime-block-reference.md): 4.0.0-rc.8で現在公開されているblockとStage変数
 - [紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md): `variables:`と`branch`を含む台本作成全体

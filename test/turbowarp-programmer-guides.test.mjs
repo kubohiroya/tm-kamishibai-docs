@@ -76,6 +76,7 @@ const publicOpcodes = {
   ],
   bubble: [
     'defineBubbleStyle',
+    'defineBubbleClosePolicy',
     'setBubblePlacement',
     'setPortraitBase',
     'setPortraitLayout',
@@ -97,10 +98,12 @@ const publicOpcodes = {
     'shakeBubble',
     'explodeBubble',
     'animateBubbleShape',
-    'sayWithBubbleStyle',
-    'thinkWithBubbleStyle',
+    'say',
+    'think',
+    'showWithBubbleStyle',
     'setBubbleAnimationMode',
     'waitForBubbleContinue',
+    'waitAndCloseBubbleWithPolicy',
     'closeBubble',
     'getVersion',
   ],
@@ -168,7 +171,7 @@ test('explains exact broadcast-and-wait behavior from YAML through TurboWarp rec
 
 test('lists every public bundled block and member documentation URI', () => {
   const allOpcodes = Object.values(publicOpcodes).flat();
-  assert.equal(allOpcodes.length, 125);
+  assert.equal(allOpcodes.length, 128);
   for (const opcode of new Set(allOpcodes)) {
     assert.ok(blockReference.includes('`' + opcode + '`'), `missing opcode ${opcode}`);
   }
@@ -182,7 +185,7 @@ test('lists every public bundled block and member documentation URI', () => {
   ]) {
     assert.match(blockReference, new RegExp(`https://kubohiroya\\.github\\.io/${slug}/`, 'u'));
   }
-  assert.match(blockReference, /125ブロック/u);
+  assert.match(blockReference, /128ブロック/u);
   assert.match(blockReference, /Open Documentation/u);
 
   const paletteTableHeaders = blockReference.match(
@@ -193,7 +196,7 @@ test('lists every public bundled block and member documentation URI', () => {
   const paletteRows = [
     ...blockReference.matchAll(/^\| `([^`]+)`\s+\| `([^`]+)`\s+\| [^\n]+\|$/gmu),
   ];
-  assert.equal(paletteRows.length, 125, 'every public block must include non-empty palette text');
+  assert.equal(paletteRows.length, 128, 'every public block must include non-empty palette text');
   assert.deepEqual(
     paletteRows.map((match) => match[1]).sort(),
     allOpcodes.sort(),
@@ -206,7 +209,7 @@ test('places one real palette capture at the start of every member chapter', () 
     ['Kamishibai DSL 4.0 Runtime', 'dsl4-palette-kamishibai-runtime.jpg'],
     ['Asset Manager 0.11.0', 'dsl4-palette-asset-manager.jpg'],
     ['Async Input 0.4.0', 'dsl4-palette-async-input.jpg'],
-    ['Bubble 0.7.0', 'dsl4-palette-bubble.jpg'],
+    ['Bubble 0.10.0', 'dsl4-palette-bubble.jpg'],
     ['Runtime Expression 0.4.0', 'dsl4-palette-runtime-expression.jpg'],
     ['SVG Text 0.5.0', 'dsl4-palette-svg-text.jpg'],
     ['TMPose 1.12.0', 'dsl4-palette-tmpose.png'],
@@ -268,7 +271,7 @@ test('separates the current two Stage variables from the default-off runtime-var
     runtimeVariableReference,
     /文書状態: \*\*受け入れ済み・実装済み利用契約（既定OFF）\*\*/u,
   );
-  assert.match(runtimeVariableReference, /4\.0\.0-rc\.7の現行公開APIには含まれません/u);
+  assert.match(runtimeVariableReference, /4\.0\.0-rc\.8の現行公開APIには含まれません/u);
 });
 
 test('classifies internal runtime state and defines the implemented block contract', () => {

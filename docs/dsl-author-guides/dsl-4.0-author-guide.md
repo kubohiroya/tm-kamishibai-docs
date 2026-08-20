@@ -24,11 +24,11 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 ## 公開プレリリースと文書基準
 
-文書状態: 公開プレリリースrc.7の固定実装基準を説明する台本作成ガイド\
-調査基準: tmpose-kamishibai `3a5f31d`（`v4.0.0-rc.7`）、2026年8月16日
+文書状態: 公開プレリリースrc.8の固定実装基準を説明する台本作成ガイド\
+調査基準: tmpose-kamishibai `29c0dea`（`v4.0.0-rc.8`）、2026年8月20日
 
-> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.7`はprereleaseとして公開されていますが、
-> 正式な`v4.0.0`ではありません。ポーズoverlayはrc.7と、同版がexact pinするTMPose 1.12.0で利用できます。
+> **配布状態との区別:** 2026年8月20日時点で`v4.0.0-rc.8`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。ポーズoverlayはrc.8と、同版がexact pinするTMPose 1.12.0で利用できます。
 
 このガイドと[紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)は、同じ完成版の実装を
 調査基準にしています。Schemaはruntime実装から生成するものではありません。公開状況や実装の追跡が
@@ -89,7 +89,7 @@ DSL 4.0は制限付きYAML 1.2で記述します。引数には名前が付き�
 
 ## 仕様・実装を確認する人向け（台本作成では読み飛ばせます）
 
-2026年8月16日のrc.7固定基準では、次の実装がtmpose-kamishibaiへ入っています。
+2026年8月20日のrc.8固定基準では、次の実装がtmpose-kamishibaiへ入っています。
 
 - 制限付きYAMLの解析、JSON Schema検証、参照関係の意味検証
 - 行・列とStory Pathを保持するSource Map、`K4-*`診断
@@ -99,6 +99,7 @@ DSL 4.0は制限付きYAML 1.2で記述します。引数には名前が付き�
 - camera previewのstory既定、scene固有の非stickyな左右反転指定、任意の操作UI
 - TMPose 1.12.0を使う、関節とボーンのSVG overlay設定
 - `Actor.say`／`Actor.think`の入力待ち、文字送り、音、portrait、animation、名前付き`bubbleStyles`
+- `bubbleClosePolicies`と`closePolicy`による、秒数・入力待ち・両者のraceの名前付き再利用
 - `Actor.moveTo`の`linear`、`easeIn`、`easeOut`、`easeInOut`
 - `Actor.setTransparency`の即時指定、foreground／backgroundの線形変化
 - `broadcastMessageAndWait`、`debugger`、`Actor.hide`／`setLayer`／`loop`
@@ -114,8 +115,8 @@ builder、TurboWarp runtime surface、browser／CLI previewを含むend-to-end�
 ### 実装根拠を確認する場合
 
 仕様の正本は、tmpose-kamishibaiリポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/schema/dsl-4.schema.json)です。
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/schema/dsl-4.schema.json)です。
 camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)、
 ポーズoverlayは[Issue #624](https://github.com/kubohiroya/tmpose-kamishibai/issues/624)、
 `bubbleStyles`は[Issue #476](https://github.com/kubohiroya/tmpose-kamishibai/issues/476)以降、
@@ -280,13 +281,14 @@ compose後の台本で使用できるトップレベルキーは次のものだ�
 | `actors`          | 任意 | アクターと初期コスチュームを対応付ける            |
 | `cover`           | 任意 | 表紙の背景とBGMを指定する                         |
 | `textStyles`      | 任意 | SVG Textの名前付きスタイルを定義する              |
-| `bubbleStyles`    | 任意 | say／thinkの名前付き吹き出しstyleを定義する       |
-| `variables`       | 任意 | 物語で使う変数の初期値を定義する                  |
-| `loading`         | 任意 | 読み込み中の背景とコスチューム列を指定する        |
-| `poseRecognition` | 任意 | ポーズ認識、preview表示、任意の操作UIを設定する   |
-| `controls`        | 任意 | 実行環境ごとの操作キーを定義する                  |
-| `branches`        | 任意 | 順序付きの条件分岐を登録する                      |
-| `scenes`          | 必須 | 一つ以上のシーンとアクションを記述する            |
+| `bubbleStyles`        | 任意 | say／thinkの名前付き吹き出しstyleを定義する       |
+| `bubbleClosePolicies` | 任意 | say／thinkの名前付き終了条件を定義する            |
+| `variables`           | 任意 | 物語で使う変数の初期値を定義する                  |
+| `loading`             | 任意 | 読み込み中の背景とコスチューム列を指定する        |
+| `poseRecognition`     | 任意 | ポーズ認識、preview表示、任意の操作UIを設定する   |
+| `controls`            | 任意 | 実行環境ごとの操作キーを定義する                  |
+| `branches`            | 任意 | 順序付きの条件分岐を登録する                      |
+| `scenes`              | 必須 | 一つ以上のシーンとアクションを記述する            |
 
 推奨する並び順は表の順番です。YAML mappingの字下げには空白を使用し、タブは使いません。
 
@@ -406,8 +408,8 @@ scenes:
   'Scene 1: opening': []
 ```
 
-`bubbleStyles`の名前も内部の空白や日本語を使用できます。ただし、先頭・末尾の空白、改行、tab、制御文字は
-使用できません。
+`bubbleStyles`と`bubbleClosePolicies`の名前も内部の空白や日本語を使用できます。ただし、先頭・末尾の
+空白、改行、tab、制御文字は使用できません。
 
 ## 素材（asset）を登録する
 
@@ -578,7 +580,7 @@ skipした場合は待機要求を破棄し、新しいモデル初期化を開�
 cancelだけでcameraは停止しません。
 
 省略時は`policy: legacy`、`parallel: false`です。これは従来動作へ設定だけで戻せる安全な既定値です。
-`latest-needed`の実行にはTMPose 1.10.0以降が必要です。公開プレリリース4.0.0-rc.7はTMPose 1.12.0をexact pinします。
+`latest-needed`の実行にはTMPose 1.10.0以降が必要です。公開プレリリース4.0.0-rc.8はTMPose 1.12.0をexact pinします。
 
 ### カメラ映像の表示と操作
 
@@ -752,8 +754,42 @@ effective styleに対して検査します。
 さらに`reveal`、`audio`、`showAnimation`、`hideAnimation`、`visibleAnimations`で段階表示、音、animationを
 指定できます。各fieldの列挙値と必須条件はSchemaリファレンスの「吹き出しstyle」を参照してください。
 
-styleには本文、完了条件、吹き出し開始時の音声を含めません。`text`、`seconds`、`waitFor`、
-`startSound`はセリフごとにactionへ記述します。
+styleには本文、終了条件、吹き出し開始時の音声を含めません。`text`、`closePolicy`、`seconds`、
+`waitFor`、`startSound`はセリフ側の設定です。見た目の`bubbleStyles`と終了条件の
+`bubbleClosePolicies`は別のregistryとして扱います。
+
+## 吹き出しを閉じる条件（bubble close policy）を設定する
+
+同じ終了条件を複数の`Actor.say`／`Actor.think`で使う場合は、トップレベルの`bubbleClosePolicies`へ
+名前を付けて定義し、actionの`closePolicy`で1件だけ参照します。
+
+```yaml
+bubbleClosePolicies:
+  after-3-seconds:
+    seconds: 3
+  user-advance:
+    waitFor: advance
+  advance-or-timeout:
+    seconds: 10
+    waitFor: advance
+
+scenes:
+  opening:
+    - Hero.say:
+        text: 次へ進みます
+        closePolicy: user-advance
+```
+
+- `seconds`だけなら、吹き出しの表示開始から指定秒数後に閉じます。
+- `waitFor: advance`だけなら、Stageのprimary pointer／tapまたは修飾キーなしの任意キー入力で閉じます。
+- 両方なら、入力とtimeoutのうち先に成立した方で閉じます。
+
+policyの継承や合成はありません。`closePolicy`と、同じaction内の`seconds`／`waitFor`は併用できません。
+未定義のpolicy名は`K4-REF-001`です。従来のinline指定は引き続き使えるので、一度しか使わない条件まで
+無理に名前へ切り出す必要はありません。
+
+runtimeはaction開始前にpolicyを既存の`seconds`／`waitFor`へ展開します。live reloadの途中ですでに表示中の
+セリフは開始時に解決した値を使い続け、更新したpolicyは次に開始するstory generationから適用されます。
 
 ## 変数と条件分岐を設定する
 
@@ -790,7 +826,7 @@ branches:
 条件式は文字列として記述します。`if`と`goto`は同じmappingへ書き、`else`は分岐内に一つだけ、末尾へ
 置きます。すべての移動先シーンが定義済みでなければなりません。
 
-4.0.0-rc.7では、条件式は`branch` action開始時点のトップレベル`variables:`を不変snapshotとして参照します。
+4.0.0-rc.8では、条件式は`branch` action開始時点のトップレベル`variables:`を不変snapshotとして参照します。
 ASCIIのbare nameは`score == 1`のように書けます。日本語や`-`などbare nameにできない文字を含む名前は、
 `vars["救助回数"] >= 2`のように完全一致のstring literalで指定します。Stage／sprite変数、Temporary Variables、
 `ポーズ認識`、`チャージ`は条件式へ自動では入りません。
@@ -1008,7 +1044,7 @@ Actor actionは`ActorID.command`をキーにします。
 | `Actor.hide`               | なし                                     | アクターを非表示にする                     |
 | `Actor.setTransparency`    | 0〜100または`from`、`to`、`seconds`      | 幽霊効果を即時設定または線形に変化させる   |
 | `Actor.moveTo`             | `x`、`y`、`seconds`                      | 任意のeasingで指定位置へ移動する           |
-| `Actor.say`／`Actor.think` | `text`と、`seconds`／`waitFor`の一方以上 | セリフまたは思考を表示する                 |
+| `Actor.say`／`Actor.think` | `text`と、`closePolicy`または`seconds`／`waitFor` | セリフまたは思考を表示する             |
 | `Actor.setSkin`            | コスチュームID                           | コスチュームを変更する                     |
 | `Actor.setLayer`           | `front`／`back`／相対layer数             | アクターの重なり順を変更する               |
 | `Actor.loop`               | `steps`                                  | コスチューム列を繰り返す                   |
@@ -1085,23 +1121,31 @@ visible stateをfalseにします。透明度effectとは別で、次の`Actor.s
 ```yaml
 - Hero.say:
     text: 助けに行こう
-    seconds: 8
-    waitFor: advance
+    closePolicy: advance-or-timeout
     styles:
       - Typing
       - Hero style
     startSound: HeroGreetingVoice
 - Hero.think:
     text: どうしよう……
-    waitFor: advance
+    closePolicy: user-advance
     characterIntervalSeconds: 0.1
     characterSound: Typewriter
 ```
 
-`seconds`だけなら表示開始から指定秒数後、`waitFor: advance`だけならprimary pointer／tapまたは有効な
-任意キーの入力後に完了します。両方を指定すると、入力とtimeoutのうち先に成立した方で完了します。
+`closePolicy`はトップレベルの`bubbleClosePolicies`に定義した名前です。`seconds`だけなら表示開始から指定秒数後、
+`waitFor: advance`だけならprimary pointer／tapまたは有効な任意キーの入力後に完了します。
+policyまたはinlineで両方を指定すると、入力とtimeoutのうち先に成立した方で完了します。
 speech開始に使った同じ入力、interactive UI、IME composition、modifier shortcut、key repeatは
 advanceとして再利用しません。
+
+一度だけ使う終了条件は従来どおりinlineにも書けます。
+
+```yaml
+- Hero.say:
+    text: 3秒だけ表示します
+    seconds: 3
+```
 
 `styles`には`bubbleStyles`の名前を1件以上のYAML配列で指定します。記載順に合成し、最後にaction内の
 文字送りfieldを適用します。同じstyleの重複、未定義style、単数形`style`はエラーです。styleを使わない
@@ -1313,6 +1357,13 @@ bubbleStyles:
     textStyle: title
     placement: FOOTER_LIKE
 
+bubbleClosePolicies:
+  user-advance:
+    waitFor: advance
+  advance-or-timeout:
+    seconds: 8
+    waitFor: advance
+
 variables:
   score: 1
   takeSeaRoute: false
@@ -1380,8 +1431,7 @@ scenes:
         seconds: 0.5
     - Hero.say:
         text: 助けに行こう
-        seconds: 8
-        waitFor: advance
+        closePolicy: advance-or-timeout
         styles:
           - Hero style
         startSound: HeroGreetingVoice
@@ -1414,7 +1464,7 @@ scenes:
         easing: easeInOut
     - Hero.think:
         text: 海路で帰ろう……
-        waitFor: advance
+        closePolicy: user-advance
         startSound: HeroThinkingVoice
     - transition:
         effect: fadeOut
@@ -1480,8 +1530,8 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 ## 関連資料
 
 - [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
-- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
-- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/schema/dsl-4.schema.json): 機械可読な構造仕様
-- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
+- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
+- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/schema/dsl-4.schema.json): 機械可読な構造仕様
+- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
 - [DSL 4.0 ポーズoverlay実装 Issue #624](https://github.com/kubohiroya/tmpose-kamishibai/issues/624): Schema、TMPose 1.12.0 composition API mapping、YAML opt-in、rollback
-- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/3a5f31d2519dfb2b9dab32b2c377762c774d5844/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例
+- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例

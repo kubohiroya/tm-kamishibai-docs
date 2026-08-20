@@ -1,24 +1,24 @@
-# DSL 4.0 rc.7実装のローカル追試
+# DSL 4.0 rc.8実装のローカル追試
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-文書状態: 公開プレリリース`4.0.0-rc.7`の開発者向け追試手順\
+文書状態: 公開プレリリース`4.0.0-rc.8`の開発者向け追試手順\
 管理Issue: [#157](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/157)\
-対象: rc.7の実動作、live reload、内部仕様を確認する人\
+対象: rc.8の実動作、live reload、内部仕様を確認する人\
 想定時間: 15〜25分
 
-この手順では、`tmpose-kamishibai@4.0.0-rc.7`と公開rc.7 SB3を固定し、任意のDSL 4 projectを
+この手順では、`tmpose-kamishibai@4.0.0-rc.8`と公開rc.8 SB3を固定し、任意のDSL 4 projectを
 development-only local previewで実行します。正常稼働、タイトルversion、invalid保存時の診断、復旧を
 同じbrowser sessionで確認します。`tmpose-kamishibai-samples`は取得・build・変更しません。
 
-`4.0.0-rc.7`は公開済みのrelease candidateですが、安定版`4.0.0`ではありません。画面は作者向け
+`4.0.0-rc.8`は公開済みのrelease candidateですが、安定版`4.0.0`ではありません。画面は作者向け
 local previewであり、配布作品の通常再生画面とは役割が異なります。
 
 ## 完了すると確認できること
 
 - runtime、tag、公開SB3の同一性
 - immutable source generationが実TurboWarp runtimeで稼働していること
-- `Version 4.0.0-rc.7`がbase runtimeのタイトルへ反映されていること
+- `Version 4.0.0-rc.8`がbase runtimeのタイトルへ反映されていること
 - invalid candidateがcurrent integrityを置き換えないこと
 - source、runtime、port、live reload、asset transactionを結ぶ実装図
 
@@ -26,11 +26,11 @@ local previewであり、配布作品の通常再生画面とは役割が異な�
 
 | 項目             | 固定値                                                             |
 | ---------------- | ------------------------------------------------------------------ |
-| runtime tag      | `v4.0.0-rc.7`                                                      |
-| runtime commit   | `3a5f31d2519dfb2b9dab32b2c377762c774d5844`                         |
-| npm channel      | `@kubohiroya/tmpose-kamishibai@4.0.0-rc.7`（`next`）               |
-| 公開base SB3     | `kamishibai-4.0.0-rc.7.sb3`                                        |
-| base SB3 SHA-256 | `3ad25911b9255d51273b37f24fa0d056e6ec72418f314e97c743ad52300380f8` |
+| runtime tag      | `v4.0.0-rc.8`                                                      |
+| runtime commit   | `29c0deadcb98badf94a0244c479ca896dc71f842`                         |
+| npm channel      | `@kubohiroya/tmpose-kamishibai@4.0.0-rc.8`（`next`）               |
+| 公開base SB3     | `kamishibai-4.0.0-rc.8.sb3`                                        |
+| base SB3 SHA-256 | `91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041` |
 | browser surface  | Codex In-app Browser、1280×720 CSS px                              |
 
 ## 1. runtimeを固定する
@@ -40,20 +40,20 @@ Node.js 22.12.0以上とCorepackを使用します。既存checkoutを上書き�
 ```bash
 git clone https://github.com/kubohiroya/tmpose-kamishibai.git
 cd tmpose-kamishibai
-git switch --detach v4.0.0-rc.7
+git switch --detach v4.0.0-rc.8
 corepack pnpm install --frozen-lockfile
 git rev-parse HEAD
 node bin/tmpose-kamishibai.mjs --version
 ```
 
-最後の二行が固定commitと`4.0.0-rc.7`を返すことを確認します。
+最後の二行が固定commitと`4.0.0-rc.8`を返すことを確認します。
 
-公開SB3は[GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.7)または
+公開SB3は[GitHub prerelease](https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.8)または
 [Pagesのダウンロード画面](https://kubohiroya.github.io/tmpose-kamishibai/downloads/)から取得し、
 SHA-256を照合します。
 
 ```bash
-shasum -a 256 /path/to/kamishibai-4.0.0-rc.7.sb3
+shasum -a 256 /path/to/kamishibai-4.0.0-rc.8.sb3
 ```
 
 ## 2. 追試用projectを用意する
@@ -103,7 +103,7 @@ runtime generationのwire payloadへ含めません。正常時は`VALID: The cu
 
 ![rc.5 local previewでimmutable sourceがvalidかつrunning、reload statusがWatchingの状態](../images/dsl4-rc5-preview-running.png)
 
-_撮影時のrc.5実画面。2 scenes、4 actions、0 warnings、candidate integrityなしのcurrent generationを表示しています。操作位置の歴史的証跡として残し、rc.7のversion確認には使いません。_
+_撮影時のrc.5実画面。2 scenes、4 actions、0 warnings、candidate integrityなしのcurrent generationを表示しています。操作位置の歴史的証跡として残し、rc.8のversion確認には使いません。_
 
 舞台のタイトルにはbase runtimeのversionが表示されます。連絡先を含む下側は撮影範囲から外しています。
 
@@ -111,7 +111,7 @@ _撮影時のrc.5実画面。2 scenes、4 actions、0 warnings、candidate integ
 
 ## 4. invalid candidateと復旧を確認する
 
-追試用copyの`kamishibai: '4.0'`を一時的に`kamishibai: '4.1'`へ変えて保存します。rc.7 frontendは
+追試用copyの`kamishibai: '4.0'`を一時的に`kamishibai: '4.1'`へ変えて保存します。rc.8 frontendは
 `K4-VERSION-001: must be equal to constant`を表示し、reload statusを`Error`にします。
 
 ![version 4.1の一時candidateがK4-VERSION-001でinvalidとなったlocal preview](../images/dsl4-rc5-preview-diagnostic.png)
@@ -139,10 +139,10 @@ _撮影時のrc.5実画面。2 scenes、4 actions、0 warnings、candidate integ
 
 ## 完了チェック
 
-- [ ] runtime HEADが`3a5f31d2519dfb2b9dab32b2c377762c774d5844`
+- [ ] runtime HEADが`29c0deadcb98badf94a0244c479ca896dc71f842`
 - [ ] 公開base SB3のSHA-256が固定値と一致
 - [ ] 正常sourceで`VALID`、`Watching`を確認
-- [ ] タイトルで`Version 4.0.0-rc.7`を確認
+- [ ] タイトルで`Version 4.0.0-rc.8`を確認
 - [ ] invalid candidateで`K4-VERSION-001`とcurrent integrity維持を確認
 - [ ] `4.0`へ戻した後、同じsessionが正常状態へ復旧
 - [ ] 終了時にpreview commandを`Ctrl-C`で停止

@@ -3,14 +3,14 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 固定実装基準を説明する統合ガイド（正式リリース済みの意味ではない）\
-調査基準: tmpose-kamishibai `3a5f31d`（4.0.0-rc.7）、2026年8月16日
+調査基準: tmpose-kamishibai `29c0dea`（4.0.0-rc.8）、2026年8月20日
 
-> **配布状態との区別:** 2026年8月16日時点で`v4.0.0-rc.7`はprereleaseとして公開されていますが、
-> 正式な`v4.0.0`ではありません。本書の統合境界はrc.7固定実装を説明します。
+> **配布状態との区別:** 2026年8月20日時点で`v4.0.0-rc.8`はprereleaseとして公開されていますが、
+> 正式な`v4.0.0`ではありません。本書の統合境界はrc.8固定実装を説明します。
 
 このガイドは、TMPose紙芝居4.0のruntime capability、platform adapter、外部packageとの統合境界を
 保守する開発者向けの資料です。実装基準は`kubohiroya/tmpose-kamishibai`のcommit
-[`3a5f31d2519dfb2b9dab32b2c377762c774d5844`](https://github.com/kubohiroya/tmpose-kamishibai/tree/3a5f31d2519dfb2b9dab32b2c377762c774d5844)
+[`29c0deadcb98badf94a0244c479ca896dc71f842`](https://github.com/kubohiroya/tmpose-kamishibai/tree/29c0deadcb98badf94a0244c479ca896dc71f842)
 です。本書のpath、関数、package version、診断code、test名はこのcommitで確認しています。
 
 YAMLの記述方法は[紙芝居DSL 4.0 台本作成ガイド](../dsl-author-guides/dsl-4.0-author-guide.md)、
@@ -43,7 +43,7 @@ capabilityとplatform境界」を記録します。各providerが単体で公開
 
 ## 図版、source、licenseの境界
 
-本書では画像、editor capture、外部図版を新規使用しません。rc.7のStandard paletteには23個のcore action
+本書では画像、editor capture、外部図版を新規使用しません。rc.8のStandard paletteには23個のcore action
 blockがありますが、画面captureだけでは統合責務や失敗条件を検証できないためです。代わりに、固定commitの
 実装path、export関数、契約fixture、testを表で対応させます。
 
@@ -77,7 +77,7 @@ Browser Preview、CLI接続先browser、Production SB3へ届けますが、sourc
 | ------------------ | ------------------------------------------------ | --------------------------------------------- |
 | Asset Manager      | `@kubohiroya/turbowarp-asset-manager@0.11.0`     | asset byte、skin、sound、検証済みremote cache |
 | Async Input        | `@kubohiroya/turbowarp-async-input@0.4.0`        | scene遷移・skip用の候補選択                   |
-| Bubble             | `@kubohiroya/turbowarp-bubble@0.7.0`             | 吹き出し、折り返し、表示、音声、animation     |
+| Bubble             | `@kubohiroya/turbowarp-bubble@0.10.0`            | 吹き出し、折り返し、表示、音声、animation     |
 | Runtime Expression | `@kubohiroya/turbowarp-runtime-expression@0.4.0` | branch式の検証と評価                          |
 | SVG Text           | `@kubohiroya/turbowarp-svg-text@0.5.0`           | text actor、speech bubbleの描画               |
 | TMPose             | `@kubohiroya/turbowarp-tmpose@1.12.0`            | pose model、認識lifecycle、preview overlay    |
