@@ -1,15 +1,15 @@
 {
   "formatVersion": 1,
   "verifiedAt": "2026-08-20T21:32:15+09:00",
-  "documentIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/41",
-  "verificationIssue": "https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/122",
+  "documentIssue": "https://github.com/kubohiroya/tm-kamishibai-docs/issues/41",
+  "verificationIssue": "https://github.com/kubohiroya/tm-kamishibai-docs/issues/122",
   "releaseState": {
     "runtimeVersionLabel": "Version 4.0.0-rc.8 (2026/08/20)",
     "publishedPrerelease": "v4.0.0-rc.8",
     "publishedPrereleaseCommit": "29c0deadcb98badf94a0244c479ca896dc71f842",
-    "githubReleaseUrl": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.8",
+    "githubReleaseUrl": "https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.8",
     "npmUrl": "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.8",
-    "standardSb3Url": "https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.8.sb3",
+    "standardSb3Url": "https://kubohiroya.github.io/tm-kamishibai/downloads/kamishibai-4.0.0-rc.8.sb3",
     "standardSb3Size": 6749955,
     "standardSb3Sha256": "91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041",
     "formalGitHubReleasePublished": false,
@@ -18,9 +18,9 @@
     "sampleBaselineDiffersFromPublishedPrerelease": false
   },
   "samples": {
-    "repository": "kubohiroya/tmpose-kamishibai-samples",
+    "repository": "kubohiroya/tm-kamishibai-samples",
     "publicationCommit": "236fe4ac09e17aaaaa0fb0fd1f8ebdc173073c7f",
-    "publicationPullRequest": "https://github.com/kubohiroya/tmpose-kamishibai-samples/pull/126",
+    "publicationPullRequest": "https://github.com/kubohiroya/tm-kamishibai-samples/pull/126",
     "pagesDeploymentRun": 32368656029,
     "runtime": {
       "version": "4.0.0-rc.8",
@@ -30,10 +30,10 @@
       "standardSb3Sha256": "91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041"
     },
     "urashima": {
-      "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/",
-      "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/web-4.0/",
-      "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.k4.yml",
-      "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima-4.0.sb3",
+      "detailUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/",
+      "webUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/web-4.0/",
+      "yamlUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/urashima.k4.yml",
+      "sb3Url": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/urashima-4.0.sb3",
       "sb3": {
         "size": 34207986,
         "sha256": "968f7b6d5c4ac346c0f2e9bed15a416ad6fa8840faf1ed3debdcf3d20b848862"
@@ -46,8 +46,8 @@
       }
     },
     "myUrashima": {
-      "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/",
-      "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/web-4.0/",
+      "detailUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/my-urashima/",
+      "webUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/my-urashima/web-4.0/",
       "sb3": {
         "size": 16095563,
         "sha256": "1f4343ec508c3bfdabaecfd026051c6fb94ba0ed0ba899916c3a3e989e13a187"
@@ -64,13 +64,13 @@
       "version": "4.0.0-rc.8",
       "status": "published",
       "sourceIdentity": "f8ba10c370618505ee7b6801457a0676d5f2e154a19a2ac56a52d3b2350bb74e",
-      "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
-      "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
-      "yamlUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
-      "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-4.0.sb3",
-      "starterUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
-      "additionKitUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
-      "manifestUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json",
+      "detailUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/",
+      "webUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/web-4.0/",
+      "yamlUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
+      "sb3Url": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/tutorial-4.0.sb3",
+      "starterUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
+      "additionKitUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
+      "manifestUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/public-surfaces.json",
       "license": "MPL-2.0",
       "source": {
         "size": 2174,
@@ -100,7 +100,7 @@
     "verifiedOn": "2026-08-20",
     "camera": "passed",
     "pose": "passed",
-    "evidenceUrl": "https://github.com/kubohiroya/tmpose-kamishibai/issues/510#issuecomment-5255177777",
+    "evidenceUrl": "https://github.com/kubohiroya/tm-kamishibai/issues/510#issuecomment-5255177777",
     "appliesToRuntimeVersion": "4.0.0-rc.8",
     "appliesToPublishedPrerelease": true,
     "rc8Verification": "previous-camera-context-measurement; recognition-and-overlay-browser-verified"

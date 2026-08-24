@@ -201,7 +201,7 @@ function rewriteMarkdownLinks(source, document, htmlPath) {
     }
 
     const repositoryPath = path.relative(projectRoot, targetSourcePath).split(path.sep).join('/');
-    return `href="https://github.com/kubohiroya/tmpose-kamishibai-docs/blob/main/${repositoryPath}${hash}"`;
+    return `href="https://github.com/kubohiroya/tm-kamishibai-docs/blob/main/${repositoryPath}${hash}"`;
   });
 }
 
@@ -270,8 +270,8 @@ async function writeStaticSiteHtml(sourcePath, outputPath) {
   const relativePath = path.relative(distRoot, outputPath).split(path.sep).join('/');
   const pathname =
     relativePath === 'index.html'
-      ? '/tmpose-kamishibai-docs/'
-      : `/tmpose-kamishibai-docs/${relativePath.replace(/(?:index\.html)?$/u, '')}`;
+      ? '/tm-kamishibai-docs/'
+      : `/tm-kamishibai-docs/${relativePath.replace(/(?:index\.html)?$/u, '')}`;
   await writeFileIfChanged(outputPath, injectSiteAppBar(source, assetBase, {pathname}));
 }
 

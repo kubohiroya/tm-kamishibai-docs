@@ -13,14 +13,14 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 [台本作成ガイド](../dsl-author-guides/dsl-4.0-author-guide.md)へ進んでください。本書で使う内部用語は、先に
 [内部仕様書の用語表](internal-specification-4.0.md#terminology)で確認できます。
 
-このガイドは、TMPose紙芝居のDSL 4.0 source frontend、runtime、platform adapter、preview、build、
+このガイドは、TM紙芝居のDSL 4.0 source frontend、runtime、platform adapter、preview、build、
 releaseを変更・検証・公開するソフトウェア開発者向けの作業資料です。対象となる実装基準は
-`kubohiroya/tmpose-kamishibai`のcommit
-[`29c0deadcb98badf94a0244c479ca896dc71f842`](https://github.com/kubohiroya/tmpose-kamishibai/tree/29c0deadcb98badf94a0244c479ca896dc71f842)
+`kubohiroya/tm-kamishibai`のcommit
+[`29c0deadcb98badf94a0244c479ca896dc71f842`](https://github.com/kubohiroya/tm-kamishibai/tree/29c0deadcb98badf94a0244c479ca896dc71f842)
 です。本書中のpath、command、artifact名は、このcommitで確認しています。
 
-本書では、`kubohiroya/tmpose-kamishibai`を「本体リポジトリ」、
-`kubohiroya/tmpose-kamishibai-docs`を「文書リポジトリ」と呼びます。DSLのfieldとactionを調べる場合は
+本書では、`kubohiroya/tm-kamishibai`を「本体リポジトリ」、
+`kubohiroya/tm-kamishibai-docs`を「文書リポジトリ」と呼びます。DSLのfieldとactionを調べる場合は
 [紙芝居DSL 4.0 Schemaリファレンス](../dsl-author-guides/dsl-4.0-schema-reference.md)、作品の配置と記述方法を
 調べる場合は[紙芝居DSL 4.0 台本作成ガイド](../dsl-author-guides/dsl-4.0-author-guide.md)を参照してください。
 

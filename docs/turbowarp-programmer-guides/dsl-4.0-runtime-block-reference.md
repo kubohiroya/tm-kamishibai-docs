@@ -9,7 +9,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 実装基準: annotated tag `v4.0.0-rc.8`のcommit `29c0dea`
 
 この一覧は4.0の正式リリースまたは将来版で同じblock構成を保証するものではありません。利用前に
-[公開元](https://github.com/kubohiroya/tmpose-kamishibai/releases)のversionとrelease noteを確認してください。
+[公開元](https://github.com/kubohiroya/tm-kamishibai/releases)のversionとrelease noteを確認してください。
 
 DSL 4.0のSB3には、紙芝居ランタイムと6つの機能拡張が、一つの静的な機能拡張bundleとして入っています。
 TurboWarp Editorでは一つのパレットに見えますが、見出し、アイコン、名前空間、ドキュメントボタンによって
@@ -28,7 +28,7 @@ TurboWarp Editorでは一つのパレットに見えますが、見出し、ア�
 
 | 由来                       | version    | member ID                      | docsURI                                                                                                                                |
 | -------------------------- | ---------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Kamishibai DSL 4.0 Runtime | 4.0.0-rc.8 | `kubohiroyakamishibairuntime4` | [本リファレンス](https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/) |
+| Kamishibai DSL 4.0 Runtime | 4.0.0-rc.8 | `kubohiroyakamishibairuntime4` | [本リファレンス](https://kubohiroya.github.io/tm-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/) |
 | Asset Manager              | 0.11.0     | `kubohiroyaassetmanager`       | [Asset Manager](https://kubohiroya.github.io/turbowarp-asset-manager/)                                                                 |
 | Async Input                | 0.4.0      | `kubohiroyaasyncinput`         | [Async Input](https://kubohiroya.github.io/turbowarp-async-input/)                                                                     |
 | Bubble                     | 0.10.0     | `kubohiroyabubble`             | [Bubble](https://kubohiroya.github.io/turbowarp-bubble/)                                                                               |
@@ -100,7 +100,7 @@ Stage変数、sprite変数、Temporary Variables、上記2つのポーズfeedbac
 追加surfaceは実装済みですが既定OFFであり、4.0.0-rc.8の現行公開APIではありません。
 
 一覧はtag `v4.0.0-rc.8`の公開SB3と
-[`scratch-pose-feedback-adapter.js`](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/src/dsl4/platform/scratch-pose-feedback-adapter.js)に基づきます。
+[`scratch-pose-feedback-adapter.js`](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/src/dsl4/platform/scratch-pose-feedback-adapter.js)に基づきます。
 
 ## Kamishibai DSL 4.0 Runtime（23ブロック）
 

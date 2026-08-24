@@ -7,7 +7,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 文書状態: 固定実装基準を説明する変換ガイド（正式リリースの操作資料ではない）\
 調査基準: tmpose-kamishibai `29c0dea`（4.0.0-rc.8）、2026年8月20日
 
-このガイドは、すでに3.1／3.2の台本を持っている方のための移行手順です。初めてTMPose紙芝居を使う方や、
+このガイドは、すでに3.1／3.2の台本を持っている方のための移行手順です。初めてTM紙芝居を使う方や、
 4.0で最初の作品を作る方は、先に[大人向け概要](../user-guides/executive-summary-adult-4.0.md)と
 [「紙芝居を作る」チュートリアル](../tutorials/create.md)をお読みください。
 
@@ -140,7 +140,7 @@ converterは、次の構造をDSL 4.0に対応する形へ変換します。
 - 旧DSLに秒数指定がないtransitionを0秒として明示した場合
 
 対応表と各診断の分類は、実装リポジトリの
-[DSL 3.1／3.2からDSL 4.0への移行仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/283daadeffa5d11ab4510daa66f60168277dafea/docs/design/dsl-4-migration.md)を
+[DSL 3.1／3.2からDSL 4.0への移行仕様](https://github.com/kubohiroya/tm-kamishibai/blob/283daadeffa5d11ab4510daa66f60168277dafea/docs/design/dsl-4-migration.md)を
 参照してください。
 
 ## 自動変換を停止する入力
@@ -155,7 +155,7 @@ converterは、次の構造をDSL 4.0に対応する形へ変換します。
 - scene内の`setRuntimeVariable`、1以外の`startSceneIndex`
 - 非zeroの`poseIdle`、独自action、不正なarity、曖昧なcolon区切り
 
-旧Text Assetは、[DSL 4.0移行仕様の手動移行例](https://github.com/kubohiroya/tmpose-kamishibai/blob/283daadeffa5d11ab4510daa66f60168277dafea/docs/design/dsl-4-migration.md#5-%E6%97%A7text-asset%E3%81%8B%E3%82%89svg-text%E3%81%B8%E3%81%AE%E6%89%8B%E5%8B%95%E7%A7%BB%E8%A1%8C)に
+旧Text Assetは、[DSL 4.0移行仕様の手動移行例](https://github.com/kubohiroya/tm-kamishibai/blob/283daadeffa5d11ab4510daa66f60168277dafea/docs/design/dsl-4-migration.md#5-%E6%97%A7text-asset%E3%81%8B%E3%82%89svg-text%E3%81%B8%E3%81%AE%E6%89%8B%E5%8B%95%E7%A7%BB%E8%A1%8C)に
 従ってSVG Text actorへ移します。custom Scratch blockやSB3のblock graphは入力台本から推測せず、
 converterもblockを生成・変更しません。
 
@@ -221,5 +221,5 @@ if (result.ok) {
 
 - [紙芝居DSL 4.0 台本作成ガイド](dsl-4.0-author-guide.md): 変換後のproject配置、preview、build、実行確認
 - [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): field、型、remote assetを含む制約
-- [DSL 3.1／3.2からDSL 4.0への移行仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/283daadeffa5d11ab4510daa66f60168277dafea/docs/design/dsl-4-migration.md): 対応表、診断分類、rollback境界
-- [`convert-dsl4`実装Issue #276](https://github.com/kubohiroya/tmpose-kamishibai/issues/276): CLIとpure APIの受け入れ条件
+- [DSL 3.1／3.2からDSL 4.0への移行仕様](https://github.com/kubohiroya/tm-kamishibai/blob/283daadeffa5d11ab4510daa66f60168277dafea/docs/design/dsl-4-migration.md): 対応表、診断分類、rollback境界
+- [`convert-dsl4`実装Issue #276](https://github.com/kubohiroya/tm-kamishibai/issues/276): CLIとpure APIの受け入れ条件

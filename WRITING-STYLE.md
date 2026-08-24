@@ -1,4 +1,4 @@
-# TMPose紙芝居ドキュメント表記ガイド
+# TM紙芝居ドキュメント表記ガイド
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 

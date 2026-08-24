@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 公開プレリリース`4.0.0-rc.8`の再現・公開照合・追加smoke手順<br />
-対象Issue: [tmpose-kamishibai-docs #47](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/47)、[#169](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/169)
+対象Issue: [tm-kamishibai-docs #47](https://github.com/kubohiroya/tm-kamishibai-docs/issues/47)、[#169](https://github.com/kubohiroya/tm-kamishibai-docs/issues/169)
 
 本書はリリース担当者向けで、一般的な動作確認を説明する文書ではありません。一般的な使い方は
 [大人向け概要](../user-guides/executive-summary-adult-4.0.md)、実装の責務は
@@ -29,14 +29,14 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | version            | `4.0.0-rc.8`                                                                         |
 | release source     | tag `v4.0.0-rc.8`（現行branchへ展開copyを保持しない）                                |
 | source identity    | `sha256:8edbc02a06b3770cce0a89cf658367df129d974d53f401258b69f0713762014a`            |
-| Schema SHA-256     | `54b851cb1d4f28caefbdd8f95032c52e8e8fbf5ac68ae313e5a70753e2624878`                   |
+| Schema SHA-256     | `46ff159c29e13704d707dae8e0d2ad3a146b6aa8a68a968614e6ef56d112f135`                   |
 | Standard SB3       | 6,749,955 bytes / `91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041` |
 | npm tarball        | 6,492,990 bytes / `a7b91378e6345c530515cc4e8f82314c3c5f2a19d3e136de5e4fe8bff8d24c5e` |
 
 固定commitを取得します。
 
 ```bash
-git clone https://github.com/kubohiroya/tmpose-kamishibai.git
+git clone https://github.com/kubohiroya/tm-kamishibai.git
 git -C tmpose-kamishibai checkout --detach 29c0deadcb98badf94a0244c479ca896dc71f842
 git -C tmpose-kamishibai status --short
 ```
@@ -66,7 +66,7 @@ shasum -a 256 dist/downloads/kamishibai-4.0.0-rc.8.sb3
 ```
 
 candidate PRの`pnpm verify:full`はNode系test 1,161件、Chromium test 13件を通過しました。
-[GitHub Actionsの記録](https://github.com/kubohiroya/tmpose-kamishibai/actions/runs/32361658847/job/96402336784)を
+[GitHub Actionsの記録](https://github.com/kubohiroya/tm-kamishibai/actions/runs/32361658847/job/96402336784)を
 一次証跡とします。
 
 ## 公開物を照合する
@@ -75,7 +75,7 @@ candidate PRの`pnpm verify:full`はNode系test 1,161件、Chromium test 13件�
 
 ```bash
 curl -fL \
-  https://github.com/kubohiroya/tmpose-kamishibai/releases/download/v4.0.0-rc.8/kamishibai-4.0.0-rc.8.sb3 \
+  https://github.com/kubohiroya/tm-kamishibai/releases/download/v4.0.0-rc.8/kamishibai-4.0.0-rc.8.sb3 \
   -o kamishibai-4.0.0-rc.8.sb3
 shasum -a 256 kamishibai-4.0.0-rc.8.sb3
 
@@ -126,7 +126,7 @@ socket／watcher／timer解放を確認します。
 
 ## 実カメラ・実ポーズ
 
-camera contextの責務境界は[Issue #601](https://github.com/kubohiroya/tmpose-kamishibai/issues/601)で
+camera contextの責務境界は[Issue #601](https://github.com/kubohiroya/tm-kamishibai/issues/601)で
 Chrome 151と物理cameraを使って測定しました。実際と同じ1 draw／1 read経路では`willReadFrequently`に
 再現性のある高速化がなく、WebGLでは全条件で悪化したため、TMPose 1.12.0は通常contextを使用します。
 CPU推論時にChromiumのreadback警告が1回出る場合がありますが、警告抑制だけを目的に成果物を書き換えません。

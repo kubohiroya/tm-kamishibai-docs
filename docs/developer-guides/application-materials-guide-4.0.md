@@ -1,4 +1,4 @@
-# TMPose紙芝居 4.0 アプリ・教材・ツールチェインガイド
+# TM紙芝居 4.0 アプリ・教材・ツールチェインガイド
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
@@ -43,7 +43,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="application-page-label">1 / 8　アプリと制作の全体像</p>
 
-TMPose紙芝居4.0は、台本と画像・音声・ポーズ用データを読み込み、見る人がキー、タッチ、ポーズで
+TM紙芝居4.0は、台本と画像・音声・ポーズ用データを読み込み、見る人がキー、タッチ、ポーズで
 参加できるデジタル紙芝居です。作品を作るときは、台本と素材を作品フォルダーへまとめ、内容を検査し、
 ブラウザーで動きを確かめてから、配布用の一つのファイルへまとめます。
 

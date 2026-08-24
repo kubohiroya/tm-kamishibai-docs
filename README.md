@@ -1,6 +1,6 @@
-# TMPose紙芝居ドキュメント
+# TM紙芝居ドキュメント
 
-このリポジトリは、[TMPose紙芝居](https://github.com/kubohiroya/tmpose-kamishibai)の
+このリポジトリは、[TM紙芝居](https://github.com/kubohiroya/tm-kamishibai)の
 一般文書、紙芝居DSL作成者向け文書、開発者向け文書、体験会資料を管理し、
 独立したGitHub Pagesとして公開するためのリポジトリです。
 
@@ -13,11 +13,11 @@
 ## 公開サイトの役割
 
 - `tmpose-kamishibai`: アプリ本体と、アプリ・文書・サンプルへ移動する公開入口
-- `tmpose-kamishibai-docs`: 全文書のHTMLとVivliostyle Viewer、体験会資料のPDF
-- `tmpose-kamishibai-samples`: サンプル台本と実行可能な作品
+- `tm-kamishibai-docs`: 全文書のHTMLとVivliostyle Viewer、体験会資料のPDF
+- `tm-kamishibai-samples`: サンプル台本と実行可能な作品
 
-公開入口は `https://kubohiroya.github.io/tmpose-kamishibai/` に固定します。
-このリポジトリのPagesは `https://kubohiroya.github.io/tmpose-kamishibai-docs/` を予定しています。
+公開入口は `https://kubohiroya.github.io/tm-kamishibai/` に固定します。
+このリポジトリのPagesは `https://kubohiroya.github.io/tm-kamishibai-docs/` を予定しています。
 
 ドキュメントサイトの公開rootは版選択バナーだけを表示します。ワークショップ、サンプル、
 ダウンロードへの共通導線はAppBarと公式トップで提供し、版固有の文書一覧は混在させず、
@@ -54,7 +54,7 @@ rc.5 Standard SB3の作者経路と、rc.3サンプルの再生経路を文書�
 AppBarへ独立項目は追加せず、既存の「ドキュメント」を現在地にします。
 
 本文の用語、コード表記、固有概念の初出説明、図表の使い分けは
-[TMPose紙芝居ドキュメント表記ガイド](WRITING-STYLE.md)に従います。
+[TM紙芝居ドキュメント表記ガイド](WRITING-STYLE.md)に従います。
 DSL 4.0の固定実装、正式リリース、公開画面、文書状態の区別は
 [DSL 4.0 文書・公開状態の表記基準](DSL4-PUBLICATION-STATUS.md)で管理します。
 概念図の通常HTML、狭幅、印刷、フラグメントの確認結果は
@@ -114,7 +114,7 @@ DSL 4.0と同じ生成方式へ擬似的に統一したりはしません。
 共有します。ViewerとPDFでは統合HTMLをreading orderへ入れず、参加者向けの表紙・目次・本文と、
 スタッフ向けの本文だけという既存の組版単位を維持します。
 
-「TMPose紙芝居 アプリ・教材・ツールチェインガイド」も3.2版と4.0版を別のMarkdownとして保守し、
+「TM紙芝居 アプリ・教材・ツールチェインガイド」も3.2版と4.0版を別のMarkdownとして保守し、
 それぞれに通常HTML版とVivliostyle Viewer版を用意します。3.2版は`/3.2/`、4.0版は`/4.0/`以下の
 独立した開発者向けpublicationとして提供し、以前のversion番号なしURLには移転案内を残します。
 
@@ -153,9 +153,9 @@ pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>
 再生成します。生成Markdownは直接編集せず、日本語の説明、掲載順、例は
 [`sources/dsl4/annotations.ja.json`](sources/dsl4/annotations.ja.json)で変更します。
 
-準備は[Issue #1](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/1)、
-本文移設は[Issue #3](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/3)、
-残存文書と生成機構の移設は[Issue #5](https://github.com/kubohiroya/tmpose-kamishibai-docs/issues/5)で管理します。
+準備は[Issue #1](https://github.com/kubohiroya/tm-kamishibai-docs/issues/1)、
+本文移設は[Issue #3](https://github.com/kubohiroya/tm-kamishibai-docs/issues/3)、
+残存文書と生成機構の移設は[Issue #5](https://github.com/kubohiroya/tm-kamishibai-docs/issues/5)で管理します。
 
 ## ライセンス
 

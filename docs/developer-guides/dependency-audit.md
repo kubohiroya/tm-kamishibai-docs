@@ -1,4 +1,4 @@
-# TMPose紙芝居 3.2 依存関係監査記録
+# TM紙芝居 3.2 依存関係監査記録
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
@@ -7,7 +7,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 > この記録は、2026-08-03時点の`tmpose-kamishibai`本体リポジトリを対象にした監査結果です。
 > 2026-08-04のリポジトリ分離で、Vivliostyle、rubygana、文書build用overrideは
-> `tmpose-kamishibai-docs`へ移されました。本体にはSB3、VM、builderに必要な依存だけを残します。
+> `tm-kamishibai-docs`へ移されました。本体にはSB3、VM、builderに必要な依存だけを残します。
 
 ## 監査基準
 

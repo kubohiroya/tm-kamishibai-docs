@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="TMPose紙芝居4.0を初めて知る方、作品を作る方、開発する方のための案内"
+      content="TM紙芝居4.0を初めて知る方、作品を作る方、開発する方のための案内"
     />
-    <title>TMPose紙芝居 4.0 ドキュメント</title>
+    <title>TM紙芝居 4.0 ドキュメント</title>
     <link rel="icon" type="image/png" sizes="256x256" href="../favicon.png" />
     <link rel="stylesheet" href="../site-shell.css" />
     <link rel="stylesheet" href="../document-index.css" />
@@ -17,43 +17,41 @@
     <a class="skip-link" href="#main-content">本文へ移動</a>
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="site-brand" href="https://kubohiroya.github.io/tmpose-kamishibai/">
+        <a class="site-brand" href="https://kubohiroya.github.io/tm-kamishibai/">
           <img class="site-brand__symbol" src="../favicon.png" width="40" height="40" alt="" />
-          <span>TMPose紙芝居</span>
+          <span>TM紙芝居</span>
         </a>
         <nav
           class="site-nav"
           aria-label="サイトナビゲーション"
           data-navigation-contract-version="1.0.0"
         >
-          <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/"
-            >トップ</a
-          >
+          <a class="site-nav__link" href="https://kubohiroya.github.io/tm-kamishibai/">トップ</a>
           <a
             class="site-nav__link"
-            href="https://kubohiroya.github.io/tmpose-kamishibai-docs/"
+            href="https://kubohiroya.github.io/tm-kamishibai-docs/"
             aria-current="page"
             >ドキュメント</a
           >
           <a
             class="site-nav__link"
-            href="https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/"
+            href="https://kubohiroya.github.io/tm-kamishibai-docs/workshops/"
             >ワークショップ</a
           >
-          <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/"
+          <a class="site-nav__link" href="https://kubohiroya.github.io/tm-kamishibai-samples/"
             >作品</a
           >
-          <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/downloads/"
+          <a class="site-nav__link" href="https://kubohiroya.github.io/tm-kamishibai/downloads/"
             >ダウンロード</a
           >
         </nav>
         <a
           class="site-repository"
-          href="https://github.com/kubohiroya/tmpose-kamishibai-docs"
+          href="https://github.com/kubohiroya/tm-kamishibai-docs"
           target="_blank"
           rel="noopener"
-          aria-label="tmpose-kamishibai-docsをGitHubで開く"
-          title="tmpose-kamishibai-docsをGitHubで開く"
+          aria-label="tm-kamishibai-docsをGitHubで開く"
+          title="tm-kamishibai-docsをGitHubで開く"
         >
           <svg class="site-repository__icon" viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -71,9 +69,9 @@
       </nav>
       <header class="page-intro">
         <p class="page-kicker">見る・参加する・作る</p>
-        <h1>TMPose紙芝居 4.0 ドキュメント</h1>
+        <h1>TM紙芝居 4.0 ドキュメント</h1>
         <p class="version-summary">
-          TMPose紙芝居4.0について、初めて知る方、作品を作る方、開発する方を、目的に合う文書へ案内します。
+          TM紙芝居4.0について、初めて知る方、作品を作る方、開発する方を、目的に合う文書へ案内します。
         </p>
       </header>
       <section class="release-status" aria-labelledby="release-status-title">
@@ -86,13 +84,12 @@
           >から始めてください。
         </p>
         <p>
-          <a
-            href="https://kubohiroya.github.io/tmpose-kamishibai/downloads/kamishibai-4.0.0-rc.8.sb3"
+          <a href="https://kubohiroya.github.io/tm-kamishibai/downloads/kamishibai-4.0.0-rc.8.sb3"
             >4.0.0-rc.8のSB3</a
           >と
           <a href="https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.8"
             >npmパッケージ</a
-          >、<a href="https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.8"
+          >、<a href="https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.8"
             >リリースノート</a
           >は検証用のリリース候補です。安定版<code>4.0.0</code>はまだ未公開で、現在の最新安定版は
           <code>v3.2.3</code>です。版ごとの記録が必要な開発・リリース担当者は、
@@ -182,14 +179,14 @@
         <div class="cards">
           <article>
             <h3><span aria-hidden="true">🎮</span> 紙芝居を遊ぶ</h3>
-            <p class="audience">初めてTMPose紙芝居を再生する方</p>
+            <p class="audience">初めてTM紙芝居を再生する方</p>
             <p class="document-updated">更新日: <time datetime="2026-08-20">2026年8月20日</time></p>
             <p>公開サンプルを開き、ポーズを使って物語を最後まで進める手順を説明します。</p>
             <div class="actions">
               <a class="button" href="tutorials/play/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/tutorials/play/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/tutorials/play/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -201,13 +198,13 @@
             <p class="audience">初めての方・保護者・教員・教材作成者・運営者</p>
             <p class="document-updated">更新日: <time datetime="2026-08-20">2026年8月20日</time></p>
             <p>
-              TMPose紙芝居4.0でできること、遊ぶ・作る流れ、人とAIの役割、カメラを使う際の安全、教育利用を初めての方向けに説明します。
+              TM紙芝居4.0でできること、遊ぶ・作る流れ、人とAIの役割、カメラを使う際の安全、教育利用を初めての方向けに説明します。
             </p>
             <div class="actions">
               <a class="button" href="user-guides/executive-summary-adult-4.0/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/user-guides/executive-summary-adult-4.0/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/user-guides/executive-summary-adult-4.0/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -219,13 +216,13 @@
             <p class="audience">子供・初めての方</p>
             <p class="document-updated">更新日: <time datetime="2026-08-20">2026年8月20日</time></p>
             <p>
-              TMPose紙芝居4.0で「見る・動く・作る」方法と、カメラ、個人情報、まわりの安全、困ったときの行動をやさしい言葉で説明します。
+              TM紙芝居4.0で「見る・動く・作る」方法と、カメラ、個人情報、まわりの安全、困ったときの行動をやさしい言葉で説明します。
             </p>
             <div class="actions">
               <a class="button" href="user-guides/executive-summary-kids-4.0/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/user-guides/executive-summary-kids-4.0/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/user-guides/executive-summary-kids-4.0/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -243,7 +240,7 @@
               <a class="button" href="user-guides/user-guide-4.0/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/user-guides/user-guide-4.0/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/user-guides/user-guide-4.0/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -264,7 +261,7 @@
               <a class="button" href="tutorials/create/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/tutorials/create/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/tutorials/create/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -282,7 +279,7 @@
               <a class="button" href="dsl-author-guides/dsl-4.0-author-guide/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/dsl-author-guides/dsl-4.0-author-guide/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/dsl-author-guides/dsl-4.0-author-guide/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -301,7 +298,7 @@
               <a class="button" href="dsl-author-guides/dsl-4.0-runtime-variable-guide/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/dsl-author-guides/dsl-4.0-runtime-variable-guide/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/dsl-author-guides/dsl-4.0-runtime-variable-guide/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -319,7 +316,7 @@
               <a class="button" href="dsl-author-guides/dsl-4.0-schema-reference/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/dsl-author-guides/dsl-4.0-schema-reference/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/dsl-author-guides/dsl-4.0-schema-reference/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -337,7 +334,7 @@
               <a class="button" href="dsl-author-guides/dsl-4.0-history/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/dsl-author-guides/dsl-4.0-history/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/dsl-author-guides/dsl-4.0-history/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -355,7 +352,7 @@
               <a class="button" href="dsl-author-guides/dsl-3.2-to-4.0-conversion-guide/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/dsl-author-guides/dsl-3.2-to-4.0-conversion-guide/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/dsl-author-guides/dsl-3.2-to-4.0-conversion-guide/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -383,7 +380,7 @@
               <a class="button" href="turbowarp-programmer-guides/dsl-4.0-turbowarp-broadcast-guide/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-turbowarp-broadcast-guide/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-turbowarp-broadcast-guide/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -402,7 +399,7 @@
               <a class="button" href="turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-block-reference/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -423,7 +420,7 @@
               <a class="button" href="turbowarp-programmer-guides/dsl-4.0-runtime-variable-turbowarp-reference/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-variable-turbowarp-reference/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/turbowarp-programmer-guides/dsl-4.0-runtime-variable-turbowarp-reference/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -437,7 +434,7 @@
         <div class="cards">
           <article>
             <h3>
-              <span aria-hidden="true">🎬</span> TMPose紙芝居 4.0 アプリ・教材・ツールチェインガイド
+              <span aria-hidden="true">🎬</span> TM紙芝居 4.0 アプリ・教材・ツールチェインガイド
             </h3>
             <p class="audience">
               教材・ワークショップ設計者、制作環境担当者、プレビュー／ビルド確認者
@@ -450,7 +447,7 @@
               <a class="button" href="developer-guides/application-materials-guide-4.0/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/developer-guides/application-materials-guide-4.0/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/developer-guides/application-materials-guide-4.0/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -461,7 +458,7 @@
             <h3>
               <span aria-hidden="true">🛠️</span> 紙芝居アプリ 4.0 ソフトウェアメンテナンスガイド
             </h3>
-            <p class="audience">TMPose紙芝居4.0の実装と公開手順を保守する開発者</p>
+            <p class="audience">TM紙芝居4.0の実装と公開手順を保守する開発者</p>
             <p class="document-updated">更新日: <time datetime="2026-08-20">2026年8月20日</time></p>
             <p>
               実装の変更箇所とテスト、開発環境、プレビュー、完成ファイル、公開、切り戻しの手順を案内します。
@@ -470,7 +467,7 @@
               <a class="button" href="developer-guides/developer-guide-4.0/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/developer-guides/developer-guide-4.0/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/developer-guides/developer-guide-4.0/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -488,7 +485,7 @@
               <a class="button" href="developer-guides/release-smoke-4.0/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/developer-guides/release-smoke-4.0/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/developer-guides/release-smoke-4.0/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -497,7 +494,7 @@
           </article>
           <article>
             <h3><span aria-hidden="true">⚙️</span> 紙芝居アプリ 4.0 内部仕様書</h3>
-            <p class="audience">TMPose紙芝居4.0の実装を調査・変更する方</p>
+            <p class="audience">TM紙芝居4.0の実装を調査・変更する方</p>
             <p class="document-updated">更新日: <time datetime="2026-08-20">2026年8月20日</time></p>
             <p>
               台本の読み込みから実行環境までの内部構造、責任分担、状態の切り替えを、用語表と実装経路に対応させて記録します。
@@ -506,7 +503,7 @@
               <a class="button" href="developer-guides/internal-specification-4.0/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/developer-guides/internal-specification-4.0/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/developer-guides/internal-specification-4.0/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -515,10 +512,9 @@
           </article>
           <article>
             <h3>
-              <span aria-hidden="true">🧩</span> TMPose紙芝居 4.0
-              機能拡張・プラットフォーム統合ガイド
+              <span aria-hidden="true">🧩</span> TM紙芝居 4.0 機能拡張・プラットフォーム統合ガイド
             </h3>
-            <p class="audience">TMPose紙芝居4.0と外部機能の接続を調査・変更する開発者</p>
+            <p class="audience">TM紙芝居4.0と外部機能の接続を調査・変更する開発者</p>
             <p class="document-updated">更新日: <time datetime="2026-08-20">2026年8月20日</time></p>
             <p>
               実行部分と外部機能の責任分担、利用環境ごとの違い、権限、失敗時の代替動作、配布境界を説明します。
@@ -527,7 +523,7 @@
               <a class="button" href="developer-guides/extension-guide-4.0/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/developer-guides/extension-guide-4.0/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/developer-guides/extension-guide-4.0/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -545,7 +541,7 @@
               <a class="button" href="developer-guides/dsl-4.0-diagnostics-design/">HTML</a>
               <a
                 class="button secondary"
-                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tmpose-kamishibai-docs/4.0/developer-guides/dsl-4.0-diagnostics-design/publication.json&amp;bookMode=true"
+                href="https://vivliostyle.org/viewer/#src=https://kubohiroya.github.io/tm-kamishibai-docs/4.0/developer-guides/dsl-4.0-diagnostics-design/publication.json&amp;bookMode=true"
                 target="_blank"
                 rel="noopener"
                 >Vivliostyle Viewer</a
@@ -557,16 +553,16 @@
     </main>
     <footer class="site-footer" data-site-footer-version="1">
       <div class="site-footer__inner">
-        <a class="site-footer__brand" href="https://kubohiroya.github.io/tmpose-kamishibai/">
+        <a class="site-footer__brand" href="https://kubohiroya.github.io/tm-kamishibai/">
           <img class="site-footer__symbol" src="../favicon.png" width="36" height="36" alt="" />
-          <span>TMPose紙芝居</span>
+          <span>TM紙芝居</span>
         </a>
         <div class="site-footer__legal">
           <p>© 2026 Hiroya Kubo</p>
           <p class="site-footer__notice">各文書・作品・素材には個別の利用条件が適用されます。</p>
           <a
             class="site-footer__rights"
-            href="https://kubohiroya.github.io/tmpose-kamishibai-docs/licenses/"
+            href="https://kubohiroya.github.io/tm-kamishibai-docs/licenses/"
             >ライセンス・権利表示</a
           >
         </div>

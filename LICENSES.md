@@ -73,7 +73,7 @@ CC BY-SA 4.0を適用します。
 
 ## MPL-2.0の上流Schema snapshot
 
-`sources/dsl4/dsl-4.schema.json`は、`kubohiroya/tmpose-kamishibai`から固定したMPL-2.0の
+`sources/dsl4/dsl-4.schema.json`は、`kubohiroya/tm-kamishibai`から固定したMPL-2.0の
 Schema snapshotです。上流repository、commit、SHA-256、source URLは
 `sources/dsl4/source-lock.json`に記録します。日本語Annotationと、両者から生成した
 `docs/dsl-author-guides/dsl-4.0-schema-reference.md`は前記のCC BY-SA 4.0区分です。

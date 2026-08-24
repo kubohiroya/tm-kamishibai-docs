@@ -101,7 +101,7 @@ TurboWarp紙芝居アプリ／Web版
 
 ## `urashima.txt` の位置づけ
 
-公開中の[`urashima.txt`](https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.txt)は、浦島太郎を題材にしたサンプル台本です。[浦島太郎の公開ページ](https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/)では、Web版、再生用SB3、編集用SB3も利用できます。次の要素を含んでいるため、教材・デモ・テンプレートとして有用です。
+公開中の[`urashima.txt`](https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/urashima.txt)は、浦島太郎を題材にしたサンプル台本です。[浦島太郎の公開ページ](https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/)では、Web版、再生用SB3、編集用SB3も利用できます。次の要素を含んでいるため、教材・デモ・テンプレートとして有用です。
 
 - 背景画像の切り替え
 - 複数キャラクターの表示

@@ -115,17 +115,17 @@ builder、TurboWarp runtime surface、browser／CLI previewを含むend-to-end�
 ### 実装根拠を確認する場合
 
 仕様の正本は、tmpose-kamishibaiリポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/schema/dsl-4.schema.json)です。
-camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tmpose-kamishibai/issues/388)、
-ポーズoverlayは[Issue #624](https://github.com/kubohiroya/tmpose-kamishibai/issues/624)、
-`bubbleStyles`は[Issue #476](https://github.com/kubohiroya/tmpose-kamishibai/issues/476)以降、
-`Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tmpose-kamishibai/issues/398)、
-`Actor.setTransparency`は[Issue #406](https://github.com/kubohiroya/tmpose-kamishibai/issues/406)、
-include文の複数ファイル対応は[Issue #417](https://github.com/kubohiroya/tmpose-kamishibai/issues/417)から
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/schema/dsl-4.schema.json)です。
+camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tm-kamishibai/issues/388)、
+ポーズoverlayは[Issue #624](https://github.com/kubohiroya/tm-kamishibai/issues/624)、
+`bubbleStyles`は[Issue #476](https://github.com/kubohiroya/tm-kamishibai/issues/476)以降、
+`Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tm-kamishibai/issues/398)、
+`Actor.setTransparency`は[Issue #406](https://github.com/kubohiroya/tm-kamishibai/issues/406)、
+include文の複数ファイル対応は[Issue #417](https://github.com/kubohiroya/tm-kamishibai/issues/417)から
 上記commitまでにmergeされています。project directory選択とYAML live reloadは
-[Issue #390](https://github.com/kubohiroya/tmpose-kamishibai/issues/390)、local assetの追加・内容更新のlive reloadは
-[Issue #391](https://github.com/kubohiroya/tmpose-kamishibai/issues/391)で実装されています。
+[Issue #390](https://github.com/kubohiroya/tm-kamishibai/issues/390)、local assetの追加・内容更新のlive reloadは
+[Issue #391](https://github.com/kubohiroya/tm-kamishibai/issues/391)で実装されています。
 
 ## 最小台本
 
@@ -1530,8 +1530,8 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 ## 関連資料
 
 - [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
-- [DSL 4.0表層仕様](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
-- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/schema/dsl-4.schema.json): 機械可読な構造仕様
-- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
-- [DSL 4.0 ポーズoverlay実装 Issue #624](https://github.com/kubohiroya/tmpose-kamishibai/issues/624): Schema、TMPose 1.12.0 composition API mapping、YAML opt-in、rollback
-- [DSL 4.0総合fixture](https://github.com/kubohiroya/tmpose-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例
+- [DSL 4.0表層仕様](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
+- [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/schema/dsl-4.schema.json): 機械可読な構造仕様
+- [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback
+- [DSL 4.0 ポーズoverlay実装 Issue #624](https://github.com/kubohiroya/tm-kamishibai/issues/624): Schema、TMPose 1.12.0 composition API mapping、YAML opt-in、rollback
+- [DSL 4.0総合fixture](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/test/fixtures/dsl4/valid/comprehensive.kamishibai.yaml): schemaと意味検証を通る総合例

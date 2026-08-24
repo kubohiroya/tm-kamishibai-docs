@@ -601,7 +601,7 @@ action=Urashima:pose:Urashima-ride-2,Urashima-ride-1,Urashima-ride-2,Urashima-ri
 
 ## `urashima.txt` の構成例
 
-公開中の[`urashima.txt`](https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/urashima.txt)は、次のような構成になっています。Web版と用途別SB3は、[浦島太郎の公開ページ](https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/)から利用できます。
+公開中の[`urashima.txt`](https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/urashima.txt)は、次のような構成になっています。Web版と用途別SB3は、[浦島太郎の公開ページ](https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/)から利用できます。
 
 | シーン | 内容 | 主な機能 |
 |---|---|---|

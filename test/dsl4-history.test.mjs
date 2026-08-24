@@ -46,7 +46,7 @@ test('pins rc.8 source, schema, artifacts, surfaces, flags, and verification', (
   assert.equal(entry.schema.documentationReferenceCommit, entry.publication.tagCommit);
   assert.equal(
     entry.schema.documentationReferenceSha256,
-    '54b851cb1d4f28caefbdd8f95032c52e8e8fbf5ac68ae313e5a70753e2624878',
+    '46ff159c29e13704d707dae8e0d2ad3a146b6aa8a68a968614e6ef56d112f135',
   );
   assert.equal(entry.schema.documentationReferenceSha256, sourceLock.schemaSha256);
   assert.deepEqual(entry.featureFlags, candidate.runtime.featureFlags);
