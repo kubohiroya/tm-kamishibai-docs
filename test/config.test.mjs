@@ -53,6 +53,7 @@ const expectedCollections = {
     'release-smoke.md',
     'release-smoke-4.0.md',
     'upstream-fork-policy.md',
+    'turbowarp-ecosystem.md',
   ],
 };
 

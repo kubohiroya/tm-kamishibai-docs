@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://kubohiroya.github.io/tm-kamishibai-docs/schemas/turbowarp-ecosystem.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "generatedOn", "overview", "repositories"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "generatedOn": {"type": "string", "format": "date"},
+    "overview": {
+      "type": "object",
+      "required": ["title", "centralPath", "rationale", "learningPath"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {"type": "string", "minLength": 1},
+        "centralPath": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1},
+        "learningPath": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 2
+        }
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "productName",
+          "responsibility",
+          "surface",
+          "inputs",
+          "outputs",
+          "dependencies",
+          "optionalIntegrations",
+          "useCase",
+          "packageName",
+          "repository",
+          "guideUrl",
+          "licensePolicy",
+          "status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+          "category": {
+            "enum": [
+              "recognition-input-network",
+              "state-assets",
+              "presentation-interaction",
+              "development-distribution",
+              "application-content",
+              "upstream-fork"
+            ]
+          },
+          "productName": {"type": "string", "minLength": 1},
+          "responsibility": {"type": "string", "minLength": 1},
+          "surface": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "Standalone extension",
+                "Composition API",
+                "CLI",
+                "Application",
+                "Docs",
+                "Samples",
+                "Fork"
+              ]
+            },
+            "minItems": 1
+          },
+          "inputs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "outputs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "dependencies": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "optionalIntegrations": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "useCase": {"type": "string", "minLength": 1},
+          "packageName": {"type": "string", "minLength": 1},
+          "repository": {"type": "string", "pattern": "^kubohiroya/[A-Za-z0-9._-]+$"},
+          "guideUrl": {"type": "string", "format": "uri"},
+          "licensePolicy": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "minLength": 1},
+          "extensionId": {"type": "string", "minLength": 1},
+          "notes": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    }
+  }
+}
