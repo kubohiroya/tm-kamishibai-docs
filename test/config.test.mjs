@@ -11,6 +11,7 @@ import {
   workshopDocumentConfig,
 } from '../docs/config.mjs';
 import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
+import upstreamForks from '../sources/upstream-forks.json' with {type: 'json'};
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 
@@ -51,6 +52,7 @@ const expectedCollections = {
     'dependency-audit.md',
     'release-smoke.md',
     'release-smoke-4.0.md',
+    'upstream-fork-policy.md',
   ],
 };
 
@@ -119,6 +121,34 @@ test('keeps the developer guide source classification and records its legacy URL
   assert.equal(document?.sourceDirectory, 'developer-guides');
   assert.equal(document?.legacyOutputDirectory, 'user-guides');
   assert.equal(document?.outputDirectory, '3.2/user-guides');
+});
+
+test('records scratch-render as an upstream fork exception', () => {
+  const scratchRender = upstreamForks.forks.find(({id}) => id === 'scratch-render');
+  assert.deepEqual(
+    {
+      profile: scratchRender?.profile,
+      upstreamFork: scratchRender?.upstreamFork,
+      repository: scratchRender?.repository,
+      immediateUpstream: scratchRender?.immediateUpstream,
+      originalSource: scratchRender?.originalSource,
+      publishToNpm: scratchRender?.publishToNpm,
+      downstreamExactPinRequired: scratchRender?.downstreamExactPinRequired,
+      preserveUpstreamNotices: scratchRender?.licensePolicy.preserveUpstreamNotices,
+    },
+    {
+      profile: 'upstream-fork',
+      upstreamFork: true,
+      repository: 'https://github.com/kubohiroya/scratch-render',
+      immediateUpstream: 'https://github.com/TurboWarp/scratch-render',
+      originalSource: 'https://github.com/scratchfoundation/scratch-render',
+      publishToNpm: false,
+      downstreamExactPinRequired: true,
+      preserveUpstreamNotices: true,
+    },
+  );
+  assert.equal(scratchRender?.defaultBranch, scratchRender?.upstreamDefaultBranch);
+  assert.ok(scratchRender?.syncPolicy.diffCommand.includes('upstream/develop'));
 });
 
 test('publishes the 3.2 and 4.0 internal specifications at separate stable URLs', () => {

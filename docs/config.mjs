@@ -39,6 +39,7 @@ export const documentUpdatedAt = Object.freeze({
   'dependency-audit.md': '2026-08-08',
   'release-smoke.md': '2026-08-04',
   'release-smoke-4.0.md': '2026-08-20',
+  'upstream-fork-policy.md': '2026-08-25',
 });
 
 export const documentCollections = [
@@ -333,6 +334,14 @@ export const documentCollections = [
         audience: 'DSL 4.0のリリース候補を検証して公開可否を判断する方',
         description:
           '公開候補の内容を固定し、自動テスト、ブラウザー、カメラ、ポーズ、安全停止、検証記録、切り戻しを確認します。',
+      },
+      {
+        sourceFilename: 'upstream-fork-policy.md',
+        version: '4.0',
+        title: 'upstream fork管理方針',
+        audience: 'TM Kamishibai ecosystemの上流forkを評価・同期・撤回する開発者',
+        description:
+          'scratch-renderを独自productではなく上流検証用forkとして扱い、差分、license、issue routing、exact commit pinを記録します。',
       },
     ],
   },
