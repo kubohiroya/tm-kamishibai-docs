@@ -1,33 +1,33 @@
 {
   "formatVersion": 1,
-  "verifiedAt": "2026-08-20T21:32:15+09:00",
+  "verifiedAt": "2026-08-26T06:35:00+09:00",
   "documentIssue": "https://github.com/kubohiroya/tm-kamishibai-docs/issues/41",
   "verificationIssue": "https://github.com/kubohiroya/tm-kamishibai-docs/issues/122",
   "releaseState": {
-    "runtimeVersionLabel": "Version 4.0.0-rc.8 (2026/08/20)",
-    "publishedPrerelease": "v4.0.0-rc.8",
-    "publishedPrereleaseCommit": "29c0deadcb98badf94a0244c479ca896dc71f842",
-    "githubReleaseUrl": "https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.8",
-    "npmUrl": "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.8",
-    "standardSb3Url": "https://kubohiroya.github.io/tm-kamishibai/downloads/kamishibai-4.0.0-rc.8.sb3",
-    "standardSb3Size": 6749955,
-    "standardSb3Sha256": "91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041",
+    "runtimeVersionLabel": "Version 4.0.0-rc.10 (2026/08/26)",
+    "publishedPrerelease": "v4.0.0-rc.10",
+    "publishedPrereleaseCommit": "65f5e705921b6c92ba6ec5373ec13eff5101f2c6",
+    "githubReleaseUrl": "https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.10",
+    "npmUrl": "https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.10",
+    "standardSb3Url": "https://kubohiroya.github.io/tm-kamishibai/downloads/kamishibai-4.0.0-rc.10.sb3",
+    "standardSb3Size": 6787273,
+    "standardSb3Sha256": "a8620868f5da118c142cf2a11db6679ce7fab8b8ef84f5e6cce26887d61e94ec",
     "formalGitHubReleasePublished": false,
     "latestFormalGitHubRelease": "v3.2.3",
-    "publicSampleBaseline": "v4.0.0-rc.8",
+    "publicSampleBaseline": "v4.0.0-rc.10",
     "sampleBaselineDiffersFromPublishedPrerelease": false
   },
   "samples": {
     "repository": "kubohiroya/tm-kamishibai-samples",
-    "publicationCommit": "236fe4ac09e17aaaaa0fb0fd1f8ebdc173073c7f",
-    "publicationPullRequest": "https://github.com/kubohiroya/tm-kamishibai-samples/pull/126",
-    "pagesDeploymentRun": 32368656029,
+    "publicationCommit": "6cd042ccf368729fa164b642fdba6a4c2ed51d4d",
+    "publicationPullRequest": "https://github.com/kubohiroya/tm-kamishibai-samples/pull/131",
+    "pagesDeploymentRun": 32901209798,
     "runtime": {
-      "version": "4.0.0-rc.8",
-      "commit": "29c0deadcb98badf94a0244c479ca896dc71f842",
-      "sourceIdentity": "sha256:8edbc02a06b3770cce0a89cf658367df129d974d53f401258b69f0713762014a",
-      "standardSb3Size": 6749955,
-      "standardSb3Sha256": "91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041"
+      "version": "4.0.0-rc.10",
+      "commit": "65f5e705921b6c92ba6ec5373ec13eff5101f2c6",
+      "sourceIdentity": "sha256:ed05e732c9c0a0d7f43d85802450c88871bdab938a6809f7898815ae3cea714f",
+      "standardSb3Size": 6787273,
+      "standardSb3Sha256": "a8620868f5da118c142cf2a11db6679ce7fab8b8ef84f5e6cce26887d61e94ec"
     },
     "urashima": {
       "detailUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/",
@@ -35,12 +35,12 @@
       "yamlUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/urashima.k4.yml",
       "sb3Url": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/urashima-4.0.sb3",
       "sb3": {
-        "size": 34207986,
-        "sha256": "968f7b6d5c4ac346c0f2e9bed15a416ad6fa8840faf1ed3debdcf3d20b848862"
+        "size": 34247081,
+        "sha256": "4d931f16be3ba79ea26c6980a947148ce17ce3803c04e2f81218d2dc523f26e2"
       },
       "web": {
-        "size": 48724839,
-        "sha256": "dda7fde5bc4569211a89de4c230fb2ce2c51de3623eeb0e7768054f49882924b",
+        "size": 48894921,
+        "sha256": "8b0df1232ad058fe2c12c8636eaead26eea0a6a0f84328749ff57aea7ce3a1ef",
         "networkDependencies": [],
         "runtimeCapabilities": ["camera", "audio"]
       }
@@ -49,21 +49,21 @@
       "detailUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/my-urashima/",
       "webUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/my-urashima/web-4.0/",
       "sb3": {
-        "size": 16095563,
-        "sha256": "1f4343ec508c3bfdabaecfd026051c6fb94ba0ed0ba899916c3a3e989e13a187"
+        "size": 16132559,
+        "sha256": "83aa65d43fda51f544c544d7ed60805d0c313055a74dc91642b3b77205284bcf"
       },
       "web": {
-        "size": 26985341,
-        "sha256": "64b344bdab1ab5dd4031e7a05e827415fd892849ae9a5700eac68f8008f6a6ef",
+        "size": 27154143,
+        "sha256": "99fea8caeee09663af9eadc44bf0e84a41bc41105b43ca5a157f457f2f426d9b",
         "projectInput": "external-yaml",
         "runtimeCapabilities": ["file-picker", "camera", "audio"],
         "allowedNetworkPrefixes": ["https://sqs.prof.cuc.ac.jp/kamishibai/20260630/"]
       }
     },
     "tutorial": {
-      "version": "4.0.0-rc.8",
+      "version": "4.0.0-rc.10",
       "status": "published",
-      "sourceIdentity": "f8ba10c370618505ee7b6801457a0676d5f2e154a19a2ac56a52d3b2350bb74e",
+      "sourceIdentity": "0dd511a76748c2c64f3d86012d87b62c170d11edb12fe2ce37fdcb83fd3c0f95",
       "detailUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/",
       "webUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/web-4.0/",
       "yamlUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
@@ -77,20 +77,20 @@
         "sha256": "6be02d8ab351364a09436f7d2436906edabe4101b68d9c07d2a9d7b1681aa77c"
       },
       "sb3": {
-        "size": 12649874,
-        "sha256": "d19fa36211f9353f4d66b90f911ced6f9f62d5c7fc426ae10f4af8457824baaa"
+        "size": 12688933,
+        "sha256": "34d6401af1340f2f8d68a8c2988d7dbca729d83a8baa763c127b63c246a6ecef"
       },
       "web": {
-        "size": 22237567,
-        "sha256": "c51db5956c3b1004125ed2aa5513d17f29f82ae0a0a4d47bc6baa7a3843df5dd"
+        "size": 22406987,
+        "sha256": "364fd48537d34c860f1de0d183cf23d71803b377854e85b3f915ef85475318ed"
       },
       "starter": {
-        "size": 5914519,
-        "sha256": "3789c96c61bbb89beb10b95d456a8f5885999163319fb4c974b3c784c36b7d4b"
+        "size": 5914515,
+        "sha256": "d44e7bf5fee9ea8c1947f5d37ab4cbe175c1b68e30dd7419ac6b72e3b5ce1f17"
       },
       "additionKit": {
-        "size": 5538,
-        "sha256": "4e8b6c76cd850fd924806739a337a639b13eaac3ccdbb7cd7e9ef0e727a5fa38"
+        "size": 5536,
+        "sha256": "07e59050506185ee8a361ea9cd09302dd02984b1788cd6f10aaaf40497e46bd5"
       }
     },
     "packager": "TurboWarp Packager 3.13.0",
@@ -102,8 +102,9 @@
     "pose": "passed",
     "evidenceUrl": "https://github.com/kubohiroya/tm-kamishibai/issues/510#issuecomment-5255177777",
     "appliesToRuntimeVersion": "4.0.0-rc.8",
-    "appliesToPublishedPrerelease": true,
-    "rc8Verification": "previous-camera-context-measurement; recognition-and-overlay-browser-verified"
+    "appliesToPublishedPrerelease": false,
+    "rc8Verification": "previous-camera-context-measurement; recognition-and-overlay-browser-verified",
+    "rc10SamplePublication": "automated-ci-and-pages-verified; physical-camera-rerun-not-recorded"
   },
   "visuals": {
     "formalUiCapturesIncluded": false,
