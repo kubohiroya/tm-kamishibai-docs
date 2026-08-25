@@ -44,7 +44,7 @@ test('shows rc.8 on the 4.0 top and aligns the public samples', () => {
   assert.match(dsl4Index, /安定版<code>4\.0\.0<\/code>はまだ未公開/u);
   assert.match(dsl4Index, /最新安定版は\s*<code>v3\.2\.3<\/code>/u);
 
-  assert.equal(dsl4Documents.length, 19);
+  assert.equal(dsl4Documents.length, 20);
   for (const {sourceFilename, source} of dsl4Documents) {
     assert.match(source, /4\.0\.0-rc\.8|v4\.0\.0-rc\.8/u, sourceFilename);
   }

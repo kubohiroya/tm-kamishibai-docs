@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-08-25",
+  "forks": [
+    {
+      "id": "scratch-render",
+      "profile": "upstream-fork",
+      "upstreamFork": true,
+      "repository": "https://github.com/kubohiroya/scratch-render",
+      "immediateUpstream": "https://github.com/TurboWarp/scratch-render",
+      "originalSource": "https://github.com/scratchfoundation/scratch-render",
+      "defaultBranch": "develop",
+      "upstreamDefaultBranch": "develop",
+      "currentPurpose": "Narrow renderer performance and compatibility experiments for downstream projects, not a separate renderer product.",
+      "publishToNpm": false,
+      "downstreamExactPinRequired": true,
+      "downstreamUsage": [
+        {
+          "repository": "https://github.com/kubohiroya/tm-kamishibai",
+          "trackingIssue": "https://github.com/kubohiroya/tm-kamishibai/issues/636",
+          "pinPolicy": "Use an exact commit if a fork-only renderer patch is adopted."
+        }
+      ],
+      "issueRouting": {
+        "generalTurboWarpBugs": "https://github.com/TurboWarp/scratch-render/issues",
+        "forkSpecificPatches": "https://github.com/kubohiroya/tm-kamishibai-docs/issues/175"
+      },
+      "syncPolicy": {
+        "preferUpstreamReturn": true,
+        "doNotAccumulateExperimentBranchesOnDefault": true,
+        "removeForkPatchWhenUnneeded": true,
+        "diffCommand": "git fetch upstream && git log --oneline upstream/develop..HEAD && git diff --stat upstream/develop...HEAD"
+      },
+      "licensePolicy": {
+        "spdx": "MPL-2.0",
+        "preserveUpstreamNotices": true,
+        "doNotOverwriteScratchFoundationNotice": true
+      }
+    }
+  ]
+}
