@@ -16,31 +16,34 @@ const dsl4Documents = documentationConfig.documents
     source: read(`docs/${document.sourceDirectory}/${document.sourceFilename}`),
   }));
 
-test('records the rc.8 implementation and publication state in config', () => {
+test('records the current implementation and publication state in config', () => {
   assert.deepEqual(dsl4PublicationStatus, {
-    verifiedOn: '2026-08-20',
-    implementationCommit: '29c0deadcb98badf94a0244c479ca896dc71f842',
+    verifiedOn: '2026-08-26',
+    implementationCommit: '65f5e705921b6c92ba6ec5373ec13eff5101f2c6',
     latestPublishedRelease: 'v3.2.3',
-    publishedDsl4Prerelease: 'v4.0.0-rc.8',
+    publishedDsl4Prerelease: 'v4.0.0-rc.10',
     officialDsl4Release: null,
   });
 });
 
-test('distinguishes rc.8, stable, sample baseline, and document state', () => {
+test('distinguishes current prerelease, stable, sample baseline, and document state', () => {
   for (const term of ['実装基準', '公開プレリリース', '安定版', '公開サンプル基準', '文書状態']) {
     assert.match(statusPolicy, new RegExp(term, 'u'));
   }
 
   assert.match(statusPolicy, /v4\.0\.0.*未公開/u);
-  assert.match(statusPolicy, /v4\.0\.0-rc\.8/u);
-  assert.match(statusPolicy, /サンプル作品、スターター、Web版はrc\.8/u);
+  assert.match(statusPolicy, /v4\.0\.0-rc\.10/u);
+  assert.match(statusPolicy, /サンプル作品、スターター、Web版はrc\.10/u);
 });
 
-test('shows rc.8 on the 4.0 top and aligns the public samples', () => {
-  assert.match(dsl4Index, /4\.0\.0-rc\.8を公開しています/u);
-  assert.match(dsl4Index, /kamishibai-4\.0\.0-rc\.8\.sb3/u);
-  assert.match(dsl4Index, /tm-kamishibai\/v\/4\.0\.0-rc\.8/u);
-  assert.match(dsl4Index, /rc\.8.*再生成/u);
+test('shows rc.10 on the 4.0 top and current public samples', () => {
+  assert.match(dsl4Index, /4\.0\.0-rc\.10を公開しています/u);
+  assert.match(dsl4Index, /kamishibai-4\.0\.0-rc\.10\.sb3/u);
+  assert.match(dsl4Index, /tmpose-kamishibai\/v\/4\.0\.0-rc\.10/u);
+  assert.match(
+    dsl4Index,
+    /公開サンプル作品とチュートリアル成果物も、現在<code>rc\.10<\/code>基準/u,
+  );
   assert.match(dsl4Index, /安定版<code>4\.0\.0<\/code>はまだ未公開/u);
   assert.match(dsl4Index, /最新安定版は\s*<code>v3\.2\.3<\/code>/u);
 

@@ -4,8 +4,6 @@ import test from 'node:test';
 
 import {documentationConfig} from '../docs/config.mjs';
 import historyManifest from '../sources/dsl4/release-history-4.0.json' with {type: 'json'};
-import candidate from '../sources/dsl4/release-smoke-4.0-candidate.json' with {type: 'json'};
-import sourceLock from '../sources/dsl4/source-lock.json' with {type: 'json'};
 
 const read = (relativePath) => readFileSync(new URL(`../${relativePath}`, import.meta.url), 'utf8');
 const history = read('docs/dsl-author-guides/dsl-4.0-history.md');
@@ -23,13 +21,13 @@ test('publishes a separate DSL 4.0 release history', () => {
   assert.match(dsl4Index, /dsl-author-guides\/dsl-4\.0-history\//u);
 });
 
-test('records rc.8 as a published prerelease without claiming stable 4.0.0', () => {
+test('records rc.10 as a published prerelease without claiming stable 4.0.0', () => {
   assert.equal(historyManifest.series, '4.0');
-  assert.equal(entry.version, '4.0.0-rc.8');
+  assert.equal(entry.version, '4.0.0-rc.10');
   assert.equal(entry.publicationState, 'published-prerelease');
-  assert.equal(entry.publication.gitTag, 'v4.0.0-rc.8');
-  assert.equal(entry.publication.tagCommit, '29c0deadcb98badf94a0244c479ca896dc71f842');
-  assert.equal(entry.publication.npmVersion, '4.0.0-rc.8');
+  assert.equal(entry.publication.gitTag, 'v4.0.0-rc.10');
+  assert.equal(entry.publication.tagCommit, '65f5e705921b6c92ba6ec5373ec13eff5101f2c6');
+  assert.equal(entry.publication.npmVersion, '4.0.0-rc.10');
   assert.equal(entry.publication.npmDistTag, 'next');
   assert.equal(entry.publication.recommendedStableRelease, 'v3.2.3');
   assert.equal(entry.publication.officialDsl4Release, null);
@@ -38,28 +36,42 @@ test('records rc.8 as a published prerelease without claiming stable 4.0.0', () 
   assert.match(history, /正式版`v4\.0\.0`は未公開/u);
 });
 
-test('pins rc.8 source, schema, artifacts, surfaces, flags, and verification', () => {
-  assert.equal(entry.source.releasePreparationMergeCommit, candidate.runtime.candidateCommit);
-  assert.equal(entry.source.freezeMergeCommit, candidate.runtime.freezeCommit);
-  assert.equal(entry.source.sourceIdentity, candidate.runtime.releaseSource.sourceIdentity);
-  assert.equal(entry.schema.releaseSha256, candidate.runtime.schema.sha256);
+test('pins rc.10 source, schema, artifacts, surfaces, flags, and verification', () => {
+  assert.equal(
+    entry.source.releasePreparationMergeCommit,
+    '235b0bfce403fd8a6e3026bd23b6562b53c132e5',
+  );
+  assert.equal(entry.source.freezeMergeCommit, '65f5e705921b6c92ba6ec5373ec13eff5101f2c6');
+  assert.equal(
+    entry.source.sourceIdentity,
+    'sha256:ed05e732c9c0a0d7f43d85802450c88871bdab938a6809f7898815ae3cea714f',
+  );
+  assert.equal(
+    entry.schema.releaseSha256,
+    '22edefa88eaa928edb8ae6fb6a8f9dce89e56ad2feb63ebaa91337757540a1df',
+  );
   assert.equal(entry.schema.documentationReferenceCommit, entry.publication.tagCommit);
   assert.equal(
     entry.schema.documentationReferenceSha256,
-    '46ff159c29e13704d707dae8e0d2ad3a146b6aa8a68a968614e6ef56d112f135',
+    '22edefa88eaa928edb8ae6fb6a8f9dce89e56ad2feb63ebaa91337757540a1df',
   );
-  assert.equal(entry.schema.documentationReferenceSha256, sourceLock.schemaSha256);
-  assert.deepEqual(entry.featureFlags, candidate.runtime.featureFlags);
-  assert.equal(entry.artifacts.standardSb3.sha256, candidate.runtime.standardArtifact.sha256);
-  assert.equal(entry.artifacts.standardSb3.size, candidate.runtime.standardArtifact.size);
-  assert.equal(entry.artifacts.npmTarball.sha256, candidate.runtime.packageTarball.sha256);
+  assert.equal(
+    entry.artifacts.standardSb3.sha256,
+    'a8620868f5da118c142cf2a11db6679ce7fab8b8ef84f5e6cce26887d61e94ec',
+  );
+  assert.equal(entry.artifacts.standardSb3.size, 6787273);
+  assert.equal(
+    entry.artifacts.npmTarball.sha256,
+    'dfb42cbf86ca45465298be357f5852ae52aefc7f226c3c6742ee1c5c6e317c3c',
+  );
   assert.equal(
     entry.verification.physicalCameraAndPose,
-    'previous-camera-context-measurement; recognition-and-overlay-browser-verified',
+    'previous-camera-context-measurement-only; rc.10 physical-rerun-not-recorded',
   );
   assert(entry.surfaces.includes('turbowarp-core-action-blocks'));
   assert(entry.surfaces.includes('pose-preview-overlay'));
   assert(entry.surfaces.includes('named-bubble-close-policies'));
+  assert(entry.surfaces.includes('tm-extension-id'));
 
   for (const value of [
     entry.source.releasePreparationMergeCommit,
@@ -73,16 +85,16 @@ test('pins rc.8 source, schema, artifacts, surfaces, flags, and verification', (
   }
 });
 
-test('records the rc.8 dependency pins and immutable rollback while preserving rc.7 history', () => {
-  assert.equal(entry.dependencies['@kubohiroya/turbowarp-bubble'], '0.10.0');
-  assert.equal(entry.dependencies['@kubohiroya/turbowarp-tmpose'], '1.12.0');
-  assert.equal(entry.rollback.fixVersion, 'publish-4.0.0-rc.9');
-  assert.equal(previousEntry.version, '4.0.0-rc.7');
-  assert.equal(previousEntry.dependencies['@kubohiroya/turbowarp-bubble'], '0.7.0');
+test('records the rc.10 dependency pins and immutable rollback while preserving rc.8 history', () => {
+  assert.equal(entry.dependencies['@kubohiroya/turbowarp-bubble'], '0.11.0');
+  assert.equal(entry.dependencies['@kubohiroya/turbowarp-tm'], '2.0.0');
+  assert.equal(entry.rollback.fixVersion, 'publish-4.0.0-rc.11');
+  assert.equal(previousEntry.version, '4.0.0-rc.8');
+  assert.equal(previousEntry.dependencies['@kubohiroya/turbowarp-bubble'], '0.10.0');
   assert.equal(previousEntry.dependencies['@kubohiroya/turbowarp-tmpose'], '1.12.0');
   assert.match(history, /23 core action/u);
-  assert.match(history, /rc\.6以前のversion付きSB3/u);
-  assert.match(history, /4\.0\.0-rc\.9/u);
+  assert.match(history, /rc\.8以前のversion付きSB3/u);
+  assert.match(history, /4\.0\.0-rc\.11/u);
 });
 
 test('defines the update contract and keeps migration details out', () => {
