@@ -40,6 +40,7 @@ export const documentUpdatedAt = Object.freeze({
   'release-smoke.md': '2026-08-04',
   'release-smoke-4.0.md': '2026-08-20',
   'upstream-fork-policy.md': '2026-08-25',
+  'turbowarp-ecosystem.md': '2026-08-26',
 });
 
 export const documentCollections = [
@@ -342,6 +343,14 @@ export const documentCollections = [
         audience: 'TM Kamishibai ecosystemの上流forkを評価・同期・撤回する開発者',
         description:
           'scratch-renderを独自productではなく上流検証用forkとして扱い、差分、license、issue routing、exact commit pinを記録します。',
+      },
+      {
+        sourceFilename: 'turbowarp-ecosystem.md',
+        version: '4.0',
+        title: 'TurboWarp extension and toolchain overview',
+        audience: 'TurboWarp機能拡張、toolchain、TM Kamishibaiの関係を把握する開発者・教材作者',
+        description:
+          'ScratchからTurboWarp機能拡張、Composition API、SB3 Toolchain、TM Kamishibaiへ進む道筋と、各repositoryの責務・surface・license境界を正本dataから説明します。',
       },
     ],
   },
