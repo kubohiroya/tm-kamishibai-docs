@@ -14,7 +14,7 @@ custom block、呼出し関係、状態遷移の内部仕様を現在の実装�
 本書は「アプリが内部でどのように動くか」を扱い、「リポジトリをどう変更・公開するか」
 や「ビルダーをどう利用するか」は扱いません。
 
-対象アプリ: tmpose-kamishibai 3.2.x\
+対象アプリ: TM Kamishibai 3.2.x\
 受理するDSL宣言: `kamishibai=3.1`、`kamishibai=3.2`
 
 過去のバージョンからの変更は[`history.md`](../dsl-author-guides/history.md)を参照してください。
@@ -248,7 +248,7 @@ Stageからアクターへ命令を届ける流れは次のとおりです。
 メソッドに相当しますが、TurboWarp上ではカスタムブロックと条件分岐で実装されています。
 
 通常のScratch projectではcostumeやsoundはspriteに属します。このアプリでは
-[TurboWarp Asset Manager](https://github.com/kubohiroya/turbowarp-asset-manager)を使い、
+[TurboWarp-Asset-Manager](https://github.com/kubohiroya/turbowarp-asset-manager)を使い、
 SB3内のcostume、backdrop、sound、textや、外部URLの画像・音声を、名前を持つassetとして
 登録します。アクターの見た目や音のactionはこのasset名を参照するため、振る舞いを実装する
 アクタースプライトと、実際に使う画像・音声を分けて組み合わせられます。
@@ -273,7 +273,7 @@ Actor actionを送る処理とは実行時期もデータの渡し方も異な�
 作ります。
 
 clone開始hatは、`actionTarget`をそのcloneのスプライトローカル変数`actorName`へ保存し、
-`actionParam`をTurboWarp Asset Managerへ渡して初期skinを設定します。Stageはcloneを
+`actionParam`をTurboWarp-Asset-Managerへ渡して初期skinを設定します。Stageはcloneを
 作るたびに0.1秒待ち、この初期化が走る機会を設けてから、共有runtime variableを次の
 アクター用の値で上書きします。clone生成時には`execActorAction`をbroadcastしません。
 
@@ -436,7 +436,7 @@ blockが再生成されるとIDは変わります。したがって、IDは外�
 | `Stage` | `jb`                   | key `right arrow`     | 現在の`sound`停止、sequence終端化、`finishTimedActorAction`送信、`skipMode=action`     |
 | `Stage` | `jX`                   | `startStory`受信      | 既定OFFの詳細診断後、`start camera`, `create sceneList`, asset／actor生成、scene実行   |
 | `Stage` | `j/`                   | `stopStory`受信       | `stop camera`, `stop pose recog`, `show cover`; `deleteAllActors`, `showMenu`送信      |
-| `Stage` | `j?`                   | `debugTestCamera`受信 | TMPoseのcamera previewを直接確認                                                       |
+| `Stage` | `j?`                   | `debugTestCamera`受信 | TurboWarp TMのcamera previewを直接確認                                                 |
 | `Stage` | `kD`                   | `showCover`受信       | `show cover`; `hidePrompt`, `deleteAllActors`送信                                      |
 | `Stage` | `l=`                   | Stage click           | `closeTitle`送信                                                                       |
 | `Stage` | `titleCloseHat`        | `closeTitle`受信      | 組み込み台本の有無に応じて`showCover`または`startStory`送信                            |

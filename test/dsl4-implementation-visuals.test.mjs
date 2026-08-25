@@ -84,7 +84,7 @@ const paletteCaptures = [
 ];
 
 const diagrams = [
-  ['dsl4-architecture.svg', 'a2ca23bba32558b2c21823980465ce6f4b79307571b731679f5e571d76c63ec4'],
+  ['dsl4-architecture.svg', 'f52760550de64e986fd5ec560895065c5bc5ffe38189b38bab259a1a4a9b89cb'],
   [
     'dsl4-source-build-sequence.svg',
     'f068ad123ac046ca81fbc70375e6d39b17ad8e5a43e4290b4751fad32189137e',

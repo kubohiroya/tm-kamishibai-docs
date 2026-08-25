@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 固定実装基準を説明する設計レビュー（正式リリース済みの意味ではない）\
-調査基準: tmpose-kamishibai `29c0dea`（4.0.0-rc.8）、2026年8月20日
+調査基準: TM Kamishibai `29c0dea`（4.0.0-rc.8）、2026年8月20日
 
 > **配布状態との区別:** 2026年8月20日時点で`v4.0.0-rc.8`はprereleaseとして公開されていますが、
 > 正式な`v4.0.0`ではありません。本書はrc.8固定コミットの失敗経路を説明します。
@@ -14,7 +14,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 [`29c0deadcb98badf94a0244c479ca896dc71f842`](https://github.com/kubohiroya/tm-kamishibai/commit/29c0deadcb98badf94a0244c479ca896dc71f842)
 です。本文のpath、関数、code、event、testはこのcommitで確認しています。
 
-対象アプリ: tmpose-kamishibai 4.0.x
+対象アプリ: TM Kamishibai 4.0.x
 
 受理するDSL宣言: `kamishibai: '4.0'`
 

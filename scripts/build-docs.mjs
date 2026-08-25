@@ -11,7 +11,7 @@ import {
   staffDocumentConfig,
   workshopDocumentConfig,
 } from '../docs/config.mjs';
-import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
+import sourceSnapshot from '../sources/tm-kamishibai.json' with {type: 'json'};
 import {
   collectSourceInputs,
   copyFileIfStale,
@@ -49,7 +49,7 @@ const commonPublicationInputs = [
   path.join(projectRoot, 'docs/fonts'),
   path.join(projectRoot, 'site/document-toc.css'),
   path.join(projectRoot, 'site/document-toc.js'),
-  path.join(projectRoot, 'sources/tmpose-kamishibai.json'),
+  path.join(projectRoot, 'sources/tm-kamishibai.json'),
   path.join(projectRoot, 'package.json'),
   path.join(projectRoot, 'pnpm-lock.yaml'),
 ];

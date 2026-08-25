@@ -2,11 +2,11 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象アプリ: tmpose-kamishibai 3.2.x\
+対象アプリ: TM Kamishibai 3.2.x\
 受理するDSL宣言: `kamishibai=3.1`、`kamishibai=3.2`\
 対象読者: 台本作者、教材作成者、開発者
 
-tmpose-kamishibai 3.2.xは3.1宣言と3.2宣言をどちらも受理します。既存の3.1台本は宣言を変更せずに実行でき、新規台本には3.2を推奨します。3.1宣言で旧Text Assetを使った場合もdeprecated警告は出ます。
+TM Kamishibai 3.2.xは3.1宣言と3.2宣言をどちらも受理します。既存の3.1台本は宣言を変更せずに実行でき、新規台本には3.2を推奨します。3.1宣言で旧Text Assetを使った場合もdeprecated警告は出ます。
 
 この文書は過去リリースから引き継いだ手書きMarkdownを正本とし、DSL 3.2専用リファレンスとして
 最新のドキュメントリポジトリで保守します。HTML版とVivliostyle Viewer版を同じ内容から提供します。
@@ -384,7 +384,7 @@ TMPoseURL=ポーズモデルURL
 
 | 項目 | 内容 |
 |---|---|
-| 役割 | TMPoseモデルを読み込む |
+| 役割 | TurboWarp TMモデルを読み込む |
 | 必須 | `pose` を使うシーンでは原則必須 |
 | 値 | モデルURL |
 | 実行タイミング | シーン内のアクション実行前にモデル読み込みを行う |
@@ -845,7 +845,7 @@ action=Urashima:pose:Skin1,Skin2,Skin3:pose1,pose2,pose3:Sound1,Sound2,Sound3
 | 項目 | 説明 |
 |---|---|
 | スキン名リスト | 各ポーズ待ちのときに表示するアクター画像 |
-| ポーズ名リスト | TMPoseモデルに登録されたラベル名 |
+| ポーズ名リスト | TurboWarp TMモデルに登録されたラベル名 |
 | 効果音リスト | 各ポーズ成功時に鳴らす音 |
 
 ### 実行時の流れ
@@ -1074,7 +1074,7 @@ action=keyInputToChangeScene:ArrowLeft,ArrowRight:left,right
 
 ## 互換性メモ
 
-このリファレンスは、tmpose-kamishibai 3.2.xの実装を前提にしています。3.2.xは`kamishibai=3.1`と`kamishibai=3.2`を受理するため、既存の3.1台本は先頭を変更せずに実行できます。新規台本には3.2を使用してください。旧Text Assetは3.2系列で動作を維持しますが、宣言が3.1でも3.2でもdeprecated警告が出ます。新しい表示は`svgTextStyle`と`setText`で作り、旧Text Assetと併用しながら段階移行してください。台本を配布する場合は、台本ファイルと対応するアプリのバージョンを一緒に管理してください。
+このリファレンスは、TM Kamishibai 3.2.xの実装を前提にしています。3.2.xは`kamishibai=3.1`と`kamishibai=3.2`を受理するため、既存の3.1台本は先頭を変更せずに実行できます。新規台本には3.2を使用してください。旧Text Assetは3.2系列で動作を維持しますが、宣言が3.1でも3.2でもdeprecated警告が出ます。新しい表示は`svgTextStyle`と`setText`で作り、旧Text Assetと併用しながら段階移行してください。台本を配布する場合は、台本ファイルと対応するアプリのバージョンを一緒に管理してください。
 
 ## 関連ドキュメント
 

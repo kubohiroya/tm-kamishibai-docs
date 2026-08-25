@@ -40,6 +40,7 @@ export const documentUpdatedAt = Object.freeze({
   'release-smoke.md': '2026-08-04',
   'release-smoke-4.0.md': '2026-08-20',
   'upstream-fork-policy.md': '2026-08-25',
+  'tm-extension-id-migration.md': '2026-08-25',
   'turbowarp-ecosystem.md': '2026-08-26',
 });
 
@@ -326,7 +327,7 @@ export const documentCollections = [
         title: 'DSL 3.1 release smoke',
         audience: 'リリース候補をブラウザで検証する方',
         description:
-          'Scratch VMテストでは確認できないEditor、カメラ、TMPose、Packagerのrelease smoke手順をまとめます。',
+          'Scratch VMテストでは確認できないEditor、カメラ、TurboWarp TM、Packagerのrelease smoke手順をまとめます。',
       },
       {
         sourceFilename: 'release-smoke-4.0.md',
@@ -337,12 +338,12 @@ export const documentCollections = [
           '公開候補の内容を固定し、自動テスト、ブラウザー、カメラ、ポーズ、安全停止、検証記録、切り戻しを確認します。',
       },
       {
-        sourceFilename: 'upstream-fork-policy.md',
+        sourceFilename: 'tm-extension-id-migration.md',
         version: '4.0',
-        title: 'upstream fork管理方針',
-        audience: 'TM Kamishibai ecosystemの上流forkを評価・同期・撤回する開発者',
+        title: 'TurboWarp TM Extension ID 移行ガイド',
+        audience: 'TM紙芝居とSB3を新しい認識拡張IDへ移行する開発者',
         description:
-          'scratch-renderを独自productではなく上流検証用forkとして扱い、差分、license、issue routing、exact commit pinを記録します。',
+          'TurboWarp TMのExtension IDをkubohiroyatmへ統一し、SB3移行、確認、rollback、旧識別子の扱いを日本語と英語で説明します。',
       },
       {
         sourceFilename: 'turbowarp-ecosystem.md',
@@ -351,6 +352,14 @@ export const documentCollections = [
         audience: 'TurboWarp機能拡張、toolchain、TM Kamishibaiの関係を把握する開発者・教材作者',
         description:
           'ScratchからTurboWarp機能拡張、Composition API、SB3 Toolchain、TM Kamishibaiへ進む道筋と、各repositoryの責務・surface・license境界を正本dataから説明します。',
+      },
+      {
+        sourceFilename: 'upstream-fork-policy.md',
+        version: '4.0',
+        title: 'upstream fork管理方針',
+        audience: 'TM Kamishibai ecosystemの上流forkを評価・同期・撤回する開発者',
+        description:
+          'scratch-renderを独自productではなく上流検証用forkとして扱い、差分、license、issue routing、exact commit pinを記録します。',
       },
     ],
   },

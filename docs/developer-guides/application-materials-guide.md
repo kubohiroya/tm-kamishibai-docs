@@ -6,7 +6,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="application-page-label">1 / 8　アプリ概要</p>
 
-TM紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居にcamera映像を重ね、
+TM紙芝居は、TurboWarpで作られた紙芝居にcamera映像を重ね、
 参加者のポーズやkey・touch入力で物語を進める「参加型」AI紙芝居アプリです。
 作品はテキストの`kamishibai=3.2`台本として記述し、絵・音・動き・分岐を組み合わせます。3.2.xは既存の`kamishibai=3.1`台本も読み込めます。
 
@@ -16,7 +16,7 @@ TM紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居にcame
 
 <p class="application-callout"><strong>中心となる考え:</strong> AIはポーズを認識し、programは判定結果を物語のsceneへ接続します。参加者自身の動きが、次の場面を開く入力になります。</p>
 
-<p class="application-source">出典: <a href="https://kubohiroya.github.io/tm-kamishibai/">TM紙芝居 公式サイト</a>、<a href="https://github.com/kubohiroya/tm-kamishibai">tmpose-kamishibai README</a></p>
+<p class="application-source">出典: <a href="https://kubohiroya.github.io/tm-kamishibai/">TM紙芝居 公式サイト</a>、<a href="https://github.com/kubohiroya/tm-kamishibai">tm-kamishibai README</a></p>
 
 ## 一つの台本を四つの形で届ける {#application-delivery .application-sheet .unnumbered}
 
@@ -27,7 +27,7 @@ TM紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居にcame
 
 <figure class="application-flow"><figcaption>作品からプレイまで</figcaption><div><span>台本・画像・音声</span><b>→</b><span>preflight検査</span><b>→</b><span>asset登録・Loading</span><b>→</b><span>scene実行</span></div></figure>
 
-<div class="application-columns"><section><p class="application-subhead">共通runtime</p><ul><li>Asset Managerがlocal素材とURL素材を名前で管理</li><li>Kamishibai Runtimeが実行前に台本を検査</li><li>TMPoseとAsync Inputが入力をscene遷移へ渡す</li><li>不正な台本は行番号付きSVG診断として画面表示</li></ul></section><section><p class="application-subhead">四つの成果物</p><dl><dt><code>generic</code></dt><dd>起動後に台本を選ぶ汎用版</dd><dt><code>editor</code></dt><dd>TurboWarpで編集できる版</dd><dt><code>player</code></dt><dd>作品を埋め込んだ実行専用版</dd><dt>Web版</dt><dd>browserから直接開く公開版</dd></dl></section></div>
+<div class="application-columns"><section><p class="application-subhead">共通runtime</p><ul><li>Asset Managerがlocal素材とURL素材を名前で管理</li><li>Kamishibai Runtimeが実行前に台本を検査</li><li>TurboWarp TMとAsync Inputが入力をscene遷移へ渡す</li><li>不正な台本は行番号付きSVG診断として画面表示</li></ul></section><section><p class="application-subhead">四つの成果物</p><dl><dt><code>generic</code></dt><dd>起動後に台本を選ぶ汎用版</dd><dt><code>editor</code></dt><dd>TurboWarpで編集できる版</dd><dt><code>player</code></dt><dd>作品を埋め込んだ実行専用版</dd><dt>Web版</dt><dd>browserから直接開く公開版</dd></dl></section></div>
 
 <p class="application-callout"><strong>設計上の利点:</strong> 物語を替えてもruntimeを作り直す必要がありません。作品と実行基盤を分離するため、体験会では素材と台本の編集に集中できます。</p>
 
@@ -52,10 +52,10 @@ TM紙芝居（tmpose-kamishibai）は、TurboWarpで作られた紙芝居にcame
 
 <p class="application-page-label">4 / 8　浦島太郎による具体例</p>
 
-台本は、表示する素材、待つ入力、次のsceneを順に宣言します。TMPoseの認識結果は
+台本は、表示する素材、待つ入力、次のsceneを順に宣言します。TurboWarp TMの認識結果は
 単なる分類名ではなく、story runtimeが待っている入力eventとして扱われます。
 
-<figure class="application-flow"><figcaption>参加者の動きが物語へ届くまで</figcaption><div><span>身体のポーズ</span><b>→</b><span>TMPoseで分類</span><b>→</b><span>Async Inputで待機</span><b>→</b><span>scene actionを再開</span></div></figure>
+<figure class="application-flow"><figcaption>参加者の動きが物語へ届くまで</figcaption><div><span>身体のポーズ</span><b>→</b><span>TurboWarp TMで分類</span><b>→</b><span>Async Inputで待機</span><b>→</b><span>scene actionを再開</span></div></figure>
 
 <div class="application-columns"><section><p class="application-subhead">台本側の指定</p><pre><code>kamishibai=3.2
 sceneLabel=ride-turtle
@@ -88,7 +88,7 @@ AIではないprogramを一つの作品へ組み合わせます。何を人が�
 教材は完成品を眺めるだけではなく、下絵、画像生成、認識training、TurboWarpへの登録、
 台本編集、プレイ確認までを一つの制作のサイクルとして体験させます。
 
-<div class="application-image-grid"><figure><img src="../images/image11.png" alt="片手を上げて片膝を曲げた棒人間のポーズ下絵"><figcaption>考える・描く</figcaption></figure><figure><img src="../images/image25.png" alt="棒人間の下絵をもとに乙姫のポーズ画像を生成する画面"><figcaption>画像をつくる</figcaption></figure><figure><img src="../images/tmpose-training.png" alt="TMPoseのトレーニング進捗画面"><figcaption>ポーズを学習する</figcaption></figure><figure><img src="../images/turbowarp-costumes.png" alt="TurboWarpにPrincessとpose画像をcostumeとして登録した画面"><figcaption>costumeへ登録する</figcaption></figure></div>
+<div class="application-image-grid"><figure><img src="../images/tmpose-training.png" alt="TurboWarp TMのトレーニング進捗画面"><figcaption>ポーズを学習する</figcaption></figure><figure><img src="../images/image25.png" alt="棒人間の下絵をもとに乙姫のポーズ画像を生成する画面"><figcaption>画像をつくる</figcaption></figure><figure><img src="../images/image11.png" alt="片手を上げて片膝を曲げた棒人間のポーズ下絵"><figcaption>考える・描く</figcaption></figure><figure><img src="../images/turbowarp-costumes.png" alt="TurboWarpにPrincessとpose画像をcostumeとして登録した画面"><figcaption>costumeへ登録する</figcaption></figure></div>
 
 <div class="application-cycle"><span>poseを設計</span><b>→</b><span>人物画像を生成</span><b>→</b><span>認識modelをtraining</span><b>→</b><span>台本とassetを編集</span><b>→</b><span>プレイして改善</span></div>
 

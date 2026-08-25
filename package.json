@@ -25,7 +25,7 @@
     "docs:ecosystem:check": "node scripts/generate-turbowarp-ecosystem.mjs --check",
     "docs:ecosystem:generate": "node scripts/generate-turbowarp-ecosystem.mjs",
     "lint": "eslint .",
-    "format": "prettier --check \"**/*.{js,mjs,cjs,json,yaml,yml}\" \".github/**/*.{yaml,yml}\" \"*.md\" \"docs/{user-guides/user-guide-4.0,dsl-author-guides/dsl-4.0-history,developer-guides/{application-materials-guide,application-materials-guide-4.0,developer-guide,developer-guide-4.0,internal-specification,internal-specification-4.0,extension-guide,extension-guide-4.0,turbowarp-ecosystem,dsl-3.1-diagnostics-design,dsl-4.0-diagnostics-design,dsl4-implementation-walkthrough,dependency-audit,release-smoke,release-smoke-4.0,upstream-fork-policy},tutorials/*,LICENSE}.md\" \"site/**/*.{html,css}\"",
+    "format": "prettier --check \"**/*.{js,mjs,cjs,json,yaml,yml}\" \".github/**/*.{yaml,yml}\" \"*.md\" \"docs/{user-guides/user-guide-4.0,dsl-author-guides/dsl-4.0-history,developer-guides/{application-materials-guide,application-materials-guide-4.0,developer-guide,developer-guide-4.0,internal-specification,internal-specification-4.0,extension-guide,extension-guide-4.0,turbowarp-ecosystem,dsl-3.1-diagnostics-design,dsl-4.0-diagnostics-design,dsl4-implementation-walkthrough,dependency-audit,release-smoke,release-smoke-4.0,tm-extension-id-migration,upstream-fork-policy},tutorials/*,LICENSE}.md\" \"site/**/*.{html,css}\"",
     "typecheck": "tsc --project tsconfig.json",
     "test": "node --test test/*.test.mjs",
     "check": "pnpm lint && pnpm format && pnpm typecheck && pnpm test && pnpm build",

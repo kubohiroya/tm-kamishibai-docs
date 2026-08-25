@@ -35,7 +35,7 @@ Schema SHA-256: `46ff159c29e13704d707dae8e0d2ad3a146b6aa8a68a968614e6ef56d112f13
 - Schema path: `schema/dsl-4.schema.json`
 - 上流commit日時: `2026-08-20T20:09:38+09:00`
 - 掲載範囲: トップレベル13 field、action 24種類、Annotation 93項目
-- 更新方法: `pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>`
+- 更新方法: `pnpm docs:dsl4:sync -- --repository ../tm-kamishibai --commit <commit>`
 - 差分確認: `pnpm docs:dsl4:check`
 
 表中の「必須」は、そのobjectまたは形式を選んだ場合の必須性です。`stableId`などの任意fieldは、
@@ -470,7 +470,7 @@ bitmapResolution: 2
 
 ### 名前付きポーズモデル
 
-ポーズモデルは埋め込む相対file、通常のTMPose directory URL、または検証付きremote archiveで指定します。project内の表示名だけを使う形式はありません。
+ポーズモデルは埋め込む相対file、通常のTurboWarp TM directory URL、または検証付きremote archiveで指定します。project内の表示名だけを使う形式はありません。
 
 Schema位置: `#/$defs/namedPoseModel`
 
@@ -866,7 +866,7 @@ Schema位置: `#/$defs/poseModelInitialization`
 
 - 省略時はpolicyがlegacy、parallelがfalseです。
 - latest-neededでは重い初期化を実行中1件と最新待機1件までに制限します。
-- 実行にはTMPose 1.10.0以降が必要です。4.0.0-rc.8はTMPose 1.12.0をexact pinします。
+- 実行にはTurboWarp TM 1.10.0以降が必要です。4.0.0-rc.8はTurboWarp TM 1.12.0をexact pinします。
 
 Schemaで検証できる値の例:
 
@@ -995,7 +995,7 @@ controls:
 
 ### 関節とボーンのoverlay
 
-TMPose 1.12.0のSVG overlayについて、表示、関節別style、共通bone style、最低confidence、confidence連動を宣言します。
+TurboWarp TM 1.12.0のSVG overlayについて、表示、関節別style、共通bone style、最低confidence、confidence連動を宣言します。
 
 Schema位置: `#/$defs/poseOverlay`
 
@@ -1009,7 +1009,7 @@ Schema位置: `#/$defs/poseOverlay`
 
 - overlayを記述した場合の省略値はvisibleがtrue、minimumConfidenceが0.5です。overlay自体を省略した既存台本は非表示のままです。
 - previewを隠すとoverlayも隠れます。overlayだけを隠しても認識は停止しません。認識停止では描画を消去し、camera停止ではSVG要素も破棄します。
-- 実行にはTMPose 1.12.0以降が必要です。専用feature flagはなく、問題時はoverlay設定を台本から削除すると既存台本と同じ非表示へ戻ります。
+- 実行にはTurboWarp TM 1.12.0以降が必要です。専用feature flagはなく、問題時はoverlay設定を台本から削除すると既存台本と同じ非表示へ戻ります。
 
 Schemaで検証できる値の例:
 
@@ -1393,7 +1393,7 @@ size: 1024
 
 ### remote pose model source
 
-通常のTMPose directoryはHTTPS URLだけで参照できます。検証付きremote archiveにする場合はintegrity、content type、byte sizeを三つとも指定します。
+通常のTurboWarp TM directoryはHTTPS URLだけで参照できます。検証付きremote archiveにする場合はintegrity、content type、byte sizeを三つとも指定します。
 
 Schema位置: `#/$defs/remotePoseModelSource`
 

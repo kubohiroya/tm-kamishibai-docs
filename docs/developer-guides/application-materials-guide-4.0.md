@@ -7,7 +7,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 対象: 教材・ワークショップ設計者、制作環境担当者、プレビュー／ビルド確認者
 
 文書状態: 固定実装基準を説明する詳細ガイド（正式リリースの操作資料ではない）\
-調査基準: tmpose-kamishibai `29c0dea`（4.0.0-rc.8）、2026年8月20日
+調査基準: TM Kamishibai `29c0dea`（4.0.0-rc.8）、2026年8月20日
 
 > **配布状態との区別:** 2026年8月20日時点で`v4.0.0-rc.8`はprereleaseとして公開されていますが、
 > 正式な`v4.0.0`ではありません。この文書の説明はrc.8固定実装を基準とし、将来版で同じ画面や
@@ -184,14 +184,14 @@ DSL 4.0の教材では、物語と演出を決める人、画像やポーズモ�
 
 <p class="application-page-label">8 / 8　DSL 4.0ツールチェイン</p>
 
-`tmpose-kamishibai`のCLIは配布環境と同じ正規化器、スキーマ、意味検証器、診断モデルを
+TM KamishibaiのCLIは配布環境と同じ正規化器、スキーマ、意味検証器、診断モデルを
 使います。ビルドはディスク上の候補を再検証し、ソースとローカル素材を含む自己完結SB3を一括して出力します。
 
-<pre class="application-code"><code>tmpose-kamishibai validate-dsl4 \
+<pre class="application-code"><code>tm-kamishibai validate-dsl4 \
   --input story.k4.yml \
   --format pretty
 
-tmpose-kamishibai build-dsl4 \
+tm-kamishibai build-dsl4 \
   --base base.sb3 \
   --project-root tutorial-story \
   --source-manifest project.source.json \

@@ -101,7 +101,7 @@ YAMLはコピー可能なcode blockを正本とします。画像はTurboWarp Ed
 
 ### 実装追跡
 
-2026-08-20時点では、全23 core action block、browser preview、Bubble 0.10.0、TMPose 1.12.0、
+2026-08-20時点では、全23 core action block、browser preview、Bubble 0.10.0、TurboWarp TM 1.12.0、
 ポーズoverlayを含む公開rc.8の固定実装を
 [`29c0dea`](https://github.com/kubohiroya/tm-kamishibai/commit/29c0deadcb98badf94a0244c479ca896dc71f842)
 で確認しています。rc.8を対象とする`browser-authoring` gateを`published`、`ready: true`として追跡します。
@@ -117,10 +117,10 @@ publication commit `236fe4ac09e17aaaaa0fb0fd1f8ebdc173073c7f`、Pages deploy run
 sizeとSHA-256を公開manifestと照合しました。`tutorial-sample` gateは`published`、`ready: true`です。
 
 DSL `4.0.0-rc.8`は公開プレリリースとして固定済みです。annotated `v4.0.0-rc.8` tag、
-[npm `next`](https://www.npmjs.com/package/@kubohiroya/tmpose-kamishibai/v/4.0.0-rc.8)、
+[npm `next`](https://www.npmjs.com/package/@kubohiroya/tm-kamishibai/v/4.0.0-rc.8)、
 [GitHub prerelease](https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.8)、
 [Pages](https://kubohiroya.github.io/tm-kamishibai/downloads/)を
-[tmpose-kamishibai #647](https://github.com/kubohiroya/tm-kamishibai/issues/647)で照合し、
+[tm-kamishibai #647](https://github.com/kubohiroya/tm-kamishibai/issues/647)で照合し、
 SB3 SHA-256を`91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041`へ固定しました。
 `dsl4-release` gateは`published`、`ready: true`です。安定版`4.0.0`ではなく、公開済みRCを
 チュートリアルの対象releaseとして扱います。

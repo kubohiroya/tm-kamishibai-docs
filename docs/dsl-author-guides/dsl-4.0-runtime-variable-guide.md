@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 対象: 変数と条件分岐を使うDSL 4.0紙芝居制作者\
-現行公開仕様の基準: tmpose-kamishibai 4.0.0-rc.8（`29c0dea`）、2026年8月20日
+現行公開仕様の基準: TM Kamishibai 4.0.0-rc.8（`29c0dea`）、2026年8月20日
 
 文書状態: **受け入れ済み・実装済み利用契約（既定OFF）**。[実装Issue #597](https://github.com/kubohiroya/tm-kamishibai/issues/597)で
 source実装とtestを追加しています。追加機能はfeature flagが既定OFFのため、4.0.0-rc.8の現行公開APIには含まれません。
