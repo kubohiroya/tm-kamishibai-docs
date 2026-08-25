@@ -5,7 +5,7 @@ import test from 'node:test';
 import Ajv2020 from 'ajv/dist/2020.js';
 import {parse} from 'yaml';
 
-import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
+import sourceSnapshot from '../sources/tm-kamishibai.json' with {type: 'json'};
 
 const extensionGuide = readFileSync(
   new URL('../docs/developer-guides/extension-guide.md', import.meta.url),
@@ -69,7 +69,7 @@ const diagnosticsDesign4 = readFileSync(
 const theme = readFileSync(new URL('../docs/general-theme.css', import.meta.url), 'utf8');
 
 test('keeps the completed DSL 4.0 guide separate from the production 3.2 manual', () => {
-  assert.match(dslManual, /対象アプリ: tmpose-kamishibai 3\.2\.x/u);
+  assert.match(dslManual, /対象アプリ: TM Kamishibai 3\.2\.x/u);
   assert.match(dsl4AuthorGuide, /固定実装基準を説明する台本作成ガイド/u);
   assert.match(dsl4AuthorGuide, /v4\.0\.0-rc\.8`はprerelease/u);
   assert.match(dsl4AuthorGuide, /Schemaはruntime実装から生成するものではありません/u);
@@ -206,7 +206,7 @@ test('documents DSL 4.0 capabilities and platform integrations from the complete
     '@kubohiroya/turbowarp-bubble@0.10.0',
     '@kubohiroya/turbowarp-runtime-expression@0.4.0',
     '@kubohiroya/turbowarp-svg-text@0.5.0',
-    '@kubohiroya/turbowarp-tmpose@1.12.0',
+    '@kubohiroya/turbowarp-tm@1.12.0',
   ]) {
     assert.match(
       extensionGuide4,
@@ -220,7 +220,7 @@ test('documents DSL 4.0 capabilities and platform integrations from the complete
     'createDsl4MediaActionPort',
     'createDsl4PlatformAssetSession',
     'createDsl4AssetManagerAdapter',
-    'createDsl4TMPosePlatform',
+    'createDsl4TMPlatform',
     'createDsl4PoseActionPort',
     'createDsl4CameraPreviewControls',
     'createDsl4SvgTextPlatform',
@@ -305,7 +305,7 @@ test('reviews DSL 4.0 diagnostics and safe stopping from the completed implement
 });
 
 test('documents the DSL 3.2 to 4.0 converter as a dedicated migration guide', () => {
-  assert.match(dsl4ConversionGuide, /tmpose-kamishibai convert-dsl4/u);
+  assert.match(dsl4ConversionGuide, /tm-kamishibai convert-dsl4/u);
   assert.match(dsl4ConversionGuide, /--input source\.txt/u);
   assert.match(dsl4ConversionGuide, /--output story\.k4\.yml/u);
   assert.match(dsl4ConversionGuide, /--pose-models pose-models\.json/u);
@@ -338,9 +338,9 @@ test('publishes a DSL 4.0-only software maintenance contract from the completed 
   assert.match(developerGuide4, /src\/dsl4\/browser-preview-source-adapter\.js/u);
   assert.match(developerGuide4, /src\/builder\/dsl4-local-preview-host\.js/u);
   assert.match(developerGuide4, /src\/builder\/dsl4-build-output\.js/u);
-  assert.match(developerGuide4, /pnpm exec tmpose-kamishibai validate-dsl4/u);
-  assert.match(developerGuide4, /pnpm exec tmpose-kamishibai preview-dsl4/u);
-  assert.match(developerGuide4, /pnpm exec tmpose-kamishibai build-dsl4/u);
+  assert.match(developerGuide4, /pnpm exec tm-kamishibai validate-dsl4/u);
+  assert.match(developerGuide4, /pnpm exec tm-kamishibai preview-dsl4/u);
+  assert.match(developerGuide4, /pnpm exec tm-kamishibai build-dsl4/u);
   assert.match(developerGuide4, /--enable-source-includes/u);
   assert.match(developerGuide4, /--max-total-source-bytes/u);
   assert.match(developerGuide4, /deep-frozen StoryDocument/u);
@@ -413,8 +413,11 @@ test('keeps the extension guide as an index, bundle explanation, and sixteen two
   assert.doesNotMatch(extensionGuide, /class="tw-/u);
   assert.equal((extensionGuide.match(/class="extension-kamishibai-why"/gu) ?? []).length, 16);
   assert.equal((extensionGuide.match(/機能拡張そのもの 1 \/ 2/gu) ?? []).length, 16);
-  assert.equal((extensionGuide.match(/TMPose 紙芝居での利用例 2 \/ 2/gu) ?? []).length, 16);
-  assert.match(extensionGuide, /^## TMPose — 学習済みモデルでカメラ映像のポーズを認識する /mu);
+  assert.equal((extensionGuide.match(/TM紙芝居での利用例 2 \/ 2/gu) ?? []).length, 16);
+  assert.match(
+    extensionGuide,
+    /^## TurboWarp TM — 学習済みモデルでカメラ映像のポーズを認識する /mu,
+  );
   assert.doesNotMatch(extensionGuide, /cameraをpose名へ変える/u);
   assert.match(extensionGuide, /^## Web Link — HTTPS URLを検証し、新しいタブで開く /mu);
   assert.match(
@@ -422,8 +425,8 @@ test('keeps the extension guide as an index, bundle explanation, and sixteen two
     /^## Web Linkで利用者がボタンやメニューを操作したとき、設定済みのHTTPSページを開く /mu,
   );
   assert.doesNotMatch(extensionGuide, /公式URLだけを開く|title buttonからだけ開く/u);
-  assert.match(theme, /content: ['"]TMPose 紙芝居での利用例['"];/u);
-  assert.doesNotMatch(`${extensionGuide}\n${theme}`, /TM紙芝居での利用/u);
+  assert.match(theme, /content: ['"]TM紙芝居での利用例['"];/u);
+  assert.doesNotMatch(`${extensionGuide}\n${theme}`, /TMPose 紙芝居での利用/u);
   assert.match(
     extensionGuide,
     /このアプリの体験会を実施する場合を想定すると、参加者が書いたTXT台本をその場ですぐ試してもらいたい一方、どのような技量・経験を持った参加者が集まるかがわからず時間的制約もある状況では、台本ごとにWebへ公開したりアプリを作り直したりはできません。/u,
@@ -441,7 +444,7 @@ test('keeps the extension guide as an index, bundle explanation, and sixteen two
     assert.match(extensionGuide, new RegExp(`<code>${extensionId}</code>`, 'u'));
   }
   assert.match(extensionGuide, /\{#extension-bundle \.extension-sheet \.extension-bundle-sheet\}/u);
-  assert.match(extensionGuide, /<code>tmposebundle<\/code>/u);
+  assert.match(extensionGuide, /<code>tmbundle<\/code>/u);
   assert.match(extensionGuide, /4 components → 1 ID/u);
   assert.match(extensionGuide, /<strong>16<\/strong>[\s\S]*<strong>13<\/strong>/u);
   assert.match(extensionGuide, /class="extension-dependency-map"/u);

@@ -457,9 +457,9 @@ Node.jsとpnpmを用意して`preview-dsl4`、`validate-dsl4`、`build-dsl4`を�
 このチュートリアルを完了するためには不要です。正確な引数と上限は、使用する版で次を実行して確認します。
 
 ```bash
-pnpm exec tmpose-kamishibai preview-dsl4 --help
-pnpm exec tmpose-kamishibai validate-dsl4 --help
-pnpm exec tmpose-kamishibai build-dsl4 --help
+pnpm exec tm-kamishibai preview-dsl4 --help
+pnpm exec tm-kamishibai validate-dsl4 --help
+pnpm exec tm-kamishibai build-dsl4 --help
 ```
 
 ## このチュートリアルと台本作成ガイドの違い

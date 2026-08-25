@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 対象: DSL 4.0ランタイムをTurboWarp Editorで開き、集約されたブロックからプログラムを書く方  
-調査基準: tmpose-kamishibai 4.0.0-rc.8（`29c0dea`）、sb3-toolchain 0.8.0、2026年8月20日
+調査基準: TM Kamishibai 4.0.0-rc.8（`29c0dea`）、sb3-toolchain 0.8.0、2026年8月20日
 
 文書状態: 公開プレリリース4.0.0-rc.8向けリファレンス<br />
 実装基準: annotated tag `v4.0.0-rc.8`のcommit `29c0dea`
@@ -34,7 +34,7 @@ TurboWarp Editorでは一つのパレットに見えますが、見出し、ア�
 | Bubble                     | 0.10.0     | `kubohiroyabubble`             | [Bubble](https://kubohiroya.github.io/turbowarp-bubble/)                                                                               |
 | Runtime Expression         | 0.4.0      | `kubohiroyaruntimeexpression`  | [Runtime Expression](https://kubohiroya.github.io/turbowarp-runtime-expression/)                                                       |
 | SVG Text                   | 0.5.0      | `kubohiroyasvgtext`            | [SVG Text](https://kubohiroya.github.io/turbowarp-svg-text/)                                                                           |
-| TMPose                     | 1.12.0     | `tmpose`                       | [TMPose](https://kubohiroya.github.io/turbowarp-tmpose/)                                                                               |
+| TurboWarp TM                     | 1.12.0     | `kubohiroyatm`                       | [TurboWarp TM](https://kubohiroya.github.io/turbowarp-tm/)                                                                               |
 
 以下の各member章の冒頭図のうち図1〜6は、SHA-256
 `2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c`の固定
@@ -285,19 +285,19 @@ _図6: SVG Textのmemberセパレータで切り出したパレット。_
 
 文字幅測定、skin所有権、target／全体解放はComposition APIで提供され、パレットblockではありません。
 
-## TMPose 1.12.0（37ブロック）
+## TurboWarp TM 1.12.0（37ブロック）
 
-![TurboWarpの集約パレットに表示されたTMPose 1.12.0の37ブロック](../images/dsl4-palette-tmpose.png)
+![TurboWarpの集約パレットに表示されたTurboWarp TM 1.12.0の37ブロック](../images/dsl4-palette-tmpose.png)
 
-_図7: 公開rc.7 Standard SB3をTurboWarp Editorで開き、TMPose 1.12.0のmemberセパレータから37ブロックを切り出したパレット。_
+_図7: 公開rc.7 Standard SB3をTurboWarp Editorで開き、TurboWarp TM 1.12.0のmemberセパレータから37ブロックを切り出したパレット。_
 
-TMPose 1.12.0で追加されたoverlay 6ブロックと、`recognition`へ統一された公開opcodeを含む実パレットです。
+TurboWarp TM 1.12.0で追加されたoverlay 6ブロックと、`recognition`へ統一された公開opcodeを含む実パレットです。
 
 ### model、camera、preview
 
 | opcode                     | パレットのブロック文                        | 役割                                          |
 | -------------------------- | ------------------------------------------- | --------------------------------------------- |
-| `versionReporter`          | `TMPose version`                            | TMPoseのversionを返す                         |
+| `versionReporter`          | `TurboWarp TM version`                            | TurboWarp TMのversionを返す                         |
 | `setModelURL`              | `set model URL to [URL]`                    | Teachable Machine Pose model URLを設定する    |
 | `loadModel`                | `load model`                                | 設定済みmodelを読み込む                       |
 | `isModelLoaded`            | `model is loaded?`                          | modelの読込状態を返す                         |
@@ -348,9 +348,9 @@ TMPose 1.12.0で追加されたoverlay 6ブロックと、`recognition`へ統一
 `setAccumulatedPoseParameters`、`setAccumulatedPoseThreshold`、`resetAccumulatedPose`、
 `accumulatedPoseReporter`、`accumulatedScoreReporter`、`accumulatedPoseScoreReporter`は
 `temporalPoseScoring`が既定OFFのため、現行の集約パレットには表示されません。DSL 4.0内部は
-TMPose Composition APIの時間累積機能を、作品実行の契約に従って利用します。
+TurboWarp TM Composition APIの時間累積機能を、作品実行の契約に従って利用します。
 
-TMPose 1.12.0の`latest-needed` model初期化、`AbortSignal`、実行中1件＋最新待機1件、cancelled modelを
+TurboWarp TM 1.12.0の`latest-needed` model初期化、`AbortSignal`、実行中1件＋最新待機1件、cancelled modelを
 registryへ公開しない契約もComposition API側の機能であり、TurboWarp blockとしては追加されません。
 
 ## 互換性と安全な使い方

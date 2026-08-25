@@ -3,9 +3,9 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 対象: DSL 3.1／3.2の既存台本をDSL 4.0へ移行する方\
-対象コマンド: `tmpose-kamishibai convert-dsl4`\
+対象コマンド: `tm-kamishibai convert-dsl4`\
 文書状態: 固定実装基準を説明する変換ガイド（正式リリースの操作資料ではない）\
-調査基準: tmpose-kamishibai `29c0dea`（4.0.0-rc.8）、2026年8月20日
+調査基準: TM Kamishibai `29c0dea`（4.0.0-rc.8）、2026年8月20日
 
 このガイドは、すでに3.1／3.2の台本を持っている方のための移行手順です。初めてTM紙芝居を使う方や、
 4.0で最初の作品を作る方は、先に[大人向け概要](../user-guides/executive-summary-adult-4.0.md)と
@@ -13,7 +13,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 > **配布状態との区別:** 2026年8月20日時点で`v4.0.0-rc.8`はprereleaseとして公開されていますが、
 > 正式な`v4.0.0`ではありません。
-> `convert-dsl4`を含むpackage releaseを使用し、利用中のpackageで`pnpm exec tmpose-kamishibai --help`を
+> `convert-dsl4`を含むpackage releaseを使用し、利用中のpackageで`pnpm exec tm-kamishibai --help`を
 > 実行して、コマンド一覧に`convert-dsl4`があることを確認してください。
 
 `convert-dsl4`は、行ごとに命令を書く3.2の台本を、4.0のYAML台本へ一度だけ変換するコマンドです。
@@ -38,7 +38,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 必要なパッケージを導入した作品フォルダーで実行します。
 
 ```bash
-pnpm exec tmpose-kamishibai convert-dsl4 \
+pnpm exec tm-kamishibai convert-dsl4 \
   --input source.txt \
   --output story.k4.yml
 ```
@@ -47,7 +47,7 @@ pnpm exec tmpose-kamishibai convert-dsl4 \
 `--pose-models`でlocal model directoryへ置き換えます。
 
 ```bash
-pnpm exec tmpose-kamishibai convert-dsl4 \
+pnpm exec tm-kamishibai convert-dsl4 \
   --input source.txt \
   --output story.k4.yml \
   --pose-models pose-models.json
@@ -111,7 +111,7 @@ headerの`poseRecog`は`sequence.confidenceThreshold`へ変換します。旧run
 
 ## インターネット上の素材を扱う
 
-DSL 4.0のposeModelは、`delivery: remote`と`source.url`だけの通常のTMPose directory参照に対応します。
+DSL 4.0のposeModelは、`delivery: remote`と`source.url`だけの通常のTurboWarp TM directory参照に対応します。
 converterは3.1／3.2の`TMPoseURL`をこの形式へ自動変換し、network取得やcache lookupは行いません。
 
 内容を固定する方法は、次の二つです。
@@ -184,7 +184,7 @@ Converted /project/story.k4.yml
 指定してください。現行実装で指定できる最大値は262144 bytesです。
 
 ```bash
-pnpm exec tmpose-kamishibai validate-dsl4 \
+pnpm exec tm-kamishibai validate-dsl4 \
   --input story.k4.yml \
   --max-source-bytes 262144 \
   --format pretty
@@ -199,7 +199,7 @@ scene遷移、表示、音、ポーズ認識、作品固有blockとの関係を�
 副作用なしで文字列を変換する場合は、package exportを使用します。
 
 ```js
-import {convertDsl32ToDsl4} from '@kubohiroya/tmpose-kamishibai/converter';
+import {convertDsl32ToDsl4} from '@kubohiroya/tm-kamishibai/converter';
 
 const result = convertDsl32ToDsl4(sourceText, {
   sourceId: 'source.txt',

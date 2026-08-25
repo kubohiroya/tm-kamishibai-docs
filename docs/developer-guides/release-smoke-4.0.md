@@ -37,8 +37,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 ```bash
 git clone https://github.com/kubohiroya/tm-kamishibai.git
-git -C tmpose-kamishibai checkout --detach 29c0deadcb98badf94a0244c479ca896dc71f842
-git -C tmpose-kamishibai status --short
+git -C tm-kamishibai checkout --detach 29c0deadcb98badf94a0244c479ca896dc71f842
+git -C tm-kamishibai status --short
 ```
 
 ## Feature flag snapshot
@@ -57,7 +57,7 @@ git -C tmpose-kamishibai status --short
 ## 自動検証
 
 ```bash
-cd tmpose-kamishibai
+cd tm-kamishibai
 pnpm install --frozen-lockfile
 pnpm release:dsl4:check
 pnpm verify:full
@@ -79,9 +79,9 @@ curl -fL \
   -o kamishibai-4.0.0-rc.8.sb3
 shasum -a 256 kamishibai-4.0.0-rc.8.sb3
 
-npm view @kubohiroya/tmpose-kamishibai@4.0.0-rc.8 \
+npm view @kubohiroya/tm-kamishibai@4.0.0-rc.8 \
   version dist.tarball dist.integrity dist.shasum
-npm view @kubohiroya/tmpose-kamishibai dist-tags
+npm view @kubohiroya/tm-kamishibai dist-tags
 ```
 
 確認済みのnpm integrityは
@@ -97,7 +97,7 @@ rc.8 Standard SB3をfresh TurboWarp Editorで開き、次を確認します。
 3. Runtime由来の23 core action blockが表示される
 4. TurboWarp blockからの実行がYAMLと同じregistry、Schema正規化、ActionContext、lifecycleを通る
 5. Asset Manager 0.11.0、Async Input 0.4.0、Bubble 0.10.0、Runtime Expression 0.4.0、
-   SVG Text 0.5.0、TMPose 1.12.0のexact pinと一致する
+   SVG Text 0.5.0、TurboWarp TM 1.12.0のexact pinと一致する
 6. remote codeを取得せず、PoseNet model dataをprojectから復元できる
 7. `poseRecognition.preview.overlay`設定時にSVGの関節とボーンが表示され、省略時は非表示になる
 8. Bubble 0.10.0由来の31個の可視blockと、組み込み`say`／`think` styleが表示される
@@ -113,7 +113,7 @@ session token、file handle、camera device IDをログやSB3へ保存しませ�
 CLI Previewは候補packageとversion付きStandard SB3を使います。
 
 ```bash
-pnpm exec tmpose-kamishibai preview-dsl4 --watch \
+pnpm exec tm-kamishibai preview-dsl4 --watch \
   --base /absolute/path/to/kamishibai-4.0.0-rc.8.sb3 \
   --project-root /absolute/path/to/project \
   --source-manifest /absolute/path/to/project/project.source.json \
@@ -128,7 +128,7 @@ socket／watcher／timer解放を確認します。
 
 camera contextの責務境界は[Issue #601](https://github.com/kubohiroya/tm-kamishibai/issues/601)で
 Chrome 151と物理cameraを使って測定しました。実際と同じ1 draw／1 read経路では`willReadFrequently`に
-再現性のある高速化がなく、WebGLでは全条件で悪化したため、TMPose 1.12.0は通常contextを使用します。
+再現性のある高速化がなく、WebGLでは全条件で悪化したため、TurboWarp TM 1.12.0は通常contextを使用します。
 CPU推論時にChromiumのreadback警告が1回出る場合がありますが、警告抑制だけを目的に成果物を書き換えません。
 
 現時点の判定は次のとおりです。

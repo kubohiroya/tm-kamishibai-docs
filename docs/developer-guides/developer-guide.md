@@ -21,7 +21,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 [コマンドリファレンス](../dsl-author-guides/command-reference.md)を参照してください。本書には、
 これらの内部構造やDSL項目を重複して列挙しません。
 
-対象アプリ: tmpose-kamishibai 3.2.x\
+対象アプリ: TM Kamishibai 3.2.x\
 受理するDSL宣言: `kamishibai=3.1`、`kamishibai=3.2`
 
 過去のバージョンからの変更は[`history.md`](../dsl-author-guides/history.md)を参照してください。
@@ -171,7 +171,7 @@ PRへ分けます。
 変換済み台本とアセット参照を分岐させません。`player`は組み込み台本を予約変数へ保存し、
 タイトル操作後にファイル選択なしで開始します。
 
-`player`へ台本とアセットを組み込んでも、TMPoseモデル、カメラ、外部サービスまで
+`player`へ台本とアセットを組み込んでも、TurboWarp TMモデル、カメラ、外部サービスまで
 自動的にオフライン化されるわけではありません。残るオンライン依存は成果物manifestと
 公開ページへ明記します。
 
@@ -186,8 +186,8 @@ PRへ分けます。
 利用可能なバージョンを確認し、消費側で明示的に固定します。
 
 ```bash
-npm view @kubohiroya/tmpose-kamishibai version
-pnpm add --save-exact @kubohiroya/tmpose-kamishibai@<VERSION>
+npm view @kubohiroya/tm-kamishibai version
+pnpm add --save-exact @kubohiroya/tm-kamishibai@<VERSION>
 ```
 
 生成したlockfileをcommitし、CIでは`pnpm install --frozen-lockfile`を使います。
@@ -195,7 +195,7 @@ pnpm add --save-exact @kubohiroya/tmpose-kamishibai@<VERSION>
 ### CLI
 
 ```bash
-pnpm exec tmpose-kamishibai build-sb3 \
+pnpm exec tm-kamishibai build-sb3 \
   --base kamishibai.sb3 \
   --script source.txt \
   --assets assets.lock.json \
@@ -221,7 +221,7 @@ dist/sample.manifest.json
 | `--max-script-bytes N`  | 組み込み台本の最大バイト数                |
 | `--max-redirects N`     | HTTPリダイレクト上限                      |
 
-完全な一覧は`pnpm exec tmpose-kamishibai --help`で確認します。
+完全な一覧は`pnpm exec tm-kamishibai --help`で確認します。
 
 ### JavaScript API
 
@@ -231,7 +231,7 @@ import {
   buildSb3Bundle,
   validateAssetManifest,
   validateBundle,
-} from '@kubohiroya/tmpose-kamishibai/builder';
+} from '@kubohiroya/tm-kamishibai/builder';
 
 const result = await buildSb3Bundle({
   baseSb3: 'kamishibai.sb3',
@@ -410,7 +410,7 @@ APIまたはCLIを変更するときは次を同じ変更に含めます。
 
 ```bash
 node --test test/builder.test.mjs
-node bin/tmpose-kamishibai.mjs --help
+node bin/tm-kamishibai.mjs --help
 pnpm typecheck
 pnpm pack:check
 ```
@@ -555,12 +555,12 @@ npm publish --access public
 6. registry反映後にmetadataを確認する。
 
 ```bash
-npm view @kubohiroya/tmpose-kamishibai@<VERSION> \
+npm view @kubohiroya/tm-kamishibai@<VERSION> \
   version license dist-tags.latest dist.integrity --json
 ```
 
 7. 一時ディレクトリへ公開版を導入し、CLIの`--version`と
-   `@kubohiroya/tmpose-kamishibai/builder`のimportを確認する。
+   `@kubohiroya/tm-kamishibai/builder`のimportを確認する。
 8. 公開に使った確定commitへannotated tagを作り、GitHub Releaseを作成する。
 
 公開後に問題が見つかった場合は対象versionを`npm deprecate`し、修正版を新しいpatch
@@ -629,7 +629,7 @@ TM紙芝居の開発から分離し、他のTurboWarp作品や開発環境でも
 
 ### TurboWarp 機能拡張
 
-- [`turbowarp-tmpose`](https://github.com/kubohiroya/turbowarp-tmpose):
+- [`turbowarp-tm`](https://github.com/kubohiroya/turbowarp-tm):
   Teachable Machine Poseモデルを利用したカメラ姿勢認識
 - [`turbowarp-text-lines`](https://github.com/kubohiroya/turbowarp-text-lines):
   テキストの行数取得、行単位の読み出し・分割

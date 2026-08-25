@@ -3,7 +3,7 @@
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
 文書状態: 公開プレリリース`4.0.0-rc.8`の固定実装基準を説明する保守資料\
-調査基準: tmpose-kamishibai `29c0dea`、2026年8月20日
+調査基準: TM Kamishibai `29c0dea`、2026年8月20日
 
 > **配布状態との区別:** `v4.0.0-rc.8`はnpm `next`、GitHub prerelease、Pagesのダウンロード導線として
 > 公開済みです。安定版の推奨は`3.2.3`で、正式版`v4.0.0`は未公開です。
@@ -83,7 +83,7 @@ DSL 4.0の構造仕様は、本体リポジトリの`schema/dsl-4.schema.json`�
 
 ```bash
 pnpm docs:dsl4:sync -- \
-  --repository ../tmpose-kamishibai \
+  --repository ../tm-kamishibai \
   --commit 29c0deadcb98badf94a0244c479ca896dc71f842
 pnpm docs:dsl4:check
 git diff -- \
@@ -142,7 +142,7 @@ pnpm test
 | `src/builder/dsl4-build-output.js`           | disk candidateの再検証とatomic install                         |
 | `src/builder/dsl4-local-preview-command.js`  | `preview-dsl4 --watch`のlifecycle                              |
 | `src/builder/dsl4-local-preview-host.js`     | loopback transport、session token、watcher                     |
-| `bin/tmpose-kamishibai.mjs`                  | 公開CLI entrypoint                                             |
+| `bin/tm-kamishibai.mjs`                      | 公開CLI entrypoint                                             |
 | `release-metadata/4.0.0-rc.8.json`           | rc.8の状態、source identity、artifact、公開先                  |
 | `scripts/sb3/dsl4-downloadable-release.mjs`  | Standard Runtime release sourceの決定的生成と検査              |
 | `scripts/download-catalog.mjs`               | `kamishibai-4.0.0-rc.8.sb3`のversion、source identity、SHA-256 |
@@ -207,7 +207,7 @@ entry sourceを`path`へ記録します。
 検証します。`--max-source-bytes`を省略できません。pretty形式は人が読み、JSON形式はCIやeditorが処理します。
 
 ```bash
-pnpm exec tmpose-kamishibai validate-dsl4 \
+pnpm exec tm-kamishibai validate-dsl4 \
   --input project/story.k4.yml \
   --max-source-bytes 65536 \
   --format pretty
@@ -227,7 +227,7 @@ pnpm exec tmpose-kamishibai validate-dsl4 \
 有限上限がすべて必須です。
 
 ```bash
-pnpm exec tmpose-kamishibai preview-dsl4 \
+pnpm exec tm-kamishibai preview-dsl4 \
   --watch \
   --base base.sb3 \
   --project-root project \
@@ -259,7 +259,7 @@ full rebuildとしてcommandを再起動します。
 配布candidateは`build-dsl4`で一つの`.sb3`へ出力します。次の例はSource Graphを有効にする場合の完全なCLI契約です。
 
 ```bash
-pnpm exec tmpose-kamishibai build-dsl4 \
+pnpm exec tm-kamishibai build-dsl4 \
   --base base.sb3 \
   --project-root project \
   --source-manifest project/project.source.json \
@@ -307,18 +307,18 @@ Standard SB3は`kubohiroyakamishibairuntime4`を一度だけ登録し、次を�
 端末の絶対path、browser file handle、preview token、reload candidate、modal状態を保存しません。local sourceと
 embedded assetだけを使う成果物は、実行時にextension codeや作品assetをremote取得しません。
 
-`delivery: remote`は明示的な例外です。通常のposeModelではHTTPS TMPose directory URLを保存します。
+`delivery: remote`は明示的な例外です。通常のposeModelではHTTPS TurboWarp TM directory URLを保存します。
 検証付きremoteではURL、SHA-256 integrity、Content-Type、sizeを保存し、いずれもasset byte列は
 SB3へ含めません。「自己完結」はsource、runtime code、runtime artifact、
 embedded assetの境界を指し、remote deliveryを選んだ作品の完全offline動作を意味しません。内容を固定する
 poseModelはlocal `file`へ変換して埋め込みます。remote extension codeと
 remote previewは常に禁止します。
 
-### TMPose上流との責務境界
+### TurboWarp TM上流との責務境界
 
-rc.8は`@kubohiroya/turbowarp-tmpose@1.12.0`をexact pinします。camera canvas、Canvas2D context、
-TensorFlow.jsへのreadback、SVG overlay要素はTMPoseが所有します。DSL runtimeは公開Composition APIへ
-正規化済みoverlay設定を渡すだけで、TMPoseのDOM、canvas、TensorFlow.js内部実装を検査・patchしません。
+rc.8は`@kubohiroya/turbowarp-tm@1.12.0`をexact pinします。camera canvas、Canvas2D context、
+TensorFlow.jsへのreadback、SVG overlay要素はTurboWarp TMが所有します。DSL runtimeは公開Composition APIへ
+正規化済みoverlay設定を渡すだけで、TurboWarp TMのDOM、canvas、TensorFlow.js内部実装を検査・patchしません。
 CPU推論時のChromium readback警告は性能根拠のない抑制をせず許容し、回帰判定は実時間、動作、解放で行います。
 
 ## Source Graph transactionとimmutable snapshotを保つ

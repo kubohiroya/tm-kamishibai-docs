@@ -4,7 +4,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="extension-overview-kicker">全34ページ。16個の機能拡張を、1拡張につき2ページの見開きで図解する</p>
 
-<div class="extension-reading-key"><section><strong>左ページ・青</strong><span>機能拡張そのもの</span><small>公式ドキュメントに基づく動作・入力・出力・制約</small></section><section><strong>右ページ・橙</strong><span>TMPose 紙芝居での利用例</span><small>なぜ必要か、実プロジェクトのどこでどう使うか</small></section></div>
+<div class="extension-reading-key"><section><strong>左ページ・青</strong><span>機能拡張そのもの</span><small>公式ドキュメントに基づく動作・入力・出力・制約</small></section><section><strong>右ページ・橙</strong><span>TM紙芝居での利用例</span><small>なぜ必要か、実プロジェクトのどこでどう使うか</small></section></div>
 
 `kamishibai=3.1`と`kamishibai=3.2`の台本を動かす3.2.xアプリは、次の16機能拡張を利用します。
 読む順番は実行時の読込順ではなく、**Gallery由来 → TurboWarp標準 → 外部埋め込み → アプリ内蔵**です。
@@ -19,7 +19,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 <a href="#extension-animated-text"><strong>Animated Text</strong><code>text</code><span>Gallery｜文字を描画・演出</span></a>
 <a href="#extension-translate"><strong>Translate</strong><code>translate</code><span>TurboWarp標準｜表示言語を取得</span></a>
 <a href="#extension-asset-manager"><strong>Asset Manager</strong><code>kubohiroyaassetmanager</code><span>外部埋め込み｜assetとLoading</span></a>
-<a href="#extension-tmpose"><strong>TMPose</strong><code>tmpose</code><span>外部埋め込み｜pose認識</span></a>
+<a href="#extension-kubohiroyatm"><strong>TurboWarp TM</strong><code>kubohiroyatm</code><span>外部埋め込み｜pose認識</span></a>
 <a href="#extension-text-lines"><strong>Text Lines</strong><code>kubohiroyatextlines</code><span>外部埋め込み｜台本を行へ分割</span></a>
 <a href="#extension-runtime-expression"><strong>Runtime Expression</strong><code>kubohiroyaruntimeexpression</code><span>外部埋め込み｜分岐条件を評価</span></a>
 <a href="#extension-svg-text"><strong>SVG Text</strong><code>kubohiroyasvgtext</code><span>npm埋め込み｜相対サイズの文字表示</span></a>
@@ -28,7 +28,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 <a href="#extension-web-link"><strong>Web Link</strong><code>kubohiroyaweblink</code><span>アプリ内蔵｜公式URLを開く</span></a>
 </nav>
 
-<p class="extension-overview-note"><strong>2種類の数え方:</strong> このガイドは保守するソース単位で16個を説明します。一方、bundle版SB3では、そのうち4個を<code>tmposebundle</code>という1個のIDにまとめます。詳しくは次ページを参照してください。</p>
+<p class="extension-overview-note"><strong>2種類の数え方:</strong> このガイドは保守するソース単位で16個を説明します。一方、bundle版SB3では、そのうち4個を<code>tmbundle</code>という1個のIDにまとめます。詳しくは次ページを参照してください。</p>
 
 <p class="extension-source extension-overview-source">右ページの実画面例はTurboWarp Editorを高解像度で撮影し、SVG Textだけは公開済み図解ガイドを撮影しています。詳しい呼出し関係は<a href="internal-specification.md">内部仕様書</a>、更新手順は<a href="developer-guide.md">メンテナンスガイド</a>を参照してください。</p>
 
@@ -36,20 +36,20 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="extension-spread-label">2 / 34　sb3-toolchainのbundle</p>
 
-<p class="extension-meta"><span>生成時の変換</span><code>tmposebundle</code><span>4 components → 1 ID</span></p>
+<p class="extension-meta"><span>生成時の変換</span><code>tmbundle</code><span>4 components → 1 ID</span></p>
 
 このガイドで説明する16個は、更新・検査する**論理上の機能拡張**です。
 sb3-toolchainでbundle版SB3を生成すると、相互に動的opcode参照を行う4個だけを、**1個の複合機能拡張**へまとめます。
 
-<div class="extension-bundle-visual"><div class="extension-bundle-members"><strong>保守する4個のソース</strong><span><code>kubohiroyaassetmanager</code> Asset Manager</span><span><code>text</code> Animated Text</span><span><code>kubohiroyakamishibairuntime</code> Kamishibai Runtime</span><span><code>kubohiroyasvgtext</code> SVG Text</span></div><div class="extension-bundle-arrow"><b>sb3-toolchain</b><span>build時だけ変換</span><strong>→</strong></div><div class="extension-bundle-result"><small>bundle版SB3で見えるID</small><strong>tmposebundle</strong><span>1 embedded data URL</span><span>1 register()</span><span>1 permission unit</span></div></div>
+<div class="extension-bundle-visual"><div class="extension-bundle-members"><strong>保守する4個のソース</strong><span><code>kubohiroyaassetmanager</code> Asset Manager</span><span><code>text</code> Animated Text</span><span><code>kubohiroyakamishibairuntime</code> Kamishibai Runtime</span><span><code>kubohiroyasvgtext</code> SVG Text</span></div><div class="extension-bundle-arrow"><b>sb3-toolchain</b><span>build時だけ変換</span><strong>→</strong></div><div class="extension-bundle-result"><small>bundle版SB3で見えるID</small><strong>tmbundle</strong><span>1 embedded data URL</span><span>1 register()</span><span>1 permission unit</span></div></div>
 
-<div class="extension-count-compare"><section><small>このガイド／source</small><strong>16</strong><span>論理上の機能拡張</span></section><b>→</b><section><small>bundle版SB3</small><strong>13</strong><span>読込ID</span></section><p>bundle外12個 + <code>tmposebundle</code> 1個</p></div>
+<div class="extension-count-compare"><section><small>このガイド／source</small><strong>16</strong><span>論理上の機能拡張</span></section><b>→</b><section><small>bundle版SB3</small><strong>13</strong><span>読込ID</span></section><p>bundle外12個 + <code>tmbundle</code> 1個</p></div>
 
 <div class="extension-columns"><section><p class="extension-subhead">sourceは展開したまま</p><ul><li>4拡張を個別に更新・検査</li><li>GitHub／npmの固定由来を保持</li><li><code>check</code>／<code>sync</code>も個別に実行</li></ul></section><section><p class="extension-subhead">生成物だけを集約</p><ul><li>opcodeとstorageをmember別にnamespace化</li><li>member間の動的opcode参照も変換</li><li>復元用capsuleにより展開可能</li></ul></section></div>
 
-<p class="extension-note"><strong>重要:</strong> 16個の機能が13個へ減るわけではありません。実装を統合するのではなく、配布するSB3の読込・登録単位だけをまとめる仕組みです。依存のないGallery拡張、Translate、TMPoseなど12個はbundleの外に残ります。</p>
+<p class="extension-note"><strong>重要:</strong> 16個の機能が13個へ減るわけではありません。実装を統合するのではなく、配布するSB3の読込・登録単位だけをまとめる仕組みです。依存のないGallery拡張、Translate、TurboWarp TMなど12個はbundleの外に残ります。</p>
 
-<figure class="extension-dependency-map"><figcaption><strong>実行時の直接依存関係</strong><span>矢印の先の拡張APIを呼び出す。bundleへの所属とは別の関係です。</span></figcaption><div class="extension-dependency-rows"><div class="extension-dependency-row"><span class="extension-dependency-from">Kamishibai Runtime</span><b>→</b><div><span>Asset Manager</span><span>Runtime Expression</span><span>Temporary Variables</span><span class="extension-dependency-optional">Translate<small>言語fallback</small></span><span class="extension-dependency-optional">Animated Text<small>SVG失敗時</small></span></div></div><div class="extension-dependency-row"><span class="extension-dependency-from">Asset Manager</span><b>→</b><div><span>Temporary Variables</span><span>Animated Text</span></div></div><div class="extension-dependency-row"><span class="extension-dependency-from">Runtime Expression</span><b>→</b><div><span>Temporary Variables</span></div></div><div class="extension-dependency-row"><span class="extension-dependency-from">Async Input</span><b>→</b><div><span>Temporary Variables</span><span class="extension-dependency-optional">TMPose<small>poseInputは現在OFF</small></span></div></div></div><div class="extension-dependency-legend"><span>実線: 現行アプリの利用経路で必要</span><span>破線: fallback／既定OFFの任意経路</span></div><p>Consoles、Text、Local Storage、More Timers、Files、Text Lines、TMPose、SVG Text、Web Linkは、他拡張を直接呼ばず、Stageのblockとruntime変数を介して連携します。</p></figure>
+<figure class="extension-dependency-map"><figcaption><strong>実行時の直接依存関係</strong><span>矢印の先の拡張APIを呼び出す。bundleへの所属とは別の関係です。</span></figcaption><div class="extension-dependency-rows"><div class="extension-dependency-row"><span class="extension-dependency-from">Kamishibai Runtime</span><b>→</b><div><span>Asset Manager</span><span>Runtime Expression</span><span>Temporary Variables</span><span class="extension-dependency-optional">Translate<small>言語fallback</small></span><span class="extension-dependency-optional">Animated Text<small>SVG失敗時</small></span></div></div><div class="extension-dependency-row"><span class="extension-dependency-from">Asset Manager</span><b>→</b><div><span>Temporary Variables</span><span>Animated Text</span></div></div><div class="extension-dependency-row"><span class="extension-dependency-from">Runtime Expression</span><b>→</b><div><span>Temporary Variables</span></div></div><div class="extension-dependency-row"><span class="extension-dependency-from">Async Input</span><b>→</b><div><span>Temporary Variables</span><span class="extension-dependency-optional">TurboWarp TM<small>poseInputは現在OFF</small></span></div></div></div><div class="extension-dependency-legend"><span>実線: 現行アプリの利用経路で必要</span><span>破線: fallback／既定OFFの任意経路</span></div><p>Consoles、Text、Local Storage、More Timers、Files、Text Lines、TurboWarp TM、SVG Text、Web Linkは、他拡張を直接呼ばず、Stageのblockとruntime変数を介して連携します。</p></figure>
 
 <p class="extension-source">出典: <a href="https://github.com/kubohiroya/sb3-toolchain/blob/b3f4b9aa3ed3ede363700be815fe522f6a47df0b/docs/extension-bundles.md">sb3-toolchain: Extension bundles</a>、<a href="https://github.com/kubohiroya/tm-kamishibai/blob/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/embedded-extensions.json">Version 3.2.0 埋め込みmanifest</a>、<a href="https://github.com/kubohiroya/tm-kamishibai/tree/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/extensions">依存APIの実装</a></p>
 
@@ -72,7 +72,7 @@ group、経過時間の計測、consoleの消去もblockから操作でき、実
 
 ## Consolesで台本の実行状況をログへ記録し、停止した処理を突き止める {#extension-consoles-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 1 / 7　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 1 / 7　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>紙芝居はasset読込、scene進行、入力待ちが非同期に重なります。画面だけでは「どの台本行まで進み、どこで止まったか」が分かりにくいため、観客向け表示を汚さずに制作者が舞台裏を追える記録経路が必要です。</p></aside>
 
@@ -103,7 +103,7 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 ## Temporary Variablesで処理ごとの一時値を分け、同時実行による上書きを防ぐ {#extension-temporary-variables-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 2 / 7　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 2 / 7　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>同じsceneの中でも複数のActorや入力処理が並行します。途中値を通常のScratch変数へ集めると別の実行が上書きし、変数一覧も膨らみます。呼出しごとの値はthreadへ、sceneや拡張をまたぐ合図だけはruntimeへ置くことで、状態の混線を防げます。</p></aside>
 
@@ -134,7 +134,7 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 ## Textで台本のコマンド名と引数を、区切り文字から読み取る {#extension-text-operators-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 3 / 7　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 3 / 7　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>紙芝居DSLは、人が直接編集できる一続きのtextです。専用parserをJavaScript側へ隠すのではなく、どの区切りを探し、どの引数を取り出したかをTurboWarpのblockとして読める形にすると、台本仕様と実装を制作者が照合しやすくなります。</p></aside>
 
@@ -165,7 +165,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 ## Local Storageで選んだ台本と言語設定を保存し、次回起動時に復元する {#extension-local-storage-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 4 / 7　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 4 / 7　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>体験会で選んだ台本や表示言語がreloadのたびに消えると、参加者は作品をプレイするより再設定に時間を取られます。小さな設定と台本文字列だけを保存し、次回は前回の続きから始められるようにします。camera映像や認識途中の値は保存しません。</p></aside>
 
@@ -196,7 +196,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 ## More Timersで待機時間を計測しながら、利用者のスキップ操作にも応答する {#extension-more-timers-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 5 / 7　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 5 / 7　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>標準の「待つ」だけでは、待機中に観客がskipしても、その時間が終わるまでsceneを進められません。名前付きtimerの値とskipの両方を短いloopで確認すれば、予定時間を守りながら操作にもすぐ反応できます。</p></aside>
 
@@ -227,7 +227,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 ## Filesで参加者が選んだTXT台本を、埋め込み台本と同じ検査・実行経路へ渡す {#extension-files-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 6 / 7　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 6 / 7　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>このアプリの体験会を実施する場合を想定すると、参加者が書いたTXT台本をその場ですぐ試してもらいたい一方、どのような技量・経験を持った参加者が集まるかがわからず時間的制約もある状況では、台本ごとにWebへ公開したりアプリを作り直したりはできません。端末上のfileを利用者のclickで選び、埋め込み台本と同じ検査・実行経路へ渡す入口になります。</p></aside>
 
@@ -258,7 +258,7 @@ spriteへ文字専用のrenderer skinを作り、font、色、幅、配置、out
 
 ## Animated Textで台詞やメニューの文字列を画面へ描画する {#extension-animated-text-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">Gallery 7 / 7　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">Gallery 7 / 7　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>台詞、menu、prompt、診断文は台本や言語によって変わるため、すべてを事前にcostumeへ描いておくことはできません。実行時の文字列をStage上の見た目に変換すれば、同じUI部品を内容だけ差し替えて再利用できます。</p></aside>
 
@@ -291,7 +291,7 @@ Scratch／TurboWarp標準の翻訳拡張です。文章と翻訳先の言語を�
 
 ## Translateで閲覧環境の言語を取得し、初期表示へ反映する {#extension-translate-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">TurboWarp標準 1 / 1　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">TurboWarp標準 1 / 1　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>初めて開いた利用者には日本語か英語のどちらかを提示する必要がありますが、選択前には保存値がありません。そこでviewerの言語を一度だけ「最初の推測」に使い、その後は利用者自身の選択を優先します。台本文を自動翻訳するための利用ではありません。</p></aside>
 
@@ -322,7 +322,7 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 ## Asset Managerで台本指定の素材を読み込み、名前で背景・登場人物・音を操作する {#extension-asset-manager-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 1 / 6　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 1 / 6　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>紙芝居の作者には、素材がURLかSB3内のcostumeかを意識せず「Hero」「海」「鐘」のような名前で台本を書いてほしいからです。登録と読込を一か所へ集めることで、local素材は通信なしで速く使い、Web素材はcacheし、Loading進捗も同じ単位で数えられます。</p></aside>
 
@@ -334,11 +334,11 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tm-kamishibai/blob/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/project.source.json">Version 3.2.0 project source</a>（Stage: <code>create asset</code>）</p>
 
-## TMPose — 学習済みモデルでカメラ映像のポーズを認識する {#extension-tmpose .extension-sheet .extension-sheet-left}
+## TurboWarp TM — 学習済みモデルでカメラ映像のポーズを認識する {#extension-kubohiroyatm .extension-sheet .extension-sheet-left}
 
 <p class="extension-spread-label">外部埋め込み 2 / 6　機能拡張そのもの 1 / 2</p>
 
-<p class="extension-meta"><span>外部埋め込み</span><code>tmpose</code><span>1.4.0</span></p>
+<p class="extension-meta"><span>外部埋め込み</span><code>kubohiroyatm</code><span>1.4.0</span></p>
 
 Teachable Machine Pose modelとcamera映像を接続し、現在のpose名とconfidenceをTurboWarpの値として返します。
 model、camera、preview、predictionを別々に開始・停止できます。
@@ -349,15 +349,15 @@ model、camera、preview、predictionを別々に開始・停止できます。
 
 <div class="extension-columns"><section><p class="extension-subhead">現在の認識</p><ul><li>pose labelとconfidence</li><li>すばやい動きへ即時反応</li><li>camera previewを配置</li></ul></section><section><p class="extension-subhead">時間を含む認識</p><ul><li>confidenceを蓄積・減衰</li><li>一瞬の揺れを平滑化</li><li>開始・停止を個別管理</li></ul></section></div>
 
-<p class="extension-source">出典: <a href="https://kubohiroya.github.io/turbowarp-tmpose/ja/">TMPose図解ガイド</a>、<a href="https://github.com/kubohiroya/turbowarp-tmpose/tree/08fe0cf9da061b1eba75297b8ee187d68549eed4">固定commit 08fe0cf</a></p>
+<p class="extension-source">出典: <a href="https://kubohiroya.github.io/turbowarp-tm/ja/">TurboWarp TM図解ガイド</a>、<a href="https://github.com/kubohiroya/turbowarp-tm/tree/08fe0cf9da061b1eba75297b8ee187d68549eed4">固定commit 08fe0cf</a></p>
 
-## TMPoseで観客のポーズを認識し、物語を進める入力として扱う {#extension-tmpose-example .extension-sheet .extension-sheet-right}
+## TurboWarp TMで観客のポーズを認識し、物語を進める入力として扱う {#extension-kubohiroyatm-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 2 / 6　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 2 / 6　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>このアプリでは、観客がkeyやbuttonを押すだけでなく、物語に合わせて体を動かすこと自体が入力になります。学習済みmodel、camera、preview、認識loopを別々に管理できるため、必要なsceneだけでcameraを使い、poseが十分確かになった時に物語を進められます。</p></aside>
 
-<figure class="extension-editor-example"><img src="../images/extension-editor-tmpose.png" alt="TurboWarp Editorから、TMPoseの認識開始とcamera preview表示を呼ぶ2つの補助定義だけを切り出した画面"><figcaption><code>start pose recog</code>と<code>start camera preview</code>。各custom blockが対応するTMPose blockを1つずつ呼びます。</figcaption></figure>
+<figure class="extension-editor-example"><img src="../images/extension-editor-tmpose.png" alt="TurboWarp Editorから、TurboWarp TMの認識開始とcamera preview表示を呼ぶ2つの補助定義だけを切り出した画面"><figcaption><code>start pose recog</code>と<code>start camera preview</code>。各custom blockが対応するTurboWarp TM blockを1つずつ呼びます。</figcaption></figure>
 
 <div class="extension-usage-grid"><section><strong>scene準備</strong><span><code>TMPoseURL</code>でmodelをload。</span></section><section><strong>action</strong><span>指定poseのscoreが閾値を超えるまで反復。</span></section><section><strong>終了</strong><span>skip、scene終了、stopでpredictionとcameraを停止。</span></section></div>
 
@@ -384,7 +384,7 @@ LF、CRLF、CRを同じ改行として正規化するため、台本を作った
 
 ## Text Linesで台本を行ごとに分け、エラー表示を元のTXTの行番号へ対応させる {#extension-text-lines-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 3 / 6　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 3 / 6　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>台本のerrorを直す人にとって最も役立つ手掛かりは、元のTXTと一致する行番号です。OSごとの改行差を吸収しつつ、検査と実行が同じ物理行のlistを使えば、「表示された行」と「直すべき行」がずれません。</p></aside>
 
@@ -415,7 +415,7 @@ Temporary Variablesのruntime値を、JavaScriptに似た制限付き条件式�
 
 ## Runtime Expressionで台本の条件式を安全に評価し、最初に成立した場面へ進む {#extension-runtime-expression-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 4 / 6　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 4 / 6　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>台本作者は「scoreが3以上なら次のsceneへ」のような分岐を書きたい一方、外部台本から任意のJavaScriptを動かしてはいけません。読める条件式の形を保ちつつ、許可した演算だけを現在のruntime値へ適用する安全な境界になります。</p></aside>
 
@@ -445,7 +445,7 @@ Temporary Variablesのruntime値を、JavaScriptに似た制限付き条件式�
 
 ## SVG Textで吹き出しとテキストアクターの見た目を共有する {#extension-svg-text-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 5 / 6　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 5 / 6　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>大きなstageや全画面表示で吹き出しだけが相対的に小さくならないことに加え、登場人物に従属するbubbleではなく、タイトルやナレーションをActor自身として配置したいからです。同じstyle名を使えば、別々の表示方法でも配色と文字設計を揃えられます。</p></aside>
 
@@ -476,7 +476,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 ## Async Inputでキー・画面タッチ・ポーズ入力を、競合しない場面遷移へまとめる {#extension-async-input-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">外部埋め込み 6 / 6　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">外部埋め込み 6 / 6　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>key、画面のActor、poseごとに「入力を待つ」scriptを増やすと、同時発火やsceneをまたいだ古い待機が競合します。入力源は違ってもruntime値とbroadcastへ合流させ、最初に成立した操作の後で残りを解除できる構造が必要です。</p></aside>
 
@@ -507,7 +507,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 ## Kamishibai Runtimeで素材読込やカメラ開始の前に台本を検査し、エラーを表示する {#extension-kamishibai-runtime-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">アプリ内蔵 1 / 2　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">アプリ内蔵 1 / 2　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>外部から読み込む台本には、綴り間違いだけでなく、存在しないsceneや素材、危険なaddressが含まれ得ます。asset取得やcamera開始の後で失敗すると、利用者には半端な画面しか残りません。プレイ前に止め、直す行と理由を読める形で示します。</p></aside>
 
@@ -538,7 +538,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 ## Web Linkで利用者がボタンやメニューを操作したとき、設定済みのHTTPSページを開く {#extension-web-link-example .extension-sheet .extension-sheet-right}
 
-<p class="extension-spread-label">アプリ内蔵 2 / 2　TMPose 紙芝居での利用例 2 / 2</p>
+<p class="extension-spread-label">アプリ内蔵 2 / 2　TM紙芝居での利用例 2 / 2</p>
 
 <aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>このアプリでは、公式サイトbuttonやmenu項目からWebページへ案内します。一方、台本中の任意URLが勝手にtabを開く設計にはできません。利用者の操作をきっかけに、アプリ側で設定されたHTTPS URLだけを開くことで、案内機能と安全なプレイを両立します。</p></aside>
 

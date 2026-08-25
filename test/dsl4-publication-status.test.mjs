@@ -39,12 +39,12 @@ test('distinguishes rc.8, stable, sample baseline, and document state', () => {
 test('shows rc.8 on the 4.0 top and aligns the public samples', () => {
   assert.match(dsl4Index, /4\.0\.0-rc\.8を公開しています/u);
   assert.match(dsl4Index, /kamishibai-4\.0\.0-rc\.8\.sb3/u);
-  assert.match(dsl4Index, /tmpose-kamishibai\/v\/4\.0\.0-rc\.8/u);
+  assert.match(dsl4Index, /tm-kamishibai\/v\/4\.0\.0-rc\.8/u);
   assert.match(dsl4Index, /rc\.8.*再生成/u);
   assert.match(dsl4Index, /安定版<code>4\.0\.0<\/code>はまだ未公開/u);
   assert.match(dsl4Index, /最新安定版は\s*<code>v3\.2\.3<\/code>/u);
 
-  assert.equal(dsl4Documents.length, 21);
+  assert.equal(dsl4Documents.length, 22);
   for (const {sourceFilename, source} of dsl4Documents) {
     assert.match(source, /4\.0\.0-rc\.8|v4\.0\.0-rc\.8/u, sourceFilename);
   }

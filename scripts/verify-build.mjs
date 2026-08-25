@@ -5,7 +5,7 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 
 import {documentationConfig, staffDocumentConfig, workshopDocumentConfig} from '../docs/config.mjs';
 import {NAVIGATION_CONTRACT} from './site-navigation.mjs';
-import sourceSnapshot from '../sources/tmpose-kamishibai.json' with {type: 'json'};
+import sourceSnapshot from '../sources/tm-kamishibai.json' with {type: 'json'};
 import {referencedLocalAssets} from './build-freshness.mjs';
 import {legacyPublicationEntries} from './legacy-version-notices.mjs';
 

@@ -4,7 +4,7 @@
 一般文書、紙芝居DSL作成者向け文書、開発者向け文書、体験会資料を管理し、
 独立したGitHub Pagesとして公開するためのリポジトリです。
 
-文書sourceは`tmpose-kamishibai` PR #238のmerge commit
+文書sourceは、現行 `tm-kamishibai` の履歴上にある旧 repository 名のPR #238 merge commit
 `8166edb3a8b7ed360685bdcd6534c000054105bd`から履歴付きで移設しています。
 同commitで`docs/design/`、`docs/development/`に残っていた開発者向け3文書も、
 読者別ディレクトリへ追加移設しています。文書の表示順は`docs/config.mjs`で管理し、
@@ -12,7 +12,7 @@
 
 ## 公開サイトの役割
 
-- `tmpose-kamishibai`: アプリ本体と、アプリ・文書・サンプルへ移動する公開入口
+- `tm-kamishibai`: アプリ本体と、アプリ・文書・サンプルへ移動する公開入口
 - `tm-kamishibai-docs`: 全文書のHTMLとVivliostyle Viewer、体験会資料のPDF
 - `tm-kamishibai-samples`: サンプル台本と実行可能な作品
 
@@ -85,7 +85,7 @@ pnpm check
 `docs/workshops/`配下の体験会資料だけで、公開用PDFを`dist/`、確認用PDFを
 `output/pdf/`へ出力します。
 移設元の固定情報と機能拡張一覧は
-[`sources/tmpose-kamishibai.json`](sources/tmpose-kamishibai.json)で管理します。
+[`sources/tm-kamishibai.json`](sources/tm-kamishibai.json)で管理します。
 
 ### DSLリファレンスの保守と出版
 
@@ -145,7 +145,7 @@ DSL 4.0のリファレンスは、上流JSON Schemaの固定snapshot、source lo
 ```bash
 pnpm docs:dsl4:check
 pnpm docs:dsl4:generate
-pnpm docs:dsl4:sync -- --repository ../tmpose-kamishibai --commit <commit>
+pnpm docs:dsl4:sync -- --repository ../tm-kamishibai --commit <commit>
 ```
 
 上流を更新するときだけ`docs:dsl4:sync`を明示的に実行します。このコマンドは指定commitから

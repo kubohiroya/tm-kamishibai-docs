@@ -2,10 +2,10 @@
 
 Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)で提供します。
 
-対象アプリ: tmpose-kamishibai 3.2.x\
+対象アプリ: TM Kamishibai 3.2.x\
 対象DSL系列: `kamishibai=3.1`、`kamishibai=3.2`
 
-> この記録は、2026-08-03時点の`tmpose-kamishibai`本体リポジトリを対象にした監査結果です。
+> この記録は、2026-08-03時点のTM Kamishibai本体リポジトリを対象にした監査結果です。
 > 2026-08-04のリポジトリ分離で、Vivliostyle、rubygana、文書build用overrideは
 > `tm-kamishibai-docs`へ移されました。本体にはSB3、VM、builderに必要な依存だけを残します。
 
@@ -53,7 +53,7 @@ SB3生成、文書生成を含む開発依存も対象とします。
 | 機能拡張           | 更新後version | resolved commit |
 | ------------------ | ------------- | --------------- |
 | Asset Manager      | 0.4.0         | `c952b0b`       |
-| TMPose             | 1.4.0         | `08fe0cf`       |
+| TurboWarp TM       | 1.4.0         | `08fe0cf`       |
 | Text Lines         | 0.1.1         | `8655d76`       |
 | Runtime Expression | 0.2.0         | `7e2bd99`       |
 | Async Input        | 0.2.0         | `3ecd7ff`       |
