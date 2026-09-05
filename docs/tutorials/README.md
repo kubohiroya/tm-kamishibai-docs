@@ -166,6 +166,15 @@ docs/images/tutorials/dsl4/create/
 現在地にします。各サイトは実行時に外部HTMLやJavaScriptを取得せず、静的生成物へナビゲーションを
 埋め込みます。チュートリアル公開時もこの5項目と3リポジトリの契約は変更しません。
 
+レンダラー`scripts/site-navigation.mjs`は生成物です。正本は
+`tm-kamishibai-samples`の`scripts/site-navigation.ts`で、同リポジトリの
+`pnpm build:site-navigation`が`.mjs`を書き出します。生成にはNode自身の型剥がしを使い、
+仕上げに本リポジトリの`.prettierrc.json`と同じ設定でPrettierを通すため、生成物は3リポジトリの
+`scripts/site-navigation.mjs`とバイト単位で一致します。**このファイルを直接編集しないでください。**
+描画を変えるときは`.ts`を編集して再生成し、生成された`.mjs`を3リポジトリへ配布します。
+手編集は`tm-kamishibai-samples`の`pnpm check:site-navigation`が検出します。Prettierの設定を
+変更する場合は、生成器側の設定も合わせる必要があります。
+
 ## Capture gate完了記録
 
 [screenshots.json](screenshots.json)の全gateを完了し、次の情報を固定しています。
