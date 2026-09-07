@@ -89,19 +89,20 @@ include文を有効にすると、起点のソースから複数のYAMLを読み
 
 <div class="application-columns"><section><p class="application-subhead">起点のソース</p><pre><code>include:
   - chapters/rescue.k4.yml
-
 kamishibai: '4.0'
 assets:
-Ocean:
-kind: backdrop
-file: ocean.svg
+  Ocean:
+    kind: backdrop
+    file: ocean.svg
 scenes:
-opening: - goto: rescue</code></pre></section><section><p class="application-subhead">取り込まれるソース</p><pre><code>assets:
-RescueBackground:
-kind: backdrop
-file: rescue-background.svg
+  opening:
+    - goto: rescue</code></pre></section><section><p class="application-subhead">取り込まれるソース</p><pre><code>assets:
+  RescueBackground:
+    kind: backdrop
+    file: rescue-background.svg
 scenes:
-rescue: - stage: RescueBackground</code></pre></section></div>
+  rescue:
+    - stage: RescueBackground</code></pre></section></div>
 
 <figure class="application-flow"><figcaption>合成と参照解決</figcaption><div><span>起点</span><b>＋</b><span>取り込み関係</span><b>→</b><span>重複・循環検査</span><b>→</b><span>一つのStoryDocument</span></div></figure>
 
@@ -111,7 +112,7 @@ rescue: - stage: RescueBackground</code></pre></section></div>
 
 <p class="application-page-label">4 / 8　シーンと入力</p>
 
-シーンには舞台操作、Actorのアクション、音、時間、分岐、キー・タッチ・ポーズ入力を順に記述します。
+シーンには舞台操作、アクターのアクション、音、時間、分岐、キー・タッチ・ポーズ入力を順に記述します。
 ナビゲーションと作品内の入力アクションは同じ入力を競合して消費せず、その時点で意味を持つ一つの受け手へ渡します。
 
 <pre class="application-code"><code>kamishibai: '4.0'
@@ -137,7 +138,7 @@ scenes:
     - keyInputToChangeScene:
         Enter: rescue</code></pre>
 
-<div class="application-storyline"><span>シーンを表示</span><b>→</b><span>Actorが話す</span><b>→</b><span>入力を待つ</span><b>→</b><span>次のシーンへ進む</span></div>
+<div class="application-storyline"><span>シーンを表示</span><b>→</b><span>アクターが話す</span><b>→</b><span>入力を待つ</span><b>→</b><span>次のシーンへ進む</span></div>
 
 <p class="application-source">出典: <a href="../dsl-author-guides/dsl-4.0-author-guide.md#シーンを書く">シーンを書く</a>、<a href="../dsl-author-guides/dsl-4.0-schema-reference.md#global-action">Global action</a></p>
 
@@ -163,7 +164,7 @@ DSL 4.0の教材では、物語と演出を決める人、画像やポーズモ�
 
 <div class="application-cycle"><span>物語とポーズを設計</span><b>→</b><span>ソース・素材を編集</span><b>→</b><span>検証</span><b>→</b><span>Web Preview</span><b>→</b><span>プレイして改善</span></div>
 
-<div class="application-columns"><section><p class="application-subhead">作者が確認するもの</p><ul><li>YAML 1.2として解析できる</li><li>スキーマの型、必須フィールド、未知のキーが正しい</li><li>アセット、Actor、シーン、分岐の参照先が存在する</li><li>カメラ、音、入力の終了処理が成立する</li></ul></section><section><p class="application-subhead">プレビューが守るもの</p><ul><li>書き込み途中のソースを実行対象にしない</li><li>ローカル素材をハッシュと世代で識別する</li><li>失敗時に正常な実行状態を破壊しない</li><li>物語上の位置とソースの行・列を診断へ戻す</li></ul></section></div>
+<div class="application-columns"><section><p class="application-subhead">作者が確認するもの</p><ul><li>YAML 1.2として解析できる</li><li>スキーマの型、必須フィールド、未知のキーが正しい</li><li>アセット、アクター、シーン、分岐の参照先が存在する</li><li>カメラ、音、入力の終了処理が成立する</li></ul></section><section><p class="application-subhead">プレビューが守るもの</p><ul><li>書き込み途中のソースを実行対象にしない</li><li>ローカル素材をハッシュと世代で識別する</li><li>失敗時に正常な実行状態を破壊しない</li><li>物語上の位置とソースの行・列を診断へ戻す</li></ul></section></div>
 
 <p class="application-source">出典: <a href="../dsl-author-guides/dsl-4.0-author-guide.md#保存した変更をブラウザーの確認画面へ反映する">保存した変更をブラウザーの確認画面へ反映する</a></p>
 
@@ -171,10 +172,10 @@ DSL 4.0の教材では、物語と演出を決める人、画像やポーズモ�
 
 <p class="application-page-label">7 / 8　DSL 4.0説明</p>
 
-紙芝居DSL 4.0は、YAMLのマッピングとリストでアセット、Actor、スタイル、変数、入力設定、分岐、シーン、アクションを
+紙芝居DSL 4.0は、YAMLのマッピングとリストでアセット、アクター、スタイル、変数、入力設定、分岐、シーン、アクションを
 構造化します。型と局所制約はJSON Schema、参照関係と実行上の制約は意味検証器が検査します。
 
-<div class="application-columns"><section><p class="application-subhead">トップレベル</p><ul><li><code>kamishibai</code>: 固定値<code>'4.0'</code></li><li><code>assets</code>: backdrop、costume、sound、poseModel、image</li><li><code>actors</code>: Actorと初期skin</li><li><code>textStyles</code>／<code>speechStyles</code>: 表示と発話</li><li><code>controls</code>／<code>branches</code>: 入力と分岐</li><li><code>scenes</code>: 実行するシーンとアクション</li></ul></section><section><p class="application-subhead">実行手順</p><ol><li>include文で指定された複数ファイルを安定取得する</li><li>YAMLを制限付きで解析する</li><li>JSON Schemaで構造を検証する</li><li>参照と意味制約を検証する</li><li>変更不能なStoryDocumentへ正規化する</li><li>ランタイムがアクションを順に実行する</li></ol></section></div>
+<div class="application-columns"><section><p class="application-subhead">トップレベル</p><ul><li><code>kamishibai</code>: 固定値<code>'4.0'</code></li><li><code>assets</code>: backdrop、costume、sound、poseModel、image</li><li><code>actors</code>: アクターと初期コスチューム</li><li><code>textStyles</code>／<code>bubbleStyles</code>: 文字と吹き出しの見た目</li><li><code>controls</code>／<code>branches</code>: 入力と分岐</li><li><code>scenes</code>: 実行するシーンとアクション</li></ul></section><section><p class="application-subhead">実行手順</p><ol><li>include文で指定された複数ファイルを安定取得する</li><li>YAMLを制限付きで解析する</li><li>JSON Schemaで構造を検証する</li><li>参照と意味制約を検証する</li><li>変更不能なStoryDocumentへ正規化する</li><li>ランタイムがアクションを順に実行する</li></ol></section></div>
 
 <p class="application-callout"><strong>安全な失敗:</strong> 未知のキー、型違反、重複ID、存在しない参照、危険なパスは実行前に診断し、カメラや音声を開始しません。</p>
 

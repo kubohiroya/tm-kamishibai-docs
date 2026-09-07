@@ -14,6 +14,12 @@ custom block、呼出し関係、状態遷移の内部仕様を現在の実装�
 本書は「アプリが内部でどのように動くか」を扱い、「リポジトリをどう変更・公開するか」
 や「ビルダーをどう利用するか」は扱いません。
 
+本書は「用語 → 範囲と実装基準 → SB3の構成 → 変数 → event・カスタムブロック → broadcastと状態遷移」の
+順に並んでいます。最初に用語表で`target`、clone、action、runtime variableの意味を確認してから、
+調べたい章へ進んでください。特定の処理を追う場合は、
+[「アクターへ命令を届けるしくみ」](#actor-message-delivery){data-ref="chapter"}と
+[「主要な呼出し経路」](#events-custom-blocks-call-graph){data-ref="chapter"}が入口になります。
+
 対象アプリ: TM Kamishibai 3.2.x\
 受理するDSL宣言: `kamishibai=3.1`、`kamishibai=3.2`
 
