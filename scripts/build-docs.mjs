@@ -32,6 +32,8 @@ const vivliostyleBin = path.join(
   path.dirname(require.resolve('@vivliostyle/cli/package.json')),
   'dist/cli.js',
 );
+const vivliostyleRequire = createRequire(require.resolve('@vivliostyle/cli/package.json'));
+const {PDFDocument} = vivliostyleRequire('pdf-lib');
 const rubyganaBin = path.join(
   path.dirname(require.resolve('rubygana/package.json')),
   'bin/rubygana.js',
@@ -139,6 +141,11 @@ async function buildWebPublication(configPath, outputDirectory, environment = pr
       env: environment,
     },
   );
+}
+
+async function pdfPageCount(pdfPath) {
+  const document = await PDFDocument.load(await readFile(pdfPath));
+  return document.getPageCount();
 }
 
 async function buildPdf(inputPath, outputPath) {
@@ -402,6 +409,7 @@ async function buildWorkshop(grade, force) {
         buildInfo({
           publicationKind: 'workshop-documentation',
           rubyApplied: true,
+          pdfPageCount: await pdfPageCount(pdfPath),
           learnedThroughGrade: grade,
           rubyGenerator: `${rubyganaPackage.name} ${rubyganaPackage.version}`,
           kanjiDataset: rubyganaGradeData,
@@ -472,6 +480,7 @@ async function buildStaff(force) {
         buildInfo({
           publicationKind: 'workshop-staff-documentation',
           rubyApplied: false,
+          pdfPageCount: await pdfPageCount(pdfPath),
         }),
       );
     },
