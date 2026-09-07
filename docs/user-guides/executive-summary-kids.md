@@ -58,6 +58,27 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 すばやく動くより、「ピタッ」と止まるほうがうまくいきます。
 
+## 安全に使うためのやくそく
+
+- カメラを使うときは、先生や家の人のルールを守ります。
+- 友だちがいやがるポーズや写真の使い方はしません。
+- 走ったり、ジャンプしすぎたりして、けがをしないようにします。
+- 音を大きくしすぎないようにします。
+- インターネット上の絵や音を使うときは、使ってよいものか確認します。
+
+## 困ったとき
+
+うまく動かないときは、あわてなくて大丈夫です。よくあるのは、次の3つです。
+
+| こまったこと | ためすこと |
+|---|---|
+| ポーズが読み取ってもらえない | 明るい場所へ動く、カメラから少しはなれる、ポーズをとったまま数秒止まる |
+| 絵や音が出ない | もう一度読みこみ直す。それでも出ないときは、作った人に絵や音の場所を確かめてもらう |
+| お話が進まない | ポーズの案内が出ていないか見る。出ていないときは、音が終わるまで待つ |
+
+「エラー」と書かれた画面が出たときは、台本の書き方をまちがえています。作った人といっしょに、
+[使い方の説明](user-guide.md)を見ながら直しましょう。
+
 ## 紙しばいを作る人が考えること
 
 自分で紙しばいを作るときは、次のことを考えます。
@@ -117,14 +138,6 @@ action=Urashima:pose:Urashima-help-1:help:SquishPop
 
 もちろん、1人でいくつも担当しても大丈夫です。
 
-## 安全に使うためのやくそく
-
-- カメラを使うときは、先生や家の人のルールを守ります。
-- 友だちがいやがるポーズや写真の使い方はしません。
-- 走ったり、ジャンプしすぎたりして、けがをしないようにします。
-- 音を大きくしすぎないようにします。
-- インターネット上の絵や音を使うときは、使ってよいものか確認します。
-
 ## どんな紙しばいを作れる？
 
 たとえば、こんな作品が作れます。
@@ -151,11 +164,11 @@ action=Urashima:pose:Urashima-help-1:help:SquishPop
 
 ## もっとくわしく知りたいとき
 
-- `user-guide.md`: 紙しばいアプリ3.2の使い方
-- `dsl-manual.md`: 紙しばいDSL 3.2の台本の作り方
-- `command-reference.md`: 紙しばいDSL 3.2で使える命令の一覧
-- `executive-summary-adult.md`: 紙しばいアプリ3.2の大人向け説明
-- `developer-guide.md`: 紙しばいアプリ3.2を開発する人向けの説明
-- `internal-specification.md`: 紙しばいアプリ3.2の中のしくみを調べる人向けの説明
-- `history.md`: 紙しばいDSL 2.0から3.2への変わり方
+- [`user-guide.md`](user-guide.md): 紙しばいアプリ3.2の使い方
+- [`executive-summary-adult.md`](executive-summary-adult.md): 紙しばいアプリ3.2の大人向け説明
+- [`dsl-manual.md`](../dsl-author-guides/dsl-manual.md): 紙しばいDSL 3.2の台本の作り方
+- [`command-reference.md`](../dsl-author-guides/command-reference.md): 紙しばいDSL 3.2で使える命令の一覧
+- [`history.md`](../dsl-author-guides/history.md): 紙しばいDSL 2.0から3.2への変わり方
+- [`developer-guide.md`](../developer-guides/developer-guide.md): 紙しばいアプリ3.2を開発する人向けの説明
+- [`internal-specification.md`](../developer-guides/internal-specification.md): 紙しばいアプリ3.2の中のしくみを調べる人向けの説明
 - [サンプルサイト](https://kubohiroya.github.io/tm-kamishibai-samples/): Web版や台本を開く
