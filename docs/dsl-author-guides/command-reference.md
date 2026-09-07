@@ -6,26 +6,69 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 受理するDSL宣言: `kamishibai=3.1`、`kamishibai=3.2`\
 対象読者: 台本作者、教材作成者、開発者
 
-TM Kamishibai 3.2.xは3.1宣言と3.2宣言をどちらも受理します。既存の3.1台本は宣言を変更せずに実行でき、新規台本には3.2を推奨します。3.1宣言で旧Text Assetを使った場合もdeprecated警告は出ます。
+## この文書の使い方
+
+この文書は、紙芝居DSL 3.2で使えるコマンドとアクションを1つずつ定義する仕様書です。台本を書く手順や考え方は[ファイル作成マニュアル](dsl-manual.md)で扱い、この文書は「どう書けば何が起きるか」を引くための資料として使います。
+
+説明は、記法の共通ルール、ヘッダ部で使うトップレベルコマンド、シーン部で使うアクション、実行時の挙動、という順に並んでいます。目的の項目が分かっている場合は、次節の一覧から該当する節へ進んでください。
+
+TM Kamishibai 3.2.xは3.1宣言と3.2宣言をどちらも受理します。既存の3.1台本は宣言を変更せずに実行でき、新規台本には3.2を推奨します。3.1宣言で旧Text Assetを使った場合もdeprecated警告は出ます。バージョン間の互換性は「互換性と移行」にまとめました。
 
 この文書は過去リリースから引き継いだ手書きMarkdownを正本とし、DSL 3.2専用リファレンスとして
 最新のドキュメントリポジトリで保守します。HTML版とVivliostyle Viewer版を同じ内容から提供します。
 
-## DSL 3.2のText Asset互換性
+## コマンドとアクションの一覧
 
-DSL 3.2では、旧Text Asset構文をdeprecatedな互換機能として維持します。次の構文は警告の対象ですが、no-opではなく、登録・表示・スタイル設定・更新を実行します。
+ヘッダ部とシーン直下に書くトップレベルコマンドです。
 
-| 構文 | DSL 3.2での動作 |
+| コマンド | 役割 |
 |---|---|
-| `asset=NAME,text` / `asset=NAME,text:SOURCE` | Asset Managerへ旧Text Assetを登録する |
-| `text=NAME:VALUE` | シーンのアクション列より先に値を更新する |
-| `textStyle=NAME:PROPERTY:VALUE` | 旧Text Assetのスタイルを更新する |
-| `action=text:NAME:VALUE` | アクション列の位置で値を更新する |
-| 旧Text Assetを参照する`show` / `setSkin` | アクターへText Assetを表示する |
+| `kamishibai` | 台本バージョンを宣言する |
+| `asset` | 画像・音声・旧Text Assetを登録する |
+| `setLoadingBackdrop` | 読み込み中の背景を指定する |
+| `setLoadingCostume` | 読み込み中に切り替える画像を指定する |
+| `setPoseRecognitionSound` | ポーズ認識中と成立時の効果音を指定する |
+| `actor` | 登場人物を登録する |
+| `cover` | 表紙画面の背景と音を指定する |
+| `setRuntimeVariable` | ランタイム変数へ初期値を設定する |
+| `registerBranch` | 条件と移動先シーンの組を登録する |
+| `sceneLabel` | シーンへ一意の名前を付ける |
+| `TMPoseURL` | ポーズ認識モデルを読み込む |
+| `text` | 旧Text Assetの値とscene 0のポーズ案内を設定する |
+| `textStyle` | 旧Text Assetのスタイルを設定する |
+| `svgTextStyle` | 吹き出しとSVGテキストの名前付きスタイルを定義する |
 
-対象構文があると、開発者コンソールへプロジェクトごとに一度`LEGACY_TEXT_ASSET_DEPRECATED`警告を出します。旧構文は少なくとも3.2系列で維持し、削除する場合は将来のメジャーバージョンで事前に告知します。
+シーン部で舞台全体に働きかけるグローバルアクションです。
 
-移行先は[`@kubohiroya/turbowarp-svg-text@0.1.0`](https://github.com/kubohiroya/turbowarp-svg-text)です。3.2.0にはこの機能拡張が組み込まれており、`svgTextStyle`とアクターの`setText`を旧Text Assetと併用できます。`say`と`think`の吹き出し、画像・音声アセットはこのdeprecated警告の対象外です。
+| アクション | 役割 |
+|---|---|
+| `stage` | 背景を切り替える |
+| `wait` | 指定秒数だけ待つ |
+| `bgm` | 音を鳴らし、完了を待たずに次へ進む |
+| `sound` | 音を鳴らし、完了まで待つ |
+| `text` | 旧Text Assetの値を更新する |
+| `transition` | 明るさ効果で場面転換する |
+| `branch` | 登録済みの条件分岐を評価する |
+| `keyInputToChangeScene` | キー入力で移動先シーンを選ばせる |
+| `touchInputToChangeScene` | アクターへのタッチで移動先シーンを選ばせる |
+
+登場人物に対して実行するアクターアクションです。
+
+| アクション | 役割 |
+|---|---|
+| `show` | スキン・位置・サイズを指定して表示する |
+| `hide` | 非表示にする |
+| `say` | セリフ吹き出しを表示する |
+| `think` | 思考吹き出しを表示する |
+| `setText` | アクター自身をSVGテキストへ置き換える |
+| `setSkin` | スキンを切り替える |
+| `setScale` | サイズを変更する |
+| `setPosition` | 瞬時に移動する |
+| `moveTo` | 指定秒数をかけて移動する |
+| `setLayer` | 重なり順を変更する |
+| `loop` | 画像・音を繰り返し再生する |
+| `sequence` | 画像・音を一度だけ順に再生する |
+| `pose` | ポーズ認識を待ち、成立したら次へ進む |
 
 ## 記法の基本
 
@@ -86,6 +129,8 @@ action=stage:Beach1
 半角 `:` と `,` の解釈はコマンドごとに異なります。たとえば `say` と `think` では半角 `:` が本文と秒数の区切りになるため、本文中のコロンには全角 `：` を使用します。
 
 ## トップレベルコマンド
+
+トップレベルコマンドは`キー=値`の形で書き、台本全体または現在のシーンに対する設定を宣言します。多くはヘッダ部（最初の `---` より前）に置きますが、`sceneLabel`、`TMPoseURL`、`setRuntimeVariable`のようにシーン直下で使うものもあります。
 
 ### `kamishibai`
 
@@ -822,6 +867,8 @@ action=Hero:sequence:Hero1,StepSound,Hero2:0,0.5
 
 ## ポーズ認識アクション
 
+`pose`は、見ている人が指定のポーズをとるまで物語を待たせるアクターアクションです。使うシーンには、あらかじめ`TMPoseURL`でTurboWarp TMモデルを指定しておきます。ポーズ名の選び方や姿勢の設計は[ファイル作成マニュアル](dsl-manual.md)で扱います。
+
 ### 基本形
 
 ```text
@@ -874,18 +921,9 @@ action=Urashima:pose:Skin1,Skin2,Skin3:pose1,pose2,pose3:Sound1,Sound2,Sound3
 
 しきい値未満ではチャージは増えません。認識中は対象ポーズのスコアに応じてチャージが増えるため、ポーズを保つと成功条件へ到達します。
 
-### ポーズ設計のコツ
-
-| よいポーズ | 避けたいポーズ |
-|---|---|
-| 腕や体の位置がはっきり違う | 似た姿勢が多い |
-| 正面から分かりやすい | 横向きで見えにくい |
-| 子供でもまねしやすい | 難しすぎる、危ない |
-| 1〜2秒止まれる | 素早すぎる動き |
-
 ## 座標とサイズ
 
-TurboWarpのステージ座標は、中央が `(0, 0)` です。
+`show`、`setPosition`、`moveTo`で指定する位置は、すべて共通の座標系に従います。TurboWarpのステージ座標は、中央が `(0, 0)` です。
 
 | 方向 | 値 |
 |---|---|
@@ -915,7 +953,25 @@ action=Urashima:show:Urashima-walk-1:0,-60,30
 
 通常は次のシーン番号へ進みます。`branch` またはキー／タッチ入力が `nextSceneLabel` を設定した場合は、`sceneLabelList`から同名ラベルを探し、そのシーンへ移動します。
 
+## リハーサル用キー
+
+制作中は、台本を最初から通さずに特定の場面だけを確認したいことがあります。次のキーは、そのためにアプリが用意している進行スキップです。
+
+| キー | 実装上の効果 | 使いどころ |
+|---|---|---|
+| スペース | 現在のポーズ認識1件をスキップ | 複数ポーズを1件ずつ確認する |
+| 右矢印 | 現在のアクションを完了して次のアクションへ進む | 演出を1件ずつ確認する |
+| 下矢印 | 現在シーンを終了して次のシーンへ進む | 長いシーンを飛ばす |
+
+スペースはポーズ待ち中、右矢印はアクション実行中、下矢印はシーン実行中だけ受け付けます。未処理の入力要求がある間は後続キーで上書きしません。タイトル画面ではスペースまたは画面クリックだけが有効です。
+
+下矢印では、現在実行中とシーン残部の`transition`を待ち時間なしで最終状態まで適用し、シーン残部の`bgm`を再生開始します。再生中のBGMは維持し、現在実行中の`sound`だけを停止します。残りのその他のアクションは実行しません。
+
+本番運用では誤操作に注意してください。
+
 ## 台本エラーになりやすい例
+
+台本が読み込めない、あるいは意図した動作にならない場合の多くは、次のいずれかに当てはまります。エラーの原因を探すときは、上から順に確認してください。
 
 ### 未対応コマンド
 
@@ -981,21 +1037,35 @@ registerBranch=route:routeA,routeB:sceneA
 
 条件とラベル、キーIDとラベル、タッチ対象とラベル、`loop`のアセットと秒数は、それぞれ必要な個数をそろえます。
 
-## リハーサル用キー
+## 互換性と移行
 
-| キー | 実装上の効果 | 使いどころ |
-|---|---|---|
-| スペース | 現在のポーズ認識1件をスキップ | 複数ポーズを1件ずつ確認する |
-| 右矢印 | 現在のアクションを完了して次のアクションへ進む | 演出を1件ずつ確認する |
-| 下矢印 | 現在シーンを終了して次のシーンへ進む | 長いシーンを飛ばす |
+このリファレンスは、TM Kamishibai 3.2.xの実装を前提にしています。3.2は、3.1で書かれた台本をそのまま動かすことを重視した版です。ここでは、バージョン間で何が保証され、何が将来変わりうるのかを整理します。
 
-スペースはポーズ待ち中、右矢印はアクション実行中、下矢印はシーン実行中だけ受け付けます。未処理の入力要求がある間は後続キーで上書きしません。タイトル画面ではスペースまたは画面クリックだけが有効です。
+### 3.1宣言と3.2宣言
 
-下矢印では、現在実行中とシーン残部の`transition`を待ち時間なしで最終状態まで適用し、シーン残部の`bgm`を再生開始します。再生中のBGMは維持し、現在実行中の`sound`だけを停止します。残りのその他のアクションは実行しません。
+3.2.xは`kamishibai=3.1`と`kamishibai=3.2`を受理するため、既存の3.1台本は先頭を変更せずに実行できます。新規台本には3.2を使用してください。台本を配布する場合は、台本ファイルと対応するアプリのバージョンを一緒に管理してください。
 
-本番運用では誤操作に注意してください。
+### 旧Text Asset構文の扱い
 
-## チートシート
+DSL 3.2では、旧Text Asset構文をdeprecatedな互換機能として維持します。次の構文は警告の対象ですが、no-opではなく、登録・表示・スタイル設定・更新を実行します。
+
+| 構文 | DSL 3.2での動作 |
+|---|---|
+| `asset=NAME,text` / `asset=NAME,text:SOURCE` | Asset Managerへ旧Text Assetを登録する |
+| `text=NAME:VALUE` | シーンのアクション列より先に値を更新する |
+| `textStyle=NAME:PROPERTY:VALUE` | 旧Text Assetのスタイルを更新する |
+| `action=text:NAME:VALUE` | アクション列の位置で値を更新する |
+| 旧Text Assetを参照する`show` / `setSkin` | アクターへText Assetを表示する |
+
+対象構文があると、開発者コンソールへプロジェクトごとに一度`LEGACY_TEXT_ASSET_DEPRECATED`警告を出します。警告は宣言が3.1でも3.2でも出ます。旧構文は少なくとも3.2系列で維持し、削除する場合は将来のメジャーバージョンで事前に告知します。
+
+### SVG Textへの移行
+
+移行先は[`@kubohiroya/turbowarp-svg-text@0.1.0`](https://github.com/kubohiroya/turbowarp-svg-text)です。3.2.0にはこの機能拡張が組み込まれており、`svgTextStyle`とアクターの`setText`を旧Text Assetと併用できます。新しい表示はこの2つで作り、旧Text Assetと併用しながら段階移行してください。`say`と`think`の吹き出し、画像・音声アセットはこのdeprecated警告の対象外です。
+
+## 付録: チートシート
+
+台本を書き始めるときに、そのまま貼り付けて使える骨組みです。値は自分の作品に合わせて置き換えてください。
 
 ### ヘッダ
 
@@ -1061,27 +1131,12 @@ action=Hero:pose:Hero-help:help:Success
 action=keyInputToChangeScene:ArrowLeft,ArrowRight:left,right
 ```
 
-## 推奨命名規則
-
-| 対象 | 例 |
-|---|---|
-| 背景 | `Beach1`, `Ocean`, `DragonCastle`, `End` |
-| キャラクター通常 | `Urashima-walk-1` |
-| キャラクター動作 | `Urashima-open-1`, `Urashima-open-2` |
-| 感情 | `Urashima-surprised`, `Hero-happy` |
-| 音 | `OceanWave`, `GoalCheer`, `Jump` |
-| ポーズ | `help`, `ride1`, `dance2`, `open3`, `despair` |
-
-## 互換性メモ
-
-このリファレンスは、TM Kamishibai 3.2.xの実装を前提にしています。3.2.xは`kamishibai=3.1`と`kamishibai=3.2`を受理するため、既存の3.1台本は先頭を変更せずに実行できます。新規台本には3.2を使用してください。旧Text Assetは3.2系列で動作を維持しますが、宣言が3.1でも3.2でもdeprecated警告が出ます。新しい表示は`svgTextStyle`と`setText`で作り、旧Text Assetと併用しながら段階移行してください。台本を配布する場合は、台本ファイルと対応するアプリのバージョンを一緒に管理してください。
-
 ## 関連ドキュメント
 
-- `user-guide.md`: 紙芝居アプリの操作方法
-- `dsl-manual.md`: 紙芝居DSLファイルの作り方
-- `executive-summary-adult.md`: 大人向け概要説明
-- `executive-summary-kids.md`: 子供向け概要説明
-- `developer-guide.md`: 成果物とビルダーの利用、開発、検証、公開の手順
-- `internal-specification.md`: 汎用アプリSB3の内部構造、呼出し関係、状態遷移
-- `history.md`: 紙芝居DSL 2.0から3.2への変更履歴
+- [`dsl-manual.md`](dsl-manual.md): 紙芝居DSLファイルの作り方、命名や設計の指針
+- [`history.md`](history.md): 紙芝居DSL 2.0から3.2への変更履歴
+- [`user-guide.md`](../user-guides/user-guide.md): 紙芝居アプリの操作方法
+- [`executive-summary-adult.md`](../user-guides/executive-summary-adult.md): 大人向け概要説明
+- [`executive-summary-kids.md`](../user-guides/executive-summary-kids.md): 子供向け概要説明
+- [`developer-guide.md`](../developer-guides/developer-guide.md): 成果物とビルダーの利用、開発、検証、公開の手順
+- [`internal-specification.md`](../developer-guides/internal-specification.md): 汎用アプリSB3の内部構造、呼出し関係、状態遷移

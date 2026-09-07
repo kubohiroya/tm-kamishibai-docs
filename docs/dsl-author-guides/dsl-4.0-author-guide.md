@@ -31,8 +31,8 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 > 正式な`v4.0.0`ではありません。ポーズoverlayはrc.8と、同版がexact pinするTurboWarp TM 1.12.0で利用できます。
 
 このガイドと[紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md)は、同じ完成版の実装を
-調査基準にしています。Schemaはruntime実装から生成するものではありません。公開状況や実装の追跡が
-必要な方だけ、後述の「仕様・実装を確認する人向け」を参照してください。
+調査基準にしています。Schemaはruntime実装から生成するものではありません。どの実装がどこまで入っているか、
+根拠となる資料はどれかを確認したい方は、巻末の「付録: 実装基準と実装根拠」を参照してください。
 
 ## チュートリアルと本書の使い分け
 
@@ -69,7 +69,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 すでに3系作品がある方は、先に
 [3系作品の変換ガイド](dsl-3.2-to-4.0-conversion-guide.md)で別ファイルへ変換し、
 生成されたYAMLを本書の「最小台本」「作品フォルダーへファイルを配置する」「診断と安全停止」と照合してください。
-実装状況を調査する必要がなければ、次の「仕様・実装を確認する人向け」は読み飛ばし、最小台本へ進めます。
+実装状況や公開状況を調べる必要がある場合は、巻末の「付録: 実装基準と実装根拠」を参照してください。台本を書くだけなら、そのまま「最小台本」へ進めます。
 
 ## DSL 4.0の記法
 
@@ -86,46 +86,6 @@ DSL 4.0は制限付きYAML 1.2で記述します。引数には名前が付き�
 
 標準のファイル名の末尾は`.k4.yml`、版の宣言は`kamishibai: '4.0'`です。場面は`scenes`の下へ、
 命令は一つのキーを持つ項目として書きます。複数の指定値は`x`、`y`、`seconds`のような名前で表します。
-
-## 仕様・実装を確認する人向け（台本作成では読み飛ばせます）
-
-2026年8月20日のrc.8固定基準では、次の実装がTM Kamishibaiへ入っています。
-
-- 制限付きYAMLの解析、JSON Schema検証、参照関係の意味検証
-- 行・列とStory Pathを保持するSource Map、`K4-*`診断
-- 検証後の台本をimmutableな`StoryDocument`へ正規化するsource frontend
-- action実行、分岐、シーン遷移、停止を扱うpure runtime controller
-- control profileの解決、キー入力adapter、時系列history reducer、runtime navigation control
-- camera previewのstory既定、scene固有の非stickyな左右反転指定、任意の操作UI
-- TurboWarp TM 1.12.0を使う、関節とボーンのSVG overlay設定
-- `Actor.say`／`Actor.think`の入力待ち、文字送り、音、portrait、animation、名前付き`bubbleStyles`
-- `bubbleClosePolicies`と`closePolicy`による、秒数・入力待ち・両者のraceの名前付き再利用
-- `Actor.moveTo`の`linear`、`easeIn`、`easeOut`、`easeInOut`
-- `Actor.setTransparency`の即時指定、foreground／backgroundの線形変化
-- `broadcastMessageAndWait`、`debugger`、`Actor.hide`／`setLayer`／`loop`
-- rehearsal skip、bitmap論理解像度、asset／sceneのliteral ID
-- include文で複数sourceを決定的にcomposeする処理、宣言元相対asset解決、自己完結SB3 packaging
-- Web／CLI previewのtransactional reload、Source Map、packaging後のsource origin復元
-- navigation入力と作品内input actionを一つのsemantic consumerへ限定する入力arbitration
-
-builder、TurboWarp runtime surface、browser／CLI previewを含むend-to-end実装は完成しています。
-ただし、完成した機能の一部は起動時固定・既定OFFのfeature flagで段階導入されます。実装完成は、
-すべての公開releaseで自動的に有効になることを意味しません。
-
-### 実装根拠を確認する場合
-
-仕様の正本は、`tm-kamishibai`リポジトリの
-[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-surface.md)と
-[JSON Schema](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/schema/dsl-4.schema.json)です。
-camera preview操作UIは[Issue #388](https://github.com/kubohiroya/tm-kamishibai/issues/388)、
-ポーズoverlayは[Issue #624](https://github.com/kubohiroya/tm-kamishibai/issues/624)、
-`bubbleStyles`は[Issue #476](https://github.com/kubohiroya/tm-kamishibai/issues/476)以降、
-`Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tm-kamishibai/issues/398)、
-`Actor.setTransparency`は[Issue #406](https://github.com/kubohiroya/tm-kamishibai/issues/406)、
-include文の複数ファイル対応は[Issue #417](https://github.com/kubohiroya/tm-kamishibai/issues/417)から
-上記commitまでにmergeされています。project directory選択とYAML live reloadは
-[Issue #390](https://github.com/kubohiroya/tm-kamishibai/issues/390)、local assetの追加・内容更新のlive reloadは
-[Issue #391](https://github.com/kubohiroya/tm-kamishibai/issues/391)で実装されています。
 
 ## 最小台本
 
@@ -160,13 +120,13 @@ scenes:
 
 `kamishibai`と`scenes`だけがトップレベルの必須項目です。`scenes`には一つ以上のシーンが必要です。
 通常実行は、`scenes`へ最初に書いたシーンから始まり、明示的な遷移がなければ記述順に次のシーンへ
-進みます。これはYAML mapping一般の保証ではなくDSL 4.0固有の規則です。sceneの並べ替えに関する注意は
+進みます。これはYAMLのmapping一般の保証ではなくDSL 4.0固有の規則です。sceneの並べ替えに関する注意は
 [「sceneの記述順を保つ」](#sceneの記述順を保つ)を参照してください。
 
 ## 作品フォルダーへファイルを配置する
 
-一般作者向けの最小構成では、YAML、画像、音声をproject root直下へ置けます。pose modelだけは複数fileを
-一つのbundleとして扱うため、model単位のdirectoryにまとめます。
+一般作者向けの最小構成では、YAML、画像、音声をプロジェクトルート直下へ置けます。ポーズモデルだけは複数のファイルを
+一つの束として扱うため、モデル単位のディレクトリにまとめます。
 
 ```text
 tutorial-story/
@@ -184,22 +144,22 @@ tutorial-story/
     └── rescue-background.svg
 ```
 
-`assets/`、`images/`、`sounds/`、`pose-models/`等の分類directoryは必須ではありません。作品が大きく
-なった場合に任意で使用できます。単一sourceまたはrootの`story.k4.yml`で宣言した`file: ocean.svg`は
-project rootの`ocean.svg`を示します。included sourceで宣言したassetは、そのsourceのdirectoryを基準に
+`assets/`、`images/`、`sounds/`、`pose-models/`等の分類用ディレクトリは必須ではありません。作品が大きく
+なった場合に任意で使用できます。単一ソースまたはプロジェクトルートの`story.k4.yml`で宣言した`file: ocean.svg`は
+プロジェクトルートの`ocean.svg`を示します。読み込み先ソースで宣言したアセットは、そのソースのディレクトリを基準に
 解決します。
 
-Web Previewで選択するのはYAML fileではなく`tutorial-story/`に当たるproject root directoryです。
-Web Previewはroot直下の`project.source.json`を読み、次の規則でYAMLを一つに決定します。
+Web Previewで選択するのはYAML fileではなく`tutorial-story/`に当たるプロジェクトルートのディレクトリです。
+Web Previewはプロジェクトルート直下の`project.source.json`を読み、次の規則でYAMLを一つに決定します。
 
-- 新規projectはroot直下の`story.k4.yml`を`path`へ明示する
+- 新規の作品フォルダーではプロジェクトルート直下の`story.k4.yml`を`path`へ明示する
 - `path`省略時は後方互換の既定値`story.kamishibai.yaml`を使用する
-- 別名を指定する場合も、root直下の正式suffixを持つbasenameだけを使用する
-- `stories/main.k4.yml`のようにdirectoryを含むentry pathは使用しない
-- directory内のDSL sourceを走査して推測しない
+- 別名を指定する場合も、プロジェクトルート直下にある、正式な拡張子を持つファイル名だけを使用する
+- `stories/main.k4.yml`のようにディレクトリを含むエントリーパスは使用しない
+- ディレクトリ内のDSLソースを走査して推測しない
 - manifestが不正な場合は既定値へfallbackせず、診断を表示する
 
-新規projectの`project.source.json`は次のようにentry sourceを明示します。
+新規の作品フォルダーでは、`project.source.json`へ次のようにエントリーソースを明示します。
 
 ```json
 {
@@ -210,15 +170,15 @@ Web Previewはroot直下の`project.source.json`を読み、次の規則でYAML�
 }
 ```
 
-正式に受理するsuffixは`.k4.yml`、`.k4.yaml`、`.kamishibai.yml`、`.kamishibai.yaml`です。短い
-`.k4.yml`を新規sourceの推奨表記とし、長いsuffixは既存projectとの互換性のため維持します。
+正式に受理する拡張子は`.k4.yml`、`.k4.yaml`、`.kamishibai.yml`、`.kamishibai.yaml`です。短い
+`.k4.yml`を新規ソースの推奨表記とし、長い表記は既存の作品フォルダーとの互換性のため維持します。
 `build-dsl4`は`--source-manifest`でこのmanifestを指定し、`validate-dsl4 --input`は検証するYAMLを
 直接指定します。
 
 ## 台本を複数ファイルへ分ける（`include`）
 
-`dsl4SourceIncludes`を起動時に明示ONにすると、entry sourceのinclude文から複数sourceを読み込み、
-一つの台本としてcomposeできます。`include`は一件の文字列またはlistで指定します。
+`dsl4SourceIncludes`を起動時に明示ONにすると、エントリーソースのinclude文から複数ソースを読み込み、
+一つの台本として合成できます。`include`は一件の文字列またはlistで指定します。
 
 ```yaml
 # story.k4.yml
@@ -247,31 +207,31 @@ scenes:
 ```
 
 `chapters/rescue.k4.yml`の`file: rescue-background.svg`は、宣言元を基準に
-`chapters/rescue-background.svg`へ解決されます。絶対path、URL、backslash、project root外へのescapeと
-root外symlinkは、sourceまたはassetのbyte列を読む前に拒否されます。
+`chapters/rescue-background.svg`へ解決されます。絶対パス、URL、backslash、プロジェクトルート外へのescapeと
+プロジェクトルート外のsymlinkは、ソースまたはアセットのバイト列を読む前に拒否されます。
 
 include文には次の規則があります。
 
-- `kamishibai`はentry sourceだけに書き、included sourceへ重ねて宣言しない
-- 同じnamespaceの同じIDは、内容が同じでも複数sourceへ宣言しない
+- `kamishibai`はエントリーソースだけに書き、読み込み先ソースへ重ねて宣言しない
+- 同じnamespaceの同じIDは、内容が同じでも複数ソースへ宣言しない
 - `cover`、`loading`、`poseRecognition`、`controls`などの単一設定は読み込んだ全ファイルで一度だけ宣言する
-- root優先、include順による後勝ち、shadowingはなく、全宣言を確定してから参照を解決する
+- プロジェクトルート優先、include順による後勝ち、shadowingはなく、全宣言を確定してから参照を解決する
 - include cycleは経路付き`K4-INCLUDE-CYCLE`で停止する
-- 一つのsource、source件数、全ファイルの合計byte数、compose後byte数、include depthに有限上限を設ける
+- 一つのソース、ソース件数、全ファイルの合計バイト数、合成後バイト数、include depthに有限上限を設ける
 
-`include`はSchema検証の前に処理するinclude文で、compose後の台本から取り除かれます。
-全sourceと参照するlocal assetを二回安定取得し、同じgeneration identityになった場合だけpreviewへstageします。
-途中保存、sourceだけ新しい状態、assetだけ新しい状態は実行中のgenerationを置き換えません。build成果物は
-composed source、宣言元の論理source ID／range、local assetを保持する自己完結SB3で、端末の絶対pathや
-browser file handleを保存しません。
+`include`はSchema検証の前に処理するinclude文で、合成後の台本から取り除かれます。
+全ソースと参照するローカルアセットを二回安定取得し、同じ世代の同一性になった場合だけプレビューへ反映します。
+途中保存、ソースだけ新しい状態、アセットだけ新しい状態は実行中の世代を置き換えません。build成果物は
+合成後ソース、宣言元の論理ソースID／range、ローカルアセットを保持する自己完結SB3で、端末の絶対パスや
+ブラウザーのファイルハンドルを保存しません。
 
-CLI previewでinclude文を使う場合は`--enable-source-includes`を指定し、`--max-source-bytes`、
+CLIプレビューでinclude文を使う場合は`--enable-source-includes`を指定し、`--max-source-bytes`、
 `--max-source-files`、`--max-total-source-bytes`、`--max-include-depth`とasset上限を有限値で指定します。
-feature flagがOFFの場合は単一source経路を維持します。
+機能フラグがOFFの場合は単一ソース経路を維持します。
 
 ## ファイル全体の構造
 
-compose後の台本で使用できるトップレベルキーは次のものだけです。表にないキーは警告ではなくエラーに
+合成後の台本で使用できるトップレベルキーは次のものだけです。表にないキーは警告ではなくエラーに
 なります。`include`は前節のinclude文の前処理だけが受理し、JSON Schemaのトップレベルfieldではありません。
 
 | キー              | 必須 | 役割                                              |
@@ -285,14 +245,16 @@ compose後の台本で使用できるトップレベルキーは次のものだ�
 | `bubbleClosePolicies` | 任意 | say／thinkの名前付き終了条件を定義する            |
 | `variables`           | 任意 | 物語で使う変数の初期値を定義する                  |
 | `loading`             | 任意 | 読み込み中の背景とコスチューム列を指定する        |
-| `poseRecognition`     | 任意 | ポーズ認識、preview表示、任意の操作UIを設定する   |
+| `poseRecognition`     | 任意 | ポーズ認識、プレビュー表示、任意の操作UIを設定する   |
 | `controls`            | 任意 | 実行環境ごとの操作キーを定義する                  |
 | `branches`            | 任意 | 順序付きの条件分岐を登録する                      |
 | `scenes`              | 必須 | 一つ以上のシーンとアクションを記述する            |
 
-推奨する並び順は表の順番です。YAML mappingの字下げには空白を使用し、タブは使いません。
+推奨する並び順は表の順番です。YAMLのmappingの字下げには空白を使用し、タブは使いません。
 
 ## YAMLを書くときの規則
+
+DSL 4.0はYAMLをそのまま受け入れるのではなく、安全に、そして常に同じ結果へ解析できる範囲へ絞って使います。ここでは、その制限のうち台本を書くときに必ず出会うものをまとめます。
 
 ### バージョンは文字列で書く
 
@@ -432,7 +394,7 @@ assets:
 
 ### 名前付き形式
 
-埋め込み済みアセットの実名がアセットIDと異なる場合は`name`を使います。builder入力のローカルfileを
+埋め込み済みアセットの実名がアセットIDと異なる場合は`name`を使います。ビルダー入力のローカルfileを
 使用する場合は`file`を使います。`name`と`file`はどちらか一方だけを指定します。
 
 ```yaml
@@ -465,26 +427,26 @@ assets:
 
 `kind`に指定できる値は`backdrop`、`costume`、`sound`、`poseModel`、`image`です。`costume`には
 `target`が必須です。`poseModel`と`image`には`name`を使用できません。`image`はapp shellが表示する
-camera preview control icon用であり、Scratch spriteやcostumeを追加する機能ではありません。
+カメラプレビューの操作 icon用であり、Scratch spriteやcostumeを追加する機能ではありません。
 
 bitmapのbackdropとcostumeは`bitmapResolution: 1`または`2`で論理解像度を指定できます。省略時は`1`です。
-SVGなどのvector assetには表示上の効果がないため、元素材の種類に合わせて使用してください。
+SVGなどのベクター素材には表示上の効果がないため、元素材の種類に合わせて使用してください。
 
-`file`は宣言を書いたsourceのdirectoryを基準に解決する、安全なPOSIX相対pathです。root直下のentry
-sourceではproject root基準になります。次の値は使用できません。
+`file`は宣言を書いたソースのディレクトリを基準に解決する、安全なPOSIX相対パスです。プロジェクトルート直下のentry
+ソースではプロジェクトルート基準になります。次の値は使用できません。
 
-- `/ocean.svg`のような絶対path
-- `C:\ocean.svg`のようなWindows絶対pathやバックスラッシュ
+- `/ocean.svg`のような絶対パス
+- `C:\ocean.svg`のようなWindows絶対パスやバックスラッシュ
 - `./ocean.svg`、`../ocean.svg`のような`.`または`..` segment
 - `https://example.com/ocean.svg`のようなURI
 
-基準仕様では、builderがfileのbyte列を成果物へ埋め込み、実行環境からのネットワーク取得を不要にします。
-include文を使う場合は、正規化後pathとsymlink実体の両方がproject root内であることをbyte列の読込前に確認します。
+基準仕様では、ビルダーがfileのバイト列を成果物へ埋め込み、実行環境からのネットワーク取得を不要にします。
+include文を使う場合は、正規化後のパスとsymlink実体の両方がプロジェクトルート内であることをバイト列の読込前に確認します。
 
 SB3の初期容量を抑えたいassetは、`delivery: remote`と`source.url`でHTTPS URLを指定できます。
 検証情報を省略した場合は取得時点の内容を使います。内容を固定する場合は`integrity`、`contentType`、`size`を
-三つとも指定します。一部だけの指定はSchema errorです。poseModelのURLは通常のTurboWarp TM directory、検証情報を
-指定したURLはmodel archiveを指します。ネットワークなしで固定して使う場合はlocalの`file`を指定し、builderで
+三つとも指定します。一部だけの指定はSchema errorです。poseModelのURLは通常のTurboWarp TMのディレクトリ、検証情報を
+指定したURLはmodel archiveを指します。ネットワークなしで固定して使う場合はローカルの`file`を指定し、ビルダーで
 SB3へ埋め込みます。
 
 ### eagerとlazy
@@ -498,7 +460,7 @@ SB3へ埋め込みます。
 `delivery: embedded`なら`lazy`でもアセット自体は配布成果物へ埋め込みます。remote poseModelは必要時に
 URLから取得します。scene開始時に準備が終わっていない場合は
 Loading表示で待ち、準備に失敗した場合はそのsceneのアクションを開始せず診断を表示する設計です。
-camera preview controlから参照する`image`はpreview開始時に必要なため、`loading: eager`だけを使用します。
+カメラプレビューの操作から参照する`image`はプレビュー開始時に必要なため、`loading: eager`だけを使用します。
 `lazy`のcontrol画像参照は意味検証でエラーになります。
 
 ## 登場人物（Actor）を登録する
@@ -520,6 +482,8 @@ actors:
 アクションでは`Hero.show`、`Turtle.say`のように、アクターIDと命令を`.`でつなぎます。
 
 ## 表紙、読み込み表示、ポーズ認識、カメラ映像を設定する
+
+ここまでで素材と登場人物がそろいました。次は、物語が始まる前と、物語の外側に出る画面の設定です。いずれもトップレベルのキーとして一度だけ書き、シーンごとに書き分けるものではありません。
 
 ### 表紙
 
@@ -557,7 +521,7 @@ poseRecognition:
 
 `idleSound`と`chargeSound`はそれぞれ任意です。両方を省略した無音、片方だけ、両方を指定した設定を
 受理します。指定する場合、参照先は音アセットでなければなりません。音を省略してもsequence、selection、
-feedback、navigation、previewは独立して設定できます。
+feedback、navigation、プレビューは独立して設定できます。
 
 ### Poseモデルの初期化方法
 
@@ -636,7 +600,7 @@ UIの選択状態はapp shellがsession内だけで保持し、camera切替失�
 
 #### ポーズの関節とボーンを重ねる
 
-認識中の17関節と12本の標準ボーンをcamera previewへ重ねる場合は、
+認識中の17関節と12本の標準ボーンをカメラプレビューへ重ねる場合は、
 `poseRecognition.preview.overlay`を記述します。
 
 ```yaml
@@ -682,11 +646,11 @@ poseRecognition:
 confidenceを倍率として、0から設定値まで変化します。この表示設定は認識入力や判定値を変更しません。
 
 `overlay`を書いた場合の`visible`は省略時に`true`です。一方、`overlay`自体を省略した既存のDSL 4.0台本は
-従来互換で非表示になります。overlayだけを隠しても認識は継続します。camera previewを隠すとoverlayも隠れ、
+従来互換で非表示になります。overlayだけを隠しても認識は継続します。カメラプレビューを隠すとoverlayも隠れ、
 認識停止では描画が消え、camera停止ではSVG要素も破棄されます。表示はpreviewの配置と左右反転に追従します。
 
 実行にはTurboWarp TM 1.12.0以降が必要です。DSL runtimeは同版のcomposition APIだけを呼び、独自の描画実装を
-持ちません。専用feature flagはなく、すべてのruntime profileで同じように利用できます。問題時は
+持ちません。専用機能フラグはなく、すべてのruntime profileで同じように利用できます。問題時は
 `overlay`設定を台本から削除すると、既存台本と同じ非表示へ戻せます。
 
 ## SVG Textを設定する
@@ -789,9 +753,11 @@ policyの継承や合成はありません。`closePolicy`と、同じaction内�
 無理に名前へ切り出す必要はありません。
 
 runtimeはaction開始前にpolicyを既存の`seconds`／`waitFor`へ展開します。live reloadの途中ですでに表示中の
-セリフは開始時に解決した値を使い続け、更新したpolicyは次に開始するstory generationから適用されます。
+セリフは開始時に解決した値を使い続け、更新したpolicyは次に開始する物語の世代から適用されます。
 
 ## 変数と条件分岐を設定する
+
+物語の途中で選択の結果を覚えておき、あとの場面で道を分けたい場合は、変数と分岐を組み合わせます。変数はトップレベルの`variables`で初期値を宣言し、分岐は`branches`で条件と移動先の組を登録してから、シーンの中で名前で呼び出します。
 
 ### 変数
 
@@ -806,7 +772,7 @@ variables:
 使用できません。実行中に値を変更する処理はruntimeまたは登録済みactionが担当し、宣言時の型と異なる値へ
 暗黙変換しません。
 
-`variables`は物語の意味を持つ値だけに使います。cameraの物理device ID、preview buttonの選択状態、
+`variables`は物語の意味を持つ値だけに使います。cameraの物理device ID、プレビューのボタンの選択状態、
 DOM node、listener、Object URLはapp shell所有の一時状態であり、story変数やScratch変数へ写さないでください。
 
 ### 分岐
@@ -856,7 +822,7 @@ controls:
       Space: rehearsal.skipPose
 ```
 
-builderは`controlProfile`を明示的に一つ選び、選択されたprofileのkeymapだけを有効にする設計です。
+ビルダーは`controlProfile`を明示的に一つ選び、選択されたprofileのkeymapだけを有効にする設計です。
 profile間の継承、merge、fallbackはありません。
 
 使用できるnavigation commandは次の8個です。
@@ -886,23 +852,7 @@ profile間の継承、merge、fallbackはありません。
 
 ## シーンを書く
 
-### sceneの記述順を保つ
-
-`scenes` mappingでは、sourceへ書いたscene keyの順番が通常実行のscene順です。最初のsceneから開始し、
-`goto`、`branch`、入力action等が別sceneを選ばない限り、scene末尾では次に書いたsceneへ進みます。
-
-YAML 1.2一般ではmappingのkey順にapplication上の意味はありません（[YAML 1.2.2 Mapping Key Order](https://yaml.org/spec/1.2.2/#3221-mapping-key-order)）。
-DSL 4.0は例外として、source YAMLの
-serialization treeに現れる`scenes`のpair順を実行順に使用します。これは「YAMLをobjectへ変換すれば
-常に記述順になる」という意味ではありません。
-
-scene keyをアルファベット順や数値順へ並べ替えるYAML formatter、serializer、editorを使用しないでください。
-並べ替え後もSchema検証には成功しますが、台本の実行順が変わります。DSL 4.0対応toolは保存時にscene keyを
-sortせず、読み込みと書き出しを繰り返しても同じ順序を保持する必要があります。
-
-現行frontendはYAMLをJavaScript objectへ変換してからsceneを配列化するため、`"10"`、`"2"`等の数字だけの
-scene IDでは記述順を保証できません。これは意図したDSL仕様ではなく既知の実装制約です。修正されるまでは
-`scene10`、`scene2`のように数字以外を含むscene IDを使用してください。
+`scenes`の下には、シーンIDをキーとしてシーンを並べます。シーンの書き方には、アクション列だけを書く短形式と、シーン固有の設定を添える長形式の二つがあります。どちらで書いても、検証後には同じ内部表現へ正規化されます。
 
 ### 短形式
 
@@ -938,6 +888,24 @@ scenes:
 アクションは必ず`actions`のlistへ入れます。`posePreview.mirroring`はそのsceneだけの上書きです。次に入る
 sceneへ指定がなければstory既定へ戻り、前sceneの値を持ち越しません。短形式と長形式は、検証後に同じ
 内部の`SceneNode`へ正規化されます。
+
+### sceneの記述順を保つ
+
+`scenes` mappingでは、ソースへ書いたscene keyの順番が通常実行のscene順です。最初のsceneから開始し、
+`goto`、`branch`、入力action等が別sceneを選ばない限り、scene末尾では次に書いたsceneへ進みます。
+
+YAML 1.2一般ではmappingのkey順にapplication上の意味はありません（[YAML 1.2.2 Mapping Key Order](https://yaml.org/spec/1.2.2/#3221-mapping-key-order)）。
+DSL 4.0は例外として、ソースYAMLの
+serialization treeに現れる`scenes`のpair順を実行順に使用します。これは「YAMLをobjectへ変換すれば
+常に記述順になる」という意味ではありません。
+
+scene keyをアルファベット順や数値順へ並べ替えるYAML formatter、serializer、editorを使用しないでください。
+並べ替え後もSchema検証には成功しますが、台本の実行順が変わります。DSL 4.0対応toolは保存時にscene keyを
+sortせず、読み込みと書き出しを繰り返しても同じ順序を保持する必要があります。
+
+現行frontendはYAMLをJavaScript objectへ変換してからsceneを配列化するため、`"10"`、`"2"`等の数字だけの
+scene IDでは記述順を保証できません。これは意図したDSL仕様ではなく既知の実装制約です。修正されるまでは
+`scene10`、`scene2`のように数字以外を含むscene IDを使用してください。
 
 ## 舞台への命令（Global action）
 
@@ -1235,13 +1203,13 @@ inline形式も使用できます。
 
 ## 保存した変更をブラウザーの確認画面へ反映する
 
-Issue #390のWeb Previewでは、対応browserで「プロジェクトを開く」を押し、project rootをread-onlyで
+Issue #390のWeb Previewでは、対応ブラウザーで「プロジェクトを開く」を押し、プロジェクトルートをread-onlyで
 選択します。Web Previewに組込みeditorはなく、YAMLとassetは任意の外部editorで変更します。選択した
-directory handleはsession中だけ保持し、YAML、manifest、SB3、user設定へ保存しません。
+ディレクトリハンドルはsession中だけ保持し、YAML、manifest、SB3、user設定へ保存しません。
 
 最初の正常なYAMLはreload選択を挟まず先頭から開始します。その後に`story.k4.yml`を保存すると、
-Web Previewはpollingで変更を検出し、書込み途中ではない安定したsnapshotをparse／validateします。正常な
-candidateだけが次の再開位置の選択へ進みます。
+Web Previewは一定間隔で変更を検出し、書込み途中ではない安定した状態を解析・検証します。正常な
+候補だけが次の再開位置の選択へ進みます。
 
 1. 先頭から
 2. 現在のsceneから
@@ -1250,47 +1218,47 @@ candidateだけが次の再開位置の選択へ進みます。
 現在のactionから再開できるかは、actionが一意でreplay-safeかなどの条件で決まります。`stableId`は
 変更前後の同じactionを特定しやすくしますが、すべてのactionへ付ける必要はありません。YAMLが不正、
 missing、unstableの場合は現在実行中のimmutable snapshotを置き換えず、診断を表示して次の保存を待ちます。
-pageがbackgroundの場合はbrowserのtimer制限により検出が遅れることがあります。
+pageがbackgroundの場合はブラウザーのタイマー制限により検出が遅れることがあります。
 
 ### 手元の素材を追加・更新する
 
 Issue #391の候補仕様では、`backdrop`、`costume`、`sound`、`poseModel`について次をlive reload対象に
 します。
 
-- 既存asset ID、kind、pathを維持したままfile内容だけを更新する
-- 新しい一意なasset IDとlocal file／pose model bundleを追加し、同じcandidate YAMLから参照する
+- 既存アセットID、kind、パスを維持したままファイル内容だけを更新する
+- 新しい一意なアセットIDとローカルファイル／pose model bundleを追加し、同じ候補YAMLから参照する
 
-新しいfileを先に置いても、YAMLを先に保存してもかまいません。両方が揃ってstableになり、source、
-asset graph、file内容、参照関係の検証がすべて成功した場合だけ、一つのimmutable candidateとして
-transactionalにcommitします。途中のfile、pose model bundleの一部、検証に失敗したassetだけを部分反映
-しません。未参照fileは無視し、project root全体を再帰走査せず、activeまたはcandidate YAMLが宣言した
-exact pathだけを読みます。
+新しいファイルを先に置いても、YAMLを先に保存してもかまいません。両方が揃ってstableになり、ソース、
+アセットの参照関係、ファイル内容、参照関係の検証がすべて成功した場合だけ、一つの不変の候補として
+一括で反映します。途中のファイル、pose model bundleの一部、検証に失敗したアセットだけを部分反映
+しません。参照されていないファイルは無視し、プロジェクトルート全体を再帰走査せず、activeまたは候補YAMLが宣言した
+宣言どおりのパスだけを読みます。
 
 次の変更は同じlive reloadへ混ぜず、full rebuildの対象です。
 
-- 既存asset IDの削除／rename
-- 既存assetのkind／path変更
+- 既存アセットIDの削除／rename
+- 既存assetのkind／パスの変更
 - 既存pose modelのbundle構成変更
-- base SB3、app shell、extension、builder設定、control profileの変更
+- base SB3、app shell、extension、ビルダー設定、control profileの変更
 
 ### TurboWarp Editor内の作品素材
 
-`HeroHappy: costume:Hero`のような短形式や、`name`を使うassetはlocal fileではなく、base SB3内の
-project assetを参照します。同一TurboWarp Editor／同一VMで既存costumeを編集した場合は、同じrenderer
-skinの更新として実行中表示へ即時反映されることがあります。これはWeb Previewのtransactional asset
-candidateではなく、reload dialog、safe boundary、rollbackの対象にもなりません。
+`HeroHappy: costume:Hero`のような短形式や、`name`を使うアセットはローカルファイルではなく、base SB3内の
+プロジェクト内アセットを参照します。同一TurboWarp Editor／同一VMで既存costumeを編集した場合は、同じrenderer
+skinの更新として実行中表示へ即時反映されることがあります。これはWeb Previewが一括反映するアセット候補
+ではなく、再読み込みの確認画面、安全境界、巻き戻しの対象にもなりません。
 
 costumeの削除後の同名追加、import、renameによる自動再bindは保証しません。別Editor／別VMで保存した
 base SB3も実行中VMへ自動反映されず、full rebuildが必要です。YAML保存と同時期にproject costumeを編集しても、
 両者を一つのtransactionへ束ねるatomicityは保証しません。
 
-production用にbuildした自己完結SB3には、directory handle、poll timer、candidate、reload dialog状態を
-含めません。watchとlive reloadはdevelopment previewだけの機能です。
+production用にbuildした自己完結SB3には、ディレクトリハンドル、poll timer、候補、reload dialog状態を
+含めません。watchとlive reloadは開発プレビューだけの機能です。
 
 ## 総合サンプル
 
 次の例は、アセット、表紙、SVG Text、bubble style、変数、keymap、分岐、入力、ポーズ認識を一つの台本へ
-まとめたものです。利用するreleaseでDSL 4.0と必要なfeature flagを有効にして実行します。
+まとめたものです。利用するreleaseでDSL 4.0と必要な機能フラグを有効にして実行します。
 
 ```yaml
 kamishibai: '4.0'
@@ -1480,8 +1448,8 @@ scenes:
 
 ## 診断と安全停止
 
-DSL 4.0のsource frontendは、YAMLを読み込んだあと、構造と参照関係の検証が成功するまでアセット準備や
-アクション実行を始めません。診断にはcode、severity、source ID、行・列、Story Pathが含まれます。
+DSL 4.0のソースフロントエンドは、YAMLを読み込んだあと、構造と参照関係の検証が成功するまでアセット準備や
+アクション実行を始めません。診断にはcode、severity、ソースID、行・列、Story Pathが含まれます。
 
 | code                          | 主な意味                                            |
 | ----------------------------- | --------------------------------------------------- |
@@ -1493,24 +1461,24 @@ DSL 4.0のsource frontendは、YAMLを読み込んだあと、構造と参照関
 | `K4-REF-001`                  | 参照先が未定義                                      |
 | `K4-REF-002`                  | 参照先アセットの`kind`が用途と一致しない            |
 | `K4-REF-003`                  | コスチュームの`target`がアクターと一致しない        |
-| `K4-ASSET-001`                | `file`が安全なローカル相対pathではない              |
+| `K4-ASSET-001`                | `file`が安全なローカル相対パスではない              |
 | `K4-BRANCH-001`               | 分岐の末尾が`else`ではない                          |
 | `K4-STABLE-ID-001`            | `stableId`が文書内で重複している                    |
 | `K4-KEY-UNSUPPORTED`          | 対応外のキーやmodifierを指定した                    |
 | `K4-KEY-001`                  | navigation keymapと作品内キー入力が衝突した         |
 | `K4-INCLUDE-CYCLE`            | include文による読み込み関係に循環がある             |
-| `K4-INCLUDE-LIMIT-001`        | source件数、合計byte数、include深度の上限超過       |
-| `K4-SOURCE-SIZE-001`          | source一件のbyte数が上限を超えた                    |
+| `K4-INCLUDE-LIMIT-001`        | ソース件数、合計バイト数、include深度の上限超過       |
+| `K4-SOURCE-SIZE-001`          | ソース一件のバイト数が上限を超えた                    |
 | `K4-DECLARATION-DUPLICATE`    | include文で読み込んだファイル内で同じ宣言が重複した |
 
 runtime接続後は、action、scene、branch、port、戻り値などの実行時エラーにも`K4-RUNTIME-*`診断を
-使用します。入力byte数、YAML node数、nesting深度、scalar長、シーン数、アクション数、アセット数、
+使用します。入力バイト数、YAML node数、nesting深度、scalar長、シーン数、アクション数、アセット数、
 診断数には安全上の有限上限があります。include文の各上限はpreview／buildのCLI引数とhost設定で明示し、
-一件のsourceと全ファイルの合計／compose後sourceを別の責務として検証します。
+一件のソースと全ファイルの合計／合成後ソースを別の責務として検証します。
 
 ## 作成時のチェックリスト
 
-- [ ] ファイルをUTF-8で保存し、新規sourceでは`.k4.yml`を使用した
+- [ ] ファイルをUTF-8で保存し、新規ソースでは`.k4.yml`を使用した
 - [ ] 先頭が`kamishibai: '4.0'`になっている
 - [ ] トップレベルとactionに未知のキーがない
 - [ ] インデントに空白を使い、一つのaction itemへ命令を一つだけ書いた
@@ -1518,18 +1486,63 @@ runtime接続後は、action、scene、branch、port、戻り値などの実行�
 - [ ] 背景、音、コスチューム、ポーズモデルの`kind`が参照箇所と一致している
 - [ ] ポーズoverlayを使う場合、関節名、opacity、radius、width、minimumConfidenceが範囲内である
 - [ ] コスチュームの`target`が使用するアクターと一致している
-- [ ] `file`が宣言元sourceからproject内へ解決できる安全な相対pathになっている
-- [ ] `include`にcycle、root外path、同じnamespaceの重複宣言がない
+- [ ] `file`が宣言元sourceからproject内へ解決できる安全な相対パスになっている
+- [ ] `include`にcycle、プロジェクトルート外のパス、同じnamespaceの重複宣言がない
 - [ ] すべてのシーン、分岐、スタイル、アセット参照が定義済みである
 - [ ] 各分岐の最後に一つだけ`else`がある
 - [ ] `stableId`が文書全体で重複していない
 - [ ] navigation用キーと作品内の遷移キーが衝突していない
 - [ ] YAML以外の行形式commandを混在させていない
-- [ ] 利用するreleaseでDSL 4.0と必要なfeature flagが有効であることを確認した
+- [ ] 利用するreleaseでDSL 4.0と必要な機能フラグが有効であることを確認した
+
+## 付録: 実装基準と実装根拠
+
+ここから先は、公開状況や実装の追跡が必要な方のための付録です。台本を書くうえでは読み飛ばせます。
+
+2026年8月20日のrc.8固定基準では、次の実装がTM Kamishibaiへ入っています。
+
+- 制限付きYAMLの解析、JSON Schema検証、参照関係の意味検証
+- 行・列とStory Pathを保持するSource Map、`K4-*`診断
+- 検証後の台本をimmutableな`StoryDocument`へ正規化するソースフロントエンド
+- action実行、分岐、シーン遷移、停止を扱うpure runtime controller
+- control profileの解決、キー入力adapter、時系列history reducer、runtime navigation control
+- カメラプレビューのstory既定、scene固有の非stickyな左右反転指定、任意の操作UI
+- TurboWarp TM 1.12.0を使う、関節とボーンのSVG overlay設定
+- `Actor.say`／`Actor.think`の入力待ち、文字送り、音、portrait、animation、名前付き`bubbleStyles`
+- `bubbleClosePolicies`と`closePolicy`による、秒数・入力待ち・両者のraceの名前付き再利用
+- `Actor.moveTo`の`linear`、`easeIn`、`easeOut`、`easeInOut`
+- `Actor.setTransparency`の即時指定、foreground／backgroundの線形変化
+- `broadcastMessageAndWait`、`debugger`、`Actor.hide`／`setLayer`／`loop`
+- rehearsal skip、bitmap論理解像度、asset／sceneのliteral ID
+- include文で複数ソースを決定的に合成する処理、宣言元相対asset解決、自己完結SB3 packaging
+- Web／CLIプレビューのtransactional reload、Source Map、packaging後のsource origin復元
+- navigation入力と作品内input actionを一つのsemantic consumerへ限定する入力arbitration
+
+builder、TurboWarp runtime surface、ブラウザー／CLIプレビューを含むend-to-end実装は完成しています。
+ただし、完成した機能の一部は起動時固定・既定OFFの機能フラグで段階導入されます。実装完成は、
+すべての公開releaseで自動的に有効になることを意味しません。
+
+### 実装根拠を確認する場合
+
+仕様の正本は、`tm-kamishibai`リポジトリの
+[紙芝居DSL 4.0 表層仕様](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-surface.md)と
+[JSON Schema](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/schema/dsl-4.schema.json)です。
+カメラプレビュー操作UIは[Issue #388](https://github.com/kubohiroya/tm-kamishibai/issues/388)、
+ポーズoverlayは[Issue #624](https://github.com/kubohiroya/tm-kamishibai/issues/624)、
+`bubbleStyles`は[Issue #476](https://github.com/kubohiroya/tm-kamishibai/issues/476)以降、
+`Actor.moveTo.easing`は[Issue #398](https://github.com/kubohiroya/tm-kamishibai/issues/398)、
+`Actor.setTransparency`は[Issue #406](https://github.com/kubohiroya/tm-kamishibai/issues/406)、
+include文の複数ファイル対応は[Issue #417](https://github.com/kubohiroya/tm-kamishibai/issues/417)から
+上記commitまでにmergeされています。プロジェクトディレクトリ選択とYAML live reloadは
+[Issue #390](https://github.com/kubohiroya/tm-kamishibai/issues/390)、ローカルアセットの追加・内容更新のlive reloadは
+[Issue #391](https://github.com/kubohiroya/tm-kamishibai/issues/391)で実装されています。
 
 ## 関連資料
 
 - [紙芝居DSL 4.0 Schemaリファレンス](dsl-4.0-schema-reference.md): 固定Schemaに基づくfield、型、制約、action一覧
+- [DSL 4.0ランタイム変数ガイド](dsl-4.0-runtime-variable-guide.md): 実行中に参照できる変数と、その扱い方
+- [3系作品の変換ガイド](dsl-3.2-to-4.0-conversion-guide.md): 3系の台本を4.0のYAMLへ変換する手順
+- [紙芝居DSL 4.0 リリース履歴](dsl-4.0-history.md): 版ごとの追加機能と変更点
 - [DSL 4.0表層仕様](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-surface.md): 4.0の規範的な作者向け構文
 - [DSL 4.0 JSON Schema](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/schema/dsl-4.schema.json): 機械可読な構造仕様
 - [DSL 4.0 include文の複数ファイル対応](https://github.com/kubohiroya/tm-kamishibai/blob/29c0deadcb98badf94a0244c479ca896dc71f842/docs/design/dsl-4-source-include-preview.md): include、transaction、有限上限、rollback

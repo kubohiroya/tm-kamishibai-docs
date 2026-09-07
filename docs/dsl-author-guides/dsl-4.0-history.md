@@ -11,6 +11,20 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 [操作説明書](../user-guides/user-guide-4.0.md)から始めてください。機械可読な正本は
 [`sources/dsl4/release-history-4.0.json`](https://github.com/kubohiroya/tm-kamishibai-docs/blob/main/sources/dsl4/release-history-4.0.json)です。
 
+## この文書の読み方
+
+版ごとの記録は、いずれも同じ順序で並んでいます。目的の情報がどの見出しにあるかは、次の対応で探してください。
+
+| 見出し               | 記録している内容                                        |
+| -------------------- | ------------------------------------------------------- |
+| 固定revisionと公開先 | tag、commit、Schema SHA-256、GitHub・npm・Pagesの公開先 |
+| 「rc.Nからの変更」   | その版で加わった機能と、作り直した公開物                |
+| exact dependency pin | その版がexact pinしている機能拡張の版                   |
+| 公開成果物           | SB3とnpm tarballのバイト数、SHA-256、registry integrity |
+| 検証、制約、rollback | 通過した検証、未完了の確認、問題が起きたときに戻す先    |
+
+新しい版ほど上にあります。末尾の「次のversionを追記する」は、この履歴を更新する担当者向けの手順です。
+
 ## 最初に出てくる言葉
 
 | 状態             | 意味                                                             |
@@ -84,7 +98,7 @@ SB3/Web成果物の再現性を確認しています。
 
 - DSL document versionは引き続き`kamishibai: "4.0"`
 - rc.8以前のversion付きSB3とtagを差し替えない
-- 問題時はnpm `next`を`4.0.0-rc.9`へ戻し、公開済みrc.10のbyte列を上書きしない
+- 問題時はnpm `next`を`4.0.0-rc.9`へ戻し、公開済みrc.10のバイト列を上書きしない
 - 修正版は`4.0.0-rc.11`以降として公開する
 
 ## 4.0.0-rc.8

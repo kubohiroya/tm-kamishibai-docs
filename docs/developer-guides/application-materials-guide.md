@@ -6,15 +6,15 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 
 <p class="application-page-label">1 / 8　アプリ概要</p>
 
-TM紙芝居は、TurboWarpで作られた紙芝居にcamera映像を重ね、
-参加者のポーズやkey・touch入力で物語を進める「参加型」AI紙芝居アプリです。
+TM紙芝居は、TurboWarpで作られた紙芝居にカメラ映像を重ね、
+参加者のポーズやキー入力・タッチ入力で物語を進める「参加型」AI紙芝居アプリです。
 作品はテキストの`kamishibai=3.2`台本として記述し、絵・音・動き・分岐を組み合わせます。3.2.xは既存の`kamishibai=3.1`台本も読み込めます。
 
 <figure class="application-hero"><img src="../images/image60.png" alt="参加型AI紙芝居 Version 3.1.9と表示されたTM紙芝居のタイトル画面"><figcaption>3.1.9時点の画面例。3.2.0でも、同じアプリに台本と素材を読み込むことで異なる物語をプレイします。</figcaption></figure>
 
-<div class="application-value-grid"><section><strong>見る</strong><span>絵・台詞・音・animationで物語を伝える</span></section><section><strong>動く</strong><span>cameraの前でポーズを取り、登場人物へ働きかける</span></section><section><strong>作る</strong><span>台本と素材を差し替え、自分たちの作品へ育てる</span></section></div>
+<div class="application-value-grid"><section><strong>見る</strong><span>絵・台詞・音・アニメーションで物語を伝える</span></section><section><strong>動く</strong><span>カメラの前でポーズを取り、登場人物へ働きかける</span></section><section><strong>作る</strong><span>台本と素材を差し替え、自分たちの作品へ育てる</span></section></div>
 
-<p class="application-callout"><strong>中心となる考え:</strong> AIはポーズを認識し、programは判定結果を物語のsceneへ接続します。参加者自身の動きが、次の場面を開く入力になります。</p>
+<p class="application-callout"><strong>中心となる考え:</strong> AIはポーズを認識し、プログラムは判定結果を物語のシーンへ接続します。参加者自身の動きが、次の場面を開く入力になります。</p>
 
 <p class="application-source">出典: <a href="https://kubohiroya.github.io/tm-kamishibai/">TM紙芝居 公式サイト</a>、<a href="https://github.com/kubohiroya/tm-kamishibai">tm-kamishibai README</a></p>
 
@@ -22,14 +22,14 @@ TM紙芝居は、TurboWarpで作られた紙芝居にcamera映像を重ね、
 
 <p class="application-page-label">2 / 8　アプリ概要</p>
 
-アプリ本体は汎用のSB3です。作品固有の`kamishibai=3.1`または`kamishibai=3.2`台本とassetを読み込み、
-事前検査、Loading、scene実行、入力待ち、画面更新を共通の流れで扱います。
+アプリ本体は汎用のSB3です。作品固有の`kamishibai=3.1`または`kamishibai=3.2`台本と素材を読み込み、
+事前検査、Loading、シーン実行、入力待ち、画面更新を共通の流れで扱います。
 
-<figure class="application-flow"><figcaption>作品からプレイまで</figcaption><div><span>台本・画像・音声</span><b>→</b><span>preflight検査</span><b>→</b><span>asset登録・Loading</span><b>→</b><span>scene実行</span></div></figure>
+<figure class="application-flow"><figcaption>作品からプレイまで</figcaption><div><span>台本・画像・音声</span><b>→</b><span>事前検査</span><b>→</b><span>素材登録・Loading</span><b>→</b><span>シーン実行</span></div></figure>
 
-<div class="application-columns"><section><p class="application-subhead">共通runtime</p><ul><li>Asset Managerがlocal素材とURL素材を名前で管理</li><li>Kamishibai Runtimeが実行前に台本を検査</li><li>TurboWarp TMとAsync Inputが入力をscene遷移へ渡す</li><li>不正な台本は行番号付きSVG診断として画面表示</li></ul></section><section><p class="application-subhead">四つの成果物</p><dl><dt><code>generic</code></dt><dd>起動後に台本を選ぶ汎用版</dd><dt><code>editor</code></dt><dd>TurboWarpで編集できる版</dd><dt><code>player</code></dt><dd>作品を埋め込んだ実行専用版</dd><dt>Web版</dt><dd>browserから直接開く公開版</dd></dl></section></div>
+<div class="application-columns"><section><p class="application-subhead">共通ランタイム</p><ul><li>Asset Managerがローカル素材とURL素材を名前で管理</li><li>Kamishibai Runtimeが実行前に台本を検査</li><li>TurboWarp TMとAsync Inputが入力をシーン遷移へ渡す</li><li>不正な台本は行番号付きSVG診断として画面表示</li></ul></section><section><p class="application-subhead">四つの成果物</p><dl><dt><code>generic</code></dt><dd>起動後に台本を選ぶ汎用版</dd><dt><code>editor</code></dt><dd>TurboWarpで編集できる版</dd><dt><code>player</code></dt><dd>作品を埋め込んだ実行専用版</dd><dt>Web版</dt><dd>ブラウザーから直接開く公開版</dd></dl></section></div>
 
-<p class="application-callout"><strong>設計上の利点:</strong> 物語を替えてもruntimeを作り直す必要がありません。作品と実行基盤を分離するため、体験会では素材と台本の編集に集中できます。</p>
+<p class="application-callout"><strong>設計上の利点:</strong> 物語を替えてもランタイムを作り直す必要がありません。作品と実行基盤を分離するため、体験会では素材と台本の編集に集中できます。</p>
 
 <p class="application-source">出典: <a href="../user-guides/user-guide.md">操作説明書</a>、<a href="internal-specification.md">内部仕様書</a>。過去版との差分は<a href="../dsl-author-guides/history.md"><code>history.md</code></a>を参照してください。</p>
 
@@ -37,33 +37,33 @@ TM紙芝居は、TurboWarpで作られた紙芝居にcamera映像を重ね、
 
 <p class="application-page-label">3 / 8　浦島太郎による具体例</p>
 
-公開サンプル「浦島太郎」では、観客がcameraの前で物語に合うポーズを取り、
+公開サンプル「浦島太郎」では、観客がカメラの前で物語に合うポーズを取り、
 主人公や登場人物の行動に参加します。画面の「ポーズをとろう！」が、見る時間から動く時間への合図です。
 
-<figure class="application-hero application-urashima-hero"><img src="../images/image01.png" alt="カメラ映像に浦島太郎とカメを重ね、ポーズをとろう！と表示しているTM紙芝居のアプリ画面"><figcaption>camera映像、背景、Actor、認識UIを同じstage上へ重ねたプレイ画面。</figcaption></figure>
+<figure class="application-hero application-urashima-hero"><img src="../images/image01.png" alt="カメラ映像に浦島太郎とカメを重ね、ポーズをとろう！と表示しているTM紙芝居のアプリ画面"><figcaption>カメラ映像、背景、アクター、認識UIを同じステージ上へ重ねたプレイ画面。</figcaption></figure>
 
 <div class="application-storyline"><span>カメを助ける</span><b>→</b><span>カメに乗る</span><b>→</b><span>竜宮城で踊る</span><b>→</b><span>玉手箱を開く</span><b>→</b><span>結末を演じる</span></div>
 
-<p class="application-callout"><strong>具体例の役割:</strong> 昔話の順序は保ちながら、要所をpose入力に置き換えます。物語を知っている人にも、アプリが「何を認識し、何を変えるか」が伝わります。</p>
+<p class="application-callout"><strong>具体例の役割:</strong> 昔話の順序は保ちながら、要所をポーズ入力に置き換えます。物語を知っている人にも、アプリが「何を認識し、何を変えるか」が伝わります。</p>
 
 <p class="application-source">出典: <a href="https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/">浦島太郎 公開サンプル</a>、<a href="https://kubohiroya.github.io/tm-kamishibai/">TM紙芝居 公式サイト</a></p>
 
-## ポーズをsceneの出来事へ変換する {#urashima-script .application-sheet .unnumbered}
+## ポーズをシーンの出来事へ変換する {#urashima-script .application-sheet .unnumbered}
 
 <p class="application-page-label">4 / 8　浦島太郎による具体例</p>
 
-台本は、表示する素材、待つ入力、次のsceneを順に宣言します。TurboWarp TMの認識結果は
-単なる分類名ではなく、story runtimeが待っている入力eventとして扱われます。
+台本は、表示する素材、待つ入力、次のシーンを順に宣言します。TurboWarp TMの認識結果は
+単なる分類名ではなく、物語のランタイムが待っている入力イベントとして扱われます。
 
-<figure class="application-flow"><figcaption>参加者の動きが物語へ届くまで</figcaption><div><span>身体のポーズ</span><b>→</b><span>TurboWarp TMで分類</span><b>→</b><span>Async Inputで待機</span><b>→</b><span>scene actionを再開</span></div></figure>
+<figure class="application-flow"><figcaption>参加者の動きが物語へ届くまで</figcaption><div><span>身体のポーズ</span><b>→</b><span>TurboWarp TMで分類</span><b>→</b><span>Async Inputで待機</span><b>→</b><span>シーンのアクションを再開</span></div></figure>
 
 <div class="application-columns"><section><p class="application-subhead">台本側の指定</p><pre><code>kamishibai=3.2
 sceneLabel=ride-turtle
 TMPoseURL=https://…/model.json
 action=pose:ride,0.8
-action=scene:dragon-palace</code></pre><p>scene、pose名、信頼度、遷移先を作品の言葉で記述します。</p></section><section><p class="application-subhead">runtime側の処理</p><ol><li>sceneの背景とActorを表示</li><li>指定modelを読み込んで認識開始</li><li>poseが閾値を超えるまで待機</li><li>認識を止め、次のactionへ進む</li><li>skip時も同じ終了処理で片付ける</li></ol></section></div>
+action=scene:dragon-palace</code></pre><p>シーン、ポーズ名、信頼度、遷移先を作品の言葉で記述します。</p></section><section><p class="application-subhead">ランタイム側の処理</p><ol><li>シーンの背景とアクターを表示</li><li>指定モデルを読み込んで認識開始</li><li>ポーズが閾値を超えるまで待機</li><li>認識を止め、次のアクションへ進む</li><li>スキップ時も同じ終了処理で片付ける</li></ol></section></div>
 
-<p class="application-callout"><strong>演出の要点:</strong> 一つのposeを長く待つ場面では、promptや効果音で「今何をすればよいか」を伝えます。key・touch入力も併設できるため、会場条件に合わせた代替操作を用意できます。</p>
+<p class="application-callout"><strong>演出の要点:</strong> 一つのポーズを長く待つ場面では、案内表示や効果音で「今何をすればよいか」を伝えます。キー入力・タッチ入力も併設できるため、会場条件に合わせた代替操作を用意できます。</p>
 
 <p class="application-source">出典: <a href="https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/urashima.txt">浦島太郎 台本</a>、<a href="../dsl-author-guides/dsl-manual.md">紙芝居DSL 3.2 ファイル作成マニュアル</a></p>
 
@@ -72,12 +72,12 @@ action=scene:dragon-palace</code></pre><p>scene、pose名、信頼度、遷移�
 <p class="application-page-label">5 / 8　体験会教材説明</p>
 
 2026年8月1日版の親子AIプログラミング体験会は、画像生成AI、ポーズ認識AI、
-AIではないprogramを一つの作品へ組み合わせます。何を人が決め、どこをAIが助け、
-どこをprogramが確実に実行するかを、制作とプレイの両方から学ぶ教材です。
+AIではないプログラムを一つの作品へ組み合わせます。何を人が決め、どこをAIが助け、
+どこをプログラムが確実に実行するかを、制作とプレイの両方から学ぶ教材です。
 
 <figure class="application-workshop-overview"><img src="../images/image10.png" alt="参加型AI紙芝居を構成する画像生成AI、ポーズ認識AI、プログラムの役割を7段階で説明する体験会教材"><figcaption>教材の全体図。考える・描く・登録する・ポーズする・認識する・結果を渡す・物語が動く、を一枚で示します。</figcaption></figure>
 
-<div class="application-value-grid"><section><strong>人</strong><span>物語、絵、使うpose、台本の順序を考える</span></section><section><strong>AI</strong><span>画像を生成し、camera映像のposeを分類する</span></section><section><strong>program</strong><span>assetを表示し、判定結果どおりにsceneを進める</span></section></div>
+<div class="application-value-grid"><section><strong>人</strong><span>物語、絵、使うポーズ、台本の順序を考える</span></section><section><strong>AI</strong><span>画像を生成し、カメラ映像のポーズを分類する</span></section><section><strong>プログラム</strong><span>素材を表示し、判定結果どおりにシーンを進める</span></section></div>
 
 <p class="application-source">出典: <a href="../workshops/2026-08-01/tmpose-kamishibai-20260801.md">親子AIプログラミング体験会教材 2026年8月1日版</a></p>
 
@@ -85,14 +85,14 @@ AIではないprogramを一つの作品へ組み合わせます。何を人が�
 
 <p class="application-page-label">6 / 8　体験会教材説明</p>
 
-教材は完成品を眺めるだけではなく、下絵、画像生成、認識training、TurboWarpへの登録、
-台本編集、プレイ確認までを一つの制作のサイクルとして体験させます。
+教材は完成品を眺めるだけではなく、下絵、画像生成、認識モデルの学習、TurboWarpへの登録、
+台本編集、プレイ確認までを一つの制作の循環として体験させます。
 
-<div class="application-image-grid"><figure><img src="../images/tmpose-training.png" alt="TurboWarp TMのトレーニング進捗画面"><figcaption>ポーズを学習する</figcaption></figure><figure><img src="../images/image25.png" alt="棒人間の下絵をもとに乙姫のポーズ画像を生成する画面"><figcaption>画像をつくる</figcaption></figure><figure><img src="../images/image11.png" alt="片手を上げて片膝を曲げた棒人間のポーズ下絵"><figcaption>考える・描く</figcaption></figure><figure><img src="../images/turbowarp-costumes.png" alt="TurboWarpにPrincessとpose画像をcostumeとして登録した画面"><figcaption>costumeへ登録する</figcaption></figure></div>
+<div class="application-image-grid"><figure><img src="../images/tmpose-training.png" alt="TurboWarp TMのトレーニング進捗画面"><figcaption>ポーズを学習する</figcaption></figure><figure><img src="../images/image25.png" alt="棒人間の下絵をもとに乙姫のポーズ画像を生成する画面"><figcaption>画像をつくる</figcaption></figure><figure><img src="../images/image11.png" alt="片手を上げて片膝を曲げた棒人間のポーズ下絵"><figcaption>考える・描く</figcaption></figure><figure><img src="../images/turbowarp-costumes.png" alt="TurboWarpにPrincessとpose画像をcostumeとして登録した画面"><figcaption>コスチュームへ登録する</figcaption></figure></div>
 
-<div class="application-cycle"><span>poseを設計</span><b>→</b><span>人物画像を生成</span><b>→</b><span>認識modelをtraining</span><b>→</b><span>台本とassetを編集</span><b>→</b><span>プレイして改善</span></div>
+<div class="application-cycle"><span>ポーズを設計</span><b>→</b><span>人物画像を生成</span><b>→</b><span>認識モデルを学習</span><b>→</b><span>台本と素材を編集</span><b>→</b><span>プレイして改善</span></div>
 
-<p class="application-callout"><strong>教材としての狙い:</strong> 入力画像、training data、判定閾値、台本の指定を変えると結果も変わります。うまく動かない理由を一つずつ切り分けること自体が、AIとprogramの違いを理解する学習になります。</p>
+<p class="application-callout"><strong>教材としての狙い:</strong> 入力画像、学習データ、判定閾値、台本の指定を変えると結果も変わります。うまく動かない理由を一つずつ切り分けること自体が、AIとプログラムの違いを理解する学習になります。</p>
 
 <p class="application-source">出典: <a href="../workshops/2026-08-01/tmpose-kamishibai-20260801.md">体験会参加者用教材</a>、<a href="../workshops/2026-08-01/tmpose-kamishibai-staff-20260801.md">体験会スタッフ向け資料</a></p>
 
@@ -101,9 +101,9 @@ AIではないprogramを一つの作品へ組み合わせます。何を人が�
 <p class="application-page-label">7 / 8　DSL 3.2説明</p>
 
 紙芝居DSL 3.2は、一行を`command=value`として記述する人間可読の台本形式です。
-画像や音声をasset名へ登録し、sceneごとにActor、text、入力、分岐、transitionを並べます。旧Text Assetを互換維持しながら、相対サイズと複数行に対応するSVG Textを併用できます。
+画像や音声を素材名へ登録し、シーンごとにアクター、テキスト、入力、分岐、画面効果を並べます。旧Text Assetを互換維持しながら、相対サイズと複数行に対応するSVG Textを併用できます。
 
-<div class="application-columns"><section><p class="application-subhead">宣言するもの</p><ul><li><code>asset</code>: URLやSB3内costume・sound</li><li><code>sceneLabel</code>: 分岐先を表すscene名</li><li><code>actor</code>: 表示位置、costume、animation</li><li><code>svgTextStyle</code>: textの共通style</li><li><code>action</code>: text、pose、入力待ち、遷移</li></ul></section><section><p class="application-subhead">3.2の実行pipeline</p><ol><li>3.1／3.2宣言とcommand構造をpreflight</li><li>参照先・address・条件式を検査</li><li>Loading用assetを先に登録</li><li>通常assetを登録して進捗表示</li><li>sceneとactionを順に実行</li></ol></section></div>
+<div class="application-columns"><section><p class="application-subhead">宣言するもの</p><ul><li><code>asset</code>: URLやSB3内のコスチューム・音</li><li><code>sceneLabel</code>: 分岐先を表すシーン名</li><li><code>actor</code>: 表示位置、コスチューム、アニメーション</li><li><code>svgTextStyle</code>: テキストの共通スタイル</li><li><code>action</code>: テキスト、ポーズ、入力待ち、遷移</li></ul></section><section><p class="application-subhead">3.2の実行手順</p><ol><li>3.1／3.2宣言とコマンド構造を事前検査</li><li>参照先・アドレス・条件式を検査</li><li>Loading用の素材を先に登録</li><li>通常の素材を登録して進捗表示</li><li>シーンとアクションを順に実行</li></ol></section></div>
 
 <pre class="application-code"><code>kamishibai=3.2
 asset=Hero,costume:Actor:hero1
@@ -116,24 +116,24 @@ action=Hero:setText:Title:title
 action=pose:rescue,0.8
 transition=fadeToWhite</code></pre>
 
-<p class="application-callout"><strong>安全な失敗:</strong> 不明command、存在しないasset、壊れた条件式は、cameraや音声を開始する前に検出します。問題のcode、行・列、source抜粋をSVG文字で示し、台本を実行しません。</p>
+<p class="application-callout"><strong>安全な失敗:</strong> 不明なコマンド、存在しない素材、壊れた条件式は、カメラや音声を開始する前に検出します。問題のコード、行・列、ソース抜粋をSVG文字で示し、台本を実行しません。</p>
 
 <p class="application-source">出典: <a href="../dsl-author-guides/dsl-manual.md">DSL作成マニュアル</a>、<a href="../dsl-author-guides/command-reference.md">コマンドリファレンス</a>。2.0からの変更は<a href="../dsl-author-guides/history.md"><code>history.md</code></a>を参照してください。</p>
 
-## sb3-toolchainがSB3を検証可能なsourceへ変える {#sb3-toolchain .application-sheet .unnumbered}
+## sb3-toolchainがSB3を検証可能なソースへ変える {#sb3-toolchain .application-sheet .unnumbered}
 
 <p class="application-page-label">8 / 8　sb3-toolchain説明</p>
 
-`@kubohiroya/sb3-toolchain`は、binary ZIPであるSB3をGitで差分確認できるsourceへ展開し、
-検証済みの同一入力から決定的なSB3を再構築するNode.js toolchainです。このrepositoryでは
-検証したcommitを開発時依存へ固定し、local開発とCIの両方で同じtoolchainを使います。
+`@kubohiroya/sb3-toolchain`は、バイナリのZIPであるSB3をGitで差分確認できるソースへ展開し、
+検証済みの同一入力から決定的なSB3を再構築するNode.jsのツールチェインです。このリポジトリでは
+検証したコミットを開発時依存へ固定し、手元の開発とCIの両方で同じツールチェインを使います。
 
-<figure class="application-flow application-toolchain-flow"><figcaption>このrepositoryでのsource-of-truth</figcaption><div><span>TurboWarpで編集したSB3</span><b>→</b><span><code>pnpm sb3:import</code></span><b>→</b><span><code>app/</code>の展開source</span><b>→</b><span><code>check</code>・test・build</span><b>→</b><span>配布SB3</span></div></figure>
+<figure class="application-flow application-toolchain-flow"><figcaption>このリポジトリでの正本</figcaption><div><span>TurboWarpで編集したSB3</span><b>→</b><span><code>pnpm sb3:import</code></span><b>→</b><span><code>app/</code>の展開ソース</span><b>→</b><span><code>check</code>・テスト・ビルド</span><b>→</b><span>配布SB3</span></div></figure>
 
-<div class="application-columns"><section><p class="application-subhead">日常のworkflow</p><dl><dt><code>pnpm sb3:check</code></dt><dd>asset参照、hash、拡張mappingをoffline検証</dd><dt><code>pnpm sb3:build</code></dt><dd>固定順・timestamp・圧縮でSB3を再生成</dd><dt><code>pnpm sb3:extensions:status</code></dt><dd>固定したGitHub／npm由来を確認</dd></dl></section><section><p class="application-subhead">機能拡張の管理</p><ul><li>commitまたはnpm versionとSHA-256で由来を固定</li><li><code>sync</code>はinstall済みの固定sourceから復元</li><li><code>update</code>は更新をtransactionとして適用</li><li>複数拡張のbundleは元opcodeを変換し、一つの登録単位へまとめられる</li></ul></section></div>
+<div class="application-columns"><section><p class="application-subhead">日常の作業手順</p><dl><dt><code>pnpm sb3:check</code></dt><dd>素材参照、ハッシュ、拡張の対応付けをオフライン検証</dd><dt><code>pnpm sb3:build</code></dt><dd>固定順・タイムスタンプ・圧縮でSB3を再生成</dd><dt><code>pnpm sb3:extensions:status</code></dt><dd>固定したGitHub／npm由来を確認</dd></dl></section><section><p class="application-subhead">機能拡張の管理</p><ul><li>コミットまたはnpmの版とSHA-256で由来を固定</li><li><code>sync</code>は導入済みの固定ソースから復元</li><li><code>update</code>は更新を一括の変更として適用</li><li>複数拡張の束は元のopcodeを変換し、一つの登録単位へまとめられる</li></ul></section></div>
 
-<p class="application-callout"><strong>再現性の境界:</strong> release build中にnetwork依存の<code>sync</code>や<code>update</code>を暗黙実行しません。更新は別のreview可能な変更として行い、固定sourceをcommitしてからbuildします。</p>
+<p class="application-callout"><strong>再現性の境界:</strong> リリースのビルド中にネットワークに依存する<code>sync</code>や<code>update</code>を暗黙実行しません。更新は別のレビュー可能な変更として行い、固定ソースをコミットしてからビルドします。</p>
 
-<p class="application-source">出典: <a href="https://github.com/kubohiroya/sb3-toolchain/tree/b3f4b9aa3ed3ede363700be815fe522f6a47df0b">sb3-toolchain 固定commit b3f4b9a</a>、<a href="https://github.com/kubohiroya/sb3-toolchain/blob/b3f4b9aa3ed3ede363700be815fe522f6a47df0b/docs/workflows.md">推奨workflow</a>、<a href="https://github.com/kubohiroya/sb3-toolchain/blob/b3f4b9aa3ed3ede363700be815fe522f6a47df0b/docs/source-format-v1.md">展開source形式</a></p>
+<p class="application-source">出典: <a href="https://github.com/kubohiroya/sb3-toolchain/tree/b3f4b9aa3ed3ede363700be815fe522f6a47df0b">sb3-toolchain 固定コミット b3f4b9a</a>、<a href="https://github.com/kubohiroya/sb3-toolchain/blob/b3f4b9aa3ed3ede363700be815fe522f6a47df0b/docs/workflows.md">推奨する作業手順</a>、<a href="https://github.com/kubohiroya/sb3-toolchain/blob/b3f4b9aa3ed3ede363700be815fe522f6a47df0b/docs/source-format-v1.md">展開ソース形式</a></p>
 
 DSLとアプリの版ごとの差分は[`history.md`](../dsl-author-guides/history.md)を参照してください。

@@ -89,7 +89,7 @@ flowchart LR
 - 物理行単位の読み取り
 - 空行、コメント、`---`の読み飛ばし
 - 最初の`=`だけを区切りとするトップレベルcommandの抽出
-- 3.1 version、command名、action名の照合
+- 3.1のバージョン、command名、action名の照合
 - asset、actor、scene、branchの宣言名収集
 - 今回対象となるasset・scene参照の二段階検証
 - 外部パッケージのsyntax-only APIを介した式・asset address検証
@@ -149,7 +149,7 @@ flowchart LR
 
 | コード                  | 意味                                      |
 | ----------------------- | ----------------------------------------- |
-| `K31-VERSION-001`       | version指定なし・非対応version            |
+| `K31-VERSION-001`       | バージョン指定なし・非対応バージョン      |
 | `K31-COMMAND-001`       | `key=value`形式ではない                   |
 | `K31-COMMAND-002`       | 非対応トップレベルcommand                 |
 | `K31-ACTION-001`        | 非対応actionまたはactor action            |
@@ -193,7 +193,7 @@ validateProjectAssetAddress({name, resourceId});
 // => {ok: false, type, label, message}
 ```
 
-このAPIはassetを登録せず、外部URLをfetchせず、cacheを変更しません。#198でAsset Managerの内部registryを直接参照しません。
+このAPIはassetを登録せず、外部URLをfetchせず、cacheを変更しません。#198でAsset Managerの内部レジストリを直接参照しません。
 
 もし3.1パッチで上流API追加を行わない場合は、現在の独自address parserを「3.1で使用中の4形式だけ」に限定し、Asset Managerと同じfixtureを双方のリポジトリで実行する必要があります。このfallbackを恒久APIにはしません。
 
@@ -217,7 +217,7 @@ DSL 3.1はすでにTemporary Variablesへ依存しているため、台本文字
 
 ## 9. 実行タイミングと副作用
 
-preflightは`startStory`を受け、既存のcontext削除、asset登録、actor生成、camera開始より前に一度だけ実行します。
+preflightは`startStory`を受け、既存のcontext削除、asset登録、actor生成、カメラ開始より前に一度だけ実行します。
 
 ```mermaid
 sequenceDiagram
@@ -282,7 +282,7 @@ SVG skin生成と停止処理は、validation成功・失敗が確定した後�
 4. PresenterがSVG skinを生成し、`prompt`へ直接適用する
 5. error表示だけをvisibleにする
 
-今回のpreflightはcamera開始前に実行するため、TurboWarp TM cameraの個別停止を通常は必要としません。将来runtime中エラーを同じPresenterへ渡す場合は、camera停止を別途契約化します。
+今回のpreflightはカメラ開始前に実行するため、TurboWarp TM カメラの個別停止を通常は必要としません。将来runtime中エラーを同じPresenterへ渡す場合は、カメラ停止を別途契約化します。
 
 ### 11.3 再実行とcleanup
 
@@ -348,7 +348,7 @@ SVG skin生成と停止処理は、validation成功・失敗が確定した後�
 - feature flag OFFで3.1.7相当の経路へ即時に戻せる
 - app-local extensionとhidden blockを小粒PRでrevertできる
 - Asset Manager／Runtime Expressionへ追加するsyntax-only APIは後方互換の追加APIとし、Kamishibai側revert後も既存blockへ影響させない
-- 3.1.8公開後に重大な問題が見つかった場合は、3.1.8を上書きせずdeprecateし、修正版を新しいpatch versionで公開する
+- 3.1.8公開後に重大な問題が見つかった場合は、3.1.8を上書きせずdeprecateし、修正版を新しいパッチバージョンで公開する
 
 ## 15. レビュー結果
 

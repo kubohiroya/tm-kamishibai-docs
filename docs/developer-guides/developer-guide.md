@@ -31,7 +31,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 | 区分           | 対象                                                     | 読み方                                 |
 | -------------- | -------------------------------------------------------- | -------------------------------------- |
 | 導入           | 管理範囲、開発環境、リポジトリ構成、共通フロー           | 初めて開発するときに、この順に読む     |
-| 利用契約       | 成果物プロファイル、ビルダーのCLI／API／manifest         | 成果物を生成・利用するときに参照する   |
+| 利用契約       | 成果物プロファイル、ビルダーのCLI／API／マニフェスト     | 成果物を生成・利用するときに参照する   |
 | 変更対象別手順 | アプリSB3、機能拡張、ビルダー実装、文書とサイト          | 変更対象に応じて、必要な章だけを読む   |
 | 検証と公開     | 自動・手動検証、GitHub Pages、npm、障害時の扱い          | PRとリリースの完了条件として読む       |
 | 参照           | 関連プロジェクト、ライセンス、秘密情報、関連ドキュメント | 関連する規約や資料を探すときに参照する |
@@ -51,17 +51,17 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 - アプリ・文書・サンプルへの公開入口と配布用SB3
 - 上記を検証する自動テスト
 
-文書リポジトリは、一般向け、DSL作成者向け、開発者向け、体験会向けの文書source、
-共有画像、Vivliostyle build、PDF、文書Pagesを管理します。
+文書リポジトリは、一般向け、DSL作成者向け、開発者向け、体験会向けの文書ソース、
+共有画像、Vivliostyleビルド、PDF、文書Pagesを管理します。
 
 関連プロジェクトとの境界は次のとおりです。
 
 | 対象                                  | 管理場所                                                                                  | このリポジトリとの関係                                                                |
 | ------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | SB3の展開・検証・決定的再構築         | [`kubohiroya/sb3-toolchain`](https://github.com/kubohiroya/sb3-toolchain)                 | 固定依存として利用する。[「sb3-toolchain」](#sb3-toolchain){data-ref="section"}を参照 |
-| 文書source、図版、HTML／PDF           | [`kubohiroya/tm-kamishibai-docs`](https://github.com/kubohiroya/tm-kamishibai-docs)       | 本体のversion・固定snapshotを参照し、独立してbuild・公開する                          |
+| 文書ソース、図版、HTML／PDF           | [`kubohiroya/tm-kamishibai-docs`](https://github.com/kubohiroya/tm-kamishibai-docs)       | 本体のバージョン・固定スナップショットを参照し、独立してビルド・公開する              |
 | 浦島太郎などの公開用物語              | [`kubohiroya/tm-kamishibai-samples`](https://github.com/kubohiroya/tm-kamishibai-samples) | `stories/urashima/`で台本、固有アセット、生成物を管理する                             |
-| 埋め込み機能拡張                      | 各機能拡張のGitHubリポジトリまたはnpm package                                             | `app/`には検証済み成果物と由来情報だけを同期する                                      |
+| 埋め込み機能拡張                      | 各機能拡張のGitHubリポジトリまたはnpmパッケージ                                           | `app/`には検証済み成果物と由来情報だけを同期する                                      |
 | TurboWarp Extension Galleryの機能拡張 | Galleryの公開URL                                                                          | SB3から外部URLを参照する                                                              |
 
 [公開サンプル](https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/)
@@ -69,7 +69,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 維持します。
 
 依存バージョン、スクリプト、公開対象の正本は`package.json`と`pnpm-lock.yaml`です。
-文書には特定commitを転記せず、必要なときに確認します。
+文書には特定コミットを転記せず、必要なときに確認します。
 
 ```bash
 pnpm why @kubohiroya/sb3-toolchain
@@ -82,7 +82,7 @@ git diff -- package.json pnpm-lock.yaml
 
 - Node.js 24.0.0以上
 - pnpm 11
-- 文書をbuildする場合は、PDF生成に利用できるChromeまたはChromium
+- 文書をビルドする場合は、PDF生成に利用できるChromeまたはChromium
 - Gitと、GitHub操作に利用するGitHub CLI
 
 ```bash
@@ -90,7 +90,7 @@ corepack enable
 pnpm install
 ```
 
-CIではlockfile以外の依存解決を許可しません。
+CIではロックファイル以外の依存解決を許可しません。
 
 ```bash
 pnpm install --frozen-lockfile
@@ -124,7 +124,7 @@ pnpm test
 | `test/`                        | ビルダー、SB3、VM、公開契約のテスト  |
 
 文書リポジトリでは、読者別の`docs/user-guides/`、`docs/dsl-author-guides/`、
-`docs/developer-guides/`、開催日別の`docs/workshops/`をsourceとし、`scripts/`で
+`docs/developer-guides/`、開催日別の`docs/workshops/`をソースとし、`scripts/`で
 全文書のHTMLと、`docs/workshops/`配下の体験会資料だけのPDFを生成します。
 
 次の場所は生成物であり、Git管理上の正本ではありません。
@@ -149,7 +149,7 @@ PRへ分けます。
 6. 標準チェックと必要な手動確認を行う。
 7. Issueの運用ログとDoDを更新してPRを作成する。
 
-無関係な変更や未追跡ファイルをまとめてコミットしません。SB3のimportや成果物の
+無関係な変更や未追跡ファイルをまとめてコミットしません。SB3の取り込みや成果物の
 置換を行う前には、必ず`git status`と対象パスの差分を確認します。変更対象ごとの
 テストと公開前チェックは[「変更を検証する」](#verification){data-ref="chapter"}を
 参照してください。
@@ -164,7 +164,7 @@ PRへ分けます。
 | `editor`     | `_urashima.sb3`  | 非埋め込み | 埋め込み         | 物語作成者の編集・動作確認 |
 | `player`     | `urashima.sb3`   | 埋め込み   | 埋め込み         | 配布・再生、Packager Web版 |
 
-`generic`は`app/`から生成し、特定の物語を含めません。builder APIとCLIが受け付ける
+`generic`は`app/`から生成し、特定の物語を含めません。ビルダーAPIとCLIが受け付ける
 `profile`は`editor`または`player`です。
 
 `editor`と`player`は同じベースSB3、台本、アセットロックから生成します。両者の
@@ -172,7 +172,7 @@ PRへ分けます。
 タイトル操作後にファイル選択なしで開始します。
 
 `player`へ台本とアセットを組み込んでも、TurboWarp TMモデル、カメラ、外部サービスまで
-自動的にオフライン化されるわけではありません。残るオンライン依存は成果物manifestと
+自動的にオフライン化されるわけではありません。残るオンライン依存は成果物マニフェストと
 公開ページへ明記します。
 
 ## SB3・台本変換ビルダーを利用する {#sb3-script-builder}
@@ -190,7 +190,7 @@ npm view @kubohiroya/tm-kamishibai version
 pnpm add --save-exact @kubohiroya/tm-kamishibai@<VERSION>
 ```
 
-生成したlockfileをcommitし、CIでは`pnpm install --frozen-lockfile`を使います。
+生成したロックファイルをコミットし、CIでは`pnpm install --frozen-lockfile`を使います。
 
 ### CLI
 
@@ -258,7 +258,7 @@ console.log(result.outputPaths);
 
 ### アセットマニフェスト
 
-入力manifestは`formatVersion: 1`と1件以上の`assets`を持ちます。
+入力マニフェストは`formatVersion: 1`と1件以上の`assets`を持ちます。
 
 ```json
 {
@@ -297,26 +297,26 @@ DSL名、同一target内のSB3名、既存SB3のアセット名は重複でき�
 
 ### 安全性と再現性
 
-- `file:`は既定でmanifestのディレクトリ以下だけを許可し、`..`やsymlinkによる脱出を拒否する
+- `file:`は既定でマニフェストのディレクトリ以下だけを許可し、`..`やsymlinkによる脱出を拒否する
 - HTTPSを既定とし、平文HTTPは明示的に許可した場合だけ取得する
 - Content-Type、実サイズ、ロック済みサイズ、SHA-256、timeout、redirectを検証する
-- ZIP entry順、timestamp、圧縮設定、JSON表現を固定する
-- SB3、変換済み台本、出力manifestの対応を確定前に再検証する
+- ZIPのエントリー順、タイムスタンプ、圧縮設定、JSON表現を固定する
+- SB3、変換済み台本、出力マニフェストの対応を確定前に再検証する
 - 3成果物を一時領域で生成し、すべて成功した場合だけ置換する
 - 失敗時は既存成果物を保持または復元する
 
-同じ入力、固定依存、設定から生成したSB3、台本、manifestはbit-for-bitで一致しなければ
+同じ入力、固定依存、設定から生成したSB3、台本、マニフェストはバイト単位で完全に一致しなければ
 なりません。
 
 ## アプリSB3を変更する
 
 このリポジトリでは`app/`をアプリSB3の正本とし、固定した`sb3-toolchain`を
-`pnpm sb3:*`スクリプトから利用します。展開ソース形式、importとbuildの上書き保護、
+`pnpm sb3:*`スクリプトから利用します。展開ソース形式、取り込みとビルドの上書き保護、
 決定的出力の共通仕様は
 [`sb3-toolchain`のSB3ソース管理ワークフロー](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md)
 を参照してください。
-CIも依存関係のinstall直後に`pnpm sb3:check`を実行するため、ローカル開発、テスト、
-配布buildで同じcommit固定のツールチェインを利用します。
+CIも依存関係の導入直後に`pnpm sb3:check`を実行するため、ローカル開発、テスト、
+配布ビルドで同じコミット固定のツールチェインを利用します。
 
 `app/`から編集用SB3を生成します。
 
@@ -325,10 +325,10 @@ pnpm sb3:build
 ```
 
 生成時に、Title背景の`Version <version> (YYYY/MM/DD)`へ`package.json`の
-versionとAsia/Tokyoのビルド日を自動で埋め込みます。同時に、公式Webサイトボタンへ
+バージョンとAsia/Tokyoのビルド日を自動で埋め込みます。同時に、公式Webサイトボタンへ
 Webサイトのブランド画像の正本である`site/favicon.png`を埋め込みます。`app/`には
 プレースホルダーを保持し、一時ソースで2つのSVGの内容、MD5、`assetId`、`md5ext`、
-archive entryを同時に更新するため、ビルドで正本は変更されません。
+書庫のエントリーを同時に更新するため、ビルドで正本は変更されません。
 
 過去のリリースを同じ日付で再現するときは、日付を`YYYY-MM-DD`で明示します。不正な
 日付はエラーにし、暗黙に補正しません。
@@ -353,7 +353,7 @@ pnpm run build
 - 台本解析・実行用リストを空の初期状態で保持する
 - 組み込み台本用の予約変数を一意に保持する
 
-展開形式とアセット・拡張の整合性は`pnpm sb3:check`で検証します。toolchainの共通
+展開形式とアセット・拡張の整合性は`pnpm sb3:check`で検証します。ツールチェインの共通
 検証項目を本ガイドへ重複して列挙しません。
 
 DSL、Loading表示、入力、分岐、テキスト、画面遷移などの振る舞いを変更するときは、
@@ -363,12 +363,12 @@ DSL、Loading表示、入力、分岐、テキスト、画面遷移などの振�
 ## 埋め込み機能拡張を更新する
 
 `app/extensions/`のJavaScriptは同期済み成果物です。バグ修正や機能追加は、
-`app/embedded-extensions.json`に記録された上流リポジトリまたはnpm packageで行い、レビュー済みの
-成果物だけを本リポジトリへ取り込みます。`source.provider`が`npm`の場合はpackage名、完全固定version、
-artifact path、integrityを記録し、package managerがinstallした内容から同期します。アプリ側に
-package固有のコピーscriptを追加しません。この取得・検証・同期はsb3-toolchainの責務です。
+`app/embedded-extensions.json`に記録された上流リポジトリまたはnpmパッケージで行い、レビュー済みの
+成果物だけを本リポジトリへ取り込みます。`source.provider`が`npm`の場合はパッケージ名、完全固定バージョン、
+artifact path、integrityを記録し、パッケージマネージャーが導入した内容から同期します。アプリ側に
+パッケージ固有のコピーscriptを追加しません。この取得・検証・同期はsb3-toolchainの責務です。
 
-`status`、`sync`、`update`の意味、由来情報の形式、transactionalな更新、ID移行の
+`status`、`sync`、`update`の意味、由来情報の形式、一括の更新、ID移行の
 対象schemaは、[`sb3-toolchain`のSB3ソース管理ワークフロー](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md)と
 [`埋め込み拡張IDの移行`](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/extension-id-migration.md)
 を正本とします。ここでは紙芝居アプリへ反映する手順だけを示します。
@@ -379,14 +379,14 @@ pnpm sb3:extensions:sync
 pnpm sb3:extensions:update -- EXTENSION_ID
 ```
 
-上流で拡張IDが変更された場合は、toolchainのID移行を伴う更新を使います。
+上流で拡張IDが変更された場合は、ツールチェインのID移行を伴う更新を使います。
 
 ```bash
 pnpm sb3:extensions:update -- OLD_ID --migrate-id NEW_ID
 ```
 
-GitHub providerで上流の成果物パスも変わった場合だけ`--artifact PATH`を追加します。npm providerでは、
-先にpackage managerで依存versionを更新してから`status`または`update`を実行します。更新後は必ず
+GitHub提供元で上流の成果物パスも変わった場合だけ`--artifact PATH`を追加します。npm提供元では、
+先にパッケージマネージャーで依存バージョンを更新してから`status`または`update`を実行します。更新後は必ず
 `git diff -- app`、`pnpm sb3:check`、`pnpm test`、`pnpm run build`を確認し、
 生成したSB3をTurboWarpで開いて対象拡張の主要機能を確認します。
 
@@ -394,7 +394,7 @@ GitHub providerで上流の成果物パスも変わった場合だけ`--artifact
 
 公開APIは`src/builder/index.js`、CLIは`src/builder/cli.js`と`bin/`、仕様テストは
 `test/builder.test.mjs`にあります。公開API、CLI、アセットマニフェスト、決定的生成、
-transactional更新の現行仕様は
+一括更新の現行仕様は
 [「SB3・台本変換ビルダーを利用する」](#sb3-script-builder){data-ref="chapter"}を
 参照してください。この章では仕様そのものを繰り返さず、実装変更時の確認事項だけを
 扱います。
@@ -403,8 +403,8 @@ APIまたはCLIを変更するときは次を同じ変更に含めます。
 
 - API入力、返り値、エラーの後方互換性の判断
 - CLIの`--help`と引数検証
-- アセットマニフェストと出力manifestの形式
-- 決定的生成とtransactional更新のテスト
+- アセットマニフェストと出力マニフェストの形式
+- 決定的生成と一括更新のテスト
 - 内部仕様書のAPI／CLI例
 - 破壊的変更の場合は新しいメジャーバージョン
 
@@ -450,18 +450,18 @@ HTML、Vivliostyle Viewer、体験会資料のPDF、文書横断目次、画像�
 ライセンスをまとめて検証します。Markdownだけを確認して完了にせず、生成されたHTMLと、
 `docs/workshops/`を変更した場合のPDFも確認します。
 
-2回目以降の`pnpm run build`は、publication種別に依存しない共通の増分build処理で、
-出版物ごとにMarkdown、参照画像、共通theme、font、Vivliostyle設定、build scriptの
+2回目以降の`pnpm run build`は、出版物の種別に依存しない共通の増分ビルド処理で、
+出版物ごとにMarkdown、参照画像、共通テーマ、フォント、Vivliostyle設定、ビルドスクリプトの
 更新時刻を調べます。必要なHTML、体験会資料のPDF、`build-info.json`がすべて存在し、
 生成物の最も古い更新時刻が入力の最も新しい更新時刻以後なら、その出版物のVivliostyle処理と
-目次統合を省略します。同じ内容のassetや後処理済みHTMLも再書き込みしません。生成だけを
+目次統合を省略します。同じ内容のアセットや後処理済みHTMLも再書き込みしません。生成だけを
 実行する場合は`pnpm run build:publications`、全出版物を無条件に作り直す場合は
 `pnpm run build:publications:full`、検証まで含めて強制再生成する場合は`pnpm run build:full`を
-使用します。clean checkoutで生成物が存在しないCIでは、通常の`pnpm run build`でも
+使用します。クリーンなチェックアウトで生成物が存在しないCIでは、通常の`pnpm run build`でも
 全出版物を生成します。
 
 文書の変更が本体の実装変更を伴う場合は、2つのIssueとPRに依存関係を記録します。
-文書buildが本体をcheckoutしたり、本体buildが文書を生成したりする循環依存は作りません。
+文書ビルドが本体をチェックアウトしたり、本体ビルドが文書を生成したりする循環依存は作りません。
 
 Markdownの見出しには章・節番号を書きません。`h1`は番号なしの文書名、`h2`と`h3`は
 本文と目次で自動採番します。用語集などの前付けを採番しない場合は、見出しへ
@@ -475,7 +475,7 @@ IDを付けてリンクし、組版結果にも現在の章・節番号を表示
 
 | 変更対象               | 主なテスト                                                                                |
 | ---------------------- | ----------------------------------------------------------------------------------------- |
-| builder API／CLI       | `test/builder.test.mjs`                                                                   |
+| ビルダーAPI／CLI       | `test/builder.test.mjs`                                                                   |
 | 展開SB3の構造          | `test/sb3-project.test.mjs`、`test/skip-mode.test.mjs`                                    |
 | TurboWarp実行結果      | `test/turbowarp-vm.test.mjs`                                                              |
 | 入力、分岐、wait       | `test/async-input.test.mjs`、`test/register-branch.test.mjs`、`test/wait-action.test.mjs` |
@@ -492,7 +492,7 @@ pnpm test
 pnpm run build
 ```
 
-GitHub ActionsはcleanなLinux環境で`pnpm install --frozen-lockfile`、`pnpm test`、
+GitHub ActionsはクリーンなLinux環境で`pnpm install --frozen-lockfile`、`pnpm test`、
 `pnpm build`を実行します。ローカルで成功しても、未追跡ファイルや既存生成物へ依存して
 いないことをCIで確認します。
 
@@ -505,7 +505,7 @@ GitHub ActionsはcleanなLinux環境で`pnpm install --frozen-lockfile`、`pnpm 
 文書リポジトリの`pnpm run build`は、一般文書ごとのWeb PublicationとHTML、
 参加者向け・スタッフ向け体験会資料のHTML/PDF、文書サイトのリンクと画像を検証します。
 
-SB3またはruntimeを変更した場合は、生成SB3をTurboWarpで開いて次を手動確認します。
+SB3またはランタイムを変更した場合は、生成SB3をTurboWarpで開いて次を手動確認します。
 
 - 読込エラーがない
 - green flagでtitleとmenuが表示される
@@ -525,34 +525,34 @@ hat、custom block一覧を同時に更新します。
 pnpm run deploy
 ```
 
-本体リポジトリでは`predeploy`がbuildを行い、成功した`dist/`だけを`gh-pages`へ公開します。
+本体リポジトリでは`predeploy`がビルドを行い、成功した`dist/`だけを`gh-pages`へ公開します。
 文書リポジトリはGitHub ActionsのPages workflowで`pnpm check`後の`dist/`を公開します。
-公開後はtop page、文書一覧、全文書のHTML／Vivliostyle Viewer、体験会資料のPDF、
+公開後はトップページ、文書一覧、全文書のHTML／Vivliostyle Viewer、体験会資料のPDF、
 SB3 downloadをそれぞれの実URLから確認します。
 
-問題がある場合は、直前の検証済みcommitをcheckoutしたcleanな環境から再度build・
+問題がある場合は、直前の検証済みコミットをチェックアウトしたクリーンな環境から再度ビルド・
 deployします。生成済み`dist/`だけを手作業で修正しません。
 
 ### npmパッケージ
 
-公開済みversionは変更・再利用できません。releaseごとに新しいversionとGit tagを使います。
+公開済みバージョンは変更・再利用できません。リリースごとに新しいバージョンとGitタグを使います。
 
-1. `package.json`、lockfile、`src/builder/constants.js`、READMEの導入例を同じversionへ更新する。
-2. cleanなcommitで標準チェック、フルbuild、公開内容のdry-runを実行する。
+1. `package.json`、ロックファイル、`src/builder/constants.js`、READMEの導入例を同じバージョンへ更新する。
+2. クリーンなコミットで標準チェック、フルビルド、公開内容のdry-runを実行する。
 
 ```bash
 pnpm release:check
 ```
 
-3. tarballのファイル一覧、license、size、CLI/APIを確認する。
-4. Git worktreeではなく通常のclean cloneから公開する。
-5. WebAuthnなどの認証を完了してpublic packageとして公開する。
+3. tarballのファイル一覧、ライセンス、サイズ、CLI/APIを確認する。
+4. Git worktreeではなく通常のクリーンなクローンから公開する。
+5. WebAuthnなどの認証を完了して公開パッケージとして公開する。
 
 ```bash
 npm publish --access public
 ```
 
-6. registry反映後にmetadataを確認する。
+6. レジストリ反映後にメタデータを確認する。
 
 ```bash
 npm view @kubohiroya/tm-kamishibai@<VERSION> \
@@ -560,25 +560,25 @@ npm view @kubohiroya/tm-kamishibai@<VERSION> \
 ```
 
 7. 一時ディレクトリへ公開版を導入し、CLIの`--version`と
-   `@kubohiroya/tm-kamishibai/builder`のimportを確認する。
-8. 公開に使った確定commitへannotated tagを作り、GitHub Releaseを作成する。
+   `@kubohiroya/tm-kamishibai/builder`の取り込みを確認する。
+8. 公開に使った確定コミットへ注釈付きタグを作り、GitHub Releaseを作成する。
 
-公開後に問題が見つかった場合は対象versionを`npm deprecate`し、修正版を新しいpatch
-versionとして公開します。公開済みtarballやtagを差し替えません。
+公開後に問題が見つかった場合は対象バージョンを`npm deprecate`し、修正版を新しいpatch
+バージョンとして公開します。公開済みtarballやタグを差し替えません。
 
 ## 開発上の問題を解決する
 
-| 症状                                              | 確認と対応                                                                                                                                                       |
-| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sb3:import`が置換を拒否する                      | `git status`と`git diff -- app`を確認し、[toolchainの手順](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md#既存ソースへの再import)に従う |
-| `.app.rollback-*`や`.＜出力名＞.rollback-*`が残る | 削除前に元出力と比較し、[toolchainの失敗時の扱い](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md#失敗時の扱い)に従う                    |
-| 埋め込み拡張が追跡refと異なる                     | `pnpm sb3:extensions:status`で確認し、固定commitへ戻すなら`sync`、更新するなら`update`を使う                                                                     |
-| PDF生成browserが見つからない                      | 文書リポジトリでChrome/Chromiumを導入し、必要なら`VIVLIOSTYLE_CHROME_PATH`を設定する                                                                             |
-| ローカルだけtestが通る                            | 生成物と未追跡ファイルを確認し、clean cloneと`pnpm install --frozen-lockfile`で再現する                                                                          |
-| builderが既存出力を更新しない                     | エラーの`stage`、asset名、URIを確認する。rollback領域が残っていないか確認する                                                                                    |
-| 公開直後にnpm registryが404になる                 | 同じversionを再publishせず、npm公開pageとregistryの反映を待って確認する                                                                                          |
+| 症状                                              | 確認と対応                                                                                                                                                            |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sb3:import`が置換を拒否する                      | `git status`と`git diff -- app`を確認し、[ツールチェインの手順](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md#既存ソースへの再import)に従う |
+| `.app.rollback-*`や`.＜出力名＞.rollback-*`が残る | 削除前に元出力と比較し、[ツールチェインの失敗時の扱い](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md#失敗時の扱い)に従う                    |
+| 埋め込み拡張が追跡refと異なる                     | `pnpm sb3:extensions:status`で確認し、固定コミットへ戻すなら`sync`、更新するなら`update`を使う                                                                        |
+| PDF生成browserが見つからない                      | 文書リポジトリでChrome/Chromiumを導入し、必要なら`VIVLIOSTYLE_CHROME_PATH`を設定する                                                                                  |
+| ローカルだけtestが通る                            | 生成物と未追跡ファイルを確認し、クリーンなクローンと`pnpm install --frozen-lockfile`で再現する                                                                        |
+| ビルダーが既存出力を更新しない                    | エラーの`stage`、アセット名、URIを確認する。rollback領域が残っていないか確認する                                                                                      |
+| 公開直後にnpmレジストリが404になる                | 同じバージョンを再公開せず、npm公開ページとレジストリの反映を待って確認する                                                                                           |
 
-復旧でGit履歴を破壊しません。公開済み変更は`git revert`または新しい修正PRで戻し、tagを
+復旧でGit履歴を破壊しません。公開済み変更は`git revert`または新しい修正PRで戻し、タグを
 移動しません。
 
 ## ライセンスと秘密情報を扱う
@@ -592,11 +592,11 @@ versionとして公開します。公開済みtarballやtagを差し替えませ
 詳細は[`LICENSES.md`](../../LICENSES.md)、[`docs/LICENSE.md`](../LICENSE.md)、
 [`docs/workshops/LICENSE.md`](../workshops/LICENSE.md)を参照してください。
 
-第三者の画像、音声、font、model、機能拡張には個別のlicenseまたは利用条件が適用されます。
-builderで組み込む素材はasset manifestの`license`へ由来を記録します。許諾が確認できない
+第三者の画像、音声、フォント、モデル、機能拡張には個別のライセンスまたは利用条件が適用されます。
+ビルダーで組み込む素材はアセットマニフェストの`license`へ由来を記録します。許諾が確認できない
 素材を本体またはsampleへ追加しません。
 
-token、npm認証情報、秘密鍵、個人情報をrepository、SB3、台本、manifest、生成HTMLへ
+token、npm認証情報、秘密鍵、個人情報をrepository、SB3、台本、マニフェスト、生成HTMLへ
 記録しません。認証情報は環境変数、OSのkeychain、GitHub Secretsなど、公開物へ含まれない
 仕組みで渡します。
 
@@ -610,8 +610,8 @@ TM紙芝居の開発から分離し、他のTurboWarp作品や開発環境でも
 
 [`sb3-toolchain`](https://github.com/kubohiroya/sb3-toolchain)は、SB3をGit差分可能な
 展開ソースとして管理し、検証して決定的に再構築するためのCLI／JavaScript APIです。
-このリポジトリでは固定依存として利用し、`app/`のimport、検証、build、埋め込み
-機能拡張のGitHub／npm source同期、ID移行、bundle member間の動的opcode参照変換を担います。
+このリポジトリでは固定依存として利用し、`app/`の取り込み、検証、ビルド、埋め込み
+機能拡張のGitHub／npmソース同期、ID移行、bundle member間の動的opcode参照変換を担います。
 
 - [SB3ソース管理ワークフロー](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/workflows.md)
 - [SB3展開ソース形式 v1](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/source-format-v1.md)
@@ -620,12 +620,12 @@ TM紙芝居の開発から分離し、他のTurboWarp作品や開発環境でも
 ### Viteプラグイン
 
 - [`vite-plugin-turbowarp-extension`](https://github.com/kubohiroya/vite-plugin-turbowarp-extension):
-  TypeScriptプロジェクトを単一ファイルのTurboWarp機能拡張としてbuildするViteプラグイン
+  TypeScriptプロジェクトを単一ファイルのTurboWarp機能拡張としてビルドするViteプラグイン
 
 ### TurboWarp 機能拡張開発用テンプレート
 
 - [`turbowarp-extension-template`](https://github.com/kubohiroya/turbowarp-extension-template):
-  Viteを使ったTurboWarp機能拡張の開発、テスト、build、リリース用テンプレート
+  Viteを使ったTurboWarp機能拡張の開発、テスト、ビルド、リリース用テンプレート
 
 ### TurboWarp 機能拡張
 
@@ -638,9 +638,9 @@ TM紙芝居の開発から分離し、他のTurboWarp作品や開発環境でも
 - [`turbowarp-async-input`](https://github.com/kubohiroya/turbowarp-async-input):
   キーボード、ポインター、姿勢入力を対象ごとに扱う非同期入力
 - [`turbowarp-runtime-expression`](https://github.com/kubohiroya/turbowarp-runtime-expression):
-  runtime変数を使う条件式の安全な評価とbroadcast監視
+  ランタイム変数を使う条件式の安全な評価とbroadcast監視
 - [`turbowarp-svg-text`](https://github.com/kubohiroya/turbowarp-svg-text):
-  名前付きstyleを共有する相対sizeの吹き出しと複数行SVG text actor
+  名前付きスタイルを共有する、相対サイズの吹き出しと複数行のSVGテキストactor
 
 ### その他のライブラリ
 

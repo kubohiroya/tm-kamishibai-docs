@@ -14,7 +14,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 <a href="#extension-temporary-variables"><strong>Temporary Variables</strong><code>lmsTempVars2</code><span>Gallery｜処理中の状態を共有</span></a>
 <a href="#extension-text-operators"><strong>Text</strong><code>strings</code><span>Gallery｜台本文字列を解析</span></a>
 <a href="#extension-local-storage"><strong>Local Storage</strong><code>localstorage</code><span>Gallery｜台本と設定を保存</span></a>
-<a href="#extension-more-timers"><strong>More Timers</strong><code>lmsTimers</code><span>Gallery｜複数timerを計測</span></a>
+<a href="#extension-more-timers"><strong>More Timers</strong><code>lmsTimers</code><span>Gallery｜複数のタイマーを計測</span></a>
 <a href="#extension-files"><strong>Files</strong><code>files</code><span>Gallery｜TXT台本を選択</span></a>
 <a href="#extension-animated-text"><strong>Animated Text</strong><code>text</code><span>Gallery｜文字を描画・演出</span></a>
 <a href="#extension-translate"><strong>Translate</strong><code>translate</code><span>TurboWarp標準｜表示言語を取得</span></a>
@@ -41,7 +41,7 @@ Copyright © 2026 Hiroya Kubo. この文書は[CC BY-SA 4.0](https://creativecom
 このガイドで説明する16個は、更新・検査する**論理上の機能拡張**です。
 sb3-toolchainでbundle版SB3を生成すると、相互に動的opcode参照を行う4個だけを、**1個の複合機能拡張**へまとめます。
 
-<div class="extension-bundle-visual"><div class="extension-bundle-members"><strong>保守する4個のソース</strong><span><code>kubohiroyaassetmanager</code> Asset Manager</span><span><code>text</code> Animated Text</span><span><code>kubohiroyakamishibairuntime</code> Kamishibai Runtime</span><span><code>kubohiroyasvgtext</code> SVG Text</span></div><div class="extension-bundle-arrow"><b>sb3-toolchain</b><span>build時だけ変換</span><strong>→</strong></div><div class="extension-bundle-result"><small>bundle版SB3で見えるID</small><strong>tmbundle</strong><span>1 embedded data URL</span><span>1 register()</span><span>1 permission unit</span></div></div>
+<div class="extension-bundle-visual"><div class="extension-bundle-members"><strong>保守する4個のソース</strong><span><code>kubohiroyaassetmanager</code> Asset Manager</span><span><code>text</code> Animated Text</span><span><code>kubohiroyakamishibairuntime</code> Kamishibai Runtime</span><span><code>kubohiroyasvgtext</code> SVG Text</span></div><div class="extension-bundle-arrow"><b>sb3-toolchain</b><span>ビルド時だけ変換</span><strong>→</strong></div><div class="extension-bundle-result"><small>bundle版SB3で見えるID</small><strong>tmbundle</strong><span>1 embedded data URL</span><span>1 register()</span><span>1 permission unit</span></div></div>
 
 <div class="extension-count-compare"><section><small>このガイド／source</small><strong>16</strong><span>論理上の機能拡張</span></section><b>→</b><section><small>bundle版SB3</small><strong>13</strong><span>読込ID</span></section><p>bundle外12個 + <code>tmbundle</code> 1個</p></div>
 
@@ -64,7 +64,7 @@ group、経過時間の計測、consoleの消去もblockから操作でき、実
 
 <figure class="extension-gallery-banner"><img src="../images/extension-gallery-consoles.svg" alt="TurboWarp Extension GalleryのConsolesバナー"></figure>
 
-<figure class="extension-flow"><figcaption>配布ソースの機能要約：記録の種類とconsole上の整理</figcaption><div><span>log / info<br>warn / error</span><b>→</b><span>group・timerで整理</span><b>→</b><span>browser console</span></div></figure>
+<figure class="extension-flow"><figcaption>配布ソースの機能要約：記録の種類とconsole上の整理</figcaption><div><span>log / info<br>warn / error</span><b>→</b><span>group・timerで整理</span><b>→</b><span>ブラウザーのconsole</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">記録する</p><ul><li>通常値、情報、warning、error</li><li>複数値の結合と整形</li><li>開発者ツールへ即時出力</li></ul></section><section><p class="extension-subhead">追跡する</p><ul><li>処理をgroup化</li><li>timerの開始・終了</li><li>前回のconsoleを消去</li></ul></section></div>
 
@@ -152,12 +152,12 @@ Scratch変数を増やさず、処理の途中だけ必要な名前付き値を�
 
 <p class="extension-meta"><span>Gallery</span><code>localstorage</code><span>永続保存</span></p>
 
-browserの保存領域に、project固有のnamespaceで文字列を保持します。
+ブラウザーの保存領域に、project固有のnamespaceで文字列を保持します。
 Scratch変数と違い、ページを閉じた後でも次回起動時に読み戻せます。
 
 <figure class="extension-gallery-banner"><img src="../images/extension-gallery-local-storage.svg" alt="TurboWarp Extension GalleryのLocal Storageバナー"></figure>
 
-<figure class="extension-flow"><figcaption>公式ドキュメントの図解要約：namespaceでprojectごとの保存領域を分ける</figcaption><div><span>key + plain text</span><b>→</b><span>project namespace</span><b>→</b><span>browser storage</span><b>→</b><span>reload後も取得</span></div></figure>
+<figure class="extension-flow"><figcaption>公式ドキュメントの図解要約：namespaceでprojectごとの保存領域を分ける</figcaption><div><span>key + plain text</span><b>→</b><span>project namespace</span><b>→</b><span>ブラウザーのstorage</span><b>→</b><span>reload後も取得</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">できること</p><ul><li>plain textの保存・取得・削除</li><li>namespace単位の全削除</li><li>別windowでの変更検知</li></ul></section><section><p class="extension-subhead">性質と制約</p><ul><li>通常変数より書込が遅い</li><li>Web版は容量が小さい</li><li>同じnamespaceは互いに上書き</li></ul></section></div>
 
@@ -167,7 +167,7 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <p class="extension-spread-label">Gallery 4 / 7　TM紙芝居での利用例 2 / 2</p>
 
-<aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>体験会で選んだ台本や表示言語がreloadのたびに消えると、参加者は作品をプレイするより再設定に時間を取られます。小さな設定と台本文字列だけを保存し、次回は前回の続きから始められるようにします。camera映像や認識途中の値は保存しません。</p></aside>
+<aside class="extension-kamishibai-why"><strong>なぜTM紙芝居に必要？</strong><p>体験会で選んだ台本や表示言語がreloadのたびに消えると、参加者は作品をプレイするより再設定に時間を取られます。小さな設定と台本文字列だけを保存し、次回は前回の続きから始められるようにします。カメラ映像や認識途中の値は保存しません。</p></aside>
 
 <figure class="extension-editor-example"><img src="../images/extension-editor-local-storage.png" alt="TurboWarp EditorのstartStory処理から、Local Storageの名前空間設定とscript保存だけを切り出した画面"><figcaption>名前空間を<code>kamishibai</code>に定め、runtimeのscriptをstorageへ書く、隣接した2ブロックです。</figcaption></figure>
 
@@ -183,14 +183,14 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 
 <p class="extension-meta"><span>Gallery</span><code>lmsTimers</code><span>時間管理</span></p>
 
-標準timerを一つだけでなく、文字列で名付けた複数timerとして並行管理します。
+標準timerを一つだけでなく、文字列で名付けた複数のタイマーとして並行管理します。
 各timerを個別に開始、pause、resume、reset、増減、削除できるため、重なった処理の経過時間を独立して扱えます。
 
 <figure class="extension-gallery-banner"><img src="../images/extension-gallery-more-timers.svg" alt="TurboWarp Extension GalleryのMore Timersバナー"></figure>
 
 <figure class="extension-flow"><figcaption>公式Galleryと配布ソースの要約：名前ごとに独立したtimerのlife cycle</figcaption><div><span>start / reset</span><b>→</b><span>pause / resume<br>値を読む・増減</span><b>→</b><span>remove</span></div></figure>
 
-<div class="extension-columns"><section><p class="extension-subhead">個別timer</p><ul><li>名前で作成・照会</li><li>pause／resume</li><li>reset、増減、削除</li></ul></section><section><p class="extension-subhead">複数timer</p><ul><li>互いの値を上書きしない</li><li>存在する名前を確認</li><li>必要なら全timerを削除</li></ul></section></div>
+<div class="extension-columns"><section><p class="extension-subhead">個別timer</p><ul><li>名前で作成・照会</li><li>pause／resume</li><li>reset、増減、削除</li></ul></section><section><p class="extension-subhead">複数のタイマー</p><ul><li>互いの値を上書きしない</li><li>存在する名前を確認</li><li>必要なら全timerを削除</li></ul></section></div>
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/Lily/MoreTimers.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/Lily/MoreTimers.js">配布ソース</a></p>
 
@@ -215,13 +215,13 @@ Scratch変数と違い、ページを閉じた後でも次回起動時に読み�
 <p class="extension-meta"><span>Gallery</span><code>files</code><span>ファイル入力</span></p>
 
 利用者が選択またはdrag & dropしたlocal fileを、textまたはdata URLとしてprojectへ渡す拡張です。
-逆にproject内の値をfilename付きでdownloadでき、browserのfile pickerとTurboWarpのblockを橋渡しします。
+逆にproject内の値をfilename付きでdownloadでき、ブラウザーのfile pickerとTurboWarpのblockを橋渡しします。
 
 <figure class="extension-gallery-banner"><img src="../images/extension-gallery-files.svg" alt="TurboWarp Extension GalleryのFilesバナー"></figure>
 
 <figure class="extension-flow"><figcaption>公式Galleryと配布ソースの要約：local fileを値へ、値をdownloadへ</figcaption><div><span>click / drop</span><b>→</b><span>file picker</span><b>→</b><span>text / data URL<br>+ filename</span><b>↔</b><span>download</span></div></figure>
 
-<div class="extension-columns"><section><p class="extension-subhead">入力</p><ul><li>拡張子・MIME type指定</li><li>text／data URL</li><li>cancel時は空文字</li></ul></section><section><p class="extension-subhead">出力</p><ul><li>filename付きdownload</li><li>browser内で完結</li><li>明示的な利用者操作から開始</li></ul></section></div>
+<div class="extension-columns"><section><p class="extension-subhead">入力</p><ul><li>拡張子・MIME type指定</li><li>text／data URL</li><li>cancel時は空文字</li></ul></section><section><p class="extension-subhead">出力</p><ul><li>filename付きdownload</li><li>ブラウザー内で完結</li><li>明示的な利用者操作から開始</li></ul></section></div>
 
 <p class="extension-source">出典: <a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/images/files.svg">Galleryバナー</a>、<a href="https://github.com/TurboWarp/extensions/blob/9c0ae4f045dfb021cf329ea1ea6e595502c56a8a/extensions/files.js">配布ソース</a></p>
 
@@ -299,7 +299,7 @@ Scratch／TurboWarp標準の翻訳拡張です。文章と翻訳先の言語を�
 
 <div class="extension-usage-grid"><section><strong>優先1</strong><span>Local Storageに保存済みの利用者選択。</span></section><section><strong>優先2</strong><span>Translateのviewer language。</span></section><section><strong>結果</strong><span>runtime変数を通して全UIへbroadcast。</span></section></div>
 
-<p class="extension-note"><strong>方針:</strong> browser localeを毎回強制せず、利用者が一度選んだUI言語を優先します。Translateは初期値を決める補助です。</p>
+<p class="extension-note"><strong>方針:</strong> ブラウザーのlocaleを毎回強制せず、利用者が一度選んだUI言語を優先します。Translateは初期値を決める補助です。</p>
 
 <p class="extension-source">ブロック例: <a href="https://github.com/kubohiroya/tm-kamishibai/blob/d1624c9ce9464bf696b4bb97851dce9154a09ee6/app/project.source.json">Version 3.2.0 project source</a>（Stage: green flag）</p>
 
@@ -316,7 +316,7 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 <figure class="extension-flow"><figcaption>公式図解ガイドの要約：異なる素材を一つの登録簿から適切な出力先へ</figcaption><div><span>Web URL<br>project内素材<br>動的text</span><b>→</b><span>名前 + 種類を登録<br>Web素材はcache</span><b>→</b><span>sprite / Stage<br>sound / Actor timeline</span></div></figure>
 
-<div class="extension-columns"><section><p class="extension-subhead">読込</p><ul><li>種類判定と取得</li><li>IndexedDB cache</li><li>Loading用assetを先行</li></ul></section><section><p class="extension-subhead">利用</p><ul><li>Stage／sprite skin</li><li>音声再生・停止</li><li>Actor loop／sequence</li></ul></section></div>
+<div class="extension-columns"><section><p class="extension-subhead">読込</p><ul><li>種類判定と取得</li><li>IndexedDB cache</li><li>Loading用の素材を先行</li></ul></section><section><p class="extension-subhead">利用</p><ul><li>Stage／sprite skin</li><li>音声再生・停止</li><li>Actor loop／sequence</li></ul></section></div>
 
 <p class="extension-source">出典: <a href="https://kubohiroya.github.io/turbowarp-asset-manager/ja/">Asset Manager図解ガイド</a>、<a href="https://github.com/kubohiroya/turbowarp-asset-manager/tree/c55e65787eed21d2e70b96a28dd6705d118f9995">固定commit c55e657</a></p>
 
@@ -340,12 +340,12 @@ Web上の画像・音声、SB3内のcostume・backdrop・sound、実行時text�
 
 <p class="extension-meta"><span>外部埋め込み</span><code>kubohiroyatm</code><span>1.4.0</span></p>
 
-Teachable Machine Pose modelとcamera映像を接続し、現在のpose名とconfidenceをTurboWarpの値として返します。
+Teachable Machine Pose modelとカメラ映像を接続し、現在のpose名とconfidenceをTurboWarpの値として返します。
 model、camera、preview、predictionを別々に開始・停止できます。
 
 <div class="extension-concept-hero"><div class="extension-icon">◎<br><small>Pose</small></div><div><strong>身体の動きを数値と名前へ</strong><p>カメラ映像から骨格を推定し、Teachable Machineで学習したposeごとのconfidenceを返します。</p></div></div>
 
-<figure class="extension-flow"><figcaption>公式図解ガイドの要約：1枚の映像から現在値と時間でならした値へ</figcaption><div><span>camera frame</span><b>→</b><span>姿勢推定<br>keypoints</span><b>→</b><span>TM classifier</span><b>→</b><span>label・confidence<br>蓄積score</span></div></figure>
+<figure class="extension-flow"><figcaption>公式図解ガイドの要約：1枚の映像から現在値と時間でならした値へ</figcaption><div><span>カメラ映像</span><b>→</b><span>姿勢推定<br>keypoints</span><b>→</b><span>TM classifier</span><b>→</b><span>label・confidence<br>蓄積score</span></div></figure>
 
 <div class="extension-columns"><section><p class="extension-subhead">現在の認識</p><ul><li>pose labelとconfidence</li><li>すばやい動きへ即時反応</li><li>camera previewを配置</li></ul></section><section><p class="extension-subhead">時間を含む認識</p><ul><li>confidenceを蓄積・減衰</li><li>一瞬の揺れを平滑化</li><li>開始・停止を個別管理</li></ul></section></div>
 
@@ -525,7 +525,7 @@ bindingは登録したtargetが所有し、値を更新してから受信script�
 
 <p class="extension-meta"><span>アプリ内蔵</span><code>kubohiroyaweblink</code><span>外部navigation</span></p>
 
-受け取ったURLを検証し、新しいbrowser tabで開くproject専用の小さな拡張です。
+受け取ったURLを検証し、ブラウザーの新しいタブで開くproject専用の小さな拡張です。
 任意schemeを許可せず、HTTPS URLへの明示的なnavigationだけをblock化します。
 
 <div class="extension-concept-hero"><div class="extension-icon">↗<br><small>HTTPS</small></div><div><strong>アプリの外へ出る一つの安全な扉</strong><p>絶対URL、HTTPS、noopener／noreferrerを確認してから新しいtabを開きます。</p></div></div>
