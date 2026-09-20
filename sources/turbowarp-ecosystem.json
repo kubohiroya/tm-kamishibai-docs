@@ -136,6 +136,23 @@
       "status": "current"
     },
     {
+      "id": "turbowarp-named-data",
+      "category": "state-assets",
+      "productName": "TurboWarp Named Data",
+      "responsibility": "namespace、name、kind、scopeで参照する共有data contractとprovider registryを提供する。",
+      "surface": ["Standalone extension", "Composition API"],
+      "inputs": ["named-data reference", "provider registration"],
+      "outputs": ["metadata", "byte or stream body"],
+      "dependencies": [],
+      "optionalIntegrations": ["turbowarp-asset-cache"],
+      "useCase": "複数の機能拡張から同じnamed resourceをcopyせず参照する。",
+      "packageName": "@kubohiroya/turbowarp-named-data",
+      "repository": "kubohiroya/turbowarp-named-data",
+      "guideUrl": "https://github.com/kubohiroya/turbowarp-named-data#readme",
+      "licensePolicy": "MPL-2.0 for software.",
+      "status": "current"
+    },
+    {
       "id": "turbowarp-asset-cache",
       "category": "state-assets",
       "productName": "TurboWarp Asset Cache",
@@ -143,7 +160,7 @@
       "surface": ["Standalone extension", "Composition API"],
       "inputs": ["asset URL", "asset manifest"],
       "outputs": ["resolved asset", "asset loading state"],
-      "dependencies": [],
+      "dependencies": ["turbowarp-named-data"],
       "optionalIntegrations": ["turbowarp-bubble", "turbowarp-svg-text", "tm-kamishibai"],
       "useCase": "作品の場面や台詞に対応する素材を再現可能に読み込む。",
       "packageName": "@kubohiroya/turbowarp-asset-cache",

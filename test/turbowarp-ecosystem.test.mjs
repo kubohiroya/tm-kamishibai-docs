@@ -49,6 +49,13 @@ test('publishes every ecosystem repository from the machine-readable inventory',
   assert.ok(inventory.repositories.some(({category}) => category === 'upstream-fork'));
 });
 
+test('publishes the Asset Cache dependency on Named Data', () => {
+  const assetCache = inventory.repositories.find(({id}) => id === 'turbowarp-asset-cache');
+
+  assert.deepEqual(assetCache?.dependencies, ['turbowarp-named-data']);
+  assert.match(guide, /named\[TurboWarp Named Data\] --> asset\[TurboWarp Asset Cache\]/u);
+});
+
 test('keeps current ecosystem guidance free of old pose-era names', () => {
   for (const text of [
     guide,
@@ -58,5 +65,6 @@ test('keeps current ecosystem guidance free of old pose-era names', () => {
     assert.doesNotMatch(text, new RegExp(legacyNeedle, 'u'));
     assert.doesNotMatch(text, /TMPose|TMPOSE/u);
     assert.doesNotMatch(text, new RegExp(`turbowarp-${legacyNeedle}`, 'u'));
+    assert.doesNotMatch(text, /TurboWarp-Asset-Manager/u);
   }
 });
