@@ -76,11 +76,13 @@ flowchart LR
   camera[TurboWarp-Camera-Source] --> tm[TurboWarp TM]
   camera --> jsqr[jsQR]
   tm --> async[TurboWarp-Async-Input]
-  asset[TurboWarp-Asset-Manager] --> bubble[Bubble]
+  named[TurboWarp Named Data] --> asset[TurboWarp Asset Cache]
+  asset --> bubble[Bubble]
   text[Text Lines] --> bubble
   svg[TurboWarp-SVG-Text] --> bubble
   async --> app[TM Kamishibai]
   asset --> app
+  kvs[TurboWarp KVS] --> app
   expression[TurboWarp-Runtime-Expression] --> app
   bubble --> app
   diagnostic[TurboWarp-Diagnostic-Overlay] --> app

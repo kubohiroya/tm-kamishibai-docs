@@ -35,11 +35,13 @@ flowchart LR
   camera[TurboWarp-Camera-Source] --> tm[TurboWarp TM]
   camera --> jsqr[jsQR]
   tm --> async[TurboWarp-Async-Input]
-  asset[TurboWarp-Asset-Manager] --> bubble[Bubble]
+  named[TurboWarp Named Data] --> asset[TurboWarp Asset Cache]
+  asset --> bubble[Bubble]
   text[Text Lines] --> bubble
   svg[TurboWarp-SVG-Text] --> bubble
   async --> app[TM Kamishibai]
   asset --> app
+  kvs[TurboWarp KVS] --> app
   expression[TurboWarp-Runtime-Expression] --> app
   bubble --> app
   diagnostic[TurboWarp-Diagnostic-Overlay] --> app
@@ -164,12 +166,26 @@ flowchart LR
 
 ## 状態・素材
 
-| Product                                                                                    | Surface                               | Responsibility                                                                   | Package                                    |
-| ------------------------------------------------------------------------------------------ | ------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------ |
-| [TurboWarp Asset Cache](https://github.com/kubohiroya/turbowarp-asset-cache)               | Standalone extension, Composition API | 画像・音声・runtime textなどのasset参照、描画・再生、検証済みcacheを管理する。   | `@kubohiroya/turbowarp-asset-cache`        |
-| [TurboWarp KVS](https://github.com/kubohiroya/turbowarp-kvs)                               | Standalone extension, Composition API | namespace、key、binary valueとsession binary backingを永続化する。               | `@kubohiroya/turbowarp-kvs`                |
-| [TurboWarp-Text-Lines](https://github.com/kubohiroya/turbowarp-text-lines)                 | Standalone extension, Composition API | 複数行の台詞・文章を作品から扱いやすい単位へ分割し、順番に参照できるようにする。 | `@kubohiroya/turbowarp-text-lines`         |
-| [TurboWarp-Runtime-Expression](https://github.com/kubohiroya/turbowarp-runtime-expression) | Standalone extension, Composition API | application runtimeの値を式として参照・評価し、台本やblockの条件分岐へ接続する。 | `@kubohiroya/turbowarp-runtime-expression` |
+| Product                                                                                    | Surface                               | Responsibility                                                                         | Package                                    |
+| ------------------------------------------------------------------------------------------ | ------------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------ |
+| [TurboWarp Named Data](https://github.com/kubohiroya/turbowarp-named-data)                 | Standalone extension, Composition API | namespace、name、kind、scopeで参照する共有data contractとprovider registryを提供する。 | `@kubohiroya/turbowarp-named-data`         |
+| [TurboWarp Asset Cache](https://github.com/kubohiroya/turbowarp-asset-cache)               | Standalone extension, Composition API | 画像・音声・runtime textなどのasset参照、描画・再生、検証済みcacheを管理する。         | `@kubohiroya/turbowarp-asset-cache`        |
+| [TurboWarp KVS](https://github.com/kubohiroya/turbowarp-kvs)                               | Standalone extension, Composition API | namespace、key、binary valueとsession binary backingを永続化する。                     | `@kubohiroya/turbowarp-kvs`                |
+| [TurboWarp-Text-Lines](https://github.com/kubohiroya/turbowarp-text-lines)                 | Standalone extension, Composition API | 複数行の台詞・文章を作品から扱いやすい単位へ分割し、順番に参照できるようにする。       | `@kubohiroya/turbowarp-text-lines`         |
+| [TurboWarp-Runtime-Expression](https://github.com/kubohiroya/turbowarp-runtime-expression) | Standalone extension, Composition API | application runtimeの値を式として参照・評価し、台本やblockの条件分岐へ接続する。       | `@kubohiroya/turbowarp-runtime-expression` |
+
+### TurboWarp Named Data
+
+- Repository: [kubohiroya/turbowarp-named-data](https://github.com/kubohiroya/turbowarp-named-data)
+- Package: `@kubohiroya/turbowarp-named-data`
+- Surface: Standalone extension, Composition API
+- Input: named-data reference, provider registration
+- Output: metadata, byte or stream body
+- Direct dependencies: none
+- Optional integrations: turbowarp-asset-cache
+- Representative use case: 複数の機能拡張から同じnamed resourceをcopyせず参照する。
+- License policy: MPL-2.0 for software.
+- Status: current
 
 ### TurboWarp Asset Cache
 
@@ -178,7 +194,7 @@ flowchart LR
 - Surface: Standalone extension, Composition API
 - Input: asset URL, asset manifest
 - Output: resolved asset, asset loading state
-- Direct dependencies: none
+- Direct dependencies: turbowarp-named-data
 - Optional integrations: turbowarp-bubble, turbowarp-svg-text, tm-kamishibai
 - Representative use case: 作品の場面や台詞に対応する素材を再現可能に読み込む。
 - License policy: MPL-2.0 for software.
