@@ -48,7 +48,7 @@ flowchart LR
   app --> samples[Samples]
 ```
 
-図は次の関係を示します。TypeScriptで書いた機能拡張はVite pluginでstandalone bundle、manifest、Composition API向け出力へ分かれ、SB3 ToolchainでScratch/TurboWarp projectのsource管理と再現可能buildへ接続します。Camera SourceはTurboWarp TMとjsQRへ映像sourceを渡し、Async Inputは認識・device・application eventを作品の実行tickから扱える状態へ整えます。SVG Text、Text Lines、Asset ManagerはBubbleの表示素材と台詞を支え、Diagnostic Overlayは停止理由や検証結果を画面へ出します。TM Kamishibaiはこれらを統合し、DocsとSamplesが利用者・教材作者・開発者の入口を提供します。
+図は次の関係を示します。TypeScriptで書いた機能拡張はVite pluginでstandalone bundle、manifest、Composition API向け出力へ分かれ、SB3 ToolchainでScratch/TurboWarp projectのsource管理と再現可能buildへ接続します。Camera SourceはTurboWarp TMとjsQRへ映像sourceを渡し、Async Inputは認識・device・application eventを作品の実行tickから扱える状態へ整えます。SVG Text、Text Lines、Asset CacheはBubbleの表示素材と台詞を支え、KVSはbinary stateを保存し、Diagnostic Overlayは停止理由や検証結果を画面へ出します。TM Kamishibaiはこれらを統合し、DocsとSamplesが利用者・教材作者・開発者の入口を提供します。
 
 ## Inventory Policy
 
@@ -166,20 +166,34 @@ flowchart LR
 
 | Product                                                                                    | Surface                               | Responsibility                                                                   | Package                                    |
 | ------------------------------------------------------------------------------------------ | ------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------ |
-| [TurboWarp-Asset-Manager](https://github.com/kubohiroya/turbowarp-asset-manager)           | Standalone extension, Composition API | 画像・音声・台本素材などのasset参照と読み込み状態を管理する。                    | `@kubohiroya/turbowarp-asset-manager`      |
+| [TurboWarp Asset Cache](https://github.com/kubohiroya/turbowarp-asset-cache)               | Standalone extension, Composition API | 画像・音声・runtime textなどのasset参照、描画・再生、検証済みcacheを管理する。   | `@kubohiroya/turbowarp-asset-cache`        |
+| [TurboWarp KVS](https://github.com/kubohiroya/turbowarp-kvs)                               | Standalone extension, Composition API | namespace、key、binary valueとsession binary backingを永続化する。               | `@kubohiroya/turbowarp-kvs`                |
 | [TurboWarp-Text-Lines](https://github.com/kubohiroya/turbowarp-text-lines)                 | Standalone extension, Composition API | 複数行の台詞・文章を作品から扱いやすい単位へ分割し、順番に参照できるようにする。 | `@kubohiroya/turbowarp-text-lines`         |
 | [TurboWarp-Runtime-Expression](https://github.com/kubohiroya/turbowarp-runtime-expression) | Standalone extension, Composition API | application runtimeの値を式として参照・評価し、台本やblockの条件分岐へ接続する。 | `@kubohiroya/turbowarp-runtime-expression` |
 
-### TurboWarp-Asset-Manager
+### TurboWarp Asset Cache
 
-- Repository: [kubohiroya/turbowarp-asset-manager](https://github.com/kubohiroya/turbowarp-asset-manager)
-- Package: `@kubohiroya/turbowarp-asset-manager`
+- Repository: [kubohiroya/turbowarp-asset-cache](https://github.com/kubohiroya/turbowarp-asset-cache)
+- Package: `@kubohiroya/turbowarp-asset-cache`
 - Surface: Standalone extension, Composition API
 - Input: asset URL, asset manifest
 - Output: resolved asset, asset loading state
 - Direct dependencies: none
 - Optional integrations: turbowarp-bubble, turbowarp-svg-text, tm-kamishibai
 - Representative use case: 作品の場面や台詞に対応する素材を再現可能に読み込む。
+- License policy: MPL-2.0 for software.
+- Status: current
+
+### TurboWarp KVS
+
+- Repository: [kubohiroya/turbowarp-kvs](https://github.com/kubohiroya/turbowarp-kvs)
+- Package: `@kubohiroya/turbowarp-kvs`
+- Surface: Standalone extension, Composition API
+- Input: namespace, key, binary value
+- Output: stored value, session binary backing
+- Direct dependencies: none
+- Optional integrations: turbowarp-asset-cache, tm-kamishibai
+- Representative use case: asset本体とは独立したbinary stateをsessionまたは永続storageへ保存する。
 - License policy: MPL-2.0 for software.
 - Status: current
 
@@ -239,7 +253,7 @@ flowchart LR
 - Input: line text, speaker state, asset state
 - Output: bubble rendering request
 - Direct dependencies: turbowarp-svg-text
-- Optional integrations: turbowarp-text-lines, turbowarp-asset-manager, tm-kamishibai
+- Optional integrations: turbowarp-text-lines, turbowarp-asset-cache, tm-kamishibai
 - Representative use case: 紙芝居の登場人物の台詞を画面に表示する。
 - License policy: MPL-2.0 for software.
 - Status: current
@@ -319,7 +333,7 @@ flowchart LR
 - Surface: Application, CLI
 - Input: script, asset, extension bundle, runtime setting
 - Output: web application, SB3 artifact, publication artifact
-- Direct dependencies: turbowarp-tm, turbowarp-asset-manager, turbowarp-async-input, turbowarp-runtime-expression, turbowarp-bubble, turbowarp-diagnostic-overlay, sb3-toolchain
+- Direct dependencies: turbowarp-tm, turbowarp-asset-cache, turbowarp-kvs, turbowarp-async-input, turbowarp-runtime-expression, turbowarp-bubble, turbowarp-diagnostic-overlay, sb3-toolchain
 - Optional integrations: turbowarp-jsqr, turbowarp-webrtc
 - Representative use case: 教材、作品、ワークショップ用の紙芝居を配布・実行する。
 - License policy: Software is MPL-2.0; documents and content follow their own notices.
